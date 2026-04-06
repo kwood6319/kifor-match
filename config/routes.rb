@@ -13,4 +13,24 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  resources :users
+  resources :charity_profile do
+    resources :request
+    resources :offer, only: [ :index, :show, :edit, :update ]
+  end
+  resources :donor_profile do
+    resources :request, only: [ :index, :show ]
+    resources :offer, only: [ :index, :show, :edit, :update ]
+  end
+
+  #index (show all of a class)
+  #show (show one of a class)
+  #new (make a new instance of a class)
+  #create (POST request for a new class)
+  #edit (change an instance)
+  #update (PATCH request for an instance)
+  #destroy (destroy an instance of a class)
+
+
 end
