@@ -1,2 +1,2 @@
-class DonorProfileController < ApplicationController
+class DonorProfilesController < ApplicationController
 end
