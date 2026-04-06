@@ -361,3 +361,5 @@ offer5 = Offer.create!(
 )
 
 puts "Created offer for #{offer5.quantity_offered} for #{offer5.request.title} by #{offer5.donor.display_name}"
+
+puts "Seed finished!"
