@@ -1,4 +1,4 @@
 class Offer < ApplicationRecord
   belongs_to :request
-  belongs_to :donor_profile
+  belongs_to :donor
 end

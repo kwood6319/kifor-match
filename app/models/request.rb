@@ -1,3 +1,4 @@
 class Request < ApplicationRecord
-  belongs_to :charity_profile
+  belongs_to :charity
+  has_many :offers
 end

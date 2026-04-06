@@ -10,9 +10,65 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_02_114443) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_022417) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "charities", force: :cascade do |t|
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "org_name"
+    t.string "region"
+    t.text "shipping_address"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_charities_on_user_id"
+  end
+
+  create_table "donors", force: :cascade do |t|
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.string "display_name"
+    t.string "donor_type"
+    t.string "region"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_donors_on_user_id"
+  end
+
+  create_table "offers", force: :cascade do |t|
+    t.date "can_ship_by"
+    t.string "condition"
+    t.datetime "created_at", null: false
+    t.bigint "donor_id", null: false
+    t.text "message"
+    t.integer "quantity_offered"
+    t.bigint "request_id", null: false
+    t.string "status"
+    t.string "tracking_number"
+    t.datetime "updated_at", null: false
+    t.index ["donor_id"], name: "index_offers_on_donor_id"
+    t.index ["request_id"], name: "index_offers_on_request_id"
+  end
+
+  create_table "requests", force: :cascade do |t|
+    t.string "category"
+    t.bigint "charity_id", null: false
+    t.string "city"
+    t.string "condition"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.integer "quantity_needed"
+    t.integer "quantity_remaining"
+    t.string "region"
+    t.string "status"
+    t.string "title"
+    t.string "units"
+    t.datetime "updated_at", null: false
+    t.string "urgency"
+    t.index ["charity_id"], name: "index_requests_on_charity_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -25,4 +81,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_02_114443) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "charities", "users"
+  add_foreign_key "donors", "users"
+  add_foreign_key "offers", "donors"
+  add_foreign_key "offers", "requests"
+  add_foreign_key "requests", "charities"
 end

@@ -1,7 +1,7 @@
 class CreateRequests < ActiveRecord::Migration[8.1]
   def change
     create_table :requests do |t|
-      t.references :charity_profile, null: false, foreign_key: true
+      t.references :charity, null: false, foreign_key: true
       t.string :title
       t.string :category
       t.text :description
