@@ -18,7 +18,7 @@
 
 user1 = User.create(
   email: "tokyo-shelter@demo.org",
-  password: "123456",
+  password: "123456"
 )
 
 user4 = User.create(
@@ -26,14 +26,14 @@ user4 = User.create(
   password: "123456"
 )
 
-# charity1 = Charity_profile.new(
-#   user: user1,
-#   city: "Tokyo",
-#   description: "Emergency shelter support for Single Mothers escaping from abuse (demo)",
-#   org_name: "Tokyo Single Mothers Shelter (DEMO)",
-#   region: "Kanto",
-#   shipping_address: "1-2-3 Demo, Shibuya-ku, Tokyo"
-# )
+charity1 = CharityProfile.new(
+  user: user1,
+  city: "Tokyo",
+  description: "Emergency shelter support for Single Mothers escaping from abuse (demo)",
+  org_name: "Tokyo Single Mothers Shelter (DEMO)",
+  region: "Kanto",
+  shipping_address: "1-2-3 Demo, Shibuya-ku, Tokyo"
+)
 
 # donor1 = Donor.new(
 #   user: user4,

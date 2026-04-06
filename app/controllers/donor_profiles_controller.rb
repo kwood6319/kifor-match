@@ -1,2 +1,0 @@
-class DonorProfilesController < ApplicationController
-end
