@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_02_114443) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_015230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "offers", force: :cascade do |t|
+    t.date "can_ship_by"
+    t.string "condition"
+    t.datetime "created_at", null: false
+    t.integer "donor_profile_id"
+    t.string "message"
+    t.integer "quantity_offered"
+    t.integer "request_id"
+    t.string "status"
+    t.string "tracking_number"
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
