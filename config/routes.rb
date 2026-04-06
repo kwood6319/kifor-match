@@ -17,16 +17,33 @@ Rails.application.routes.draw do
 
   resources :requests do
     resources :offers, only: [ :index, :new, :create ]
+    member do
+      patch :activate
+      patch :deactivate
+    end
   end
 
   resources :offers, only: [ :show, :edit, :update ] do
     member do
       patch :accept
       patch :mark_sent
+
+      patch :activate
+      patch :deactivate
     end
   end
 
-  resources :charities, only: [:index]
-  resources :donors, only: [:index]
+  resources :charities, only: [:index] do
+    member do
+      patch :activate
+      patch :deactivate
+    end
+  end
 
+  resources :donors, only: [:index] do
+    member do
+      patch :activate
+      patch :deactivate
+    end
+  end
 end
