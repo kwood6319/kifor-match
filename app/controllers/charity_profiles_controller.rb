@@ -1,0 +1,2 @@
+class CharityProfilesController < ApplicationController
+end
