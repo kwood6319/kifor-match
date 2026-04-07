@@ -4,7 +4,7 @@ class CreateOffers < ActiveRecord::Migration[8.1]
       t.references :request, null: false, foreign_key: true
       t.references :donor, null: false, foreign_key: true
       t.integer :quantity_offered, null: false
-      t.string :condition
+      t.string :condition, null: false
       t.text :message
       t.date :can_ship_by
       t.string :tracking_number
