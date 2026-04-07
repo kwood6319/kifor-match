@@ -3,7 +3,7 @@ class CreateOffers < ActiveRecord::Migration[8.1]
     create_table :offers do |t|
       t.references :request, null: false, foreign_key: true
       t.references :donor, null: false, foreign_key: true
-      t.integer :quantity_offered
+      t.integer :quantity_offered, null: false
       t.string :condition
       t.text :message
       t.date :can_ship_by
