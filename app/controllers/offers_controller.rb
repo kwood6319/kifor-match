@@ -1,31 +1,99 @@
 class OffersController < ApplicationController
+  before_action :set_offer, only: [:approve, :reject, :mark_recieved]
+  before_action :authorize_charity, only: [:approve, :reject, :mark_recieved]
+ 
   # TODO: index , list all offers
-  
+  def index
+    @offers = Offer.all
+  end
+
   # TODO: show , show one offer details
+  def show
+    @offer = Offer.find(params[:id])
+  end
 
   # TODO: new , form for creating new offer
+  def new
+    @offer = Offer.new
+  end
 
   # TODO: create , presist new offer (default status = pending)
-  
-  #TODO: edit , form for editing offer
-
-  #TODO: update , update offer details
+  def create
+    @offer = Offer.new(offer_params)
+    if @offer.save
+      redirect_to @offer
+    else
+      render :new
+    end
+  end
 
   #TODO: destroy , delete offer
+  def destroy
+    @offer = Offer.find(params[:id])
+    @offer.destroy
+    redirect_to offers_path
+  end
 
   #TODO: approve , approve offer (only Charities can approve offers)
+  def approve
+    
+    @offer.status = "approved"
+    @offer.save
+    redirect_to offers_path
+  end
 
   #TODO: reject , reject offer (only Charities can reject offers)
+  def reject
+    
+    @offer.status = "rejected"
+    @offer.save
+    redirect_to offers_path
+  end
 
   #TODO: search , search for offers
+  def search
+    @offers = Offer.search(params[:search])
+  end
 
   #TODO: update request.quantity_remaining when offer is recieved
+  def update_recieved
+    
+    @request = Request.find(@offer.request_id)
+    @request.quantity_remaining -= @offer.quantity_offered
+    @request.save
+  end
 
   #TODO: mark_recieved, change status to recieved (charity only)
+  def mark_recieved
+    
+    @offer.status = "recieved"
+    @offer.save
+    update_recieved
+    redirect_to offers_path
+  end
 
-  #TODO: authorization, donor vs charity permissions
 
-  #TODO: strong params, whitelist fields
+  private
 
-  #TODO: handle succes and errors (redirects, flash messages)
+
+   #TODO: strong params, whitelist params
+  def offer_params
+    params.require(:offer).permit(:quantity_offered, :request_id, :donor_id)
+  end
+
+  #TODO: authorize only charity for specific actions
+
+
+  def set_offer
+    @offer = Offer.find(params[:id])
+  end
+
+  def authorize_charity
+    unless current_user.role == "charity" &&
+        @offer.request.charity_id == current_user.charity_id
+      redirect_to offers_path
+    end
+  end
 end
+ 
+
