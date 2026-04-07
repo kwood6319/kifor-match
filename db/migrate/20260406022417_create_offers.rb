@@ -8,7 +8,7 @@ class CreateOffers < ActiveRecord::Migration[8.1]
       t.text :message
       t.date :can_ship_by
       t.string :tracking_number
-      t.string :status
+      t.string :status, null: false, default: 'submitted' 
 
       t.timestamps
     end
