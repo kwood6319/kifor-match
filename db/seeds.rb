@@ -102,7 +102,7 @@ donor2 = Donor.create!(
   user: user5,
   city: "Osaka",
   display_name: "Hana Tanaka",
-  donor_type: "Individual",
+  donor_type: "individual",
   region: "Kansai"
 )
 
@@ -112,7 +112,7 @@ donor3 = Donor.create!(
   user: user6,
   city: "Tokyo",
   display_name: "ABC Corp",
-  donor_type: "Company",
+  donor_type: "company",
   region: "Kanto"
 )
 
@@ -126,21 +126,21 @@ request1 = Request.create!(
   category: "electronics",
   charity: charity1,
   city: "Tokyo",
-  condition: "working",
+  condition: "Used - Good",
   description: "charger included",
   quantity_needed: 2,
   quantity_remaining: 2,
   region: "Kanto",
-  status: "Submitted",
+  status: "submitted",
   title: "Laptops",
   units: "units",
-  urgency: "High"
+  urgency: "high"
 )
 
 puts "Created request for #{request1.quantity_needed} #{request1.title}."
 
 request2 = Request.create!(
-  category: "Clothes",
+  category: "clothes",
   charity: charity1,
   city: "Tokyo",
   condition: "Used - Good",
@@ -148,16 +148,16 @@ request2 = Request.create!(
   quantity_needed: 10,
   quantity_remaining: 10,
   region: "Kanto",
-  status: "Submitted",
+  status: "submitted",
   title: "Winter coats (adult)",
   units: "coats",
-  urgency: "Medium"
+  urgency: "medium"
 )
 
 puts "Created request for #{request2.quantity_needed} #{request2.title}."
 
 request3 = Request.create!(
-  category: "Clothes",
+  category: "clothes",
   charity: charity2,
   city: "Osaka",
   condition: "Used - Good",
@@ -165,16 +165,16 @@ request3 = Request.create!(
   quantity_needed: 15,
   quantity_remaining: 15,
   region: "Kansai",
-  status: "Submitted",
+  status: "submitted",
   title: "Kids shoes (sizes 18-22cm)",
   units: "pairs",
-  urgency: "Medium"
+  urgency: "medium"
 )
 
 puts "Created request for #{request3.quantity_needed} #{request3.title}."
 
 request4 = Request.create!(
-  category: "Necessities",
+  category: "necessities",
   charity: charity3,
   city: "Kanazawa",
   condition: "New",
@@ -182,17 +182,17 @@ request4 = Request.create!(
   quantity_needed: 50,
   quantity_remaining: 50,
   region: "Ishikawa",
-  status: "Submitted",
+  status: "submitted",
   title: "Hygiene kits",
   units: "kits",
-  urgency: "High"
+  urgency: "high"
 )
 
 puts "Created request for #{request4.quantity_needed} #{request4.title}."
 
 
 request5 = Request.create!(
-  category: "Food",
+  category: "food",
   charity: charity2,
   city: "Osaka",
   condition: "New",
@@ -200,16 +200,16 @@ request5 = Request.create!(
   quantity_needed: 20,
   quantity_remaining: 20,
   region: "Kansai",
-  status: "Submitted",
+  status: "submitted",
   title: "Rice (unopened)",
   units: "kg",
-  urgency: "Medium"
+  urgency: "medium"
 )
 
 puts "Created request for #{request5.quantity_needed} #{request5.title}."
 
 request6 = Request.create!(
-  category: "Clothes",
+  category: "clothes",
   charity: charity1,
   city: "Tokyo",
   condition: "Used - Very Good",
@@ -217,16 +217,16 @@ request6 = Request.create!(
   quantity_needed: 30,
   quantity_remaining: 30,
   region: "Kanto",
-  status: "Submitted",
+  status: "submitted",
   title: "Towels",
   units: "units",
-  urgency: "Medium"
+  urgency: "medium"
 )
 
 puts "Created request for #{request6.quantity_needed} #{request6.title}."
 
 request7 = Request.create!(
-  category: "Clothes",
+  category: "clothes",
   charity: charity3,
   city: "Kanazawa",
   condition: "New",
@@ -234,16 +234,16 @@ request7 = Request.create!(
   quantity_needed: 20,
   quantity_remaining: 20,
   region: "Ishikawa",
-  status: "Submitted",
+  status: "submitted",
   title: "Blankets",
   units: "units",
-  urgency: "High"
+  urgency: "high"
 )
 
 puts "Created request for #{request7.quantity_needed} #{request7.title}."
 
 request8 = Request.create!(
-  category: "Stationery",
+  category: "stationery",
   charity: charity2,
   city: "Osaka",
   condition: "New",
@@ -251,16 +251,16 @@ request8 = Request.create!(
   quantity_needed: 40,
   quantity_remaining: 40,
   region: "Kansai",
-  status: "Submitted",
+  status: "submitted",
   title: "Stationery sets",
   units: "sets",
-  urgency: "Medium"
+  urgency: "medium"
 )
 
 puts "Created request for #{request8.quantity_needed} #{request8.title}."
 
 request9 = Request.create!(
-  category: "Electronics",
+  category: "electronics",
   charity: charity1,
   city: "Tokyo",
   condition: "Used - Good",
@@ -268,16 +268,16 @@ request9 = Request.create!(
   quantity_needed: 25,
   quantity_remaining: 25,
   region: "Kanto",
-  status: "Submitted",
+  status: "submitted",
   title: "Phone chargers",
   units: "units",
-  urgency: "Low"
+  urgency: "low"
 )
 
 puts "Created request for #{request9.quantity_needed} #{request9.title}."
 
 request10 = Request.create!(
-  category: "Clothes",
+  category: "clothes",
   charity: charity3,
   city: "Kanazawa",
   condition: "Used - Good",
@@ -285,10 +285,10 @@ request10 = Request.create!(
   quantity_needed: 20,
   quantity_remaining: 20,
   region: "Ishikawa",
-  status: "Submitted",
+  status: "submitted",
   title: "Backpacks (kids)",
   units: "units",
-  urgency: "Medium"
+  urgency: "medium"
 )
 
 puts "Created request for #{request10.quantity_needed} #{request10.title}."
@@ -304,7 +304,7 @@ offer1 = Offer.create!(
   message: "Can ship next week",
   quantity_offered: 2,
   request: request1,
-  status: "Submitted",
+  status: "submitted",
   tracking_number: ""
 )
 
@@ -317,7 +317,7 @@ offer2 = Offer.create!(
   message: "",
   quantity_offered: 20,
   request: request4,
-  status: "Accepted",
+  status: "accepted",
   tracking_number: ""
 )
 
@@ -330,7 +330,7 @@ offer3 = Offer.create!(
   message: "",
   quantity_offered: 5,
   request: request2,
-  status: "Declined",
+  status: "declined",
   tracking_number: ""
 )
 
@@ -343,7 +343,7 @@ offer4 = Offer.create!(
   message: "",
   quantity_offered: 10,
   request: request7,
-  status: "Shipped",
+  status: "shipped",
   tracking_number: "EE123456789JP"
 )
 
@@ -356,7 +356,7 @@ offer5 = Offer.create!(
   message: "",
   quantity_offered: 40,
   request: request8,
-  status: "Received",
+  status: "received",
   tracking_number: ""
 )
 
