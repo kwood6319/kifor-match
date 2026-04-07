@@ -13,4 +13,37 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+
+  resources :requests do
+    resources :offers, only: [ :index, :new, :create ]
+    member do
+      patch :activate
+      patch :deactivate
+    end
+  end
+
+  resources :offers, only: [ :show, :edit, :update ] do
+    member do
+      patch :accept
+      patch :mark_sent
+
+      patch :activate
+      patch :deactivate
+    end
+  end
+
+  resources :charities, only: [:index] do
+    member do
+      patch :activate
+      patch :deactivate
+    end
+  end
+
+  resources :donors, only: [:index] do
+    member do
+      patch :activate
+      patch :deactivate
+    end
+  end
 end
