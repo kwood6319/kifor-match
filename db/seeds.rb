@@ -281,7 +281,7 @@ request10 = Request.create!(
   charity: charity3,
   city: "Kanazawa",
   condition: "Used - Good",
-  description: "Backpacks for kdis",
+  description: "Backpacks for kids",
   quantity_needed: 20,
   quantity_remaining: 20,
   region: "Ishikawa",
