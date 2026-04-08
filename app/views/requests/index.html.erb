@@ -1,0 +1,13 @@
+<% @requests.each do |request| %>
+  <div class="request-card">
+    <div class="request-card-infos">
+      Title: <%= request.title %>
+      Status: <%= request.status %><br>
+      City: <%= request.city %><br>
+      Condition: <%= request.condition %><br>
+      Quantity Needed: <%= request.quantity_needed %><br>
+      Quantity Remaining: <%= request.quantity_remaining %><br>
+    </div>
+    <%= link_to "View Request", request_path(request) %>
+  </div>
+<% end %>

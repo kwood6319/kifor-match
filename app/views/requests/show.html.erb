@@ -1,0 +1,10 @@
+Title: <%= @request.title %>
+Status: <%= @request.status %><br>
+Region: <%= @request.region %><br>
+Quantity Needed: <%= @request.quantity_needed %><br>
+Quantity Remaining: <%= @request.quantity_remaining %><br>
+Description: <%= @request.description %><br>
+Condition: <%= @request.condition %><br>
+City: <%= @request.city %><br>
+Category: <%= @request.category %>
+<%= link_to "Back to Requests", requests_path(@request) %>
