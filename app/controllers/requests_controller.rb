@@ -2,7 +2,7 @@ class RequestsController < ApplicationController
   def index
     @requests = current_user.charity.requests
   end
- 
+
   def show
     @request = Request.find(params[:id])
   end
@@ -43,6 +43,7 @@ class RequestsController < ApplicationController
   private
 
   def request_params
-    params.require(:request).permit(:title, :category, :description, :quantity_needed, :quantity_remaining, :units, :condition, :region, :city, :urgency, :status)
+    params.require(:request).permit(:title, :category, :description, :quantity_needed, :quantity_remaining, :units,
+                                    :condition, :region, :city, :urgency, :status)
   end
 end
