@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-
   resources :requests do
     resources :offers, only: [ :index, :new, :create ]
     member do
