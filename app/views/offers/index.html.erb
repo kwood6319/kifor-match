@@ -21,6 +21,14 @@
   <%= content_tag(:span, label, class: badge_class) %>
 <% end %>
 
+<% if current_user&.role == "admin" %>
+    <% if offers.nil? %>
+          <%raise ArgumentError, "No offers available yet" %>
+      <%else%>
+          <% offers = Offer.all %>
+    <%end%>
+<% end %>
+
 <% if current_user&.role == "donor" %>
   <% donor = Donor.find_by(user_id: current_user.id) %>
   <% offers = donor ? Offer.includes(request: :charity).where(donor_id: donor.id) : Offer.none %>
@@ -50,7 +58,12 @@
           <td><%= offer.quantity_offered %></td>
           <td><%= status_badge.call(offer.status) %></td>
           <td><%= offer.can_ship_by %></td>
-
+          <td>
+            <%= link_to "View", offer_path(offer)%>
+            <% if offer.status.to_s == "approved" && request.donor_id == donor.id %>
+            <%= button_to "Mark as Shipped", mark_as_shipped_offer_path(offer), method: :patch %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -107,12 +120,5 @@
     </tbody>
   </table>
 <% end %>
-
-
-#TODO: if donor owns the offer and status allows it , show edit/mark shipped action later if implemented
-
-#TODO: if admin, show all offers with related donor and charity info
-
-#TODO: add empty state message when no offers exist
 
 #TODO: add search form button at top if search action/view is used
