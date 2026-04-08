@@ -4,16 +4,21 @@ class RequestsController < ApplicationController
   end
 
   def show
-    # @request = Request.find(params[:id])
+    @request = Request.find(params[:id])
   end
 
   def new
-    # @request = Request.new
+    @request = Request.new
   end
 
   def create
-    # @request = Request.new(request_params)
-    # @request.charity = current_user.charity
+    @request = Request.new(request_params)
+    @request.charity = current_user.charity
+    if @request.save
+      redirect_to requests_path
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
