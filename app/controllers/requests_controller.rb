@@ -2,7 +2,7 @@ class RequestsController < ApplicationController
   def index
     @requests = current_user.charity.requests
   end
-
+ 
   def show
     @request = Request.find(params[:id])
   end
