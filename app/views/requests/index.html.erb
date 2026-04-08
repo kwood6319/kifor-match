@@ -1,0 +1,24 @@
+<% @requests.each do |request| %>
+  <div class="request-card">
+    <div class="request-card-infos">
+      <%= "Title:" %>
+      <%= request.title %><br>
+      <%= "Status:" %>
+      <%= request.status %><br>
+      <%= "Region:" %>
+      <%= request.region %><br>
+      <%= "Quantity Needed:" %>
+      <%= request.quantity_needed %><br>
+      <%= "Quantity Remaining:" %>
+      <%= request.quantity_remaining %><br>
+      <%= "Description:" %>
+      <%= request.description %><br>
+      <%= "Condition:" %>
+      <%= request.condition %><br>
+      <%= "City:" %>
+      <%= request.city %><br>
+      <%= "Category:" %>
+      <%= request.category %>
+    </div>
+  </div>
+<% end %>
