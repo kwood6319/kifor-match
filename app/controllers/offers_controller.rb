@@ -4,7 +4,34 @@ class OffersController < ApplicationController
 
   # TODO: index , list all offers
   def index
-    @offers = Offer.all
+    @offers = Offer.none
+    @viewer_role = nil
+    @donor = nil
+    @charity = nil
+
+    return unless current_user
+
+    if current_user.respond_to?(:role) && current_user.role == "admin"
+      @viewer_role = :admin
+      @offers = Offer.all
+      raise ArgumentError, "No offers available yet" if @offers.blank?
+      return
+    end
+
+    @donor = Donor.find_by(user_id: current_user.id)
+    if @donor
+      @viewer_role = :donor
+      @offers = Offer.includes(request: :charity).where(donor_id: @donor.id)
+      return
+    end
+
+    @charity = Charity.find_by(user_id: current_user.id)
+    return unless @charity
+
+    @viewer_role = :charity
+    @offers = Offer.includes(:donor, request: :charity)
+                   .where(requests: { charity_id: @charity.id })
+                   .references(:requests)
   end
 
   # TODO: show , show one offer details

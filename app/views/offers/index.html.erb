@@ -21,18 +21,7 @@
   <%= content_tag(:span, label, class: badge_class) %>
 <% end %>
 
-<% if current_user&.role == "admin" %>
-    <% if offers.nil? %>
-          <%raise ArgumentError, "No offers available yet" %>
-      <%else%>
-          <% offers = Offer.all %>
-    <%end%>
-<% end %>
-
-<% if current_user&.role == "donor" %>
-  <% donor = Donor.find_by(user_id: current_user.id) %>
-  <% offers = donor ? Offer.includes(request: :charity).where(donor_id: donor.id) : Offer.none %>
-
+<% if @viewer_role == :donor %>
   <table>
     <thead>
       <tr>
@@ -44,7 +33,7 @@
       </tr>
     </thead>
     <tbody>
-      <% offers.each do |offer| %>
+      <% @offers.each do |offer| %>
         <tr>
           <% request = offer.request %>
           <td>
@@ -60,7 +49,7 @@
           <td><%= offer.can_ship_by %></td>
           <td>
             <%= link_to "View", offer_path(offer)%>
-            <% if offer.status.to_s == "approved" && request.donor_id == donor.id %>
+            <% if offer.status.to_s == "approved" && request.donor_id == @donor.id %>
             <%= button_to "Mark as Shipped", mark_as_shipped_offer_path(offer), method: :patch %>
             <% end %>
           </td>
@@ -70,10 +59,7 @@
   </table>
 <% end %>
 
-<% if current_user&.role == "charity" %>
-  <% charity = Charity.find_by(user_id: current_user.id) %>
-  <% offers = charity ? Offer.includes(:donor, request: :charity).where(requests: { charity_id: charity.id }).references(:requests) : Offer.none %>
-
+<% if @viewer_role == :charity %>
   <table>
     <thead>
       <tr>
@@ -85,7 +71,7 @@
       </tr>
     </thead>
     <tbody>
-      <% offers.each do |offer| %>
+      <% @offers.each do |offer| %>
         <tr>
           <% request = offer.request %>
           <td>
@@ -105,13 +91,13 @@
           <td><%= offer.can_ship_by %></td>
           <td>
             <%= link_to "View", offer_path(offer) %>
-            <% if offer.status.to_s == "pending" && request.charity_id == charity.id %>
+            <% if offer.status.to_s == "pending" && request.charity_id == @charity.id %>
             <%= button_to "Approve", approve_offer_path(offer), method: :patch %>
             <% end %>
-            <% if offer.status.to_s == "pending" && request.charity_id == charity.id %>
+            <% if offer.status.to_s == "pending" && request.charity_id == @charity.id %>
             <%= button_to "Reject", reject_offer_path(offer), method: :patch %>
             <% end %>
-            <% if offer.status.to_s == "shipped" && request.charity_id == charity.id %>
+            <% if offer.status.to_s == "shipped" && request.charity_id == @charity.id %>
             <%= button_to "Mark as Received", mark_as_received_offer_path(offer), method: :patch %>
             <% end %>
           </td>
