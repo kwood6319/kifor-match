@@ -1,31 +1,45 @@
-# TODO: page title for single offer details
-<% content_for :title, "Offer Details" %> 
-# TODO: show request title and request description
-<%= request.title %>
-<%= request.description %>
-# TODO: show charity name related to request
-<%= request.charity.org_name %>
-# TODO: show donor display_name related to offer
-<%= offer.donor.display_name %>
-# TODO: show quantity_offered with request units
-<%= offer.quantity_offered %>
-<%= request.units %>
-# TODO: show offer condition
-<%= offer.condition %>
-# TODO: show donor message
-<%= offer.donor_message %>
-# TODO: show can_ship_by date
-<%= offer.can_ship_by %>
-# TODO: show tracking_number if present
-<%= offer.tracking_number %>
-# TODO: show current status clearly
-<%= offer.status %>
-# TODO: if charity owns request and offer is pending, show Approve button
+<% content_for :title, "Offer Details" %>
+<h1>Offer Details</h1>
 
-# TODO: if charity owns request and offer is pending, show Reject button
+<div>
+  <div><strong>Request:</strong> <%= @request.title %></div>
+  <% if @request.description.present? %>
+    <div><strong>Description:</strong> <%= @request.description %></div>
+  <% end %>
+  <div><strong>Charity:</strong> <%= @charity.org_name %></div>
+  <% if @request.quantity_remaining.present? %>
+    <div><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></div>
+  <% end %>
+</div>
 
-# TODO: if charity owns request and offer is approved/shipped, show Mark as Recieved button
+<div>
+  <div><strong>Donor:</strong> <%= @donor.display_name %></div>
+  <div><strong>Quantity offered:</strong> <%= @offer.quantity_offered %> <%= @request.units %></div>
+  <div><strong>Condition:</strong> <%= @offer.condition %></div>
+  <% if @offer.message.present? %>
+    <div><strong>Message:</strong> <%= @offer.message %></div>
+  <% end %>
+  <% if @offer.can_ship_by.present? %>
+    <div><strong>Can ship by:</strong> <%= @offer.can_ship_by %></div>
+  <% end %>
+  <% if @offer.tracking_number.present? %>
+    <div><strong>Tracking number:</strong> <%= @offer.tracking_number %></div>
+  <% end %>
+  <div><strong>Status:</strong> <%= @offer.status %></div>
+</div>
 
-# TODO: add back link to offers index
+<div>
+  <% if @can_approve %>
+    <%= button_to "Approve", approve_offer_path(@offer), method: :patch %>
+  <% end %>
+  <% if @can_reject %>
+    <%= button_to "Reject", reject_offer_path(@offer), method: :patch %>
+  <% end %>
+  <% if @can_mark_received %>
+    <%= button_to "Mark as Received", mark_received_offer_path(@offer), method: :patch %>
+  <% end %>
+</div>
 
-# TODO: optionally show request quantity_remaining for context
+<div>
+  <%= link_to "Back to Offers", request_offers_path(@request) %>
+</div>

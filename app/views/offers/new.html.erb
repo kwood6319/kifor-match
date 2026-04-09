@@ -1,0 +1,38 @@
+<% content_for :title, "New Offer" %>
+<h1>New Offer</h1>
+
+<div>
+  <div><strong>Request:</strong> <%= @request.title %></div>
+  <% if @request.respond_to?(:category) && @request.category.present? %>
+    <div><strong>Category:</strong> <%= @request.category %></div>
+  <% end %>
+  <% if @request.quantity_remaining.present? %>
+    <div><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></div>
+  <% end %>
+  <div><strong>Units:</strong> <%= @request.units %></div>
+  <% if @request.respond_to?(:condition) && @request.condition.present? %>
+    <div><strong>Condition:</strong> <%= @request.condition %></div>
+  <% end %>
+  <div><strong>Urgency:</strong> <%= @request.urgency %></div>
+  <% if @request.respond_to?(:city) && @request.city.present? %>
+    <div><strong>City:</strong> <%= @request.city %></div>
+  <% end %>
+  <div><strong>Region:</strong> <%= @request.region %></div>
+</div>
+
+<% if @offer.errors.any? %>
+  <div>
+    <div><strong>There were problems creating the offer:</strong></div>
+    <ul>
+      <% @offer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= render "form" %>
+
+<div>
+  <%= link_to "Back to Request", request_path(@request) %>
+</div>

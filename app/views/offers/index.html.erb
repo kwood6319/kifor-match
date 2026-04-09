@@ -98,7 +98,7 @@
             <%= button_to "Reject", reject_offer_path(offer), method: :patch %>
             <% end %>
             <% if offer.status.to_s == "shipped" && request.charity_id == @charity.id %>
-            <%= button_to "Mark as Received", mark_as_received_offer_path(offer), method: :patch %>
+            <%= button_to "Mark as Received", mark_received_offer_path(offer), method: :patch %>
             <% end %>
           </td>
         </tr>

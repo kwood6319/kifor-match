@@ -1,25 +1,28 @@
-# TODO: page title for creating a new offer
+<%= form_with model: [@request, @offer] do |form| %>
+  <div>
+    <%= form.label :quantity_offered %>
+    <%= form.number_field :quantity_offered, min: 1 %>
+  </div>
 
-# TODO: show request summary at top so donor knows what they are offering for
+  <div>
+    <%= form.label :condition %>
+    <%= form.text_field :condition %>
+  </div>
 
-# TODO: show request title, category, quantity_remaining, units, condition, urgency, city/region
+  <div>
+    <%= form.label :message %>
+    <%= form.text_area :message, rows: 4 %>
+  </div>
 
-# TODO: render offer form partial
+  <div>
+    <%= form.label :can_ship_by %>
+    <%= form.date_field :can_ship_by %>
+  </div>
 
-# TODO: include field for quantity_offered
+  <%= form.hidden_field :request_id, value: @request.id %>
+  <%= form.hidden_field :donor_id, value: @donor&.id %>
 
-# TODO: include field for condition
-
-# TODO: include field for message
-
-# TODO: include field for can_ship_by
-
-# TODO: include hidden request_id
-
-# TODO: include hidden donor_id from current donor
-
-# TODO: submit button for creating offer
-
-# TODO: show validation errors if save fails
-
-# TODO: add back link to request/requests page
+  <div>
+    <%= form.submit "Create Offer" %>
+  </div>
+<% end %>

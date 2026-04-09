@@ -1,5 +1,5 @@
 class OffersController < ApplicationController
-  before_action :set_offer, only: %i[show destroy approve reject mark_received]
+  before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped]
   before_action :authorize_charity, only: %i[approve reject mark_received]
 
   # TODO: index , list all offers
@@ -36,16 +36,32 @@ class OffersController < ApplicationController
 
   # TODO: show , show one offer details
   def show
+    @request = @offer.request
+    @charity = @request.charity
+    @donor = @offer.donor
+
+    viewer_charity = current_user ? Charity.find_by(user_id: current_user.id) : nil
+    owns_request = viewer_charity && @request.charity_id == viewer_charity.id
+    pending_status = @offer.status.to_s == "pending"
+    @can_approve = owns_request && pending_status
+    @can_reject = owns_request && pending_status
+    @can_mark_received = owns_request && %w[approved shipped].include?(@offer.status.to_s)
   end
 
   # TODO: new , form for creating new offer
   def new
-    @offer = Offer.new
+    @request = Request.find(params[:request_id])
+    @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
+    @offer = Offer.new(request: @request, donor: @donor)
   end
 
   # TODO: create , presist new offer (default status = pending)
   def create
+    @request = Request.find(params[:request_id])
+    @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
     @offer = Offer.new(offer_params)
+    @offer.request ||= @request
+    @offer.donor ||= @donor
     if @offer.save
       redirect_to @offer
     else
@@ -94,11 +110,18 @@ class OffersController < ApplicationController
     redirect_to request_offers_path(@offer.request)
   end
 
+  # TODO: mark_as_shipped, change status to shipped (donor only)
+  def mark_as_shipped
+    @offer.status = "shipped"
+    @offer.save
+    redirect_to request_offers_path(@offer.request)
+  end
+
   private
 
   # TODO: strong params, whitelist params
   def offer_params
-    params.require(:offer).permit(:quantity_offered, :request_id, :donor_id)
+    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :request_id, :donor_id)
   end
 
   # TODO: authorize only charity for specific actions
