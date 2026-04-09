@@ -15,6 +15,7 @@ class OffersController < ApplicationController
       @viewer_role = :admin
       @offers = Offer.all
       raise ArgumentError, "No offers available yet" if @offers.blank?
+
       return
     end
 
@@ -137,3 +138,5 @@ class OffersController < ApplicationController
     end
   end
 end
+
+# Nice to have : Search funcionality for offers, filter by category, condition, city, region, etc.
