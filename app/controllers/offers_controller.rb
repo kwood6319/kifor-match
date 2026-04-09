@@ -1,5 +1,5 @@
 class OffersController < ApplicationController
-  before_action :set_offer, only: %i[approve reject mark_received]
+  before_action :set_offer, only: %i[show destroy approve reject mark_received]
   before_action :authorize_charity, only: %i[approve reject mark_received]
 
   # TODO: index , list all offers
@@ -9,7 +9,6 @@ class OffersController < ApplicationController
 
   # TODO: show , show one offer details
   def show
-    @offer = Offer.find(params[:id])
   end
 
   # TODO: new , form for creating new offer
@@ -29,7 +28,6 @@ class OffersController < ApplicationController
 
   # TODO: destroy , delete offer
   def destroy
-    @offer = Offer.find(params[:id])
     @offer.destroy
     redirect_to offers_path
   end

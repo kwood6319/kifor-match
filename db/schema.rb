@@ -18,8 +18,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_022417) do
     t.string "city"
     t.datetime "created_at", null: false
     t.text "description"
-    t.string "org_name"
-    t.string "region"
+    t.string "org_name", null: false
+    t.string "region", null: false
     t.text "shipping_address"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
@@ -29,7 +29,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_022417) do
   create_table "donors", force: :cascade do |t|
     t.string "city"
     t.datetime "created_at", null: false
-    t.string "display_name"
+    t.string "display_name", null: false
     t.string "donor_type"
     t.string "region"
     t.datetime "updated_at", null: false
@@ -39,13 +39,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_022417) do
 
   create_table "offers", force: :cascade do |t|
     t.date "can_ship_by"
-    t.string "condition"
+    t.string "condition", null: false
     t.datetime "created_at", null: false
     t.bigint "donor_id", null: false
     t.text "message"
-    t.integer "quantity_offered"
+    t.integer "quantity_offered", null: false
     t.bigint "request_id", null: false
-    t.string "status"
+    t.string "status", default: "submitted", null: false
     t.string "tracking_number"
     t.datetime "updated_at", null: false
     t.index ["donor_id"], name: "index_offers_on_donor_id"
@@ -53,20 +53,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_022417) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.string "category"
+    t.string "category", null: false
     t.bigint "charity_id", null: false
     t.string "city"
-    t.string "condition"
+    t.string "condition", null: false
     t.datetime "created_at", null: false
     t.text "description"
-    t.integer "quantity_needed"
-    t.integer "quantity_remaining"
-    t.string "region"
-    t.string "status"
-    t.string "title"
-    t.string "units"
+    t.integer "quantity_needed", null: false
+    t.integer "quantity_remaining", null: false
+    t.string "region", null: false
+    t.string "status", null: false
+    t.string "title", null: false
+    t.string "units", null: false
     t.datetime "updated_at", null: false
-    t.string "urgency"
+    t.string "urgency", null: false
     t.index ["charity_id"], name: "index_requests_on_charity_id"
   end
 
