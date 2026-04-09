@@ -28,22 +28,23 @@ class OffersController < ApplicationController
 
   # TODO: destroy , delete offer
   def destroy
+    @offer = Offer.find(params[:id])
     @offer.destroy
-    redirect_to offers_path
+    redirect_to request_offers_path(@offer.request)
   end
 
   # TODO: approve , approve offer (only Charities can approve offers)
   def approve
     @offer.status = "approved"
     @offer.save
-    redirect_to offers_path
+    redirect_to request_offers_path(@offer.request)
   end
 
   # TODO: reject , reject offer (only Charities can reject offers)
   def reject
     @offer.status = "rejected"
     @offer.save
-    redirect_to offers_path
+    redirect_to request_offers_path(@offer.request)
   end
 
   # TODO: search , search for offers
@@ -63,7 +64,7 @@ class OffersController < ApplicationController
     @offer.status = "received"
     @offer.save
     update_received
-    redirect_to offers_path
+    redirect_to request_offers_path(@offer.request)
   end
 
   private
@@ -82,7 +83,7 @@ class OffersController < ApplicationController
   def authorize_charity
     unless current_user.role == "charity" &&
            @offer.request.charity_id == current_user.charity_id
-      redirect_to offers_path
+      redirect_to request_offers_path(@offer.request)
     end
   end
 end
