@@ -1,0 +1,11 @@
+<%= simple_form_for request do |f| %>
+  <%= f.input :title %>
+  <%= f.input :region %>
+  <%= f.input :quantity_needed %>
+  <%= f.input :quantity_remaining %>
+  <%= f.input :description %>
+  <%= f.input :condition %>
+  <%= f.input :city %>
+  <%= f.input :category %>
+  <%= f.submit class: "btn btn-primary mt-3" %>
+<% end %>
