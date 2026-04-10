@@ -133,7 +133,7 @@ class OffersController < ApplicationController
 
   def authorize_charity
     unless current_user.role == "charity" &&
-           @offer.request.charity_id == current_user.charity_id
+        @offer.request.charity.user_id == current_user.id
       redirect_to request_offers_path(@offer.request)
     end
   end
