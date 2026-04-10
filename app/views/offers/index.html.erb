@@ -5,8 +5,8 @@
   <% normalized_status = status.to_s.strip.downcase %>
   <% label = normalized_status.capitalize %>
   <% badge_class = case normalized_status %>
-  <% when "pending" %>
-    <% "status-badge status-badge--pending" %>
+  <% when "submitted" %>
+    <% "status-badge status-badge--submitted" %>
   <% when "approved" %>
     <% "status-badge status-badge--approved" %>
   <% when "rejected" %>
@@ -91,10 +91,10 @@
           <td><%= offer.can_ship_by %></td>
           <td>
             <%= link_to "View", offer_path(offer) %>
-            <% if offer.status.to_s == "pending" && request.charity_id == @charity.id %>
+            <% if offer.status.to_s == "submitted" && request.charity_id == @charity.id %>
             <%= button_to "Approve", approve_offer_path(offer), method: :patch %>
             <% end %>
-            <% if offer.status.to_s == "pending" && request.charity_id == @charity.id %>
+            <% if offer.status.to_s == "submitted" && request.charity_id == @charity.id %>
             <%= button_to "Reject", reject_offer_path(offer), method: :patch %>
             <% end %>
             <% if offer.status.to_s == "shipped" && request.charity_id == @charity.id %>

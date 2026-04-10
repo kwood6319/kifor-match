@@ -43,9 +43,9 @@ class OffersController < ApplicationController
 
     viewer_charity = current_user ? Charity.find_by(user_id: current_user.id) : nil
     owns_request = viewer_charity && @request.charity_id == viewer_charity.id
-    pending_status = @offer.status.to_s == "pending"
-    @can_approve = owns_request && pending_status
-    @can_reject = owns_request && pending_status
+    submitted_status = @offer.status.to_s == "submitted"
+    @can_approve = owns_request && submitted_status
+    @can_reject = owns_request && submitted_status
     @can_mark_received = owns_request && %w[approved shipped].include?(@offer.status.to_s)
   end
 
@@ -56,7 +56,7 @@ class OffersController < ApplicationController
     @offer = Offer.new(request: @request, donor: @donor)
   end
 
-  # TODO: create , presist new offer (default status = pending)
+  # TODO: create , presist new offer (default status = submitted)
   def create
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
