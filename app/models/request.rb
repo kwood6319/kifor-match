@@ -2,7 +2,7 @@ class Request < ApplicationRecord
   belongs_to :charity
   has_many :offers
 
-  STATUSES = %w[active inactive fulfilled]
+  STATUSES = %w[active inactive fulfilled submitted]
 
   after_initialize :set_default_status, if: :new_record?
 
