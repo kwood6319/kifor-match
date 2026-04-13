@@ -1,9 +1,11 @@
-<ul>
+<div class="charity-cards">
   <% @charities.each do |charity| %>
-    <li> <%= charity.org_name %>
-      <%= link_to "Delete", charity_path(charity), data: {turbo_method: :delete, turbo_confirm: "Delete charity?"}%></li>
-    <% unless charity.approved? %>
-      <%= button_to "Approve", approve_charity_path(charity), method: :patch, data: {confirm: "Approve charity?" } %>
-    <% end %>
+    <div class="card">
+      <h4> <%= charity.org_name %> </h3>
+      <%= link_to "Delete", charity_path(charity), data: {turbo_method: :delete, turbo_confirm: "Delete charity?"}%>
+      <% unless charity.approved? %>
+        <%= button_to "Approve", approve_charity_path(charity), method: :patch, data: { confirm: "Approve charity?" } %>
+      <% end %>
+    </div>
   <% end %>
-</ul>
+</div>
