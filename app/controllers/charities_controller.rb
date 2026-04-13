@@ -6,8 +6,12 @@ class CharitiesController < ApplicationController
 
   def destroy
     @charity = Charity.find(params[:id])
-    @charity.delete
-    redirect_to charity_path, status: :see_other, notice: "Charity deleted!"
+
+    if @charity.destroy
+      redirect_to charity_path, status: :see_other, notice: "Charity deleted!"
+    else
+      redirect_to @charity, alert: @charity.errors.full_messages.to_sentence
+    end
     # TO DO Change to archive method
   end
 
