@@ -247,7 +247,7 @@ request8 = Request.create!(
   charity: charity2,
   city: "Osaka",
   condition: "New",
-  description: "",
+  description: "Full sets",
   quantity_needed: 40,
   quantity_remaining: 40,
   region: "Kansai",
