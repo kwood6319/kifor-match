@@ -1,0 +1,6 @@
+<ul>
+  <% @charities.each do |charity| %>
+    <li> <%= charity.org_name %>
+      <%= link_to "Delete", charity_path(charity), data: {turbo_method: :delete, turbo_confirm: "Really?"}%></li>
+  <% end %>
+</ul>

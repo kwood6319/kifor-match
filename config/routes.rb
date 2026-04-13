@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :charities, only: [:index] do
+  resources :charities, only: [:index, :destroy] do
     member do
       patch :activate
       patch :deactivate
