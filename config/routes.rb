@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
   resources :charities, only: [:index, :destroy] do
     member do
+      patch :approve
       patch :activate
       patch :deactivate
     end

@@ -1,6 +1,9 @@
 <ul>
   <% @charities.each do |charity| %>
     <li> <%= charity.org_name %>
-      <%= link_to "Delete", charity_path(charity), data: {turbo_method: :delete, turbo_confirm: "Really?"}%></li>
+      <%= link_to "Delete", charity_path(charity), data: {turbo_method: :delete, turbo_confirm: "Delete charity?"}%></li>
+    <% unless charity.approved? %>
+      <%= button_to "Approve", approve_charity_path(charity), method: :patch, data: {confirm: "Approve charity?" } %>
+    <% end %>
   <% end %>
 </ul>
