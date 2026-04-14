@@ -1,0 +1,51 @@
+<  def authorize_charity
+    unless current_user.role == "charity" &&
+           @offer.request.charity_id == current_user.id
+      redirect_to request_offers_path(@offer.request)
+    end
+  end
+end% content_for :title, "Offer Details" %>
+<h1>Offer Details</h1>
+
+<div>
+  <div><strong>Request:</strong> <%= @request.title %></div>
+  <% if @request.description.present? %>
+    <div><strong>Description:</strong> <%= @request.description %></div>
+  <% end %>
+  <div><strong>Charity:</strong> <%= @charity.org_name %></div>
+  <% if @request.quantity_remaining.present? %>
+    <div><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></div>
+  <% end %>
+</div>
+
+<div>
+  <div><strong>Donor:</strong> <%= @donor.display_name %></div>
+  <div><strong>Quantity offered:</strong> <%= @offer.quantity_offered %> <%= @request.units %></div>
+  <div><strong>Condition:</strong> <%= @offer.condition %></div>
+  <% if @offer.message.present? %>
+    <div><strong>Message:</strong> <%= @offer.message %></div>
+  <% end %>
+  <% if @offer.can_ship_by.present? %>
+    <div><strong>Can ship by:</strong> <%= @offer.can_ship_by %></div>
+  <% end %>
+  <% if @offer.tracking_number.present? %>
+    <div><strong>Tracking number:</strong> <%= @offer.tracking_number %></div>
+  <% end %>
+  <div><strong>Status:</strong> <%= @offer.status %></div>
+</div>
+
+<div>
+  <% if @can_approve %>
+    <%= button_to "Approve", approve_offer_path(@offer), method: :patch %>
+  <% end %>
+  <% if @can_reject %>
+    <%= button_to "Reject", reject_offer_path(@offer), method: :patch %>
+  <% end %>
+  <% if @can_mark_received %>
+    <%= button_to "Mark as Received", mark_received_offer_path(@offer), method: :patch %>
+  <% end %>
+</div>
+
+<div>
+  <%= link_to "Back to Offers", request_offers_path(@request) %>
+</div>
