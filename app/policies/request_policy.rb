@@ -11,6 +11,7 @@ class RequestPolicy < ApplicationPolicy
       if user.charity
         scope.where(charity: user.charity)
       else
+        # If the user is a donor let them see all requests
         scope.all
       end
     end
