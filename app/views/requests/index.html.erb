@@ -1,4 +1,4 @@
-<%= link_to "New Request", new_request_path %>
+<%= link_to "New Request", new_request_path if policy(Request).new? %>
 <% @requests.each do |request| %>
   <div class="request-card">
     <div class="request-card-infos">
