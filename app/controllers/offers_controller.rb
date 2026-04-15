@@ -1,6 +1,5 @@
 class OffersController < ApplicationController
   before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped]
-  before_action :authorize_charity, only: %i[approve reject mark_received]
 
   # TODO: index , list all offers
   def index
@@ -117,17 +116,8 @@ class OffersController < ApplicationController
     params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :request_id, :donor_id)
   end
 
-  # TODO: authorize only charity for specific actions
-
   def set_offer
     @offer = Offer.find(params[:id])
-  end
-
-  def authorize_charity
-    unless current_user.role == "charity" &&
-        @offer.request.charity.user_id == current_user.id
-      redirect_to request_offers_path(@offer.request)
-    end
   end
 end
 
