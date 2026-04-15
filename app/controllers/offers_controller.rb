@@ -16,6 +16,7 @@ class OffersController < ApplicationController
                    end
 
     @offers = policy_scope(Offer).includes(:donor, request: :charity)
+    @offers = @offers.where(request_id: params[:request_id]) if params[:request_id]
   end
 
   # TODO: show , show one offer details
