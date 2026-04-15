@@ -1,4 +1,5 @@
 <div class="container">
+  <!-- this is an error check. Make it visible if you need it. -->
   <% @request.errors.full_messages.inspect %>
   <h1>Edit Request</h1>
   <%= render "request_form", request: @request %>
