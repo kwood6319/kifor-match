@@ -1,11 +1,27 @@
 <%= simple_form_for request do |f| %>
-  <%= f.input :title %>
-  <%= f.input :region %>
-  <%= f.input :quantity_needed %>
-  <%= f.input :quantity_remaining %>
-  <%= f.input :description %>
-  <%= f.input :condition %>
-  <%= f.input :city %>
-  <%= f.input :category %>
+  <div class="row">
+    <div class="col-md-4"><%= f.input :title, placeholder: "Calculators, Instant Food, etc" %></div>
+    <div class="col-md-4"><%= f.input :quantity_needed, placeholder: "1, 2, 3, etc" %></div>
+    <div class="col-md-4"><%= f.input :units, collection: Request::UNITS.map { |u| [u.humanize, u] }, prompt: "Select Units" %></div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"><%= f.input :urgency, collection: Request::URGENCIES.map { |u| [u.humanize, u] }, prompt: "Select Urgency" %></div>
+    <div class="col-md-4"><%= f.input :condition, collection: Request::CONDITIONS.map { |c| [c.humanize, c] }, prompt: "Select Condition" %></div>
+    <div class="col-md-4"><%= f.input :category, collection: Request::CATEGORIES.map { |c| [c.humanize, c] }, prompt: "Select Category" %></div>
+  </div>
+  <div class="row" data-controller="city-filter" data-city-filter-cities-value="<%= Request::REGIONS_AND_CITIES.to_json %>">
+    <div class="col-md-6">
+      <%= f.input :region, collection: Request::REGIONS, prompt: "Select Your Region",
+                  input_html: { data: { city_filter_target: "region", action: "change->city-filter#filter" } } %>
+    </div>
+    <div class="col-md-6">
+      <%= f.input :city, collection: Request::CITIES, prompt: "Select Your City",
+                  input_html: { data: { city_filter_target: "city" } } %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12"><%= f.input :description, placeholder: "Please describe the item" %></div>
+  </div>
+  <%= f.hidden_field :status, value: "inactive" %>
   <%= f.submit class: "btn btn-primary mt-3" %>
 <% end %>

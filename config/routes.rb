@@ -23,8 +23,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :offers, only: [ :show, :edit, :update ] do
+  resources :offers, only: [ :show, :edit, :update, :destroy ] do
+    collection do
+      get :search
+    end
     member do
+      patch :approve
+      patch :reject
+      patch :mark_received
+      patch :mark_as_shipped
       patch :accept
       patch :mark_sent
 

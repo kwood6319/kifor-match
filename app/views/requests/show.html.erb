@@ -9,5 +9,7 @@
   City: <%= @request.city %><br>
   Category: <%= @request.category %>
   <%= link_to "Back to Requests", requests_path %>
-  <%= link_to "Edit Request", edit_request_path(@request) %>
+  <% if policy(@request).edit? %>
+    <%= link_to "Edit Request", edit_request_path(@request) %>
+  <% end %>
 </div>

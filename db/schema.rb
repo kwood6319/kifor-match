@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_13_010912) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_13_122843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,8 +19,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_010912) do
     t.string "city"
     t.datetime "created_at", null: false
     t.text "description"
-    t.string "org_name"
-    t.string "region"
+    t.string "org_name", null: false
+    t.string "region", null: false
     t.text "shipping_address"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
@@ -30,7 +30,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_010912) do
   create_table "donors", force: :cascade do |t|
     t.string "city"
     t.datetime "created_at", null: false
-    t.string "display_name"
+    t.string "display_name", null: false
     t.string "donor_type"
     t.string "region"
     t.datetime "updated_at", null: false
@@ -40,13 +40,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_010912) do
 
   create_table "offers", force: :cascade do |t|
     t.date "can_ship_by"
-    t.string "condition"
+    t.string "condition", null: false
     t.datetime "created_at", null: false
     t.bigint "donor_id", null: false
     t.text "message"
-    t.integer "quantity_offered"
+    t.integer "quantity_offered", null: false
     t.bigint "request_id", null: false
-    t.string "status"
+    t.string "status", default: "submitted", null: false
     t.string "tracking_number"
     t.datetime "updated_at", null: false
     t.index ["donor_id"], name: "index_offers_on_donor_id"

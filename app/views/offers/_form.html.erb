@@ -1,0 +1,28 @@
+<%= form_with model: [@request, @offer] do |form| %>
+  <div>
+    <%= form.label :quantity_offered %>
+    <%= form.number_field :quantity_offered, min: 1 %>
+  </div>
+
+  <div>
+    <%= form.label :condition %>
+    <%= form.text_field :condition %>
+  </div>
+
+  <div>
+    <%= form.label :message %>
+    <%= form.text_area :message, rows: 4 %>
+  </div>
+
+  <div>
+    <%= form.label :can_ship_by %>
+    <%= form.date_field :can_ship_by %>
+  </div>
+
+  <%= form.hidden_field :request_id, value: @request.id %>
+  <%= form.hidden_field :donor_id, value: @donor&.id %>
+
+  <div>
+    <%= form.submit "Create Offer" %>
+  </div>
+<% end %>
