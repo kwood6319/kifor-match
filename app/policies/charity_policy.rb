@@ -7,8 +7,31 @@ class CharityPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      # If the user is a donor let them see all requests
+      scope.all
+    end
+  end
+
+  def index?
+    true
+  end
+
+  def show?
+    true
+  end
+
+  def create?
+    true
+  end
+
+  def update?
+    record.charity == user.charity
+    # record: the request passed to the `authorize` method in controller
+    # user: the `current_user` signed in with Devise
+  end
+
+  def deactivate?
+    record.charity == user.charity
   end
 end

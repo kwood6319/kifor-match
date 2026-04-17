@@ -1,6 +1,6 @@
 class CharitiesController < ApplicationController
   def index
-    @charities = Charity.all
+    @charities = policy_scope(Charity)
     # TO DO Handle active/archived charities
   end
 
