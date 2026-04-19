@@ -113,7 +113,7 @@ class OffersController < ApplicationController
 
   # TODO: strong params, whitelist params
   def offer_params
-    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :request_id, :donor_id)
+    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by)
   end
 
   def set_offer
