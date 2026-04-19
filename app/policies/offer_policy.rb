@@ -12,10 +12,10 @@ class OfferPolicy < ApplicationPolicy
 
       if user.respond_to?(:role) && user.role == "admin"
         scope.all
-      elsif (donor = Donor.find_by(user_id: user.id))
-        scope.where(donor_id: donor.id)
-      elsif (charity = Charity.find_by(user_id: user.id))
-        scope.joins(:request).where(requests: { charity_id: charity.id })
+      elsif user.donor
+        scope.where(donor_id: user.donor.id)
+      elsif user.charity
+        scope.joins(:request).where(requests: { charity_id: user.charity.id })
       else
         scope.none
       end
@@ -65,11 +65,11 @@ class OfferPolicy < ApplicationPolicy
   end
 
   def donor
-    @donor ||= user && Donor.find_by(user_id: user.id)
+    @donor ||= user&.donor
   end
 
   def charity
-    @charity ||= user && Charity.find_by(user_id: user.id)
+    @charity ||= user&.charity
   end
 
   def owning_donor?

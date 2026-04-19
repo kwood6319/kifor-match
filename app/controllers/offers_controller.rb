@@ -79,9 +79,9 @@ class OffersController < ApplicationController
     redirect_to request_offers_path(@offer.request)
   end
 
-  # TODO: search , search for offers
+  # TODO: search , implement search scope on Offer model when ready
   def search
-    @offers = policy_scope(Offer).search(params[:search])
+    @offers = policy_scope(Offer)
     authorize Offer
   end
 
@@ -113,7 +113,7 @@ class OffersController < ApplicationController
 
   # TODO: strong params, whitelist params
   def offer_params
-    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :request_id, :donor_id)
+    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by)
   end
 
   def set_offer
