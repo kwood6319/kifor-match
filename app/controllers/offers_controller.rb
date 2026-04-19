@@ -121,4 +121,4 @@ class OffersController < ApplicationController
   end
 end
 
-# Nice to have : Search funcionality for offers, filter by category, condition, city, region, etc.
+# Nice to have : Search functionality for offers, filter by category, condition, city, region, etc.
