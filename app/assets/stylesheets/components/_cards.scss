@@ -1,40 +1,56 @@
-.charity-cards {
+.grid-tall-cards {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 16px;
 }
 
+.small-card {
+  background-color: #EDE9E1;
+  box-shadow: 4px 4px 4px #bfbfbf;
+  // border: 1px solid #bfbfbf;
+
+  .h4 {
+    font-size:1.2rem;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
 // Smallest device
 @media (min-width: 100px) and (max-width: 575px) {
-  .charity-cards {
+  .grid-tall-cards {
     grid-template-columns: 1fr;
   }
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
-  .charity-cards {
+  .grid-tall-cards {
     grid-template-columns: 1fr;
   }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
-  .charity-cards {
+  .grid-tall-cards {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-  .charity-cards {
+  .grid-tall-cards {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
-  .charity-cards {
+  .grid-tall-cards {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }

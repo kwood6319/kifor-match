@@ -1,11 +1,13 @@
-<div class="charity-cards">
+<div class="grid-tall-cards mt-3">
   <% @charities.each do |charity| %>
-    <div class="card">
+    <div class="small-card p-3">
       <h4> <%= charity.org_name %> </h3>
-      <p><strong> Email: </strong> <%= charity.user.email%> </p>
-      <p><strong> Region: </strong> <%= charity.region %> </p>
-      <p><strong>Description:</strong> <%= charity.description %></p>
-      <p><strong>Shipping Address:</strong> <%= charity.shipping_address %> </p>
+      <ul>
+        <li> <strong> Email: </strong> <%= charity.user.email%> </li>
+        <li> <strong> Region: </strong> <%= charity.region %> </li>
+        <li> <strong>Description:</strong> <%= charity.description %> </li>
+        <li> <strong>Shipping Address:</strong> <%= charity.shipping_address %> </li>
+      </ul>
       <%= link_to "Delete", charity_path(charity), data: {turbo_method: :delete, turbo_confirm: "Delete charity?"}%>
       <% unless charity.approved? %>
         <%= button_to "Approve", approve_charity_path(charity), method: :patch, data: { confirm: "Approve charity?" } %>
