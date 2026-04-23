@@ -8,10 +8,12 @@
         <li> <strong>Description:</strong> <%= charity.description %> </li>
         <li> <strong>Shipping Address:</strong> <%= charity.shipping_address %> </li>
       </ul>
-      <%= link_to "Delete", charity_path(charity), data: {turbo_method: :delete, turbo_confirm: "Delete charity?"}%>
-      <% unless charity.approved? %>
-        <%= button_to "Approve", approve_charity_path(charity), method: :patch, data: { confirm: "Approve charity?" } %>
-      <% end %>
+      <div class="btn-section pt-2">
+        <%= link_to "Delete", charity_path(charity), class: "btn btn-neg", data: {turbo_method: :delete, turbo_confirm: "Delete charity?"}%>
+        <% unless charity.approved? %>
+          <%= button_to "Approve", approve_charity_path(charity), class: "btn btn-pos", method: :patch, data: { confirm: "Approve charity?" } %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>
