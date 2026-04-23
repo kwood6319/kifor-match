@@ -7,7 +7,7 @@
 .small-card {
   background-color: #EDE9E1;
   box-shadow: 4px 4px 4px #bfbfbf;
-  // border: 1px solid #bfbfbf;
+  transition: transform 0.3 ease, box-shadow 0.3 ease;
 
   .h4 {
     font-size:1.2rem;
@@ -18,6 +18,10 @@
     padding: 0;
     margin: 0;
   }
+}
+
+.small-card:hover {
+  transform: translateY(-8px) scale(1.02);
 }
 
 // Smallest device
