@@ -1,5 +1,6 @@
-<div class="container">
-  Title: <%= @request.title %>
+<div class="container-fluid">
+  <h2>Request</h2>
+  Title: <%= @request.title %><br>
   Status: <%= @request.status %><br>
   Region: <%= @request.region %><br>
   Quantity Needed: <%= @request.quantity_needed %><br>
@@ -7,9 +8,26 @@
   Description: <%= @request.description %><br>
   Condition: <%= @request.condition %><br>
   City: <%= @request.city %><br>
-  Category: <%= @request.category %>
-  <%= link_to "Back to Requests", requests_path %>
-  <% if policy(@request).edit? %>
-    <%= link_to "Edit Request", edit_request_path(@request) %>
+  Category: <%= @request.category %><br>
+</div>
+<!--Links-->
+<%= link_to "Back to Requests", requests_path %><br>
+<%= link_to "View Offers", request_offers_path(@request) %><br>
+<% if policy(@request).edit? %>
+  <%= link_to "Edit Request", edit_request_path(@request) %>
+<% end %>
+<% if policy(Offer.new(request: @request)).new? %>
+  <%= link_to "Make an Offer", new_request_offer_path(@request) %>
+<% end %><br>
+<!--Offers-->
+<div class="container-fluid">
+  <% @request.offers.each do |offer| %>
+    <h4>Offer from: <%= offer.donor.display_name %></h4>
+    Condition: <%= offer.condition %><br>
+    Can be sent: <%= offer.can_ship_by %><br>
+    Message: <%= offer.message %><br>
+    Quantity Offered: <%= offer.quantity_offered %><br>
+    Status: <%= offer.status %><br>
+    Tracking Number: <%= offer.tracking_number %><br>
   <% end %>
 </div>

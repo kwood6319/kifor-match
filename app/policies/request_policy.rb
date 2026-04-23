@@ -26,7 +26,7 @@ class RequestPolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    user&.charity.present?
   end
 
   def update?

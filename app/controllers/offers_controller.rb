@@ -1,38 +1,21 @@
 class OffersController < ApplicationController
   before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped]
-  before_action :authorize_charity, only: %i[approve reject mark_received]
 
   # TODO: index , list all offers
   def index
-    @offers = Offer.none
-    @viewer_role = nil
-    @donor = nil
-    @charity = nil
-
-    return unless current_user
-
-    if current_user.respond_to?(:role) && current_user.role == "admin"
-      @viewer_role = :admin
-      @offers = Offer.all
-      raise ArgumentError, "No offers available yet" if @offers.blank?
-
-      return
-    end
-
     @donor = Donor.find_by(user_id: current_user.id)
-    if @donor
-      @viewer_role = :donor
-      @offers = Offer.includes(request: :charity).where(donor_id: @donor.id)
-      return
-    end
-
     @charity = Charity.find_by(user_id: current_user.id)
-    return unless @charity
 
-    @viewer_role = :charity
-    @offers = Offer.includes(:donor, request: :charity)
-                   .where(requests: { charity_id: @charity.id })
-                   .references(:requests)
+    @viewer_role = if current_user.respond_to?(:role) && current_user.role == "admin"
+                     :admin
+                   elsif @donor
+                     :donor
+                   elsif @charity
+                     :charity
+                   end
+
+    @offers = policy_scope(Offer).includes(:donor, request: :charity)
+    @offers = @offers.where(request_id: params[:request_id]) if params[:request_id]
   end
 
   # TODO: show , show one offer details
@@ -47,6 +30,7 @@ class OffersController < ApplicationController
     @can_approve = owns_request && submitted_status
     @can_reject = owns_request && submitted_status
     @can_mark_received = owns_request && %w[approved shipped].include?(@offer.status.to_s)
+    authorize @offer
   end
 
   # TODO: new , form for creating new offer
@@ -54,15 +38,17 @@ class OffersController < ApplicationController
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
     @offer = Offer.new(request: @request, donor: @donor)
+    authorize @offer
   end
 
-  # TODO: create , presist new offer (default status = submitted)
+  # TODO: create , persist new offer (default status = submitted)
   def create
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
     @offer = Offer.new(offer_params)
     @offer.request ||= @request
     @offer.donor ||= @donor
+    authorize @offer
     if @offer.save
       redirect_to @offer
     else
@@ -72,13 +58,14 @@ class OffersController < ApplicationController
 
   # TODO: destroy , delete offer
   def destroy
-    @offer = Offer.find(params[:id])
+    authorize @offer
     @offer.destroy
     redirect_to request_offers_path(@offer.request)
   end
 
   # TODO: approve , approve offer (only Charities can approve offers)
   def approve
+    authorize @offer
     @offer.status = "approved"
     @offer.save
     redirect_to request_offers_path(@offer.request)
@@ -86,14 +73,16 @@ class OffersController < ApplicationController
 
   # TODO: reject , reject offer (only Charities can reject offers)
   def reject
+    authorize @offer
     @offer.status = "rejected"
     @offer.save
     redirect_to request_offers_path(@offer.request)
   end
 
-  # TODO: search , search for offers
+  # TODO: search , implement search scope on Offer model when ready
   def search
-    @offers = Offer.search(params[:search])
+    @offers = policy_scope(Offer)
+    authorize Offer
   end
 
   # TODO: update request.quantity_remaining when offer is received
@@ -105,6 +94,7 @@ class OffersController < ApplicationController
 
   # TODO: mark_received, change status to received (charity only)
   def mark_received
+    authorize @offer
     @offer.status = "received"
     @offer.save
     update_received
@@ -113,6 +103,7 @@ class OffersController < ApplicationController
 
   # TODO: mark_as_shipped, change status to shipped (donor only)
   def mark_as_shipped
+    authorize @offer
     @offer.status = "shipped"
     @offer.save
     redirect_to request_offers_path(@offer.request)
@@ -122,21 +113,12 @@ class OffersController < ApplicationController
 
   # TODO: strong params, whitelist params
   def offer_params
-    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :request_id, :donor_id)
+    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by)
   end
-
-  # TODO: authorize only charity for specific actions
 
   def set_offer
     @offer = Offer.find(params[:id])
   end
-
-  def authorize_charity
-    unless current_user.role == "charity" &&
-        @offer.request.charity.user_id == current_user.id
-      redirect_to request_offers_path(@offer.request)
-    end
-  end
 end
 
-# Nice to have : Search funcionality for offers, filter by category, condition, city, region, etc.
+# Nice to have : Search functionality for offers, filter by category, condition, city, region, etc.
