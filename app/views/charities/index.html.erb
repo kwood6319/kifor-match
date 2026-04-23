@@ -2,6 +2,10 @@
   <% @charities.each do |charity| %>
     <div class="card">
       <h4> <%= charity.org_name %> </h3>
+      <p><strong> Email: </strong> <%= charity.user.email%> </p>
+      <p><strong> Region: </strong> <%= charity.region %> </p>
+      <p><strong>Description:</strong> <%= charity.description %></p>
+      <p><strong>Shipping Address:</strong> <%= charity.shipping_address %> </p>
       <%= link_to "Delete", charity_path(charity), data: {turbo_method: :delete, turbo_confirm: "Delete charity?"}%>
       <% unless charity.approved? %>
         <%= button_to "Approve", approve_charity_path(charity), method: :patch, data: { confirm: "Approve charity?" } %>
