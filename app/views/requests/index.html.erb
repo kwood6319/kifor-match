@@ -1,14 +1,26 @@
-<%= link_to "New Request", new_request_path if policy(Request).new? %>
-<% @requests.each do |request| %>
-  <div class="request-card">
-    <div class="request-card-infos">
-      Title: <%= request.title %><br>
-      Status: <%= request.status %><br>
-      City: <%= request.city %><br>
-      Condition: <%= request.condition %><br>
-      Quantity Needed: <%= request.quantity_needed %><br>
-      Quantity Remaining: <%= request.quantity_remaining %><br>
+<div class="container mt-5 mb-3">
+  <h3>Welcome back, <%= current_user.email.gsub(/@.*$/, "").capitalize %>!</h3>
+</div>
+<div class="container">
+  <div class="row gap-2">
+    <div class="request-card col-sm-12 col-md-9 col-lg-3">
+      <div class="request-card-infos">
+        Make a new request here!
+      </div>
+      <%= link_to "New Request", new_request_path, class: "btn btn-secondary" if policy(Request).new? %>
     </div>
-    <%= link_to "View Request", request_path(request) %>
+    <% @requests.each do |request| %>
+      <div class="request-card col-sm-12 col-md-9 col-lg-3">
+        <div class="request-card-infos">
+          Title: <%= request.title %><br>
+          Status: <%= request.status %><br>
+          City: <%= request.city %><br>
+          Condition: <%= request.condition %><br>
+          Quantity Needed: <%= request.quantity_needed %><br>
+          Quantity Remaining: <%= request.quantity_remaining %><br>
+        </div>
+        <%= link_to "View Request", request_path(request), class: "btn btn-secondary" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>
