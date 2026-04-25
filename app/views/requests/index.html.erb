@@ -25,11 +25,14 @@
           <br>
           <span>
             <i class="fa-solid fa-location-dot mb-2"></i>
+            <strong>City: </strong>
             <%= request.city %>
           </span>
           <br>
           <span>
-            Condition: <%= request.condition %>
+            <i class="fa-solid fa-box-open"></i>
+            <strong>Condition: </strong>
+            <%= request.condition %>
           </span>
         </div>
         <%= link_to "View Request", request_path(request), class: "btn btn-secondary" %>
