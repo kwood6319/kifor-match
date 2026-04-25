@@ -1,7 +1,7 @@
 <div class="container mt-5 mb-4">
   <h3>Welcome back, <%= current_user.email.gsub(/@.*$/, "").capitalize %>!</h3>
 </div>
-<div class="container d-flex justify-content-center">
+<div class="container mb-5">
   <div class="row justify-content-center gap-3">
     <div class="request-card card col-sm-12 col-md-9 col-lg-3">
       <div class="request-card-infos">
@@ -13,12 +13,21 @@
     <% @requests.each do |request| %>
       <div class="request-card card col-sm-12 col-md-9 col-lg-3">
         <div class="request-card-infos">
-          Title: <%= request.title %><br>
-          Status: <%= request.status %><br>
-          City: <%= request.city %><br>
+          <div class="dflex">
+            <h4 class=""><strong><%= request.title %></strong></h4>
+            <span class="badge text-bg-primary">
+              Needed: <%= request.quantity_needed %>
+            </span>
+            <span class="badge text-bg-info">
+              Remaining: <%= request.quantity_remaining %>
+            </span>
+          </div>
+          <p>
+            <i class="fa-solid fa-location-dot"></i>
+            <%= request.city %>
+          </p>
           Condition: <%= request.condition %><br>
-          Quantity Needed: <%= request.quantity_needed %><br>
-          Quantity Remaining: <%= request.quantity_remaining %><br>
+          Status: <%= request.status %><br>
         </div>
         <%= link_to "View Request", request_path(request), class: "btn btn-secondary" %>
       </div>
