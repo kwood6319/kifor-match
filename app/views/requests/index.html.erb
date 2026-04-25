@@ -1,9 +1,9 @@
 <div class="container mt-5 mb-4">
   <h3>Welcome back, <%= current_user.email.gsub(/@.*$/, "").capitalize %>!</h3>
 </div>
-<div class="container">
-  <div class="row gap-3">
-    <div class="request-card col-sm-12 col-md-9 col-lg-3">
+<div class="container d-flex justify-content-center">
+  <div class="row justify-content-center gap-3">
+    <div class="request-card card col-sm-12 col-md-9 col-lg-3">
       <div class="request-card-infos">
         <i class="fa-solid fa-plus"></i>
         <span>Make a new request here!</span>
@@ -11,7 +11,7 @@
       <%= link_to "New Request", new_request_path, class: "btn btn-secondary" if policy(Request).new? %>
     </div>
     <% @requests.each do |request| %>
-      <div class="request-card col-sm-12 col-md-9 col-lg-3">
+      <div class="request-card card col-sm-12 col-md-9 col-lg-3">
         <div class="request-card-infos">
           Title: <%= request.title %><br>
           Status: <%= request.status %><br>
