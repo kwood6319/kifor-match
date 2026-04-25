@@ -13,21 +13,24 @@
     <% @requests.each do |request| %>
       <div class="request-card card col-sm-12 col-md-9 col-lg-3">
         <div class="request-card-infos">
-          <div class="dflex">
-            <h4 class=""><strong><%= request.title %></strong></h4>
-            <span class="badge text-bg-primary">
-              Needed: <%= request.quantity_needed %>
-            </span>
-            <span class="badge text-bg-info">
-              Remaining: <%= request.quantity_remaining %>
-            </span>
-          </div>
-          <p>
-            <i class="fa-solid fa-location-dot"></i>
+          <h4><strong><%= request.title %></strong></h4>
+          <span class="badge text-bg-danger text-white mb-2"><%= request.status.capitalize %></span>
+          <br>
+          <span class="badge text-bg-primary text-white mb-2">
+            Needed: <%= request.quantity_needed %>
+          </span>
+          <span class="badge text-bg-info mb-2">
+            Remaining: <%= request.quantity_remaining %>
+          </span>
+          <br>
+          <span>
+            <i class="fa-solid fa-location-dot mb-2"></i>
             <%= request.city %>
-          </p>
-          Condition: <%= request.condition %><br>
-          Status: <%= request.status %><br>
+          </span>
+          <br>
+          <span>
+            Condition: <%= request.condition %>
+          </span>
         </div>
         <%= link_to "View Request", request_path(request), class: "btn btn-secondary" %>
       </div>
