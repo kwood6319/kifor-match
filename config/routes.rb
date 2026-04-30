@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :donors, only: [:index] do
+  resources :donors, only: [:index, :destroy] do
     member do
       patch :activate
       patch :deactivate
