@@ -9,16 +9,6 @@
     <div class="col-md-4"><%= f.input :condition, collection: Request::CONDITIONS.map { |c| [c.humanize, c] }, prompt: "Select Condition" %></div>
     <div class="col-md-4"><%= f.input :category, collection: Request::CATEGORIES.map { |c| [c.humanize, c] }, prompt: "Select Category" %></div>
   </div>
-  <div class="row" data-controller="prefecture-filter" data-prefecture-filter-prefectures-value="<%= Request::REGIONS_AND_PREFECTURES.to_json %>">
-    <div class="col-md-6">
-      <%= f.input :region, collection: Request::REGIONS, prompt: "Select Your Region",
-                  input_html: { data: { prefecture_filter_target: "region", action: "change->prefecture-filter#filter" } } %>
-    </div>
-    <div class="col-md-6">
-      <%= f.input :prefecture, collection: Request::PREFECTURES, prompt: "Select Your Prefecture",
-                  input_html: { data: { prefecture_filter_target: "prefecture" } } %>
-    </div>
-  </div>
   <div class="row">
     <div class="col-12"><%= f.input :description, placeholder: "Please describe the item" %></div>
   </div>
