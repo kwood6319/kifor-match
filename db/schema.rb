@@ -15,6 +15,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_30_054607) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "charities", force: :cascade do |t|
+    t.boolean "approved", default: false
     t.string "city"
     t.datetime "created_at", null: false
     t.text "description"
@@ -53,20 +54,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_30_054607) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.string "category", null: false
+    t.string "category"
     t.bigint "charity_id", null: false
     t.string "city"
-    t.string "condition", null: false
+    t.string "condition"
     t.datetime "created_at", null: false
     t.text "description"
-    t.integer "quantity_needed", null: false
-    t.integer "quantity_remaining", null: false
-    t.string "region", null: false
+    t.integer "quantity_needed"
+    t.integer "quantity_remaining"
+    t.string "region"
     t.string "status", default: "inactive", null: false
-    t.string "title", null: false
-    t.string "units", null: false
+    t.string "title"
+    t.string "units"
     t.datetime "updated_at", null: false
-    t.string "urgency", null: false
+    t.string "urgency"
     t.index ["charity_id"], name: "index_requests_on_charity_id"
   end
 

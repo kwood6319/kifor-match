@@ -40,14 +40,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :charities, only: [:index] do
+  resources :charities, only: [:index, :destroy] do
     member do
+      patch :approve
       patch :activate
       patch :deactivate
     end
   end
 
-  resources :donors, only: [:index] do
+  resources :donors, only: [:index, :destroy] do
     member do
       patch :activate
       patch :deactivate

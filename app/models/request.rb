@@ -46,14 +46,14 @@ class Request < ApplicationRecord
 
   REGIONS_AND_CITIES = {
     "Hokkaido" => %w[Sapporo Hakodate Asahikawa Kushiro Obihiro],
-    "Tohoku"   => %w[Sendai Morioka Akita Yamagata Fukushima Aomori],
-    "Kanto"    => %w[Tokyo Yokohama Kawasaki Saitama Chiba Utsunomiya Mito Maebashi],
-    "Chubu"    => %w[Nagoya Shizuoka Niigata Kanazawa Hamamatsu Toyama Nagano Gifu Fukui],
-    "Kansai"   => %w[Osaka Kyoto Kobe Nara Otsu Wakayama Himeji],
-    "Chugoku"  => %w[Hiroshima Okayama Yamaguchi Matsue Tottori],
-    "Shikoku"  => %w[Matsuyama Takamatsu Kochi Tokushima],
-    "Kyushu"   => %w[Fukuoka Kitakyushu Kumamoto Kagoshima Nagasaki Oita Miyazaki Saga],
-    "Okinawa"  => %w[Naha Okinawa Uruma]
+    "Tohoku" => %w[Sendai Morioka Akita Yamagata Fukushima Aomori],
+    "Kanto" => %w[Tokyo Yokohama Kawasaki Saitama Chiba Utsunomiya Mito Maebashi],
+    "Chubu" => %w[Nagoya Shizuoka Niigata Kanazawa Hamamatsu Toyama Nagano Gifu Fukui],
+    "Kansai" => %w[Osaka Kyoto Kobe Nara Otsu Wakayama Himeji],
+    "Chugoku" => %w[Hiroshima Okayama Yamaguchi Matsue Tottori],
+    "Shikoku" => %w[Matsuyama Takamatsu Kochi Tokushima],
+    "Kyushu" => %w[Fukuoka Kitakyushu Kumamoto Kagoshima Nagasaki Oita Miyazaki Saga],
+    "Okinawa" => %w[Naha Okinawa Uruma]
   }.freeze # Freeze makes this object immutable
 
   REGIONS = REGIONS_AND_CITIES.keys
