@@ -1,37 +1,49 @@
 <% content_for :title, "New Offer" %>
-<h1>New Offer</h1>
+<h1 class="mb-4">New Offer</h1>
 
-<div>
-  <div><strong>Request:</strong> <%= @request.title %></div>
-  <% if @request.respond_to?(:category) && @request.category.present? %>
-    <div><strong>Category:</strong> <%= @request.category %></div>
-  <% end %>
-  <% if @request.quantity_remaining.present? %>
-    <div><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></div>
-  <% end %>
-  <div><strong>Units:</strong> <%= @request.units %></div>
-  <% if @request.respond_to?(:condition) && @request.condition.present? %>
-    <div><strong>Condition:</strong> <%= @request.condition %></div>
-  <% end %>
-  <div><strong>Urgency:</strong> <%= @request.urgency %></div>
-  <% if @request.respond_to?(:city) && @request.city.present? %>
-    <div><strong>City:</strong> <%= @request.city %></div>
-  <% end %>
-  <div><strong>Region:</strong> <%= @request.region %></div>
+<div class="card mb-4 border-info">
+  <div class="card-header bg-info-subtle">
+    <h2 class="h5 mb-0">Request Details <small class="text-muted">(what the charity needs)</small></h2>
+  </div>
+  <div class="card-body">
+    <div><strong>Request:</strong> <%= @request.title %></div>
+    <% if @request.respond_to?(:category) && @request.category.present? %>
+      <div><strong>Category:</strong> <%= @request.category %></div>
+    <% end %>
+    <% if @request.quantity_remaining.present? %>
+      <div><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></div>
+    <% end %>
+    <div><strong>Units:</strong> <%= @request.units %></div>
+    <% if @request.respond_to?(:condition) && @request.condition.present? %>
+      <div><strong>Condition:</strong> <%= @request.condition %></div>
+    <% end %>
+    <div><strong>Urgency:</strong> <%= @request.urgency %></div>
+    <% if @request.respond_to?(:city) && @request.city.present? %>
+      <div><strong>City:</strong> <%= @request.city %></div>
+    <% end %>
+    <div><strong>Region:</strong> <%= @request.region %></div>
+  </div>
 </div>
 
-<% if @offer.errors.any? %>
-  <div>
-    <div><strong>There were problems creating the offer:</strong></div>
-    <ul>
-      <% @offer.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+<div class="card mb-4 border-success">
+  <div class="card-header bg-success-subtle">
+    <h2 class="h5 mb-0">Your Offer <small class="text-muted">(what you're donating)</small></h2>
   </div>
-<% end %>
+  <div class="card-body">
+    <% if @offer.errors.any? %>
+      <div class="alert alert-danger">
+        <div><strong>There were problems creating the offer:</strong></div>
+        <ul class="mb-0">
+          <% @offer.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-<%= render "form" %>
+    <%= render "form" %>
+  </div>
+</div>
 
 <div>
   <%= link_to "Back to Request", request_path(@request) %>

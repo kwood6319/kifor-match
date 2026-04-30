@@ -1,6 +1,5 @@
 <% content_for :title, "Offer Details" %>
 <h1>Offer Details</h1>
-
 <div>
   <div><strong>Request:</strong> <%= @request.title %></div>
   <% if @request.description.present? %>
@@ -11,7 +10,6 @@
     <div><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></div>
   <% end %>
 </div>
-
 <div>
   <div><strong>Donor:</strong> <%= @donor.display_name %></div>
   <div><strong>Quantity offered:</strong> <%= @offer.quantity_offered %> <%= @request.units %></div>
@@ -26,8 +24,10 @@
     <div><strong>Tracking number:</strong> <%= @offer.tracking_number %></div>
   <% end %>
   <div><strong>Status:</strong> <%= @offer.status %></div>
+  <% if @offer.photo.attached? %>
+    <%= image_tag @offer.photo.variant(resize_to_limit: [400, 400]) %>
+  <% end %>
 </div>
-
 <div>
   <% if @can_approve %>
     <%= button_to "Approve", approve_offer_path(@offer), method: :patch %>
@@ -39,7 +39,6 @@
     <%= button_to "Mark as Received", mark_received_offer_path(@offer), method: :patch %>
   <% end %>
 </div>
-
 <div>
   <%= link_to "Back to Offers", request_offers_path(@request) %>
 </div>

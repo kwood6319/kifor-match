@@ -19,6 +19,11 @@
     <%= form.date_field :can_ship_by %>
   </div>
 
+  <div>
+    <%= form.label :photo, "Photo of item (optional)" %>
+    <%= form.file_field :photo, accept: "image/*" %>
+  </div>
+
   <%= form.hidden_field :request_id, value: @request.id %>
   <%= form.hidden_field :donor_id, value: @donor&.id %>
 
