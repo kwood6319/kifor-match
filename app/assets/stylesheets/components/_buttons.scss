@@ -1,0 +1,32 @@
+.btn-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-neg {
+  text-decoration: none;
+  color: #852221;
+  background-color: white;
+  border: 2px solid #852221;
+  border-radius: 8px;
+  width: 100px;
+}
+
+.btn-neg:hover {
+  color: white;
+  background-color: #852221;
+}
+
+.btn-pos {
+  color: #FE0181;
+  background-color: white;
+  border: 2px solid #FE0181;
+  border-radius: 8px;
+  width: 100px;
+}
+
+.btn-pos:hover {
+  color: white;
+  background-color: #FE0181;
+
+}

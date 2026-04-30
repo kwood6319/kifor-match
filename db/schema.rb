@@ -43,10 +43,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_30_063625) do
   end
 
   create_table "charities", force: :cascade do |t|
+    t.boolean "approved", default: false
     t.string "city"
     t.datetime "created_at", null: false
     t.text "description"
     t.string "org_name", null: false
+    t.string "prefecture"
     t.string "region", null: false
     t.text "shipping_address"
     t.datetime "updated_at", null: false
@@ -55,10 +57,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_30_063625) do
   end
 
   create_table "donors", force: :cascade do |t|
-    t.string "city"
     t.datetime "created_at", null: false
     t.string "display_name", null: false
     t.string "donor_type"
+    t.string "prefecture"
     t.string "region"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
@@ -81,20 +83,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_30_063625) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.string "category", null: false
+    t.string "category"
     t.bigint "charity_id", null: false
     t.string "city"
-    t.string "condition", null: false
+    t.string "condition"
     t.datetime "created_at", null: false
     t.text "description"
-    t.integer "quantity_needed", null: false
-    t.integer "quantity_remaining", null: false
-    t.string "region", null: false
+    t.integer "quantity_needed"
+    t.integer "quantity_remaining"
+    t.string "region"
     t.string "status", default: "inactive", null: false
-    t.string "title", null: false
-    t.string "units", null: false
+    t.string "title"
+    t.string "units"
     t.datetime "updated_at", null: false
-    t.string "urgency", null: false
+    t.string "urgency"
     t.index ["charity_id"], name: "index_requests_on_charity_id"
   end
 

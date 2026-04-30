@@ -9,14 +9,14 @@
     <div class="col-md-4"><%= f.input :condition, collection: Request::CONDITIONS.map { |c| [c.humanize, c] }, prompt: "Select Condition" %></div>
     <div class="col-md-4"><%= f.input :category, collection: Request::CATEGORIES.map { |c| [c.humanize, c] }, prompt: "Select Category" %></div>
   </div>
-  <div class="row" data-controller="city-filter" data-city-filter-cities-value="<%= Request::REGIONS_AND_CITIES.to_json %>">
+  <div class="row" data-controller="prefecture-filter" data-prefecture-filter-prefectures-value="<%= Request::REGIONS_AND_PREFECTURES.to_json %>">
     <div class="col-md-6">
       <%= f.input :region, collection: Request::REGIONS, prompt: "Select Your Region",
-                  input_html: { data: { city_filter_target: "region", action: "change->city-filter#filter" } } %>
+                  input_html: { data: { prefecture_filter_target: "region", action: "change->prefecture-filter#filter" } } %>
     </div>
     <div class="col-md-6">
-      <%= f.input :city, collection: Request::CITIES, prompt: "Select Your City",
-                  input_html: { data: { city_filter_target: "city" } } %>
+      <%= f.input :prefecture, collection: Request::PREFECTURES, prompt: "Select Your Prefecture",
+                  input_html: { data: { prefecture_filter_target: "prefecture" } } %>
     </div>
   </div>
   <div class="row">
