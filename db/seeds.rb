@@ -14,16 +14,19 @@ puts "----------------------------------------------"
 puts "Creating users for charities..."
 
 user1 = User.create!(
+  role: 1,
   email: "tokyo-shelter@demo.org",
   password: "123456"
 )
 
 user2 = User.create!(
+  role: 1,
   email: "osaka-food@demo.org",
   password: "123456"
 )
 
 user3 = User.create!(
+  role: 1,
   email: "kanazawa-community@demo.org",
   password: "123456"
 )
@@ -31,16 +34,19 @@ user3 = User.create!(
 puts "Creating users for donors..."
 
 user4 = User.create!(
+  role: 0,
   email: "sam@donor.com",
   password: "123456"
 )
 
 user5 = User.create!(
+  role: 0,
   email: "hana@donor.com",
   password: "123456"
 )
 
 user6 = User.create!(
+  role: 0,
   email: "alice@abccorp.com",
   password: "123456"
 )
