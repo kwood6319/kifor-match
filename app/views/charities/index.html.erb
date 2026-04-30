@@ -1,0 +1,19 @@
+<div class="grid-tall-cards mt-3">
+  <% @charities.each do |charity| %>
+    <div class="small-card p-3">
+      <h4> <%= charity.org_name %> </h4>
+      <ul>
+        <li> <strong> Email: </strong> <%= charity.user.email%> </li>
+        <li> <strong> Region: </strong> <%= charity.region %> </li>
+        <li> <strong>Description:</strong> <%= charity.description.truncate(95) %> </li>
+        <li> <strong>Shipping Address:</strong> <%= charity.shipping_address %> </li>
+      </ul>
+      <div class="btn-section pt-2">
+        <%= link_to "Delete", charity_path(charity), class: "btn btn-neg", data: {turbo_method: :delete, turbo_confirm: "Delete charity?"}%>
+        <% unless charity.approved? %>
+          <%= button_to "Approve", approve_charity_path(charity), class: "btn btn-pos", method: :patch, data: { confirm: "Approve charity?" } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
