@@ -44,26 +44,26 @@ class Request < ApplicationRecord
     urgent
   ]
 
-  REGIONS_AND_CITIES = {
-    "Hokkaido" => %w[Sapporo Hakodate Asahikawa Kushiro Obihiro],
-    "Tohoku"   => %w[Sendai Morioka Akita Yamagata Fukushima Aomori],
-    "Kanto"    => %w[Tokyo Yokohama Kawasaki Saitama Chiba Utsunomiya Mito Maebashi],
-    "Chubu"    => %w[Nagoya Shizuoka Niigata Kanazawa Hamamatsu Toyama Nagano Gifu Fukui],
-    "Kansai"   => %w[Osaka Kyoto Kobe Nara Otsu Wakayama Himeji],
-    "Chugoku"  => %w[Hiroshima Okayama Yamaguchi Matsue Tottori],
-    "Shikoku"  => %w[Matsuyama Takamatsu Kochi Tokushima],
-    "Kyushu"   => %w[Fukuoka Kitakyushu Kumamoto Kagoshima Nagasaki Oita Miyazaki Saga],
-    "Okinawa"  => %w[Naha Okinawa Uruma]
+  REGIONS_AND_PREFECTURES = {
+    "Hokkaido" => %w[Hokkaido],
+    "Tohoku"   => %w[Aomori Iwate Miyagi Akita Yamagata Fukushima],
+    "Kanto"    => %w[Ibaraki Tochigi Gunma Saitama Chiba Tokyo Kanagawa],
+    "Chubu"    => %w[Niigata Toyama Ishikawa Fukui Yamanashi Nagano Gifu Shizuoka Aichi],
+    "Kansai"   => %w[Mie Shiga Kyoto Osaka Hyogo Nara Wakayama],
+    "Chugoku"  => %w[Tottori Shimane Okayama Hiroshima Yamaguchi],
+    "Shikoku"  => %w[Tokushima Kagawa Ehime Kochi],
+    "Kyushu"   => %w[Fukuoka Saga Nagasaki Kumamoto Oita Miyazaki Kagoshima],
+    "Okinawa"  => %w[Okinawa]
   }.freeze # Freeze makes this object immutable
 
-  REGIONS = REGIONS_AND_CITIES.keys
-  CITIES = REGIONS_AND_CITIES.values.flatten
+  REGIONS = REGIONS_AND_PREFECTURES.keys
+  PREFECTURES = REGIONS_AND_PREFECTURES.values.flatten
 
   after_initialize :set_default_status, if: :new_record?
   # Setting qty remaining = qty needed for now
   before_validation :sync_quantity_remaining, on: :create
 
-  validates :title, :category, :description, :units, :condition, :region, :city, :urgency, presence: true
+  validates :title, :category, :description, :units, :condition, :region, :prefecture, :urgency, presence: true
   validates :status, inclusion: { in: STATUSES }
   def set_default_status
     self.status ||= "inactive"
