@@ -1,11 +1,14 @@
 .request-card {
   overflow: hidden;
-  height: 230px;
+  height: 16rem;
+  width: 24rem;
   background: white;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   display: flex;
-  align-items: center;
-  margin: 20px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  padding: 1rem;
 }
 
 .request-card img {
@@ -29,5 +32,4 @@
 }
 
 .request-card .request-card-infos {
-  padding: 16px;
 }

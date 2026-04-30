@@ -1,14 +1,42 @@
-<%= link_to "New Request", new_request_path if policy(Request).new? %>
-<% @requests.each do |request| %>
-  <div class="request-card">
-    <div class="request-card-infos">
-      Title: <%= request.title %><br>
-      Status: <%= request.status %><br>
-      Prefecture: <%= request.prefecture %><br>
-      Condition: <%= request.condition %><br>
-      Quantity Needed: <%= request.quantity_needed %><br>
-      Quantity Remaining: <%= request.quantity_remaining %><br>
+<div class="container mt-5 mb-4">
+  <h3>Welcome back, <%= current_user.email.gsub(/@.*$/, "").capitalize %>!</h3>
+</div>
+<div class="container mb-5">
+  <div class="row justify-content-center gap-3">
+    <div class="request-card card col-sm-12 col-md-9 col-lg-3">
+      <div class="request-card-infos">
+        <i class="fa-solid fa-plus"></i>
+        <span>Make a new request here!</span>
+      </div>
+      <%= link_to "New Request", new_request_path, class: "btn btn-secondary" if policy(Request).new? %>
     </div>
-    <%= link_to "View Request", request_path(request) %>
+    <% @requests.each do |request| %>
+      <div class="request-card card col-sm-12 col-md-9 col-lg-3">
+        <div class="request-card-infos">
+          <h4><strong><%= request.title %></strong></h4>
+          <span class="badge text-bg-danger text-white mb-2"><%= request.status.capitalize %></span>
+          <br>
+          <span class="badge text-bg-primary text-white mb-2">
+            Needed: <%= request.quantity_needed %>
+          </span>
+          <span class="badge text-bg-info mb-2">
+            Remaining: <%= request.quantity_remaining %>
+          </span>
+          <br>
+          <span>
+            <i class="fa-solid fa-location-dot mb-2"></i>
+            <strong>City: </strong>
+            <%= request.city %>
+          </span>
+          <br>
+          <span>
+            <i class="fa-solid fa-box-open"></i>
+            <strong>Condition: </strong>
+            <%= request.condition %>
+          </span>
+        </div>
+        <%= link_to "View Request", request_path(request), class: "btn btn-secondary" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>
