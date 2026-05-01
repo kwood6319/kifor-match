@@ -51,6 +51,12 @@ user6 = User.create!(
   password: "123456"
 )
 
+user7 = User.create!(
+  role: 2,
+  email: "francis@admin.com",
+  password: "123456"
+)
+
 puts "#{User.count} users created!"
 
 puts "----------------------------------------------"
