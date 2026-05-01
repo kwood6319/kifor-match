@@ -13,6 +13,20 @@ class ApplicationController < ActionController::Base
   #   redirect_to(root_path)
   # end
 
+  # app/controllers/application_controller.rb
+  def after_sign_in_path_for(resource)
+    case resource.role
+    when 'admin'
+      admins_dashboard_path
+    when 'charity'
+      charities_dashboard_path
+    when 'donor'
+      donors_dashboard_path
+    else
+      root_path
+    end
+  end
+
   private
 
   def skip_pundit?
