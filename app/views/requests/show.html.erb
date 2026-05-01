@@ -1,14 +1,14 @@
 <div class="container-fluid">
   <h2>Request</h2>
   Title: <%= @request.title %><br>
-  Status: <%= @request.status %><br>
-  Region: <%= @request.region %><br>
+  Category: <%= @request.category %><br>
   Quantity Needed: <%= @request.quantity_needed %><br>
   Quantity Remaining: <%= @request.quantity_remaining %><br>
-  Description: <%= @request.description %><br>
   Condition: <%= @request.condition %><br>
-  Prefecture: <%= @request.prefecture %><br>
-  Category: <%= @request.category %><br>
+  Description: <%= @request.description %><br>
+  Region: <%= @request.charity.region %><br>
+  Prefecture: <%= @request.charity.prefecture %><br>
+  Status: <%= @request.status %><br>
 </div>
 <!--Links-->
 <%= link_to "Back to Requests", requests_path %><br>
