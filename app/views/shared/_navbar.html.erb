@@ -15,6 +15,13 @@
           <li class="nav-item active">
             <%= link_to "Requests", requests_path, class: "nav-link" %>
           </li>
+          <li class="nav-item active">
+            <% if user_signed_in? %>
+              <%= link_to "Dashboard", dynamic_dashboard_path(current_user), class: "nav-link" %>
+            <% else %>
+              <%= link_to "Login", new_user_session_path %>
+            <% end %>
+          </li>
           <% if current_user.admin? %>
             <li>
               <%= link_to "Charities", charities_path, class: "nav-link" %>
