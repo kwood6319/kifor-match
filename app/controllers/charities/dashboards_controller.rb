@@ -4,6 +4,7 @@ module Charities
 
     def show
       authorize :charity_dashboard, :show?
+      # TODO @requests =
     end
   end
 end

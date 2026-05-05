@@ -1,1 +1,35 @@
-<h1>This is the Donor Dashboard</h1>
+<div class="container mt-5 mb-4">
+  <h3>Welcome back, <%= current_user.email.gsub(/@.*$/, "").capitalize %>!</h3>
+</div>
+<div class="container mb-5">
+  <div class="row justify-content-center gap-3">
+    <% Request.all.each do |request| %>
+      <div class="request-card card col-sm-12 col-md-9 col-lg-3">
+        <div class="request-card-infos">
+          <h4><strong><%= request.title %></strong></h4>
+          <span class="badge text-bg-danger text-white mb-2"><%= request.status.capitalize %></span>
+          <br>
+          <span class="badge text-bg-primary text-white mb-2">
+            Needed: <%= request.quantity_needed %>
+          </span>
+          <span class="badge text-bg-info mb-2">
+            Remaining: <%= request.quantity_remaining %>
+          </span>
+          <br>
+          <span>
+            <i class="fa-solid fa-location-dot mb-2"></i>
+            <strong>Prefecture: </strong>
+            <%= request.charity.prefecture %>
+          </span>
+          <br>
+          <span>
+            <i class="fa-solid fa-box-open"></i>
+            <strong>Condition: </strong>
+            <%= request.condition %>
+          </span>
+        </div>
+        <%= link_to "View Request", request_path(request), class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
