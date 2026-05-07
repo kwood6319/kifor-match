@@ -9,6 +9,10 @@ class DonorPolicy < ApplicationPolicy
     admin?
   end
 
+  def approve?
+    admin?
+  end
+
   def destroy?
     admin?
   end
