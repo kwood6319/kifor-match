@@ -63,7 +63,7 @@ class Request < ApplicationRecord
   # Setting qty remaining = qty needed for now
   before_validation :sync_quantity_remaining, on: :create
 
-  validates :title, :category, :description, :units, :condition, :region, :prefecture, :urgency, presence: true
+  validates :title, :category, :description, :units, :condition, :urgency, presence: true
   validates :status, inclusion: { in: STATUSES }
   def set_default_status
     self.status ||= "inactive"

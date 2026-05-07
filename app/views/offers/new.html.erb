@@ -18,10 +18,10 @@
       <div><strong>Condition:</strong> <%= @request.condition %></div>
     <% end %>
     <div><strong>Urgency:</strong> <%= @request.urgency %></div>
-    <% if @request.respond_to?(:city) && @request.city.present? %>
-      <div><strong>City:</strong> <%= @request.city %></div>
+    <% if @request.charity.prefecture.present? %>
+      <div><strong>Prefecture:</strong> <%= @request.charity.prefecture %></div>
     <% end %>
-    <div><strong>Region:</strong> <%= @request.region %></div>
+    <div><strong>Region:</strong> <%= @request.charity.region %></div>
   </div>
 </div>
 
