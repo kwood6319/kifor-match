@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
   resources :donors, only: [:index, :destroy] do
     member do
+      patch :approve
       patch :activate
       patch :deactivate
     end
