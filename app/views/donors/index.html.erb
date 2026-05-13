@@ -1,25 +1,24 @@
 <h1>Donors</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Region</th>
-      <th>Prefecture</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @donors.each do |donor| %>
-      <tr>
-        <td><%= donor.display_name %></td>
-        <td><%= donor.donor_type %></td>
-        <td><%= donor.region %></td>
-        <td><%= donor.prefecture %></td>
-        <td>
-          <%= button_to "Delete", donor_path(donor), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="grid-tall-cards mt-3">
+  <% @donors.each do |donor| %>
+    <div class="small-card p-3">
+      <h4>
+        <%= donor.display_name %>
+        <% if donor.approved? %>
+          <i class="fas fa-circle-check" style="color: green;"></i>
+        <% end %>
+      </h4>
+      <ul>
+        <li> <strong> Type: </strong> <%= donor.donor_type %> </li>
+        <li> <strong> Region: </strong> <%= donor.region %> </li>
+        <li> <strong> Prefecture: </strong> <%= donor.prefecture %> </li>
+      </ul>
+      <div class="btn-section pt-2">
+        <%= link_to "Delete", donor_path(donor), class: "btn btn-neg", data: {turbo_method: :delete, turbo_confirm: "Delete donor?"}%>
+        <% unless donor.approved? %>
+          <%= button_to "Approve", approve_donor_path(donor), class: "btn btn-pos", method: :patch, data: { confirm: "Approve donor?" } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
