@@ -1,7 +1,7 @@
 class CharityPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.all
+      scope.all.order(created_at: :desc)
     end
   end
 
