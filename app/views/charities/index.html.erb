@@ -1,7 +1,12 @@
 <div class="grid-tall-cards mt-3">
   <% @charities.each do |charity| %>
     <div class="small-card p-3">
-      <h4> <%= charity.org_name %> </h4>
+      <h4>
+        <%= charity.org_name %>
+        <% if charity.approved? %>
+          <i class="fas fa-circle-check" style="color: green;"></i>
+        <% end %>
+      </h4>
       <ul>
         <li> <strong> Email: </strong> <%= charity.user.email%> </li>
         <li> <strong> Region: </strong> <%= charity.region %> </li>

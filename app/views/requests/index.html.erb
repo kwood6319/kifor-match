@@ -8,8 +8,7 @@
         <i class="fa-solid fa-plus"></i>
         <span>Make a new request here!</span>
       </div>
-      <%= link_to "New Request", new_request_path, class: "btn btn-secondary" if policy(Request).new? %>
-    </div>
+    <% end %>
     <% @requests.each do |request| %>
       <div class="request-card card col-sm-12 col-md-6 col-lg-4">
         <div class="request-card-infos">
