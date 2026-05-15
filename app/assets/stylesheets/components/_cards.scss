@@ -30,6 +30,12 @@
   height: 100%;
 }
 
+.offer-card {
+  p {
+    padding-bottom: 0px;
+  }
+}
+
 // Smallest device
 @media (min-width: 100px) and (max-width: 575px) {
   .grid-tall-cards {
