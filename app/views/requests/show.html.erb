@@ -1,4 +1,9 @@
 <div class="container mt-5 mb-4">
+  <div class="mb-3">
+    <%= link_to requests_path, class: "btn btn-outline-secondary" do %>
+      ← Back to Requests
+    <% end %>
+  </div>
   <div class="row align-items-stretch g-4">
     <div class="col-lg-5">
       <div class="tall-card p-3 h-100">
@@ -26,6 +31,9 @@
         <div>
           <p> <%= @request.status %> </p>
         </div>
+        <% if policy(@request).edit? %>
+          <%= link_to "Edit Request", edit_request_path(@request), class: "btn btn-outline-secondary" %>
+        <% end %>
       </div>
     </div>
     <div class="col-lg-6 mx-3">
