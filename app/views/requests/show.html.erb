@@ -1,14 +1,48 @@
-<div class="container-fluid">
-  <h2>Request</h2>
-  Title: <%= @request.title %><br>
-  Category: <%= @request.category %><br>
-  Quantity Needed: <%= @request.quantity_needed %><br>
-  Quantity Remaining: <%= @request.quantity_remaining %><br>
-  Condition: <%= @request.condition %><br>
-  Description: <%= @request.description %><br>
-  Region: <%= @request.charity.region %><br>
-  Prefecture: <%= @request.charity.prefecture %><br>
-  Status: <%= @request.status %><br>
+<div class="container mt-5 mb-4 ms-3">
+  <div class="row">
+    <div class="tall-card col-5">
+      <div class="row pt-2">
+        <div class="col-7">
+          <h2> <%=@request.title %> </h2>
+        </div>
+        <div class="col-4">
+          <h3> <%= @request.quantity_remaining %> / <%= @request.quantity_needed %> </h3>
+          <%= @request.urgency %>
+        </div>
+      </div>
+      <div>
+        <h4> Region: </h4>
+        <p> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
+      </div>
+      <div>
+        <h4> Condition: </h4>
+        <p> <%= @request.condition %> </p>
+      </div>
+      <div>
+        <h4> Description: </h4>
+        <p> <%= @request.description %> </p>
+      </div>
+      <div>
+        <p> <%= @request.status %> </p>
+      </div>
+    </div>
+    <div class="col-6 mx-3">
+      <% if current_user.charity? %>
+        <h2> Offers </h2>
+        <div class="small-card">
+          <% @offers.each do |offer| %>
+            <h4>Offer from: <%= offer.donor.display_name %></h4>
+            Condition: <%= offer.condition %><br>
+            Can be sent: <%= offer.can_ship_by %><br>
+            Message: <%= offer.message %><br>
+            Quantity Offered: <%= offer.quantity_offered %><br>
+            Status: <%= offer.status %><br>
+            Tracking Number: <%= offer.tracking_number %><br>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
 <!--Links-->
 <%= link_to "Back to Requests", requests_path %><br>
@@ -19,15 +53,3 @@
 <% if policy(Offer.new(request: @request)).new? %>
   <%= link_to "Make an Offer", new_request_offer_path(@request) %>
 <% end %><br>
-<!--Offers-->
-<div class="container-fluid">
-  <% @request.offers.each do |offer| %>
-    <h4>Offer from: <%= offer.donor.display_name %></h4>
-    Condition: <%= offer.condition %><br>
-    Can be sent: <%= offer.can_ship_by %><br>
-    Message: <%= offer.message %><br>
-    Quantity Offered: <%= offer.quantity_offered %><br>
-    Status: <%= offer.status %><br>
-    Tracking Number: <%= offer.tracking_number %><br>
-  <% end %>
-</div>
