@@ -78,17 +78,10 @@
           <% end %>
         <% end %>
       <% else %>
-        This is not your request
+        <% if policy(Offer.new(request: @request)).new? %>
+          <%= link_to "Make an Offer", new_request_offer_path(@request), class: "small-card offer-card p-2 mb-3" %>
+        <% end %>
       <% end %>
     </div>
   </div>
 </div>
-<!--Links-->
-<%= link_to "Back to Requests", requests_path %><br>
-<%= link_to "View Offers", request_offers_path(@request) %><br>
-<% if policy(@request).edit? %>
-  <%= link_to "Edit Request", edit_request_path(@request) %>
-<% end %>
-<% if policy(Offer.new(request: @request)).new? %>
-  <%= link_to "Make an Offer", new_request_offer_path(@request) %>
-<% end %><br>
