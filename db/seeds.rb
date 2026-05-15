@@ -313,8 +313,7 @@ offer1b = Offer.create!(
   tracking_number: ""
 )
 
-
-puts "Created offer for #{offer1b.quantity_offered} for #{offer1b.request.title} by #{offer1b.donor.display_name}"1
+puts "Created offer for #{offer1b.quantity_offered} for #{offer1b.request.title} by #{offer1b.donor.display_name}"
 
 offer2 = Offer.create!(
   can_ship_by: Date.today,
