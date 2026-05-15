@@ -289,7 +289,7 @@ puts "----------------------------------------------"
 
 puts "Creating offers..."
 
-offer1 = Offer.create!(
+offer1a = Offer.create!(
   can_ship_by: Date.today + 7.days,
   condition: "Used - Good",
   donor: donor1,
@@ -300,7 +300,21 @@ offer1 = Offer.create!(
   tracking_number: ""
 )
 
-puts "Created offer for #{offer1.quantity_offered} for #{offer1.request.title} by #{offer1.donor.display_name}"
+puts "Created offer for #{offer1a.quantity_offered} for #{offer1a.request.title} by #{offer1a.donor.display_name}"
+
+offer1b = Offer.create!(
+  can_ship_by: Date.today + 7.days,
+  condition: "Used - New",
+  donor: donor2,
+  message: "Can ship next week",
+  quantity_offered: 1,
+  request: request1,
+  status: "submitted",
+  tracking_number: ""
+)
+
+
+puts "Created offer for #{offer1b.quantity_offered} for #{offer1b.request.title} by #{offer1b.donor.display_name}"1
 
 offer2 = Offer.create!(
   can_ship_by: Date.today,
