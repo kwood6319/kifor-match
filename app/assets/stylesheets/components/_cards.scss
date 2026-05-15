@@ -31,8 +31,37 @@
 }
 
 .offer-card {
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+
   p {
     padding-bottom: 0px;
+  }
+}
+
+.approved-offer {
+  border: 3px solid #4CAF50;
+  background-color: #f4fff4;
+  box-shadow: 0 0 12px rgba(76, 175, 80, 0.25);
+  transform: scale(1.01);
+
+  h3 {
+    color: #2e7d32;
+    font-weight: 700;
+  }
+}
+
+.rejected-offer {
+  opacity: 0.55;
+  background-color: #f2f2f2;
+  filter: grayscale(20%);
+
+  h3, p {
+    color: #777;
+  }
+
+  .btn {
+    opacity: 0.6;
   }
 }
 
