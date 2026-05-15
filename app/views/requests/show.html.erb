@@ -1,32 +1,34 @@
-<div class="container mt-5 mb-4 ms-3">
-  <div class="row">
-    <div class="tall-card col-5">
-      <div class="row pt-2">
-        <div class="col-7">
-          <h2> <%=@request.title %> </h2>
+<div class="container mt-5 mb-4">
+  <div class="row align-items-stretch g-4">
+    <div class="col-lg-5">
+      <div class="tall-card p-3 h-100">
+        <div class="row pt-2">
+          <div class="col-lg-7">
+            <h2> <%=@request.title %> </h2>
+          </div>
+          <div class="col-lg-4">
+            <h3> <%= @request.quantity_remaining - @request.quantity_needed %> / <%= @request.quantity_needed %> </h3>
+            <%= @request.urgency %>
+          </div>
         </div>
-        <div class="col-4">
-          <h3> <%= @request.quantity_remaining %> / <%= @request.quantity_needed %> </h3>
-          <%= @request.urgency %>
+        <div>
+          <h4> Region: </h4>
+          <p> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
         </div>
-      </div>
-      <div>
-        <h4> Region: </h4>
-        <p> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
-      </div>
-      <div>
-        <h4> Condition: </h4>
-        <p> <%= @request.condition %> </p>
-      </div>
-      <div>
-        <h4> Description: </h4>
-        <p> <%= @request.description %> </p>
-      </div>
-      <div>
-        <p> <%= @request.status %> </p>
+        <div>
+          <h4> Condition: </h4>
+          <p> <%= @request.condition %> </p>
+        </div>
+        <div>
+          <h4> Description: </h4>
+          <p> <%= @request.description %> </p>
+        </div>
+        <div>
+          <p> <%= @request.status %> </p>
+        </div>
       </div>
     </div>
-    <div class="col-6 mx-3">
+    <div class="col-lg-6 mx-3">
       <% if current_user.charity? && current_user.charity == @request.charity %>
         <h2> Offers </h2>
         <% if @offers.empty? %>
@@ -37,10 +39,10 @@
               <%= 'approved-offer' if offer.status == 'approved' %>
               <%= 'rejected-offer' if offer.status == 'rejected' %>">
               <div class="row">
-                <div class="col-9">
+                <div class="col-lg-9">
                   <h3> <%= offer.donor.display_name %> </h3>
                 </div>
-                <div class="col-3">
+                <div class="col-lg-3">
                   <h3> <%= offer.quantity_offered %> </h3>
                 </div>
                 <p> <%= offer.donor.region if offer.donor.region %> </p>
@@ -52,12 +54,12 @@
               </div>
               <% if offer.status == "submitted" %>
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col-lg-6">
                     <% if policy(offer).approve? %>
                       <%= button_to "Approve Offer", approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
                     <% end %>
                   </div>
-                  <div class="col-6">
+                  <div class="col-lg-6">
                     <% if policy(offer).reject? %>
                       <%=button_to "Reject Offer", reject_offer_path(offer), method: :patch, class: "btn btn-danger" %>
                     <% end %>
