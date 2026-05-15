@@ -48,6 +48,18 @@
                 <p> Status: <%= offer.status %> </p>
                 <p> Tracking Number: <%= offer.tracking_number %> </p>
               </div>
+              <div class="row">
+                <div class="col-6">
+                  <% if policy(offer).approve? %>
+                    <%= button_to "Approve Offer", approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
+                  <% end %>
+                </div>
+                <div class="col-6">
+                  <% if policy(offer).reject? %>
+                    <%=button_to "Reject Offer", reject_offer_path(offer), method: :patch, class: "btn btn-danger" %>
+                  <% end %>
+                </div>
+              </div>
             </div>
           <% end %>
         <% end %>
