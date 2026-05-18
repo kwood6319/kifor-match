@@ -57,6 +57,30 @@ user7 = User.create!(
   password: "123456"
 )
 
+user8 = User.create!(
+  role: 0,
+  email: "lewagon@donor.com",
+  password: "123456"
+)
+
+user9 = User.create!(
+  role: 1,
+  email: "youmewe@charity.com",
+  password: "123456"
+)
+
+user10 = User.create!(
+  role: 1,
+  email: "refugeechildren@charity.com",
+  password: "123456"
+)
+
+user11 = User.create!(
+  role: 0,
+  email: "childrens@donor.com",
+  password: "123456"
+)
+
 puts "#{User.count} users created!"
 
 puts "----------------------------------------------"
@@ -96,6 +120,30 @@ charity3 = Charity.create!(
 
 puts "Charity #{charity3.org_name} created."
 
+charity4 = Charity.create!(
+  user: user9,
+  prefecture: "Tokyo",
+  description: "Looking for laptops",
+  org_name: "YouWeMe",
+  region: "Kanto",
+  shipping_address: "123 Tokyo"
+)
+
+puts "Charity #{charity4.org_name} created."
+
+charity5 = Charity.create!(
+  user: user10,
+  prefecture: "Tokyo",
+  description: "A charity supporting refugee children",
+  org_name: "Refugee Children",
+  region: "Kanto",
+  shipping_address: "456 Tokyo"
+)
+
+puts "Charity #{charity5.org_name} created."
+
+puts "#{Charity.count} charities created!"
+
 puts "----------------------------------------------"
 
 puts "Creating donors..."
@@ -129,6 +177,28 @@ donor3 = Donor.create!(
 )
 
 puts "Donor #{donor3.display_name} created."
+
+donor4 = Donor.create!(
+  user: user8,
+  prefecture: "Tokyo",
+  display_name: "Le Wagon Tokyo",
+  donor_type: "company",
+  region: "Kanto"
+)
+
+puts "Donor #{donor4.display_name} created."
+
+donor5 = Donor.create!(
+  user: user11,
+  prefecture: "Tokyo",
+  display_name: "Toy Donor",
+  donor_type: "individual",
+  region: "Kanto"
+)
+
+puts "Donor #{donor5.display_name} created."
+
+puts "#{Donor.count} donors created!"
 
 puts "----------------------------------------------"
 
