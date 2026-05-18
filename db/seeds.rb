@@ -57,6 +57,30 @@ user7 = User.create!(
   password: "123456"
 )
 
+user8 = User.create!(
+  role: 0,
+  email: "lewagon@donor.com",
+  password: "123456"
+)
+
+user9 = User.create!(
+  role: 1,
+  email: "youmewe@charity.com",
+  password: "123456"
+)
+
+user10 = User.create!(
+  role: 1,
+  email: "refugeechildren@charity.com",
+  password: "123456"
+)
+
+user11 = User.create!(
+  role: 0,
+  email: "childrens@donor.com",
+  password: "123456"
+)
+
 puts "#{User.count} users created!"
 
 puts "----------------------------------------------"
@@ -96,6 +120,30 @@ charity3 = Charity.create!(
 
 puts "Charity #{charity3.org_name} created."
 
+charity4 = Charity.create!(
+  user: user9,
+  prefecture: "Tokyo",
+  description: "Looking for laptops",
+  org_name: "YouWeMe",
+  region: "Kanto",
+  shipping_address: "123 Tokyo"
+)
+
+puts "Charity #{charity4.org_name} created."
+
+charity5 = Charity.create!(
+  user: user10,
+  prefecture: "Tokyo",
+  description: "A charity supporting refugee children",
+  org_name: "Refugee Children",
+  region: "Kanto",
+  shipping_address: "456 Tokyo"
+)
+
+puts "Charity #{charity5.org_name} created."
+
+puts "#{Charity.count} charities created!"
+
 puts "----------------------------------------------"
 
 puts "Creating donors..."
@@ -129,6 +177,28 @@ donor3 = Donor.create!(
 )
 
 puts "Donor #{donor3.display_name} created."
+
+donor4 = Donor.create!(
+  user: user8,
+  prefecture: "Tokyo",
+  display_name: "Le Wagon Tokyo",
+  donor_type: "company",
+  region: "Kanto"
+)
+
+puts "Donor #{donor4.display_name} created."
+
+donor5 = Donor.create!(
+  user: user11,
+  prefecture: "Tokyo",
+  display_name: "Toy Donor",
+  donor_type: "individual",
+  region: "Kanto"
+)
+
+puts "Donor #{donor5.display_name} created."
+
+puts "#{Donor.count} donors created!"
 
 puts "----------------------------------------------"
 
@@ -285,11 +355,26 @@ request10 = Request.create!(
 
 puts "Created request for #{request10.quantity_needed} #{request10.title}."
 
+request11 = Request.create!(
+  category: "electronics",
+  charity: charity4,
+  condition: "Used - Good",
+  description: "Laptops needed",
+  quantity_needed: 2,
+  quantity_remaining: 2,
+  status: "submitted",
+  title: "Laptops",
+  units: "units",
+  urgency: "high"
+)
+
+puts "Created request for #{request11.quantity_needed} #{request11.title}."
+
 puts "----------------------------------------------"
 
 puts "Creating offers..."
 
-offer1 = Offer.create!(
+offer1a = Offer.create!(
   can_ship_by: Date.today + 7.days,
   condition: "Used - Good",
   donor: donor1,
@@ -300,7 +385,20 @@ offer1 = Offer.create!(
   tracking_number: ""
 )
 
-puts "Created offer for #{offer1.quantity_offered} for #{offer1.request.title} by #{offer1.donor.display_name}"
+puts "Created offer for #{offer1a.quantity_offered} for #{offer1a.request.title} by #{offer1a.donor.display_name}"
+
+offer1b = Offer.create!(
+  can_ship_by: Date.today + 7.days,
+  condition: "Used - New",
+  donor: donor2,
+  message: "Can ship next week",
+  quantity_offered: 1,
+  request: request1,
+  status: "submitted",
+  tracking_number: ""
+)
+
+puts "Created offer for #{offer1b.quantity_offered} for #{offer1b.request.title} by #{offer1b.donor.display_name}"
 
 offer2 = Offer.create!(
   can_ship_by: Date.today,
@@ -353,5 +451,18 @@ offer5 = Offer.create!(
 )
 
 puts "Created offer for #{offer5.quantity_offered} for #{offer5.request.title} by #{offer5.donor.display_name}"
+
+offer6 = Offer.create!(
+  can_ship_by: Date.today - 3.days,
+  condition: "Used - Like New",
+  donor: donor4,
+  message: "Laptops like new",
+  quantity_offered: 2,
+  request: request11,
+  status: "accepted",
+  tracking_number: "XXXXXX"
+)
+
+puts "Created offer for #{offer6.quantity_offered} for #{offer6.request.title} by #{offer6.donor.display_name}"
 
 puts "Seed finished!"
