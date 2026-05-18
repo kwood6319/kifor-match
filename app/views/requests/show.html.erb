@@ -1,33 +1,87 @@
-<div class="container-fluid">
-  <h2>Request</h2>
-  Title: <%= @request.title %><br>
-  Category: <%= @request.category %><br>
-  Quantity Needed: <%= @request.quantity_needed %><br>
-  Quantity Remaining: <%= @request.quantity_remaining %><br>
-  Condition: <%= @request.condition %><br>
-  Description: <%= @request.description %><br>
-  Region: <%= @request.charity.region %><br>
-  Prefecture: <%= @request.charity.prefecture %><br>
-  Status: <%= @request.status %><br>
-</div>
-<!--Links-->
-<%= link_to "Back to Requests", requests_path %><br>
-<%= link_to "View Offers", request_offers_path(@request) %><br>
-<% if policy(@request).edit? %>
-  <%= link_to "Edit Request", edit_request_path(@request) %>
-<% end %>
-<% if policy(Offer.new(request: @request)).new? %>
-  <%= link_to "Make an Offer", new_request_offer_path(@request) %>
-<% end %><br>
-<!--Offers-->
-<div class="container-fluid">
-  <% @request.offers.each do |offer| %>
-    <h4>Offer from: <%= offer.donor.display_name %></h4>
-    Condition: <%= offer.condition %><br>
-    Can be sent: <%= offer.can_ship_by %><br>
-    Message: <%= offer.message %><br>
-    Quantity Offered: <%= offer.quantity_offered %><br>
-    Status: <%= offer.status %><br>
-    Tracking Number: <%= offer.tracking_number %><br>
-  <% end %>
+<div class="container mt-5 mb-4">
+  <div class="mb-3">
+    <%= link_to requests_path, class: "btn btn-outline-secondary" do %>
+      ← Back to Requests
+    <% end %>
+  </div>
+  <div class="row align-items-stretch g-4">
+    <div class="col-lg-5">
+      <div class="tall-card p-3 h-100">
+        <div class="row pt-2">
+          <div class="col-lg-7">
+            <h2> <%=@request.title %> </h2>
+          </div>
+          <div class="col-lg-4">
+            <h3> <%= @request.quantity_remaining - @request.quantity_needed %> / <%= @request.quantity_needed %> </h3>
+            <%= @request.urgency %>
+          </div>
+        </div>
+        <div>
+          <h4> Region: </h4>
+          <p> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
+        </div>
+        <div>
+          <h4> Condition: </h4>
+          <p> <%= @request.condition %> </p>
+        </div>
+        <div>
+          <h4> Description: </h4>
+          <p> <%= @request.description %> </p>
+        </div>
+        <div>
+          <p> <%= @request.status %> </p>
+        </div>
+        <% if policy(@request).edit? %>
+          <%= link_to "Edit Request", edit_request_path(@request), class: "btn btn-outline-secondary" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-lg-6 mx-3">
+      <% if current_user.charity? && current_user.charity == @request.charity %>
+        <h2> Offers </h2>
+        <% if @offers.empty? %>
+          No offers yet
+        <% else %>
+          <% @offers.each do |offer| %>
+            <div class="small-card offer-card p-2 mb-3
+              <%= 'approved-offer' if offer.status == 'approved' %>
+              <%= 'rejected-offer' if offer.status == 'rejected' %>">
+              <div class="row">
+                <div class="col-lg-9">
+                  <h3> <%= offer.donor.display_name %> </h3>
+                </div>
+                <div class="col-lg-3">
+                  <h3> <%= offer.quantity_offered %> </h3>
+                </div>
+                <p> <%= offer.donor.region if offer.donor.region %> </p>
+                <p> Condition: <%= offer.condition %> </p>
+                <p> Can be sent: <%= offer.can_ship_by.strftime("%b %e") %> </p>
+                <p> Message: <%= offer.message %> </p>
+                <p> Status: <%= offer.status %> </p>
+                <p> Tracking Number: <%= offer.tracking_number %> </p>
+              </div>
+              <% if offer.status == "submitted" %>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <% if policy(offer).approve? %>
+                      <%= button_to "Approve Offer", approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
+                    <% end %>
+                  </div>
+                  <div class="col-lg-6">
+                    <% if policy(offer).reject? %>
+                      <%=button_to "Reject Offer", reject_offer_path(offer), method: :patch, class: "btn btn-danger" %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <% if policy(Offer.new(request: @request)).new? %>
+          <%= link_to "Make an Offer", new_request_offer_path(@request), class: "small-card offer-card p-2 mb-3" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 </div>
