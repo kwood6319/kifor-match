@@ -355,6 +355,21 @@ request10 = Request.create!(
 
 puts "Created request for #{request10.quantity_needed} #{request10.title}."
 
+request11 = Request.create!(
+  category: "electronics",
+  charity: charity4,
+  condition: "Used - Good",
+  description: "Laptops needed",
+  quantity_needed: 2,
+  quantity_remaining: 2,
+  status: "submitted",
+  title: "Laptops",
+  units: "units",
+  urgency: "high"
+)
+
+puts "Created request for #{request11.quantity_needed} #{request11.title}."
+
 puts "----------------------------------------------"
 
 puts "Creating offers..."
@@ -436,5 +451,18 @@ offer5 = Offer.create!(
 )
 
 puts "Created offer for #{offer5.quantity_offered} for #{offer5.request.title} by #{offer5.donor.display_name}"
+
+offer6 = Offer.create!(
+  can_ship_by: Date.today - 3.days,
+  condition: "Used - Like New",
+  donor: donor4,
+  message: "Laptops like new",
+  quantity_offered: 2,
+  request: request11,
+  status: "accepted",
+  tracking_number: "XXXXXX"
+)
+
+puts "Created offer for #{offer6.quantity_offered} for #{offer6.request.title} by #{offer6.donor.display_name}"
 
 puts "Seed finished!"
