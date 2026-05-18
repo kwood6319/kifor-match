@@ -25,7 +25,7 @@
   <% end %>
   <div><strong>Status:</strong> <%= @offer.status %></div>
   <% if @offer.photo.attached? %>
-    <%= image_tag @offer.photo.variant(resize_to_limit: [400, 400]) %>
+    <%= cl_image_tag @offer.photo.key, width: 300, crop: :fill %>
   <% end %>
 </div>
 <div>

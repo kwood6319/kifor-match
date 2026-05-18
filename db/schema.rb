@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_30_105253) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_07_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_30_105253) do
   end
 
   create_table "donors", force: :cascade do |t|
+    t.boolean "approved", default: false
     t.datetime "created_at", null: false
     t.string "display_name", null: false
     t.string "donor_type"
@@ -82,18 +83,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_30_105253) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.string "category"
+    t.string "category", null: false
     t.bigint "charity_id", null: false
-    t.string "condition"
+    t.string "condition", null: false
     t.datetime "created_at", null: false
     t.text "description"
-    t.integer "quantity_needed"
-    t.integer "quantity_remaining"
+    t.integer "quantity_needed", null: false
+    t.integer "quantity_remaining", null: false
     t.string "status", default: "inactive", null: false
-    t.string "title"
-    t.string "units"
+    t.string "title", null: false
+    t.string "units", null: false
     t.datetime "updated_at", null: false
-    t.string "urgency"
+    t.string "urgency", null: false
     t.index ["charity_id"], name: "index_requests_on_charity_id"
   end
 

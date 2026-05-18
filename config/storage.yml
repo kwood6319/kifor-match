@@ -5,6 +5,10 @@ test:
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
+  
+cloudinary:
+  service: Cloudinary
+  folder: kifor_match # Optional: organizes your images in a specific folder on Cloudinary
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
