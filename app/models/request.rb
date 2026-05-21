@@ -16,15 +16,15 @@ class Request < ApplicationRecord
   ]
 
   CATEGORIES = %w[
-    Food
-    Stationery
-    Hygiene
-    Clothes
-    Baby
-    Cooking
-    Cleaning
-    Seasonal
-    Other
+    food
+    stationery
+    hygiene
+    clothes
+    baby
+    cooking
+    cleaning
+    seasonal
+    other
   ]
 
   UNITS = %w[
@@ -46,14 +46,14 @@ class Request < ApplicationRecord
 
   REGIONS_AND_PREFECTURES = {
     "Hokkaido" => %w[Hokkaido],
-    "Tohoku"   => %w[Aomori Iwate Miyagi Akita Yamagata Fukushima],
-    "Kanto"    => %w[Ibaraki Tochigi Gunma Saitama Chiba Tokyo Kanagawa],
-    "Chubu"    => %w[Niigata Toyama Ishikawa Fukui Yamanashi Nagano Gifu Shizuoka Aichi],
-    "Kansai"   => %w[Mie Shiga Kyoto Osaka Hyogo Nara Wakayama],
-    "Chugoku"  => %w[Tottori Shimane Okayama Hiroshima Yamaguchi],
-    "Shikoku"  => %w[Tokushima Kagawa Ehime Kochi],
-    "Kyushu"   => %w[Fukuoka Saga Nagasaki Kumamoto Oita Miyazaki Kagoshima],
-    "Okinawa"  => %w[Okinawa]
+    "Tohoku" => %w[Aomori Iwate Miyagi Akita Yamagata Fukushima],
+    "Kanto" => %w[Ibaraki Tochigi Gunma Saitama Chiba Tokyo Kanagawa],
+    "Chubu" => %w[Niigata Toyama Ishikawa Fukui Yamanashi Nagano Gifu Shizuoka Aichi],
+    "Kansai" => %w[Mie Shiga Kyoto Osaka Hyogo Nara Wakayama],
+    "Chugoku" => %w[Tottori Shimane Okayama Hiroshima Yamaguchi],
+    "Shikoku" => %w[Tokushima Kagawa Ehime Kochi],
+    "Kyushu" => %w[Fukuoka Saga Nagasaki Kumamoto Oita Miyazaki Kagoshima],
+    "Okinawa" => %w[Okinawa]
   }.freeze # Freeze makes this object immutable
 
   REGIONS = REGIONS_AND_PREFECTURES.keys

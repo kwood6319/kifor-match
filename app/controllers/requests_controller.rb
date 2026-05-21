@@ -17,9 +17,7 @@ class RequestsController < ApplicationController
     end
 
     # 2. Category Filter
-    if params[:category].present?
-      @requests = @requests.where(category: params[:category])
-    end
+    @requests = @requests.where(category: params[:category]) if params[:category].present?
 
     # 3. Prefecture Filter
     if params[:prefecture].present?
@@ -39,6 +37,7 @@ class RequestsController < ApplicationController
 
   def show
     authorize @request
+    @offers = @request.offers
   end
 
   def new
