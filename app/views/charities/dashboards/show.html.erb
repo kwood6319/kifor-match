@@ -3,12 +3,12 @@
 </div>
 <div class="container mb-5">
   <div class="row justify-content-center gap-3">
-    <div class="request-card card col-sm-12 col-md-9 col-lg-3">
-      <div class="request-card-infos">
-        <i class="fa-solid fa-plus"></i>
-        <span>Make a new request here!</span>
-      </div>
-      <%= link_to "New Request", new_request_path, class: "btn btn-secondary" if policy(Request).new? %>
+    <div class="request-card d-flex flex-column justify-content-center align-items-center col-sm-12 col-md-9 col-lg-3">
+      <% if policy(Request).new? %>
+        <%= link_to new_request_path do %>
+          <i class="fa-solid fa-plus" style="font-size: 5rem;"></i>
+        <% end %>
+      <% end %>
     </div>
     <% @requests.each do |request| %>
       <div class="request-card card col-sm-12 col-md-9 col-lg-3">
