@@ -4,7 +4,7 @@ module Donors
 
     def show
       authorize :donor_dashboard, :show?
-      @requests = policy_scope(Request).includes(:charity)
+      @offers = policy_scope(Offer).includes(:donor)
     end
   end
 end
