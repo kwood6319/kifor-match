@@ -3,6 +3,15 @@
 </div>
 <div class="container mb-5">
   <h4 class="mb-3">Your Offers</h4>
+  <span class="badge text-bg-secondary">Accepted:
+    <%= @saccepted_offers %>
+  </span>
+  <span class="badge text-bg-secondary">Submitted:
+    <%= @submitted_offers %>
+  </span>
+  <span class="badge text-bg-secondary">In progress:
+    <%= @in_progress_offers %>
+  </span>
   <div class="row justify-content-center gap-3">
     <% @offers.each do |offer| %>
       <div class="card col-md-4 col-lg-3 p-2">
