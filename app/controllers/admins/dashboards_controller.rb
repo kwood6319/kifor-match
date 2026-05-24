@@ -5,7 +5,6 @@ module Admins
     def show
       # The symbol :admin_dashboard tells Pundit to look for AdminDashboardPolicy
       authorize :admin_dashboard, :show?
-      # TODO @charities = policy_scope(Charity)
     end
   end
 end
