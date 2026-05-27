@@ -7,7 +7,11 @@
   <ul class="nav-menu">
     <% if user_signed_in? %>
       <li class="nav-item active">
-        <%= link_to "Requests", requests_path, class: "nav-link" %>
+        <% if current_user.admin? || current_user.donor? %>
+          <%= link_to "Requests", requests_path, class: "nav-link" %>
+        <% elsif current_user.charity? %>
+          <%= link_to "My Requests", requests_path, class: "nav-link" %>
+        <% end %>
       </li>
       <li class="nav-item active">
         <% if user_signed_in? %>
