@@ -4,6 +4,7 @@ module Charities
 
     def show
       authorize :charity_dashboard, :show?
+      @requests = policy_scope(Request).includes(:charity)
     end
   end
 end
