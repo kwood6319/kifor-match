@@ -2,6 +2,7 @@ class CharitiesController < ApplicationController
   before_action :set_charity, only: %i[approve destroy]
 
   def index
+    authorize Charity
     @charities = policy_scope(Charity)
     # TO DO Handle active/archived charities
   end
