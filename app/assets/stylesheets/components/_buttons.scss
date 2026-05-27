@@ -31,6 +31,21 @@
 
 }
 
+.btn-kifor-login {
+  background-color: #E84393;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 32px;
+  font-size: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-kifor-login:hover {
+  background-color: #d63384;
+  color: white;
+}
+
 /* Floating Action Button (FAB) */
 .btn-kifor-fab {
   position: fixed;
