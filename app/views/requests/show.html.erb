@@ -12,14 +12,14 @@
             <h2> <%=@request.title %> </h2>
           </div>
           <div class="col-lg-4">
-            <h3> <%= @request.quantity_remaining - @request.quantity_needed %> / <%= @request.quantity_needed %> </h3>
+            <h3> <%= @request.quantity_remaining %> </h3>
             <div class="badge rounded-pill pill-<%=@request.urgency%>">
               <%= @request.urgency %>
             </div>
           </div>
         </div>
         <div>
-          <p> <i class="fa-solid fa-location-dot""></i> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
+          <p> <i class="fa-solid fa-location-dot"></i> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
         </div>
         <div>
           <h5> Condition: </h4>
@@ -47,33 +47,44 @@
               <%= 'approved-offer' if offer.status == 'approved' %>
               <%= 'rejected-offer' if offer.status == 'rejected' %>">
               <div class="row">
-                <div class="col-lg-9">
-                  <h3> <%= offer.donor.display_name %> </h3>
+                <div class="col-5">
+                  <% if offer.photo.attached? %>
+                    <%= photo_tag offer.photo %>
+                  <% else %>
+                    <div class="image-placeholder">
+                      📷 No image
+                    </div>
+                  <% end %>
                 </div>
-                <div class="col-lg-3">
-                  <h3> <%= offer.quantity_offered %> </h3>
+                <div class="col-7">
+                  <div class="row">
+                    <div class="col-9">
+                      <h3> <%= offer.donor.display_name %> </h3>
+                    </div>
+                    <div class="col-3">
+                      <h3> <%= offer.quantity_offered %> </h3>
+                    </div>
+                  </div>
+                  <p> <i class="fa-solid fa-location-dot"></i> <%= offer.donor.region if offer.donor.region %> </p>
+                  <p class="mb-0"> <strong> Condition: </strong> <%= offer.condition %> </p>
+                  <p class="mb-0"> <strong> Can be sent: </strong> <%= offer.can_ship_by.strftime("%b %e") %> </p>
+                  <p class="mb-0"> <strong> Message: </strong> <%= offer.message %> </p>
+                  <% if offer.status == "submitted" %>
+                    <div class="row mt-1">
+                      <div class="col-lg-6">
+                        <% if policy(offer).approve? %>
+                          <%= button_to "Approve Offer", approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
+                        <% end %>
+                      </div>
+                      <div class="col-lg-6">
+                        <% if policy(offer).reject? %>
+                          <%= button_to "Reject Offer", reject_offer_path(offer), method: :patch, class: "btn btn-danger" %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
                 </div>
-                <p> <%= offer.donor.region if offer.donor.region %> </p>
-                <p> Condition: <%= offer.condition %> </p>
-                <p> Can be sent: <%= offer.can_ship_by.strftime("%b %e") %> </p>
-                <p> Message: <%= offer.message %> </p>
-                <p> Status: <%= offer.status %> </p>
-                <p> Tracking Number: <%= offer.tracking_number %> </p>
               </div>
-              <% if offer.status == "submitted" %>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <% if policy(offer).approve? %>
-                      <%= button_to "Approve Offer", approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
-                    <% end %>
-                  </div>
-                  <div class="col-lg-6">
-                    <% if policy(offer).reject? %>
-                      <%=button_to "Reject Offer", reject_offer_path(offer), method: :patch, class: "btn btn-danger" %>
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
             </div>
           <% end %>
         <% end %>
@@ -85,3 +96,19 @@
     </div>
   </div>
 </div>
+<style>
+  .image-placeholder {
+  width: 200px;
+  height: 200px;
+  background-color: #f3f4f6;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #9ca3af;
+  font-size: 14px;
+  }
+</style>
