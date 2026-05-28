@@ -44,7 +44,6 @@
         <% else %>
           <% @offers.each do |offer| %>
             <div class="small-card offer-card p-2 mb-3
-              <%= 'approved-offer' if offer.status == 'approved' %>
               <%= 'rejected-offer' if offer.status == 'rejected' %>">
               <div class="row">
                 <div class="col-5">
@@ -65,7 +64,7 @@
                       <h3> <%= offer.quantity_offered %> </h3>
                     </div>
                   </div>
-                  <p> <i class="fa-solid fa-location-dot"></i> <%= offer.donor.region if offer.donor.region %> </p>
+                  <p class="mb-0"> <i class="fa-solid fa-location-dot"></i> <%= offer.donor.region if offer.donor.region %> </p>
                   <p class="mb-0"> <strong> Condition: </strong> <%= offer.condition %> </p>
                   <p class="mb-0"> <strong> Can be sent: </strong> <%= offer.can_ship_by.strftime("%b %e") %> </p>
                   <p class="mb-0"> <strong> Message: </strong> <%= offer.message %> </p>
@@ -88,10 +87,10 @@
             </div>
           <% end %>
         <% end %>
-      <% else %>
-        <% if policy(Offer.new(request: @request)).new? %>
-          <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
-        <% end %>
+      <% elsif @my_offer.present? %>
+        You have made an offer
+      <% elsif policy(Offer.new(request: @request)).new?%>
+        <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
       <% end %>
     </div>
   </div>

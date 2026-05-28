@@ -38,6 +38,14 @@
   height: 100%;
 }
 
+.approved-offer {
+
+}
+
+.rejected-offer {
+  background-color: #bfbfbf !important;
+}
+
 // Smallest device
 @media (min-width: 100px) and (max-width: 575px) {
   .grid-tall-cards {

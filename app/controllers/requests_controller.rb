@@ -39,6 +39,7 @@ class RequestsController < ApplicationController
     authorize @request
     @offers = @request.offers
     @offer = Offer.new
+    @my_offer = current_user ? @offers.find_by(donor_id: current_user.donor.id) : nil
   end
 
   def new
