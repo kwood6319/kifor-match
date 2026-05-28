@@ -38,6 +38,7 @@ class RequestsController < ApplicationController
   def show
     authorize @request
     @offers = @request.offers
+    @offer = Offer.new
   end
 
   def new

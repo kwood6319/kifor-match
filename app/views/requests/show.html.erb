@@ -79,12 +79,7 @@
         <% end %>
       <% else %>
         <% if policy(Offer.new(request: @request)).new? %>
-          <%= link_to new_request_offer_path(@request) do %>
-            <div class="offer-card new-offer p-2 mb-3">
-              <h3> Make an offer? </h3>
-              <p> Render partial here </p>
-            </div>
-          <% end %>
+          <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
         <% end %>
       <% end %>
     </div>

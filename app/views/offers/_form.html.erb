@@ -1,36 +1,35 @@
-<div class="row justify-content-center mt-5 mb-5">
-  <div class="col-12 col-md-8 col-lg-6">
-    <div class="card shadow-sm p-4">
-      <h4 class="mb-4 text-center">Make an Offer</h4>
-      <%= form_with model: [@request, @offer] do |form| %>
-        <div class="mb-3">
-          <%= form.label :quantity_offered, class: "form-label fw-bold" %>
-          <%= form.number_field :quantity_offered, min: 1, class: "form-control" %>
-        </div>
-        <div class="mb-3">
-          <%= form.label :condition, class: "form-label fw-bold" %>
-          <%= form.text_field :condition, class: "form-control", placeholder: "e.g., New, Gently Used" %>
-        </div>
-        <div class="mb-3">
-          <%= form.label :message, class: "form-label fw-bold" %>
-          <%= form.text_area :message, rows: 4, class: "form-control", placeholder: "Any details you'd like to share with the charity?" %>
-        </div>
-        <div class="mb-4">
-          <%= form.label :can_ship_by, class: "form-label fw-bold" %>
-          <%= form.date_field :can_ship_by, class: "form-control" %>
-        </div>
-        <div class="mb-4 p-3 bg-light border rounded">
-          <%= form.label :photo, "Photo of item (optional)", class: "form-label fw-bold" %>
-          <%= form.file_field :photo, accept: "image/*", class: "form-control" %>
-          <div class="form-text mt-2">Uploading a photo helps charities verify the condition of the item.</div>
-        </div>
-        <%= form.hidden_field :request_id, value: @request.id %>
-        <%= form.hidden_field :donor_id, value: @donor&.id %>
-        <div class="d-grid mt-4">
-          <%# Using an inline style to pull in your KiFor Pink from the previous FAB button! %>
-          <%= form.submit "Create Offer", class: "btn text-white fs-5", style: "background-color: #E84393;" %>
-        </div>
-      <% end %>
+<div class="card shadow-sm p-4">
+  <h4 class="mb-4 text-center">Make an Offer</h4>
+  <%= form_with model: [@request, @offer] do |form| %>
+    <div class="mb-3">
+      <%= form.label :quantity_offered, class: "form-label fw-bold" %>
+      <%= form.number_field :quantity_offered, min: 1, class: "form-control" %>
     </div>
-  </div>
+    <div class="mb-3">
+      <%= form.label :condition, class: "form-label fw-bold" %>
+      <%= form.select :condition,
+              ["New", "Used - Like New", "Used - Good"],
+              { prompt: "Select condition" },
+              class: "form-select" %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :message, class: "form-label fw-bold" %>
+      <%= form.text_area :message, rows: 4, class: "form-control", placeholder: "Any details you'd like to share with the charity?" %>
+    </div>
+    <div class="mb-4">
+      <%= form.label :can_ship_by, class: "form-label fw-bold" %>
+      <%= form.date_field :can_ship_by, class: "form-control" %>
+    </div>
+    <div class="mb-4 p-3 bg-light border rounded">
+      <%= form.label :photo, "Photo of item (optional)", class: "form-label fw-bold" %>
+      <%= form.file_field :photo, accept: "image/*", class: "form-control" %>
+      <div class="form-text mt-2">Uploading a photo helps charities verify the condition of the item.</div>
+    </div>
+    <%= form.hidden_field :request_id, value: @request.id %>
+    <%= form.hidden_field :donor_id, value: @donor&.id %>
+    <div class="d-grid mt-4">
+      <%# Using an inline style to pull in your KiFor Pink from the previous FAB button! %>
+      <%= form.submit "Create Offer", class: "btn text-white fs-5", style: "background-color: #E84393;" %>
+    </div>
+  <% end %>
 </div>
