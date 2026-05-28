@@ -3,14 +3,6 @@
 </div>
 <div class="container mb-5">
   <div class="row justify-content-center gap-3">
-    <% if policy(Request).new? %>
-      <%= link_to new_request_path, class: "d-flex flex-column justify-content-center align-items-center text-decoration-none" do %>
-        <div class="request-card d-flex flex-column justify-content-center align-items-center col-sm-12 col-md-9 col-lg-3">
-          <i class="fa-solid fa-plus text-center" style="font-size: 5rem;"></i>
-          <p class="text-primary mt-5" style="font-size: 1.2rem;">New Request</p>
-        <% end %>
-      <% end %>
-    </div>
     <% @requests.each do |request| %>
       <div class="request-card card col-sm-12 col-md-9 col-lg-3">
         <div class="request-card-infos">
@@ -40,4 +32,9 @@
       </div>
     <% end %>
   </div>
+  <% if policy(Request).new? %>
+    <%= link_to new_request_path, class: "btn-kifor-fab" do %>
+      <i class="fa-solid fa-plus"></i>
+    <% end %>
+  <% end %>
 </div>
