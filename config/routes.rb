@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :offers, only: [ :show, :edit, :update, :destroy ] do
+  resources :offers, only: [ :index, :show, :edit, :update, :destroy ] do
     collection do
       get :search
     end
