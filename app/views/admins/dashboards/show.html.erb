@@ -1,1 +1,28 @@
-<h1>This is the Admin Dashboard</h1>
+<div class="container mt-4 mb-4">
+  <h1>Admin Dashboard</h1>
+</div>
+<div class="container-fluid mb-5 px-3">
+  <section class="mb-4">
+    <h3 class="fw-semibold">Approval Queue</h3>
+    <% if @unapproved_charities.any? %>
+      <div class="row g-2">
+        <% @unapproved_charities.each do |charity| %>
+          <div class="col-12 col-lg-6">
+            <div class="card p-3">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1"><%= charity.org_name %></h6>
+                  <small class="text-muted d-block"><%= charity.user.email %></small>
+                  <small><strong><%= charity.region %></strong></small>
+                </div>
+                <%= button_to "Approve", approve_charity_path(charity), class: "btn btn-pos btn-sm", method: :patch, data: { confirm: "Approve?" } %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-muted">✓ All charities approved</p>
+    <% end %>
+  </section>
+</div>
