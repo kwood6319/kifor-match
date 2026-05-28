@@ -2,6 +2,7 @@ class DonorsController < ApplicationController
   before_action :set_donor, only: %i[approve destroy]
 
   def index
+    authorize Donor
     @donors = policy_scope(Donor)
   end
 

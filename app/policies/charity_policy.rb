@@ -6,7 +6,7 @@ class CharityPolicy < ApplicationPolicy
   end
 
   def index?
-    admin? || donor?
+    admin?
   end
 
   def approve?
