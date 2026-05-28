@@ -2,7 +2,6 @@
   <h1>Admin Dashboard</h1>
 </div>
 <div class="container-fluid mb-5 px-3">
-  <!-- Approval Queue -->
   <section class="mb-4">
     <h3 class="fw-semibold">Approval Queue</h3>
     <% if @unapproved_charities.any? %>
@@ -26,84 +25,4 @@
       <p class="text-muted">✓ All charities approved</p>
     <% end %>
   </section>
-  <!-- Quick Access & Recent -->
-  <div class="row g-3">
-    <!-- Quick Access (Left Column) -->
-    <div class="col-lg-4">
-      <h3 class="fw-semibold">Quick Access</h3>
-      <div class="row g-2">
-        <div class="col-6 col-sm-3 col-lg-6">
-          <div class="card p-2 text-center">
-            <span class="text-muted d-block" style="font-size: 1.1rem; font-weight: 600;"><%= Charity.count %></span>
-            <small>Charities</small>
-            <%= link_to "", charities_path, class: "stretched-link", title: "View all charities" %>
-          </div>
-        </div>
-        <div class="col-6 col-sm-3 col-lg-6">
-          <div class="card p-2 text-center">
-            <span class="text-muted d-block" style="font-size: 1.1rem; font-weight: 600;"><%= Donor.count %></span>
-            <small>Donors</small>
-            <%= link_to "", donors_path, class: "stretched-link", title: "View all donors" %>
-          </div>
-        </div>
-        <div class="col-6 col-sm-3 col-lg-6">
-          <div class="card p-2 text-center">
-            <span class="text-muted d-block" style="font-size: 1.1rem; font-weight: 600;"><%= Request.count %></span>
-            <small>Requests</small>
-            <%= link_to "", requests_path, class: "stretched-link", title: "View all requests" %>
-          </div>
-        </div>
-        <div class="col-6 col-sm-3 col-lg-6">
-          <div class="card p-2 text-center">
-            <span class="text-muted d-block" style="font-size: 1.1rem; font-weight: 600;"><%= Offer.count %></span>
-            <small>Offers</small>
-            <%= link_to "", offers_path, class: "stretched-link", title: "View all offers" %>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Recent Items (Right Column) -->
-    <div class="col-lg-8">
-      <h3 class="fw-semibold">Recent Activity</h3>
-      <div class="row g-2">
-        <!-- Recent Charities -->
-        <div class="col-12 col-md-4">
-          <h6 class="small mb-2">Charities</h6>
-          <% @recent_charities.each do |charity| %>
-            <div class="card card-sm p-2 mb-2">
-              <small><strong><%= charity.org_name %></strong></small>
-              <small class="text-muted d-block"><%= charity.region %></small>
-              <% if charity.approved? %>
-                <span class="badge text-bg-success" style="font-size: 0.7rem;">✓ Approved</span>
-              <% else %>
-                <span class="badge text-bg-warning" style="font-size: 0.7rem;">Pending</span>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-        <!-- Recent Requests -->
-        <div class="col-12 col-md-4">
-          <h6 class="small mb-2">Requests</h6>
-          <% @recent_requests.each do |request| %>
-            <div class="card card-sm p-2 mb-2">
-              <small><strong><%= request.title %></strong></small>
-              <small class="text-muted d-block"><%= request.charity.org_name.truncate(20) %></small>
-              <span class="badge text-bg-info" style="font-size: 0.7rem;"><%= request.status.capitalize %></span>
-            </div>
-          <% end %>
-        </div>
-        <!-- Recent Offers -->
-        <div class="col-12 col-md-4">
-          <h6 class="small mb-2">Offers</h6>
-          <% @recent_offers.each do |offer| %>
-            <div class="card card-sm p-2 mb-2">
-              <small><strong><%= offer.request.title.truncate(20) %></strong></small>
-              <small class="text-muted d-block"><%= offer.donor.display_name.truncate(20) %></small>
-              <span class="badge text-bg-secondary" style="font-size: 0.7rem;"><%= offer.status.capitalize %></span>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
