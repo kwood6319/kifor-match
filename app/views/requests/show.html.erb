@@ -13,23 +13,21 @@
           </div>
           <div class="col-lg-4">
             <h3> <%= @request.quantity_remaining - @request.quantity_needed %> / <%= @request.quantity_needed %> </h3>
-            <%= @request.urgency %>
+            <div class="badge rounded-pill pill-<%=@request.urgency%>">
+              <%= @request.urgency %>
+            </div>
           </div>
         </div>
         <div>
-          <h4> Region: </h4>
-          <p> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
+          <p> <i class="fa-solid fa-location-dot""></i> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
         </div>
         <div>
-          <h4> Condition: </h4>
+          <h5> Condition: </h4>
           <p> <%= @request.condition %> </p>
         </div>
         <div>
-          <h4> Description: </h4>
+          <h5> Description: </h4>
           <p> <%= @request.description %> </p>
-        </div>
-        <div>
-          <p> <%= @request.status %> </p>
         </div>
         <% if policy(@request).edit? %>
           <%= link_to "Edit Request", edit_request_path(@request), class: "btn btn-outline-secondary" %>
@@ -40,7 +38,9 @@
       <% if current_user.charity? && current_user.charity == @request.charity %>
         <h2> Offers </h2>
         <% if @offers.empty? %>
-          No offers yet
+          <div class="small-card">
+            No offers yet
+          </div>
         <% else %>
           <% @offers.each do |offer| %>
             <div class="small-card offer-card p-2 mb-3
@@ -79,7 +79,12 @@
         <% end %>
       <% else %>
         <% if policy(Offer.new(request: @request)).new? %>
-          <%= link_to "Make an Offer", new_request_offer_path(@request), class: "small-card offer-card p-2 mb-3" %>
+          <%= link_to new_request_offer_path(@request) do %>
+            <div class="offer-card new-offer p-2 mb-3">
+              <h3> Make an offer? </h3>
+              <p> Render partial here </p>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
     </div>
