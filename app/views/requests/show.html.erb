@@ -88,7 +88,7 @@
           <% end %>
         <% end %>
       <% elsif @my_offer.present? %>
-        You have made an offer
+        <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
       <% elsif policy(Offer.new(request: @request)).new?%>
         <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
       <% end %>
