@@ -56,6 +56,24 @@ class OffersController < ApplicationController
     end
   end
 
+  def edit
+    @offer = Offer.find(params[:id])
+    authorize @offer
+  end
+
+  def update
+    @offer = Offer.find(params[:id])
+    authorize @offer
+
+    if @offer.update(offer_params)
+      redirect_to request_path(@offer.request),
+                  notice: "Offer updated."
+    else
+      @request = @offer.request
+      render "requests/show", status: :unprocessable_entity
+    end
+  end
+
   # TODO: destroy , delete offer
   def destroy
     authorize @offer
