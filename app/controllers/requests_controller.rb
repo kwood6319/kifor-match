@@ -64,8 +64,14 @@ class RequestsController < ApplicationController
   end
 
   def update
+    authorize @request
+
+    old_needed = @request.quantity_needed
+
     if @request.update(request_params)
-      redirect_to requests_path
+      difference = @request.quantity_needed - old_needed
+      @request.increment!(:quantity_remaining, difference)
+      redirect_to request_path
     else
       render :edit, status: :unprocessable_entity
     end
