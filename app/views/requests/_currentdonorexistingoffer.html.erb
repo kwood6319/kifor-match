@@ -4,11 +4,11 @@
   <div class="row">
     <div class="col-5">
       <% if offer.photo.attached? %>
-        <div class="image-placeholder">
-          Placeholder image
+        <div class="offer-image">
+          <%= image_tag offer.photo, class: "img-fluid rounded" %>
         </div>
       <% else %>
-        <div class="image-placeholder">
+        <div class="offer-image-placeholder">
           📷 No image
         </div>
       <% end %>
@@ -56,6 +56,10 @@
     <% end %>
   <% elsif offer.status == "rejected" %>
     <p> Thank you for your offer, but the charity has decided to decline this time. </p>
+  <% elsif offer.status == "shipped" %>
+    <p> The charity has received your information. For your own notes: </p>
+    <p> Estimated arrival: <%= offer.estimated_arrival %> </p>
+    <p> Tracking information: <%= offer.tracking_number %> </p>
   <% end %>
   <%= button_to "Edit offer", edit_offer_path(offer), method: :patch, class: "btn btn-danger" %>
 </div>
