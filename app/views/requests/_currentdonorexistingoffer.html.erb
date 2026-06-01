@@ -33,22 +33,29 @@
     </div>
   </div>
   <h5 class="mt-2"> Status: </h5>
-  <p> <%= offer.status %></p>
+  <p> <%= offer.status %> </p>
   <% if offer.status == "submitted" %>
     <p> We are currently awaiting the charity's response. We'll let you know when they respond! </p>
-  <% elsif offer.status == "accepted"%>
+  <% elsif offer.status == "accepted" %>
     <p> Please send the item and then fill in the following information: </p>
-    <%= form_with model: offer do |f| %>
-      <div class="mb-3">
-        <%= f.label :estimated_arrival %>
-        <%= f.date_field :estimated_arrival, class: "form-control" %>
+    <p> Arrives: <%= offer.estimated_arrival %> </p>
+    <p> <%= offer.tracking_number %> </p>
+    <%= simple_form_for offer,
+      url: mark_as_shipped_offer_path(offer),
+      method: :patch do |f| %>
+      <div class="row">
+        <div class="col-md-6">
+          <%= f.input :estimated_arrival, label: "Estimated Arrival", as: :date, html5: true %>
+        </div>
+        <div class="col-md-6">
+          <%= f.input :tracking_number, label: "Tracking information", placeholder: "Enter tracking number" %>
+        </div>
       </div>
-      <div class="mb-3">
-        <%= f.label :tracking_number, "Tracking information" %>
-        <%= f.text_field :tracking_number, class: "form-control" %>
-      </div>
-      <%= f.submit "Save shipping info", class: "btn btn-primary" %>
+      <%= f.submit "Save shipping info",
+        class: "btn btn-primary mt-3" %>
     <% end %>
+  <% elsif offer.status == "rejected" %>
+    <p> Thank you for your offer, but the charity has decided to decline this time. </p>
   <% end %>
   <%= button_to "Edit offer", edit_offer_path(offer), method: :patch, class: "btn btn-danger" %>
 </div>
