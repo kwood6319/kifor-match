@@ -86,7 +86,7 @@ class OffersController < ApplicationController
     authorize @offer
     @offer.status = "approved"
     @offer.save
-    redirect_to request_offers_path(@offer.request)
+    redirect_to request_path(@offer.request)
   end
 
   # TODO: reject , reject offer (only Charities can reject offers)
@@ -94,7 +94,7 @@ class OffersController < ApplicationController
     authorize @offer
     @offer.status = "rejected"
     @offer.save
-    redirect_to request_offers_path(@offer.request)
+    redirect_to request_path(@offer.request)
   end
 
   # TODO: search , implement search scope on Offer model when ready
