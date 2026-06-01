@@ -87,6 +87,6 @@ class RequestsController < ApplicationController
 
   def request_params
     params.require(:request).permit(:title, :category, :description, :quantity_needed, :quantity_remaining, :units,
-                                    :condition, :urgency, :status)
+                                    :condition, :urgency, :status, :estimated_arrival)
   end
 end

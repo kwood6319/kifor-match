@@ -1,5 +1,6 @@
 <h3> Your offer has been submitted: </h3>
-<div class="small-card offer-card p-2 mb-3">
+<div class="small-card offer-card p-2 mb-3
+  <%= 'rejected-offer' if offer.status == 'rejected' %>">
   <div class="row">
     <div class="col-5">
       <% if offer.photo.attached? %>
@@ -35,6 +36,19 @@
   <p> <%= offer.status %></p>
   <% if offer.status == "submitted" %>
     <p> We are currently awaiting the charity's response. We'll let you know when they respond! </p>
+  <% elsif offer.status == "accepted"%>
+    <p> Please send the item and then fill in the following information: </p>
+    <%= form_with model: offer do |f| %>
+      <div class="mb-3">
+        <%= f.label :estimated_arrival %>
+        <%= f.date_field :estimated_arrival, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :tracking_number, "Tracking information" %>
+        <%= f.text_field :tracking_number, class: "form-control" %>
+      </div>
+      <%= f.submit "Save shipping info", class: "btn btn-primary" %>
+    <% end %>
   <% end %>
   <%= button_to "Edit offer", edit_offer_path(offer), method: :patch, class: "btn btn-danger" %>
 </div>
