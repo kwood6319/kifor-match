@@ -370,6 +370,156 @@ request11 = Request.create!(
 
 puts "Created request for #{request11.quantity_needed} #{request11.title}."
 
+request12 = Request.create!(
+  category: "baby",
+  charity: charity2,
+  condition: "New",
+  description: "Disposable diapers, mixed sizes welcome",
+  quantity_needed: 25,
+  quantity_remaining: 25,
+  status: "submitted",
+  title: "Baby diapers",
+  units: "pack",
+  urgency: "urgent"
+)
+
+puts "Created request for #{request12.quantity_needed} #{request12.title}."
+
+request13 = Request.create!(
+  category: "food",
+  charity: charity4,
+  condition: "New",
+  description: "Unopened canned soup, expiry 3+ months",
+  quantity_needed: 40,
+  quantity_remaining: 40,
+  status: "active",
+  title: "Canned soup",
+  units: "item",
+  urgency: "high"
+)
+
+puts "Created request for #{request13.quantity_needed} #{request13.title}."
+
+request14 = Request.create!(
+  category: "hygiene",
+  charity: charity3,
+  condition: "New",
+  description: "Toothbrush + toothpaste bundles preferred",
+  quantity_needed: 30,
+  quantity_remaining: 30,
+  status: "submitted",
+  title: "Dental hygiene kits",
+  units: "set",
+  urgency: "medium"
+)
+
+puts "Created request for #{request14.quantity_needed} #{request14.title}."
+
+request15 = Request.create!(
+  category: "stationery",
+  charity: charity1,
+  condition: "New",
+  description: "Pens, pencils, erasers included",
+  quantity_needed: 20,
+  quantity_remaining: 20,
+  status: "active",
+  title: "School supply sets",
+  units: "set",
+  urgency: "medium"
+)
+
+puts "Created request for #{request15.quantity_needed} #{request15.title}."
+
+request16 = Request.create!(
+  category: "cleaning",
+  charity: charity2,
+  condition: "New",
+  description: "Kitchen and bathroom cleaner",
+  quantity_needed: 15,
+  quantity_remaining: 15,
+  status: "submitted",
+  title: "Cleaning supplies",
+  units: "box",
+  urgency: "high"
+)
+
+puts "Created request for #{request16.quantity_needed} #{request16.title}."
+
+request17 = Request.create!(
+  category: "seasonal",
+  charity: charity3,
+  condition: "Used_-_Good",
+  description: "Warm blankets for winter shelter",
+  quantity_needed: 18,
+  quantity_remaining: 18,
+  status: "active",
+  title: "Winter blankets",
+  units: "item",
+  urgency: "urgent"
+)
+
+puts "Created request for #{request17.quantity_needed} #{request17.title}."
+
+request18 = Request.create!(
+  category: "clothes",
+  charity: charity4,
+  condition: "Used_-_Like_New",
+  description: "Children's rain boots, sizes mixed",
+  quantity_needed: 12,
+  quantity_remaining: 12,
+  status: "submitted",
+  title: "Kids rain boots",
+  units: "pair",
+  urgency: "medium"
+)
+
+puts "Created request for #{request18.quantity_needed} #{request18.title}."
+
+request19 = Request.create!(
+  category: "cooking",
+  charity: charity1,
+  condition: "Used_-_Good",
+  description: "Rice cookers or electric kettles welcome",
+  quantity_needed: 6,
+  quantity_remaining: 6,
+  status: "inactive",
+  title: "Kitchen appliances",
+  units: "item",
+  urgency: "low"
+)
+
+puts "Created request for #{request19.quantity_needed} #{request19.title}."
+
+request20 = Request.create!(
+  category: "food",
+  charity: charity2,
+  condition: "New",
+  description: "Shelf-stable milk cartons",
+  quantity_needed: 24,
+  quantity_remaining: 24,
+  status: "fulfilled",
+  title: "Milk cartons",
+  units: "liter",
+  urgency: "medium"
+)
+
+puts "Created request for #{request20.quantity_needed} #{request20.title}."
+
+request21 = Request.create!(
+  category: "other",
+  charity: charity4,
+  condition: "Used_-_Good",
+  description: "Reusable backpacks for school-age children",
+  quantity_needed: 14,
+  quantity_remaining: 14,
+  status: "submitted",
+  title: "School backpacks",
+  units: "item",
+  urgency: "medium"
+)
+
+puts "Created request for #{request21.quantity_needed} #{request21.title}."
+
 puts "----------------------------------------------"
 
 puts "Creating offers..."
