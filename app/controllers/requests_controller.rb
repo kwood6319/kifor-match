@@ -3,7 +3,7 @@ class RequestsController < ApplicationController
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries
-    @requests = policy_scope(Request).includes(:charity)
+    @requests = policy_scope(Request).includes(:charity).where.not(status: "inactive")
 
     # Setup dynamic variables for your dropdown menus
     @categories = Request.pluck(:category).uniq.sort
