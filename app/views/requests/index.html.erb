@@ -46,13 +46,8 @@
                 <h4><strong><%= request.title %></strong></h4>
                 <%# Let's add the category tag so users can see it! %>
                 <span class="badge text-bg-secondary mb-2"><%= request.category.capitalize %></span>
-                <span class="badge text-bg-danger text-white mb-2"><%= request.status.capitalize %></span>
-                <br>
                 <span class="badge text-bg-primary text-white mb-2">
-                  Needed: <%= request.quantity_needed %>
-                </span>
-                <span class="badge text-bg-info mb-2">
-                  Remaining: <%= request.quantity_remaining %>
+                  Needed: <%= request.quantity_remaining %>
                 </span>
                 <br>
                 <span>
