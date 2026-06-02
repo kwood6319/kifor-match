@@ -10,7 +10,7 @@ class Request < ApplicationRecord
   ]
 
   CONDITIONS = [
-    "New", "Used - Like New", "Used - Good"
+    "New", "Used - Like New", "Used - Very Good", "Used - Good"
   ].freeze
 
   CATEGORIES = %w[

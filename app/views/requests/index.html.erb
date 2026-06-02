@@ -49,9 +49,10 @@
                 <span class="badge text-bg-primary text-white mb-2">
                   Needed: <%= request.quantity_remaining %>
                 </span>
+                <br>
+                <i class="fa-solid fa-box-open"></i>
                 <% request.acceptable_conditions.each do |condition| %>
                   <span class="badge text-bg-info mb-2">
-                    <i class="fa-solid fa-box-open"></i>
                     <%= condition %>
                   </span>
                 <% end %>
