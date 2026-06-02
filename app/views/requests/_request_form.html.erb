@@ -6,7 +6,7 @@
   </div>
   <div class="row">
     <div class="col-md-4"><%= f.input :urgency, collection: Request::URGENCIES.map { |u| [u.humanize, u] }, prompt: "Select Urgency" %></div>
-    <div class="col-md-4"><%= f.input :condition, collection: Request::CONDITIONS.map { |c| [c.humanize, c] }, prompt: "Select Condition" %></div>
+    <div class="col-md-4"><%= f.input :condition,  label: "Minimum Condition Acceptable", collection: Request::CONDITIONS, prompt: "Select Condition",  hint: "Selecting 'Used - Good' means you will also accept items in better condition." %></div>
     <div class="col-md-4"><%= f.input :category, collection: Request::CATEGORIES.map { |c| [c.humanize, c] }, prompt: "Select Category" %></div>
   </div>
   <div class="row">

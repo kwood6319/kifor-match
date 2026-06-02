@@ -9,11 +9,9 @@ class Request < ApplicationRecord
     fulfilled
   ]
 
-  CONDITIONS = %w[
-    New
-    Used_-_Like_New
-    Used_-_Good
-  ]
+  CONDITIONS = [
+    "New", "Used - Like New", "Used - Good"
+  ].freeze
 
   CATEGORIES = %w[
     food
@@ -72,5 +70,10 @@ class Request < ApplicationRecord
   def sync_quantity_remaining
     # Setting qty remaining = qty needed for now
     self.quantity_remaining = quantity_needed
+  end
+
+  def acceptable_conditions
+    index = CONDITIONS.index(condition)
+    CONDITIONS[0..index]
   end
 end

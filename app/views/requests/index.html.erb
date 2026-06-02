@@ -49,6 +49,12 @@
                 <span class="badge text-bg-primary text-white mb-2">
                   Needed: <%= request.quantity_remaining %>
                 </span>
+                <% request.acceptable_conditions.each do |condition| %>
+                  <span class="badge text-bg-info mb-2">
+                    <i class="fa-solid fa-box-open"></i>
+                    <%= condition %>
+                  </span>
+                <% end %>
                 <br>
                 <span>
                   <i class="fa-solid fa-hand-holding-heart mb-2"></i>
@@ -62,11 +68,6 @@
                   <%= request.charity.prefecture %>
                 </span>
                 <br>
-                <span>
-                  <i class="fa-solid fa-box-open"></i>
-                  <strong>Condition: </strong>
-                  <%= request.condition %>
-                </span>
               </div>
               <%= link_to "View Request", request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
             </div>
