@@ -116,7 +116,7 @@ class OffersController < ApplicationController
     @offer.status = "received"
     @offer.save
     update_received
-    redirect_to request_offers_path(@offer.request)
+    redirect_to request_path(@offer.request)
   end
 
   # TODO: mark_as_shipped, change status to shipped (donor only)
