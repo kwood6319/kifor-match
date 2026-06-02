@@ -41,6 +41,9 @@
                 <% end %>
               </div>
             </div>
+          <% elsif offer.status == "approved"%>
+            <p class="mb-0"> <strong> Estimated arrival: </strong> <%= offer.estimated_arrival %></p>
+            <p class="mb-0"> <strong> Tracking information: </strong> <%= offer.tracking_number %> </p>
           <% end %>
         </div>
       </div>
