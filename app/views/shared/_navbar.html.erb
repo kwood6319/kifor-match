@@ -7,10 +7,6 @@
   <ul class="nav-menu">
     <% if user_signed_in? %>
       <li class="nav-item active">
-        <!--    Charities can't see request page -->
-        <%# if current_user.admin? || current_user.donor? %>
-        <%= link_to "Requests", requests_path, class: "nav-link" %>
-        <%# end %>
       </li>
       <li class="nav-item active">
         <% if user_signed_in? %>
