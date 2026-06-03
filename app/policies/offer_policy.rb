@@ -42,6 +42,14 @@ class OfferPolicy < ApplicationPolicy
     admin? || owning_donor?
   end
 
+  def edit?
+    owning_donor?
+  end
+
+  def update?
+    owning_donor?
+  end
+
   def approve?
     admin? || owning_charity?
   end
