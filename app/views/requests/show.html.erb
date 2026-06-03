@@ -21,7 +21,10 @@
         </div>
         <div>
           <h5> Condition: </h4>
-          <p> <%= @request.condition %> </p>
+          <% @request.acceptable_conditions.each do |cond| %>
+            <p class="mb-0"> <%= cond %> </p>
+          <% end %>
+          <br>
         </div>
         <div>
           <h5> Description: </h4>
