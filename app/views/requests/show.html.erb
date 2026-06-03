@@ -1,18 +1,16 @@
 <div class="container mt-5 mb-4">
   <div class="mb-3">
-    <%= link_to requests_path, class: "btn btn-outline-secondary" do %>
-      ← Back to Requests
-    <% end %>
+    <%= link_to "← Back", request.referer || root_path, class: "btn btn-outline-secondary" %>
   </div>
   <div class="row align-items-stretch g-4">
     <div class="col-lg-5">
       <div class="tall-card p-3 h-100">
         <div class="row pt-2">
-          <div class="col-lg-7">
+          <div class="col-8">
             <h2> <%=@request.title %> </h2>
           </div>
-          <div class="col-lg-4">
-            <h3> <%= @request.quantity_remaining %> </h3>
+          <div class="col-4 text-center">
+            <h3> x<%= @request.quantity_remaining %> </h3>
             <div class="badge rounded-pill pill-<%=@request.urgency%>">
               <%= @request.urgency %>
             </div>
