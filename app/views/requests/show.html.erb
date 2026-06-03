@@ -13,7 +13,7 @@
           </div>
           <div class="col-lg-4">
             <h3> <%= @request.quantity_remaining - @request.quantity_needed %> / <%= @request.quantity_needed %> </h3>
-            <%= @request.urgency %>
+            <div class="pill-<%= @request.urgency %>"> <%= @request.urgency %> </div>
           </div>
         </div>
         <div>
