@@ -56,6 +56,24 @@ class OffersController < ApplicationController
     end
   end
 
+  def edit
+    @offer = Offer.find(params[:id])
+    authorize @offer
+  end
+
+  def update
+    @offer = Offer.find(params[:id])
+    authorize @offer
+
+    if @offer.update(offer_params)
+      redirect_to request_path(@offer.request),
+                  notice: "Offer updated."
+    else
+      @request = @offer.request
+      render "requests/show", status: :unprocessable_entity
+    end
+  end
+
   # TODO: destroy , delete offer
   def destroy
     authorize @offer
@@ -68,7 +86,7 @@ class OffersController < ApplicationController
     authorize @offer
     @offer.status = "approved"
     @offer.save
-    redirect_to request_offers_path(@offer.request)
+    redirect_to request_path(@offer.request)
   end
 
   # TODO: reject , reject offer (only Charities can reject offers)
@@ -76,7 +94,7 @@ class OffersController < ApplicationController
     authorize @offer
     @offer.status = "rejected"
     @offer.save
-    redirect_to request_offers_path(@offer.request)
+    redirect_to request_path(@offer.request)
   end
 
   # TODO: search , implement search scope on Offer model when ready
@@ -98,22 +116,29 @@ class OffersController < ApplicationController
     @offer.status = "received"
     @offer.save
     update_received
-    redirect_to request_offers_path(@offer.request)
+    redirect_to request_path(@offer.request)
   end
 
   # TODO: mark_as_shipped, change status to shipped (donor only)
   def mark_as_shipped
     authorize @offer
-    @offer.status = "shipped"
-    @offer.save
-    redirect_to request_offers_path(@offer.request)
+
+    if @offer.update(
+      offer_params.merge(status: "shipped")
+    )
+      redirect_to request_path(request),
+                  notice: "Shipping info saved."
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private
 
   # TODO: strong params, whitelist params
   def offer_params
-    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :photo)
+    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :photo, :estimated_arrival,
+                                  :tracking_number)
   end
 
   def set_offer

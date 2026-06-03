@@ -38,6 +38,9 @@ class RequestsController < ApplicationController
   def show
     authorize @request
     @offers = @request.offers
+    @offer = Offer.new(request: @request, donor: current_user&.donor)
+    @my_offer = (@offers.find_by(donor: current_user.donor) if current_user&.donor?)
+    @editing_offer = @offers.find_by(id: params[:edit_offer])
   end
 
   def new
@@ -61,8 +64,14 @@ class RequestsController < ApplicationController
   end
 
   def update
+    authorize @request
+
+    old_needed = @request.quantity_needed
+
     if @request.update(request_params)
-      redirect_to requests_path
+      difference = @request.quantity_needed - old_needed
+      @request.increment!(:quantity_remaining, difference)
+      redirect_to request_path
     else
       render :edit, status: :unprocessable_entity
     end
@@ -85,6 +94,6 @@ class RequestsController < ApplicationController
 
   def request_params
     params.require(:request).permit(:title, :category, :description, :quantity_needed, :quantity_remaining, :units,
-                                    :condition, :urgency, :status)
+                                    :condition, :urgency, :status, :estimated_arrival)
   end
 end

@@ -20,8 +20,30 @@
   }
 }
 
+.tall-card {
+  background-color: #EDE9E1;
+  box-shadow: 4px 4px 4px #bfbfbf;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 .small-card:hover {
   transform: translateY(-8px) scale(1.02);
+}
+
+.new-offer {
+  background-color: #EDE9E1;
+  box-shadow: 4px 4px 4px #bfbfbf;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.approved-offer {
+
+}
+
+.rejected-offer {
+  background-color: #bfbfbf !important;
 }
 
 // Smallest device
