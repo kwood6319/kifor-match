@@ -55,7 +55,7 @@ class RequestsController < ApplicationController
     end
     @request = Request.new(request_params)
     @request.charity = current_user.charity
-    @request.save ? redirect_to(requests_path) : render(:new, status: :unprocessable_entity)
+    @request.save ? redirect_to(request_path(@request)) : render(:new, status: :unprocessable_entity)
     authorize @request
   end
 

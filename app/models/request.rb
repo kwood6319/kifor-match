@@ -64,7 +64,7 @@ class Request < ApplicationRecord
   validates :title, :category, :description, :units, :condition, :urgency, presence: true
   validates :status, inclusion: { in: STATUSES }
   def set_default_status
-    self.status ||= "inactive"
+    self.status ||= "active"
   end
 
   def sync_quantity_remaining
