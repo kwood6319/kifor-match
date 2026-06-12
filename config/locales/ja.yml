@@ -5,6 +5,11 @@ ja:
     log_in: "ログイン"
     charities: "チャリティー"
     donors: "ドナー"
+    filter_requests: "リクエストのフィルタリング"
+    search: "探す"
+    category: "カテゴリ"
+    location: "場所"
+    no_offers_yet: "まだオファーはありません"
   messages:
     welcome_back: "おかえりなさい"
   hello: "Hello world"

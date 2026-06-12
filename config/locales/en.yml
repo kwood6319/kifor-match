@@ -34,6 +34,11 @@ en:
     log_in: "Log in"
     charities: "Charities"
     donors: "Donors"
+    filter_requests: "Filter Requests"
+    search: "Search"
+    category: "Category"
+    location: "Location"
+    no_offers_yet: "No offers yet"
   messages:
     welcome_back: "Welcome back"
   hello: "Hello world"
