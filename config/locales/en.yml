@@ -88,3 +88,4 @@ en:
     tracking_prompt: "Enter tracking number"
   buttons:
     save: "Save"
+    edit_offer: "Edit offer"

@@ -59,3 +59,4 @@ ja:
     tracking_prompt: "追跡番号を入力してください"
   buttons:
     save: "保存"
+    edit_offer: "オファーを編集"
