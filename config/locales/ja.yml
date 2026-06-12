@@ -13,12 +13,12 @@ ja:
     no_requests: "指定した条件に一致するリクエストはありません"
     search_items: "商品で検索..."
     prefecture: "都道府県"
-
     condition: "状態"
     description: "詳細"
   messages:
     welcome_back: "おかえりなさい"
   urgencies:
+    select_urgency: "緊急度を選択"
     low: "低い"
     medium: "中"
     high: "高"
@@ -65,3 +65,23 @@ ja:
     view_request: "リクエストを表示"
     approve_offer: "承認する"
     reject_offer: "拒否する"
+  requests:
+    tell_us: "ご要望について、もう少し詳しく教えてください"
+    title: "タイトル"
+    title_placeholder: "電卓、インスタント食品など"
+    quantity_needed: "必要数量"
+    units: "単位"
+    urgency: "緊急度"
+    condition: "最低限の条件"
+    condition_message: "『中古 - 良好』 を選択すると、それ以上の状態のアイテムも受け入れることになります。"
+    description: "詳細"
+    description_message: "必要な品目についてご記入ください"
+  units:
+    select: "単位を選択"
+    item: "個"
+    box: "箱"
+    pack: "パック"
+    kg: "kg"
+    liter: "リットル"
+    pair: "ペア"
+    set: "セット"

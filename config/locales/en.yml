@@ -47,6 +47,7 @@ en:
   messages:
     welcome_back: "Welcome back"
   urgencies:
+    select_urgency: "Select Urgency"
     low: "low"
     medium: "medium"
     high: "high"
@@ -93,3 +94,23 @@ en:
     view_request: "View Request"
     approve_offer: "Approve Offer"
     reject_offer: "Reject Offer"
+  requests:
+    tell_us: "Tell us a little more about your request"
+    title: "Title"
+    title_placeholder: "Calculators, Instant Food, etc"
+    quantity_needed: "Quantity needed"
+    units: "Units"
+    urgency: "Urgency"
+    condition: "Minimum Acceptable"
+    condition_message: "Selecting 'Used - Good' means you will also accept items in better condition."
+    description: "Description"
+    description_message: "Please describe the item"
+  units:
+    select: "Select units"
+    item: "item"
+    box: "box"
+    pack: "pack"
+    kg: "kg"
+    liter: "liter"
+    pair: "pair"
+    set: "set"
