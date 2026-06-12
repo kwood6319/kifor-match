@@ -41,6 +41,8 @@ en:
     no_offers_yet: "No offers yet"
     no_requests: "No requests match your filters"
     search_items: "Search by item..."
+    prefecture: "Prefecture"
+    view_request: "View Request"
   messages:
     welcome_back: "Welcome back"
   urgencies:
@@ -49,7 +51,7 @@ en:
     high: "high"
     urgent: "urgent"
   conditions:
-    new: "New"
-    used_like_new: "Used - Like New"
-    used_very_good: "Used - Very Good"
-    used_good: "Used - Good"
+    "New": "New"
+    "Used - Like New": "Used - Like New"
+    Used - Very Good": "Used - Very Good"
+    "Used - Good": "Used - Good"

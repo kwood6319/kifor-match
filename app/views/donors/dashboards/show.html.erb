@@ -19,7 +19,16 @@
       <div class="col-md-4 col-lg-3">
         <%= f.label :prefecture, t("navigation.location"), class: "form-label fw-bold" %>
         <%# Passing the grouped Hash directly creates an organized dropdown with Region headers %>
-        <%= f.select :prefecture, Request::REGIONS_AND_PREFECTURES.transform_keys { |region| t("regions.#{region}")}.transform_values { |prefectures| prefectures.map { |prefecture| [t("prefectures.#{prefecture}"), prefecture] }}, { include_blank: t("prefectures.all"), selected: params[:prefecture]}, class: "form-select", data: { action: "change->form-submission#search" } %>
+        <%= f.select :prefecture,
+          Request::REGIONS_AND_PREFECTURES.transform_keys { |region|
+          t("regions.#{region}")
+          }.transform_values { |prefectures|
+          prefectures.map { |prefecture|
+            [t("prefectures.#{prefecture}"), prefecture] }},
+          { include_blank: t("prefectures.all"),
+          selected: params[:prefecture]},
+          class: "form-select",
+          data: { action: "change->form-submission#search" } %>
       </div>
       <%# No Offers Checkbox %>
       <div class="col-md-4 col-lg-2 d-flex align-items-end mb-2">
@@ -57,24 +66,18 @@
               <i class="fa-solid fa-box-open"></i>
               <% request.acceptable_conditions.each do |condition| %>
                 <span class="badge text-bg-info mb-2">
-                  <%= condition %>
+                  <%= t("conditions.#{condition}") %>
                 </span>
               <% end %>
               <br>
               <span>
-                <i class="fa-solid fa-hand-holding-heart mb-2"></i>
-                <strong>Charity: </strong>
-                <%= request.charity.org_name %>
-              </span>
-              <br>
-              <span>
                 <i class="fa-solid fa-location-dot mb-2"></i>
-                <strong>Prefecture: </strong>
-                <%= request.charity.prefecture %>
+                <strong> <%= t("navigation.prefecture")%>: </strong>
+                <%= t("prefectures.#{request.charity.prefecture}") %>
               </span>
               <br>
             </div>
-            <%= link_to "View Request", request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
+            <%= link_to t("navigation.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
           </div>
         </div>
       <% end %>

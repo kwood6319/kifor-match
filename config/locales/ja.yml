@@ -12,6 +12,8 @@ ja:
     no_offers_yet: "まだオファーはありません"
     no_requests: "指定した条件に一致するリクエストはありません"
     search_items: "商品で検索..."
+    prefecture: "都道府県"
+    view_request: "リクエストを表示"
   messages:
     welcome_back: "おかえりなさい"
   urgencies:
@@ -20,7 +22,7 @@ ja:
     high: "高"
     urgent: "緊急"
   conditions:
-    new: "新品"
-    used_like_new: "中古 - ほぼ新品同様"
-    used_very_good: "中古 - 非常に良い状態"
-    used_good: "中古 - 良好な状態"
+    "New": "新品"
+    "Used - Like New": "中古 - ほぼ新品同様"
+    "Used - Very Good": "中古 - 非常に良い状態"
+    "Used - Good": "中古 - 良好な状態"
