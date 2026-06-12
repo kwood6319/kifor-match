@@ -3,15 +3,17 @@
   <% offer ||= Offer.new %>
   <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(request)) do |form| %>
     <div class="mb-3">
-      <%= form.label :quantity_offered, class: "form-label fw-bold" %>
+      <%= form.label t("offers.quantity_offered"), class: "form-label fw-bold" %>
       <%= form.number_field :quantity_offered, min: 1, class: "form-control" %>
     </div>
     <div class="mb-3">
-      <%= form.label :condition, class: "form-label fw-bold" %>
+      <%= form.label t("navigation.condition"), class: "form-label fw-bold" %>
       <%= form.select :condition,
-              ["New", "Used - Like New", "Used - Good"],
-              { prompt: "Select condition" },
-              class: "form-select" %>
+      Request::CONDITIONS.map { |condition|
+        [t("conditions.#{condition}"), condition]
+      },
+      { prompt: t("conditions.select") },
+      class: "form-select" %>
     </div>
     <div class="mb-3">
       <%= form.label :message, class: "form-label fw-bold" %>

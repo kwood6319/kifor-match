@@ -24,9 +24,11 @@ ja:
     high: "高"
     urgent: "緊急"
   conditions:
-    "New": "新品"
-    "Used - Like New": "中古 - ほぼ新品同様"
-    "Used - Very Good": "中古 - 非常に良い状態"
-    "Used - Good": "中古 - 良好な状態"
+    select: "状態を選択"
+    new: "新品"
+    used_like_new: "中古 - 新品同様"
+    used_very_good: "中古 - 非常に良い"
+    used_good: "中古 - 良い"
   offers:
     make_an_offer: "オファーを出す"
+    quantity_offered: "提供数量"

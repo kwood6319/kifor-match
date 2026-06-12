@@ -53,9 +53,11 @@ en:
     high: "high"
     urgent: "urgent"
   conditions:
-    "New": "New"
-    "Used - Like New": "Used - Like New"
-    Used - Very Good": "Used - Very Good"
-    "Used - Good": "Used - Good"
+    select: "Select condition"
+    new: "New"
+    used_like_new: "Used - Like New"
+    used_very_good: "Used - Very Good"
+    used_good: "Used - Good"
   offers:
     make_an_offer: "Make an Offer"
+    quantity_offered: "Quantity offered"
