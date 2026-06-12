@@ -15,7 +15,7 @@ ja:
     prefecture: "都道府県"
     view_request: "リクエストを表示"
     condition: "状態"
-    description: "説明"
+    description: "詳細"
   messages:
     welcome_back: "おかえりなさい"
   urgencies:
@@ -39,3 +39,23 @@ ja:
     photo_expl: "写真をアップロードすると、慈善団体が商品の状態を確認しやすくなります。"
     save_changes: "変更を保存"
     send_offer: "オファーを送信"
+    existing_offer: "ご提案が送信されました"
+    no_image: "画像なし"
+    status: "ステータス"
+  statuses:
+    submitted: "確認待ち"
+    submitted_message: "現在、当該慈善団体からの返答を待っているところです。返答があり次第、お知らせします！"
+    active: "アクティブ"
+    inactive: "非アクティブ"
+    fulfilled: "完了"
+    accepted: "承認済み"
+    accepted_message: "商品をお送りいただいた後、以下の情報をご記入ください"
+    rejected: "却下"
+    rejected_message: "ご提案ありがとうございますが、当団体は今回はお断りすることといたしました。"
+    shipped: "送信済み"
+    shipped_message: "当団体は、お客様からのお問い合わせ内容を受け取りました。ご参考までに"
+    arriving: "到着予定"
+    tracking_info: "配送状況"
+    tracking_prompt: "追跡番号を入力してください"
+  buttons:
+    save: "保存"
