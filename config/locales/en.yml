@@ -28,4 +28,7 @@
 #       enabled: "ON"
 
 en:
+  navigation:
+  messages:
+    welcome_back: "Welcome back"
   hello: "Hello world"

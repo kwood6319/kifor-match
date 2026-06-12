@@ -31,5 +31,12 @@
         <%= link_to "Login", new_user_session_path, class: "nav-link" %>
       </li>
     <% end %>
+    <li>
+      <% if I18n.locale == :ja %>
+        <%= link_to "English", url_for(locale: :en) %>
+      <% else %>
+        <%= link_to "日本語", url_for(locale: :ja) %>
+      <% end %>
+    </li>
   </ul>
 </nav>
