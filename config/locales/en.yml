@@ -42,7 +42,6 @@ en:
     no_requests: "No requests match your filters"
     search_items: "Search by item..."
     prefecture: "Prefecture"
-    view_request: "View Request"
     condition: "Condition"
     description: "Description"
   messages:
@@ -59,6 +58,8 @@ en:
     used_very_good: "Used - Very Good"
     used_good: "Used - Good"
   offers:
+    offers: "Offers"
+    no_offers: "No offers yet"
     make_an_offer: "Make an Offer"
     quantity_offered: "Quantity offered"
     message: "Message"
@@ -89,3 +90,6 @@ en:
   buttons:
     save: "Save"
     edit_offer: "Edit offer"
+    view_request: "View Request"
+    approve_offer: "Approve Offer"
+    reject_offer: "Reject Offer"

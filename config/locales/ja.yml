@@ -13,7 +13,7 @@ ja:
     no_requests: "指定した条件に一致するリクエストはありません"
     search_items: "商品で検索..."
     prefecture: "都道府県"
-    view_request: "リクエストを表示"
+
     condition: "状態"
     description: "詳細"
   messages:
@@ -30,6 +30,8 @@ ja:
     used_very_good: "中古 - 非常に良い"
     used_good: "中古 - 良い"
   offers:
+    offers: "オファー"
+    no_offers: "まだオファーはありません"
     make_an_offer: "オファーを出す"
     quantity_offered: "提供数量"
     message: "メッセージ"
@@ -60,3 +62,6 @@ ja:
   buttons:
     save: "保存"
     edit_offer: "オファーを編集"
+    view_request: "リクエストを表示"
+    approve_offer: "承認する"
+    reject_offer: "拒否する"
