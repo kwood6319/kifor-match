@@ -1,0 +1,14 @@
+ja:
+  categories:
+    food: "食品"
+    stationery: "文房具"
+    hygiene: "保健"
+    clothes: "衣類"
+    baby: "赤ちゃん"
+    cooking: "料理"
+    cleaning: "掃除"
+    seasonal: "季節"
+    electronics: "家電製品"
+    necessities: "日用品"
+    other: "その他"
+    all: "すべてのカテゴリー"

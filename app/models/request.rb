@@ -23,6 +23,8 @@ class Request < ApplicationRecord
     cleaning
     seasonal
     other
+    electronics
+    necessities
   ]
 
   UNITS = %w[

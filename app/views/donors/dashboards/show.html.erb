@@ -8,18 +8,18 @@
       <%# Search Bar %>
       <div class="col-md-12 col-lg-4">
         <%= f.label :query, t("navigation.search"), class: "form-label fw-bold" %>
-        <%= f.text_field :query, value: params[:query], placeholder: "Search items or charities...", class: "form-control", data: { action: "input->form-submission#search" } %>
+        <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_items"), class: "form-control", data: { action: "input->form-submission#search" } %>
       </div>
       <%# Category Dropdown %>
       <div class="col-md-4 col-lg-3">
         <%= f.label :category, t("navigation.category"), class: "form-label fw-bold" %>
-        <%= f.select :category, @categories.map { |c| [c.capitalize, c] }, { include_blank: "All Categories", selected: params[:category] }, class: "form-select", data: { action: "change->form-submission#search" } %>
+        <%= f.select :category, @categories.map { |c| [t("categories.#{c}"), c] }, { include_blank: t("categories.all"), selected: params[:category] }, class: "form-select", data: { action: "change->form-submission#search" } %>
       </div>
       <%# Prefecture Dropdown %>
       <div class="col-md-4 col-lg-3">
         <%= f.label :prefecture, t("navigation.location"), class: "form-label fw-bold" %>
         <%# Passing the grouped Hash directly creates an organized dropdown with Region headers %>
-        <%= f.select :prefecture, Request::REGIONS_AND_PREFECTURES, { include_blank: "All Prefectures", selected: params[:prefecture] }, class: "form-select", data: { action: "change->form-submission#search" } %>
+        <%= f.select :prefecture, Request::REGIONS_AND_PREFECTURES.transform_keys { |region| t("regions.#{region}")}.transform_values { |prefectures| prefectures.map { |prefecture| [t("prefectures.#{prefecture}"), prefecture] }}, { include_blank: t("prefectures.all"), selected: params[:prefecture]}, class: "form-select", data: { action: "change->form-submission#search" } %>
       </div>
       <%# No Offers Checkbox %>
       <div class="col-md-4 col-lg-2 d-flex align-items-end mb-2">
@@ -35,7 +35,7 @@
   <div class="row g-4">
     <% if @requests.empty? %>
       <div class="col-12 text-center mt-5">
-        <h4 class="text-muted">No requests match your filters.</h4>
+        <h4 class="text-muted"><%= t("navigation.no_requests") %></h4>
       </div>
     <% else %>
       <% @requests.each do |request| %>
@@ -48,11 +48,11 @@
                 </div>
                 <div class="col-4 text-center">
                   <h4 class="mb-0"> x<%= request.quantity_remaining %> </h4>
-                  <div class="badge rounded-pill pill-<%= request.urgency %>"> <%= request.urgency %> </div>
+                  <div class="badge rounded-pill pill-<%= request.urgency %>"> <%= t("urgencies.#{request.urgency}") %> </div>
                 </div>
               </div>
               <%# Let's add the category tag so users can see it! %>
-              <span class="badge text-bg-secondary mb-2"><%= request.category.capitalize %></span>
+              <span class="badge text-bg-secondary mb-2"><%= t("categories.#{request.category}") %></span>
               <br>
               <i class="fa-solid fa-box-open"></i>
               <% request.acceptable_conditions.each do |condition| %>
