@@ -42,8 +42,12 @@
               </div>
             </div>
           <% elsif offer.status == "approved"%>
-            <p class="mb-0"> <strong> Estimated arrival: </strong> <%= offer.estimated_arrival %></p>
-            <p class="mb-0"> <strong> Tracking information: </strong> <%= offer.tracking_number %> </p>
+            <p class="mb-0">
+              <strong> <%= t("statuses.arriving") %>: </strong> <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %>
+            </p>
+            <p class="mb-0">
+              <strong> <%= t("statuses.tracking_info") %>: </strong> <%= offer.tracking_number != "" ? offer.tracking_number : "?" %>
+            </p>
             <%= button_to "Received!", mark_received_offer_path(offer), method: :patch, class: "btn btn-danger" %>
           <% end %>
         </div>
