@@ -43,6 +43,8 @@ en:
     search_items: "Search by item..."
     prefecture: "Prefecture"
     view_request: "View Request"
+    condition: "Condition"
+    description: "Description"
   messages:
     welcome_back: "Welcome back"
   urgencies:
@@ -55,3 +57,5 @@ en:
     "Used - Like New": "Used - Like New"
     Used - Very Good": "Used - Very Good"
     "Used - Good": "Used - Good"
+  offers:
+    make_an_offer: "Make an Offer"

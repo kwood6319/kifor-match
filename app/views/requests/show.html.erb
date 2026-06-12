@@ -12,22 +12,22 @@
           <div class="col-4 text-center">
             <h3> x<%= @request.quantity_remaining %> </h3>
             <div class="badge rounded-pill pill-<%=@request.urgency%>">
-              <%= @request.urgency %>
+              <%= t("urgencies.#{@request.urgency}") %>
             </div>
           </div>
         </div>
         <div>
-          <p> <i class="fa-solid fa-location-dot"></i> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
+          <p> <i class="fa-solid fa-location-dot"></i> <%= t("prefectures.#{@request.charity.prefecture}") %> - <%= t("regions.#{@request.charity.region}") %> </p>
         </div>
         <div>
-          <h5> Condition: </h4>
+          <h5> <%= t("navigation.condition") %>: </h4>
           <% @request.acceptable_conditions.each do |cond| %>
-            <p class="mb-0"> <%= cond %> </p>
+            <p class="mb-0"> <%= t("conditions.#{cond}") %> </p>
           <% end %>
           <br>
         </div>
         <div>
-          <h5> Description: </h4>
+          <h5> <%= t("navigation.description") %>: </h4>
           <p> <%= @request.description %> </p>
         </div>
         <% if policy(@request).edit? %>

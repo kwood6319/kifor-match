@@ -1,5 +1,5 @@
 <div class="card shadow-sm p-4">
-  <h4 class="mb-4 text-center">Make an Offer</h4>
+  <h4 class="mb-4 text-center"><%= t("offers.make_an_offer")%></h4>
   <% offer ||= Offer.new %>
   <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(request)) do |form| %>
     <div class="mb-3">

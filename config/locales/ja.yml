@@ -14,6 +14,8 @@ ja:
     search_items: "商品で検索..."
     prefecture: "都道府県"
     view_request: "リクエストを表示"
+    condition: "状態"
+    description: "説明"
   messages:
     welcome_back: "おかえりなさい"
   urgencies:
@@ -26,3 +28,5 @@ ja:
     "Used - Like New": "中古 - ほぼ新品同様"
     "Used - Very Good": "中古 - 非常に良い状態"
     "Used - Good": "中古 - 良好な状態"
+  offers:
+    make_an_offer: "オファーを出す"
