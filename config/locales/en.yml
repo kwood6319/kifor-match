@@ -96,6 +96,7 @@ en:
     reject_offer: "Reject Offer"
   requests:
     tell_us: "Tell us a little more about your request"
+    edit_request: "Edit Request"
     title: "Title"
     title_placeholder: "Calculators, Instant Food, etc"
     quantity_needed: "Quantity needed"
