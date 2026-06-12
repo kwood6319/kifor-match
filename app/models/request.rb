@@ -10,7 +10,10 @@ class Request < ApplicationRecord
   ]
 
   CONDITIONS = [
-    "New", "Used - Like New", "Used - Very Good", "Used - Good"
+    "new",
+    "used_like_new",
+    "used_very_good",
+    "used_good"
   ].freeze
 
   CATEGORIES = %w[
@@ -23,6 +26,8 @@ class Request < ApplicationRecord
     cleaning
     seasonal
     other
+    electronics
+    necessities
   ]
 
   UNITS = %w[

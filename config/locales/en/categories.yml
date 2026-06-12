@@ -1,0 +1,15 @@
+en:
+  categories:
+    food: "Food"
+    stationery: "Stationery"
+    hygiene: "Hygiene"
+    clothes: "Clothes"
+    baby: "Baby"
+    cooking: "Cooking"
+    cleaning: "Cleaning"
+    seasonal: "Seasonal"
+    electronics: "Electronics"
+    necessities: "Necessities"
+    other: "Other"
+    all: "All Categories"
+    select: "Select Category"

@@ -1,4 +1,4 @@
-<h3> Your offer has been submitted: </h3>
+<h3> <%= t("offers.existing_offer") %>: </h3>
 <div class="small-card offer-card p-2 mb-3
   <%= 'rejected-offer' if offer.status == 'rejected' %>">
   <div class="row">
@@ -9,7 +9,7 @@
         </div>
       <% else %>
         <div class="offer-image-placeholder">
-          📷 No image
+          📷 <%= t("offers.no_image") %>
         </div>
       <% end %>
     </div>
@@ -22,43 +22,41 @@
           <h4> <%= offer.quantity_offered %> </h4>
         </div>
       </div>
-      <p class="mb-0"> <i class="fa-solid fa-location-dot"></i> <%= offer.donor.region if offer.donor.region %> </p>
-      <p class="mb-0"> <strong> Condition: </strong> <%= offer.condition %> </p>
+      <p class="mb-0"> <i class="fa-solid fa-location-dot"></i> <%= t("prefectures.#{offer.donor.prefecture}") if offer.donor.prefecture %> </p>
+      <p class="mb-0"> <strong> <%= t("navigation.condition") %>: </strong> <%= t("conditions.#{offer.condition}") %> </p>
       <% if offer.can_ship_by %>
-        <p class="mb-0"> <strong> Can be sent: </strong> <%= offer.can_ship_by.strftime("%b %e") %> </p>
+        <p class="mb-0"> <strong> <%= t("offers.can_ship_by") %>: </strong> <%= offer.can_ship_by.strftime("%b %e") %> </p>
       <% end %>
       <% if offer.message != "" %>
-        <p class="mb-0"> <strong> Message: </strong> <%= offer.message %> </p>
+        <p class="mb-0"> <strong> <%= t("offers.message") %>: </strong> <%= offer.message %> </p>
       <% end %>
     </div>
   </div>
-  <h5 class="mt-2"> Status: </h5>
-  <p> <%= offer.status %> </p>
+  <h5 class="mt-2"> <%= t("offers.status") %>: </h5>
+  <p> <%= t("statuses.#{offer.status}") %> </p>
   <% if offer.status == "submitted" %>
-    <p> We are currently awaiting the charity's response. We'll let you know when they respond! </p>
+    <p> <%= t("statuses.submitted_message") %> </p>
   <% elsif offer.status == "accepted" %>
-    <p> Please send the item and then fill in the following information: </p>
-    <p> Arrives: <%= offer.estimated_arrival %> </p>
-    <p> <%= offer.tracking_number %> </p>
+    <p> <%= t("statuses.accepted_message") %>: </p>
     <%= simple_form_for offer,
       url: mark_as_shipped_offer_path(offer),
       method: :patch do |f| %>
       <div class="row">
         <div class="col-md-6">
-          <%= f.input :estimated_arrival, label: "Estimated Arrival", as: :date, html5: true %>
+          <%= f.input :estimated_arrival, label: t("statuses.arriving"), as: :date, html5: true %>
         </div>
         <div class="col-md-6">
-          <%= f.input :tracking_number, label: "Tracking information", placeholder: "Enter tracking number" %>
+          <%= f.input :tracking_number, label: t("statuses.tracking_info"), placeholder: t("statuses.tracking_prompt") %>
         </div>
       </div>
-      <%= f.submit "Save shipping info",
-        class: "btn btn-primary mt-3" %>
+      <%= f.submit t("buttons.save"),
+        class: "btn btn-danger" %>
     <% end %>
   <% elsif offer.status == "rejected" %>
-    <p> Thank you for your offer, but the charity has decided to decline this time. </p>
+    <p> <%= t("statuses.rejected_message") %> </p>
   <% elsif offer.status == "shipped" %>
-    <p> The charity has received your information. For your own notes: </p>
-    <p> Estimated arrival: <%= offer.estimated_arrival %> </p>
-    <p> Tracking information: <%= offer.tracking_number %> </p>
+    <p> <%= t("statuses.shipped_message") %>: </p>
+    <p> <%= t("statuses.arriving") %>: <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %> </p>
+    <p> <%= t("statuses.tracking_info") %>: <%= offer.tracking_number != "" ? offer.tracking_number : "?" %> </p>
   <% end %>
 </div>
