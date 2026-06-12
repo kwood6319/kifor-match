@@ -32,3 +32,10 @@ ja:
   offers:
     make_an_offer: "オファーを出す"
     quantity_offered: "提供数量"
+    message: "メッセージ"
+    message_prompt: "この慈善団体に伝えたいことはありますか？例えば、破損箇所や由来など。"
+    can_ship_by: "発送可能日"
+    photo_of_item: "商品の写真（任意）"
+    photo_expl: "写真をアップロードすると、慈善団体が商品の状態を確認しやすくなります。"
+    save_changes: "変更を保存"
+    send_offer: "オファーを送信"

@@ -61,3 +61,10 @@ en:
   offers:
     make_an_offer: "Make an Offer"
     quantity_offered: "Quantity offered"
+    message: "Message"
+    message_prompt: "Any details you'd like to share with the charity? E.g., broken pieces, history, etc."
+    can_ship_by: "Can ship by"
+    photo_of_item: "Photo of item (optional)"
+    photo_expl: "Uploading a photo helps charities verify the condition of the item."
+    save_changes: "Save changes"
+    send_offer: "Send offer"
