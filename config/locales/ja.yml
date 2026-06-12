@@ -1,5 +1,10 @@
 ja:
   navigation:
+    dashboard: "ダッシュボード"
+    sign_out: "ログアウト"
+    log_in: "ログイン"
+    charities: "チャリティー"
+    donors: "ドナー"
   messages:
     welcome_back: "おかえりなさい"
   hello: "Hello world"

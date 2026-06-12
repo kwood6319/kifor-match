@@ -29,6 +29,11 @@
 
 en:
   navigation:
+    dashboard: "Dashboard"
+    sign_out: "Sign Out"
+    log_in: "Log in"
+    charities: "Charities"
+    donors: "Donors"
   messages:
     welcome_back: "Welcome back"
   hello: "Hello world"
