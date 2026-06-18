@@ -12,22 +12,22 @@
           <div class="col-4 text-center">
             <h3> x<%= @request.quantity_remaining %> </h3>
             <div class="badge rounded-pill pill-<%=@request.urgency%>">
-              <%= @request.urgency %>
+              <%= t("urgencies.#{@request.urgency}") %>
             </div>
           </div>
         </div>
         <div>
-          <p> <i class="fa-solid fa-location-dot"></i> <%= @request.charity.prefecture %> - <%= @request.charity.region %> </p>
+          <p> <i class="fa-solid fa-location-dot"></i> <%= t("regions.#{@request.charity.region}") %> - <%= t("prefectures.#{@request.charity.prefecture}") %> </p>
         </div>
         <div>
-          <h5> Condition: </h4>
+          <h5> <%= t("navigation.condition") %>: </h4>
           <% @request.acceptable_conditions.each do |cond| %>
-            <p class="mb-0"> <%= cond %> </p>
+            <p class="mb-0"> <%= t("conditions.#{cond}") %> </p>
           <% end %>
           <br>
         </div>
         <div>
-          <h5> Description: </h4>
+          <h5> <%= t("navigation.description") %>: </h4>
           <p> <%= @request.description %> </p>
         </div>
         <% if policy(@request).edit? %>
@@ -42,7 +42,7 @@
         <%= render "offers/form", request: @request, offer: @my_offer %>
       <% elsif @my_offer.present? %>
         <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
-        <%= link_to "Edit offer",
+        <%= link_to t("buttons.edit_offer"),
       request_path(@request, edit_offer: @my_offer.id),
       class: "btn btn-danger" %>
       <% elsif policy(Offer.new(request: @request)).new?%>

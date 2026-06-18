@@ -207,7 +207,7 @@ puts "Creating requests..."
 request1 = Request.create!(
   category: "electronics",
   charity: charity1,
-  condition: "Used - Good",
+  condition: "used_good",
   description: "charger included",
   quantity_needed: 2,
   quantity_remaining: 2,
@@ -222,7 +222,7 @@ puts "Created request for #{request1.quantity_needed} #{request1.title}."
 request2 = Request.create!(
   category: "clothes",
   charity: charity1,
-  condition: "Used - Good",
+  condition: "used_good",
   description: "Clean, good condition",
   quantity_needed: 10,
   quantity_remaining: 10,
@@ -237,7 +237,7 @@ puts "Created request for #{request2.quantity_needed} #{request2.title}."
 request3 = Request.create!(
   category: "clothes",
   charity: charity2,
-  condition: "Used - Good",
+  condition: "used_good",
   description: "Good condition",
   quantity_needed: 15,
   quantity_remaining: 15,
@@ -252,7 +252,7 @@ puts "Created request for #{request3.quantity_needed} #{request3.title}."
 request4 = Request.create!(
   category: "necessities",
   charity: charity3,
-  condition: "New",
+  condition: "new",
   description: "Sealed preferred",
   quantity_needed: 50,
   quantity_remaining: 50,
@@ -268,7 +268,7 @@ puts "Created request for #{request4.quantity_needed} #{request4.title}."
 request5 = Request.create!(
   category: "food",
   charity: charity2,
-  condition: "New",
+  condition: "new",
   description: "Expiry 3+ months",
   quantity_needed: 20,
   quantity_remaining: 20,
@@ -283,7 +283,7 @@ puts "Created request for #{request5.quantity_needed} #{request5.title}."
 request6 = Request.create!(
   category: "clothes",
   charity: charity1,
-  condition: "Used - Very Good",
+  condition: "used_very_good",
   description: "New or like new",
   quantity_needed: 30,
   quantity_remaining: 30,
@@ -298,7 +298,7 @@ puts "Created request for #{request6.quantity_needed} #{request6.title}."
 request7 = Request.create!(
   category: "clothes",
   charity: charity3,
-  condition: "New",
+  condition: "new",
   description: "Clean/ New",
   quantity_needed: 20,
   quantity_remaining: 20,
@@ -313,7 +313,7 @@ puts "Created request for #{request7.quantity_needed} #{request7.title}."
 request8 = Request.create!(
   category: "stationery",
   charity: charity2,
-  condition: "New",
+  condition: "new",
   description: "Full sets",
   quantity_needed: 40,
   quantity_remaining: 40,
@@ -328,7 +328,7 @@ puts "Created request for #{request8.quantity_needed} #{request8.title}."
 request9 = Request.create!(
   category: "electronics",
   charity: charity1,
-  condition: "Used - Good",
+  condition: "used_good",
   description: "USB-C type",
   quantity_needed: 25,
   quantity_remaining: 25,
@@ -343,7 +343,7 @@ puts "Created request for #{request9.quantity_needed} #{request9.title}."
 request10 = Request.create!(
   category: "clothes",
   charity: charity3,
-  condition: "Used - Good",
+  condition: "used_good",
   description: "Backpacks for kids",
   quantity_needed: 20,
   quantity_remaining: 20,
@@ -358,7 +358,7 @@ puts "Created request for #{request10.quantity_needed} #{request10.title}."
 request11 = Request.create!(
   category: "electronics",
   charity: charity4,
-  condition: "Used - Good",
+  condition: "used_good",
   description: "Laptops needed",
   quantity_needed: 2,
   quantity_remaining: 2,
@@ -373,7 +373,7 @@ puts "Created request for #{request11.quantity_needed} #{request11.title}."
 request12 = Request.create!(
   category: "baby",
   charity: charity2,
-  condition: "New",
+  condition: "new",
   description: "Disposable diapers, mixed sizes welcome",
   quantity_needed: 25,
   quantity_remaining: 25,
@@ -388,7 +388,7 @@ puts "Created request for #{request12.quantity_needed} #{request12.title}."
 request13 = Request.create!(
   category: "food",
   charity: charity4,
-  condition: "New",
+  condition: "new",
   description: "Unopened canned soup, expiry 3+ months",
   quantity_needed: 40,
   quantity_remaining: 40,
@@ -403,7 +403,7 @@ puts "Created request for #{request13.quantity_needed} #{request13.title}."
 request14 = Request.create!(
   category: "hygiene",
   charity: charity3,
-  condition: "New",
+  condition: "new",
   description: "Toothbrush + toothpaste bundles preferred",
   quantity_needed: 30,
   quantity_remaining: 30,
@@ -418,7 +418,7 @@ puts "Created request for #{request14.quantity_needed} #{request14.title}."
 request15 = Request.create!(
   category: "stationery",
   charity: charity1,
-  condition: "New",
+  condition: "new",
   description: "Pens, pencils, erasers included",
   quantity_needed: 20,
   quantity_remaining: 20,
@@ -433,7 +433,7 @@ puts "Created request for #{request15.quantity_needed} #{request15.title}."
 request16 = Request.create!(
   category: "cleaning",
   charity: charity2,
-  condition: "New",
+  condition: "new",
   description: "Kitchen and bathroom cleaner",
   quantity_needed: 15,
   quantity_remaining: 15,
@@ -448,7 +448,7 @@ puts "Created request for #{request16.quantity_needed} #{request16.title}."
 request17 = Request.create!(
   category: "seasonal",
   charity: charity3,
-  condition: "Used_-_Good",
+  condition: "used_good",
   description: "Warm blankets for winter shelter",
   quantity_needed: 18,
   quantity_remaining: 18,
@@ -463,7 +463,7 @@ puts "Created request for #{request17.quantity_needed} #{request17.title}."
 request18 = Request.create!(
   category: "clothes",
   charity: charity4,
-  condition: "Used_-_Like_New",
+  condition: "used_like_new",
   description: "Children's rain boots, sizes mixed",
   quantity_needed: 12,
   quantity_remaining: 12,
@@ -478,7 +478,7 @@ puts "Created request for #{request18.quantity_needed} #{request18.title}."
 request19 = Request.create!(
   category: "cooking",
   charity: charity1,
-  condition: "Used_-_Good",
+  condition: "used_good",
   description: "Rice cookers or electric kettles welcome",
   quantity_needed: 6,
   quantity_remaining: 6,
@@ -493,7 +493,7 @@ puts "Created request for #{request19.quantity_needed} #{request19.title}."
 request20 = Request.create!(
   category: "food",
   charity: charity2,
-  condition: "New",
+  condition: "new",
   description: "Shelf-stable milk cartons",
   quantity_needed: 24,
   quantity_remaining: 24,
@@ -508,7 +508,7 @@ puts "Created request for #{request20.quantity_needed} #{request20.title}."
 request21 = Request.create!(
   category: "other",
   charity: charity4,
-  condition: "Used_-_Good",
+  condition: "used_good",
   description: "Reusable backpacks for school-age children",
   quantity_needed: 14,
   quantity_remaining: 14,
@@ -526,7 +526,7 @@ puts "Creating offers..."
 
 offer1a = Offer.create!(
   can_ship_by: Date.today + 7.days,
-  condition: "Used - Good",
+  condition: "used_good",
   donor: donor1,
   message: "Can ship next week",
   quantity_offered: 2,
@@ -539,7 +539,7 @@ puts "Created offer for #{offer1a.quantity_offered} for #{offer1a.request.title}
 
 offer1b = Offer.create!(
   can_ship_by: Date.today + 7.days,
-  condition: "Used - New",
+  condition: "used_like_new",
   donor: donor2,
   message: "Can ship next week",
   quantity_offered: 1,
@@ -552,7 +552,7 @@ puts "Created offer for #{offer1b.quantity_offered} for #{offer1b.request.title}
 
 offer2 = Offer.create!(
   can_ship_by: Date.today,
-  condition: "New",
+  condition: "new",
   donor: donor3,
   message: "",
   quantity_offered: 20,
@@ -565,7 +565,7 @@ puts "Created offer for #{offer2.quantity_offered} for #{offer2.request.title} b
 
 offer3 = Offer.create!(
   can_ship_by: Date.today,
-  condition: "Used - Poor",
+  condition: "used_good",
   donor: donor1,
   message: "",
   quantity_offered: 5,
@@ -578,7 +578,7 @@ puts "Created offer for #{offer3.quantity_offered} for #{offer3.request.title} b
 
 offer4 = Offer.create!(
   can_ship_by: Date.yesterday,
-  condition: "New",
+  condition: "new",
   donor: donor3,
   message: "",
   quantity_offered: 10,
@@ -591,7 +591,7 @@ puts "Created offer for #{offer4.quantity_offered} for #{offer4.request.title} b
 
 offer5 = Offer.create!(
   can_ship_by: Date.today - 7.days,
-  condition: "New",
+  condition: "new",
   donor: donor2,
   message: "",
   quantity_offered: 40,
@@ -604,7 +604,7 @@ puts "Created offer for #{offer5.quantity_offered} for #{offer5.request.title} b
 
 offer6 = Offer.create!(
   can_ship_by: Date.today - 3.days,
-  condition: "Used - Like New",
+  condition: "used_like_new",
   donor: donor4,
   message: "Laptops like new",
   quantity_offered: 2,
