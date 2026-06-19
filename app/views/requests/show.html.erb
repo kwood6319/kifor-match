@@ -1,6 +1,6 @@
 <div class="container mt-5 mb-4">
   <div class="mb-3">
-    <%= link_to "← Back", request.referer || root_path, class: "btn btn-outline-secondary" %>
+    <%= link_to "← Back", "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary" %>
   </div>
   <div class="row align-items-stretch g-4">
     <div class="col-lg-5">
