@@ -68,6 +68,10 @@ class Request < ApplicationRecord
 
   validates :title, :category, :description, :units, :condition, :urgency, presence: true
   validates :status, inclusion: { in: STATUSES }
+  validates :quantity_needed, numericality: { greater_than_or_equal_to: 0 }
+  validates :quantity_remaining, numericality: { greater_than_or_equal_to: 0 }
+
+
   def set_default_status
     self.status ||= "active"
   end
