@@ -48,7 +48,6 @@
       </div>
     <% else %>
       <% @requests.each do |request| %>
-        <% if request.quantity_remaining != 0 %>
         <div class="col-sm-12 col-md-6 col-lg-4">
           <div class="request-card card h-100">
             <div class="request-card-infos">
@@ -81,7 +80,6 @@
             <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
           </div>
         </div>
-        <% end %>
       <% end %>
     <% end %>
   </div>

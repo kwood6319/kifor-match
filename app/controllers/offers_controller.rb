@@ -126,7 +126,7 @@ class OffersController < ApplicationController
     if @offer.update(
       offer_params.merge(status: "shipped")
     )
-      redirect_to request_path(request),
+      redirect_to request_path(@offer.request),
                   notice: "Shipping info saved."
     else
       render :edit, status: :unprocessable_entity

@@ -8,12 +8,12 @@ class Offer < ApplicationRecord
 
   STATUSES = %w[
     submitted
-    active
-    inactive
-    accepted
+    approved
     rejected
+    shipped
+    received
     sent
-  ]
+  ].freeze
 
   private
 
