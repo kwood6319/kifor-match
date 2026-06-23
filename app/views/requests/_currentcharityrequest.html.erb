@@ -42,7 +42,7 @@
               </div>
             </div>
           <% elsif offer.status == "approved"%>
-            <p class="mb-0"> We have notified the donor and are awaiting the shipping information. </p>
+            <p class="mb-0"> <%= t("statuses.charity.approved_message") %> </p>
           <% elsif offer.status == "shipped" %>
             <p class="mb-0">
               <strong> <%= t("statuses.arriving") %>: </strong> <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %>
@@ -52,9 +52,9 @@
             </p>
             <%= button_to "Received!", mark_received_offer_path(offer), method: :patch, class: "btn btn-danger" %>
           <% elsif offer.status == "rejected" %>
-            <p class="mb-0"> You have rejected this offer. </p>
+            <p class="mb-0"> <%= t("statuses.charity.rejected_message") %> </p>
           <% elsif offer.status == "received" %>
-            <p class="mb-0"> You have marked this offer as received. </p>
+            <p class="mb-0"> <%= t("statuses.charity.received_message") %> </p>
           <% end %>
         </div>
       </div>
