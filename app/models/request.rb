@@ -7,6 +7,7 @@ class Request < ApplicationRecord
     active
     inactive
     fulfilled
+    flagged
   ]
 
   CONDITIONS = [
