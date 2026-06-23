@@ -1,6 +1,6 @@
-<h2> Offers </h2>
+<h2> <%= t("offers.offers") %> </h2>
 <% if @offers.empty? %>
-  No offers yet
+  <%= t("offers.no_offers") %>
 <% else %>
   <% @offers.each do |offer| %>
     <div class="small-card offer-card p-2 mb-3
@@ -11,7 +11,7 @@
             <%= image_tag offer.photo, class: "img-fluid rounded" %>
           <% else %>
             <div class="offer-image-placeholder">
-              📷 No image
+              📷 <%= t("offers.no_image") %>
             </div>
           <% end %>
         </div>
@@ -24,35 +24,32 @@
               <h3> <%= offer.quantity_offered %> </h3>
             </div>
           </div>
-          <p class="mb-0"> <i class="fa-solid fa-location-dot"></i> <%= offer.donor.region if offer.donor.region %> </p>
-          <p class="mb-0"> <strong> Condition: </strong> <%= offer.condition %> </p>
-          <p class="mb-0"> <strong> Can be sent: </strong> <%= offer.can_ship_by ? offer.can_ship_by.strftime("%b %e") : "N/A" %> </p>
-          <p class="mb-0"> <strong> Message: </strong> <%= offer.message %> </p>
+          <p class="mb-0"> <i class="fa-solid fa-location-dot"></i> <%= t("prefectures.#{offer.donor.prefecture}") if offer.donor.prefecture %> </p>
+          <p class="mb-0"> <strong> <%= t("navigation.condition") %>: </strong> <%= t("conditions.#{offer.condition}") %> </p>
+          <p class="mb-0"> <strong> <%= t("offers.can_ship_by") %></strong> <%= offer.can_ship_by ? offer.can_ship_by.strftime("%b %e") : "N/A" %> </p>
+          <p class="mb-0"> <strong> <%= t("offers.message") %>: </strong> <%= offer.message %> </p>
           <% if offer.status == "submitted" %>
             <div class="row mt-1">
               <div class="col-lg-6">
                 <% if policy(offer).approve? %>
-                  <%= button_to "Approve Offer", approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
+                  <%= button_to t("buttons.approve_offer"), approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
                 <% end %>
               </div>
               <div class="col-lg-6">
                 <% if policy(offer).reject? %>
-                  <%= button_to "Reject Offer", reject_offer_path(offer), method: :patch, class: "btn btn-danger" %>
+                  <%= button_to t("buttons.reject_offer"), reject_offer_path(offer), method: :patch, class: "btn btn-danger" %>
                 <% end %>
               </div>
             </div>
           <% elsif offer.status == "approved"%>
             <p class="mb-0"> We have notified the donor and are awaiting the shipping information. </p>
           <% elsif offer.status == "shipped" %>
-            <% if offer.estimated_arrival %>
-              <p class="mb-0"> <strong> Estimated arrival: </strong> <%= offer.estimated_arrival %></p>
-            <% end %>
-            <% if offer.tracking_number != "" %>
-              <p class="mb-0"> <strong> Tracking information: </strong> <%= offer.tracking_number %> </p>
-            <% end %>
-            <% if !offer.estimated_arrival && offer.tracking_number = "" %>
-              <p class="mb-0"> The donor has not provided their tracking information. Please contact an admininistrator. </p>
-            <% end %>
+            <p class="mb-0">
+              <strong> <%= t("statuses.arriving") %>: </strong> <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %>
+            </p>
+            <p class="mb-0">
+              <strong> <%= t("statuses.tracking_info") %>: </strong> <%= offer.tracking_number != "" ? offer.tracking_number : "?" %>
+            </p>
             <%= button_to "Received!", mark_received_offer_path(offer), method: :patch, class: "btn btn-danger" %>
           <% elsif offer.status == "rejected" %>
             <p class="mb-0"> You have rejected this offer. </p>
