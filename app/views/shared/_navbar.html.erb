@@ -31,9 +31,9 @@
     <% end %>
     <li>
       <% if I18n.locale == :ja %>
-        <%= link_to "English", url_for(locale: :en) %>
+        <%= link_to "English", url_for(locale: :en), data: { turbo_action: "replace"} %>
       <% else %>
-        <%= link_to "日本語", url_for(locale: :ja) %>
+        <%= link_to "日本語", url_for(locale: :ja), data: {turbo_action: "replace"} %>
       <% end %>
     </li>
   </ul>
