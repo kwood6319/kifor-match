@@ -60,5 +60,7 @@
     <p> The charity has received your information. For your own notes: </p>
     <p> Estimated arrival: <%= offer.estimated_arrival %> </p>
     <p> Tracking information: <%= offer.tracking_number %> </p>
-  <% end %>
-</div>
+  <% elsif offer.status == "received" %>
+    <p> Your item has been marked as received by the charity. Thank you, from the bottom of our hearts. ♡
+    <% end %>
+  </div>

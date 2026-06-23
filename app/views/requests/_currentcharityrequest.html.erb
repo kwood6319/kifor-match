@@ -56,6 +56,8 @@
             <%= button_to "Received!", mark_received_offer_path(offer), method: :patch, class: "btn btn-danger" %>
           <% elsif offer.status == "rejected" %>
             <p class="mb-0"> You have rejected this offer. </p>
+          <% elsif offer.status == "received" %>
+            <p class="mb-0"> You have marked this offer as received. </p>
           <% end %>
         </div>
       </div>
