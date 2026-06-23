@@ -42,9 +42,20 @@
               </div>
             </div>
           <% elsif offer.status == "approved"%>
-            <p class="mb-0"> <strong> Estimated arrival: </strong> <%= offer.estimated_arrival %></p>
-            <p class="mb-0"> <strong> Tracking information: </strong> <%= offer.tracking_number %> </p>
+            <p class="mb-0"> We have notified the donor and are awaiting the shipping information. </p>
+          <% elsif offer.status == "shipped" %>
+            <% if offer.estimated_arrival %>
+              <p class="mb-0"> <strong> Estimated arrival: </strong> <%= offer.estimated_arrival %></p>
+            <% end %>
+            <% if offer.tracking_number != "" %>
+              <p class="mb-0"> <strong> Tracking information: </strong> <%= offer.tracking_number %> </p>
+            <% end %>
+            <% if !offer.estimated_arrival && offer.tracking_number = "" %>
+              <p class="mb-0"> The donor has not provided their tracking information. Please contact an admininistrator. </p>
+            <% end %>
             <%= button_to "Received!", mark_received_offer_path(offer), method: :patch, class: "btn btn-danger" %>
+          <% elsif offer.status == "rejected" %>
+            <p class="mb-0"> You have rejected this offer. </p>
           <% end %>
         </div>
       </div>
