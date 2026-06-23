@@ -1,16 +1,46 @@
 <%= simple_form_for request do |f| %>
   <div class="row">
-    <div class="col-md-4"><%= f.input :title, placeholder: "Calculators, Instant Food, etc" %></div>
-    <div class="col-md-4"><%= f.input :quantity_needed, placeholder: "1, 2, 3, etc" %></div>
-    <div class="col-md-4"><%= f.input :units, collection: Request::UNITS.map { |u| [u.humanize, u] }, prompt: "Select Units" %></div>
+    <div class="col-md-4">
+      <%= f.input :title, label: t("requests.title"), placeholder: t("requests.title_placeholder") %>
+    </div>
+    <div class="col-md-4">
+      <%= f.input :quantity_needed, label: t("requests.quantity_needed"), placeholder: "1, 2, 3..." %>
+    </div>
+    <div class="col-md-4">
+      <%= f.input :units, label: t("requests.units"),
+        collection: Request::UNITS.map { |u|
+          [t("units.#{u}"), u]
+        },
+        prompt: t("units.select") %>
+    </div>
   </div>
   <div class="row">
-    <div class="col-md-4"><%= f.input :urgency, collection: Request::URGENCIES.map { |u| [u.humanize, u] }, prompt: "Select Urgency" %></div>
-    <div class="col-md-4"><%= f.input :condition,  label: "Minimum Condition Acceptable", collection: Request::CONDITIONS, prompt: "Select Condition",  hint: "Selecting 'Used - Good' means you will also accept items in better condition." %></div>
-    <div class="col-md-4"><%= f.input :category, collection: Request::CATEGORIES.map { |c| [c.humanize, c] }, prompt: "Select Category" %></div>
+    <div class="col-md-4">
+      <%= f.input :urgency,
+        label: t("requests.urgency"),
+        collection: Request::URGENCIES.map { |u| [t("urgencies.#{u}"), u] },
+        prompt: t("urgencies.select_urgency") %>
+    </div>
+    <div class="col-md-4">
+      <%= f.input :condition,
+        label: t("requests.condition"),
+        collection: Request::CONDITIONS.map { |c| [t("conditions.#{c}"), c] },
+        prompt: t("conditions.select"),
+        hint: t("requests.condition_message") %>
+    </div>
+    <div class="col-md-4">
+      <%= f.input :category,
+        label: t("navigation.category"),
+        collection: Request::CATEGORIES.map { |c| [t("categories.#{c}"), c] },
+        prompt: t("categories.select") %>
+    </div>
   </div>
   <div class="row">
-    <div class="col-12"><%= f.input :description, placeholder: "Please describe the item" %></div>
+    <div class="col-12">
+      <%= f.input :description,
+        label: t("requests.description"),
+        placeholder: t("requests.description_message") %>
+    </div>
   </div>
   <%= f.hidden_field :status, value: "active" %>
   <%= f.submit class: "btn btn-primary mt-3" %>

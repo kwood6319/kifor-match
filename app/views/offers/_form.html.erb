@@ -1,24 +1,26 @@
 <div class="card shadow-sm p-4">
-  <h4 class="mb-4 text-center">Make an Offer</h4>
+  <h4 class="mb-4 text-center"><%= t("offers.make_an_offer")%></h4>
   <% offer ||= Offer.new %>
   <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(request)) do |form| %>
     <div class="mb-3">
-      <%= form.label :quantity_offered, class: "form-label fw-bold" %>
+      <%= form.label t("offers.quantity_offered"), class: "form-label fw-bold" %>
       <%= form.number_field :quantity_offered, min: 1, class: "form-control" %>
     </div>
     <div class="mb-3">
-      <%= form.label :condition, class: "form-label fw-bold" %>
+      <%= form.label t("navigation.condition"), class: "form-label fw-bold" %>
       <%= form.select :condition,
-              ["New", "Used - Like New", "Used - Good"],
-              { prompt: "Select condition" },
-              class: "form-select" %>
+      Request::CONDITIONS.map { |condition|
+        [t("conditions.#{condition}"), condition]
+      },
+      { prompt: t("conditions.select") },
+      class: "form-select" %>
     </div>
     <div class="mb-3">
-      <%= form.label :message, class: "form-label fw-bold" %>
-      <%= form.text_area :message, rows: 4, class: "form-control", placeholder: "Any details you'd like to share with the charity?" %>
+      <%= form.label t("offers.message"), class: "form-label fw-bold" %>
+      <%= form.text_area :message, rows: 4, class: "form-control", placeholder: t("offers.message_prompt") %>
     </div>
     <div class="mb-4">
-      <%= form.label :can_ship_by, class: "form-label fw-bold" %>
+      <%= form.label t("offers.can_ship_by"), class: "form-label fw-bold" %>
       <%= form.date_field :can_ship_by, class: "form-control" %>
     </div>
     <div class="mb-4 p-3 bg-light border rounded">
@@ -26,15 +28,15 @@
         <%= image_tag offer.photo,
         class: "img-fluid rounded mb-3" %>
       <% end %>
-      <%= form.label :photo, "Photo of item (optional)", class: "form-label fw-bold" %>
+      <%= form.label :photo, t("offers.photo_of_item"), class: "form-label fw-bold" %>
       <%= form.file_field :photo, accept: "image/*", class: "form-control" %>
-      <div class="form-text mt-2">Uploading a photo helps charities verify the condition of the item.</div>
+      <div class="form-text mt-2"><%= t("offers.photo_expl") %></div>
     </div>
     <%= form.hidden_field :request_id, value: @request.id %>
     <%= form.hidden_field :donor_id, value: @donor&.id %>
     <div class="d-grid mt-4">
       <%# Using an inline style to pull in your KiFor Pink from the previous FAB button! %>
-      <%= form.submit(offer.persisted? ? "Save changes" : "Create Offer", class: "btn text-white fs-5", style: "background-color: #E84393;") %>
+      <%= form.submit(offer.persisted? ? t("offers.save_changes") : t("offers.send_offer"), class: "btn text-white fs-5", style: "background-color: #E84393;") %>
     </div>
   <% end %>
 </div>

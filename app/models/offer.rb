@@ -6,6 +6,15 @@ class Offer < ApplicationRecord
 
   after_update :update_request_quantity
 
+  STATUSES = %w[
+    submitted
+    active
+    inactive
+    accepted
+    rejected
+    sent
+  ]
+
   private
 
   def update_request_quantity
