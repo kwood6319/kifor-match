@@ -36,7 +36,7 @@
   <p> <%= offer.status %> </p>
   <% if offer.status == "submitted" %>
     <p> We are currently awaiting the charity's response. We'll let you know when they respond! </p>
-  <% elsif offer.status == "accepted" %>
+  <% elsif offer.status == "approved" %>
     <p> Please send the item and then fill in the following information: </p>
     <p> Arrives: <%= offer.estimated_arrival %> </p>
     <p> <%= offer.tracking_number %> </p>
