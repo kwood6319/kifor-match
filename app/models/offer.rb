@@ -6,13 +6,14 @@ class Offer < ApplicationRecord
 
   after_update :update_request_quantity
 
-  STATUSES = %(
-  submitted
-  approved
-  rejected
-  shipped
-  received
-  )
+  STATUSES = %w[
+    submitted
+    approved
+    rejected
+    shipped
+    received
+    flagged
+  ]
 
   private
 
