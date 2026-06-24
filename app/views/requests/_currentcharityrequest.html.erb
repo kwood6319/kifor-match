@@ -41,7 +41,7 @@
                 <% end %>
               </div>
             </div>
-          <% elsif offer.status == "approved"%>
+          <% elsif %w[approved shipped].include?(offer.status) %>
             <p class="mb-0">
               <strong> <%= t("statuses.arriving") %>: </strong> <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %>
             </p>

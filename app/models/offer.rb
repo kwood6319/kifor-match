@@ -15,10 +15,12 @@ class Offer < ApplicationRecord
     sent
   ].freeze
 
+  SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
+
   private
 
   def donor_amendment?
-    %w[approved rejected].include?(status) && (changes.keys - ["status", "updated_at"]).any?
+    %w[approved rejected].include?(status) && (changes.keys - ["status", "updated_at"] - SHIPPING_FIELDS).any?
   end
 
   def resubmit_if_amended
