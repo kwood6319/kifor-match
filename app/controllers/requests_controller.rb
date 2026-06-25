@@ -67,16 +67,16 @@ class RequestsController < ApplicationController
     authorize @request
 
     old_needed = @request.quantity_needed
+    old_remaining = @request.quantity_remaining
 
     if @request.update(request_params)
       difference = @request.quantity_needed - old_needed
-      @request.increment!(:quantity_remaining, difference)
+      new_remaining = [old_remaining + difference, 0].max
+      @request.update_column(:quantity_remaining, new_remaining)
       redirect_to request_path
     else
       render :edit, status: :unprocessable_entity
     end
-
-    authorize @request
   end
 
   # def activate
