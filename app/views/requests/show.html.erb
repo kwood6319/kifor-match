@@ -42,9 +42,15 @@
         <%= render "offers/form", request: @request, offer: @my_offer %>
       <% elsif @my_offer.present? %>
         <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
-        <%= link_to t("buttons.edit_offer"),
-      request_path(@request, edit_offer: @my_offer.id),
-      class: "btn btn-danger" %>
+        <% if %w]submitted approved rejected].include?(@my_offer.status.to_s) %>
+          <%= link_to t("buttons.edit_offer"),
+          request_path(@request, edit_offer: @my_offer.id),
+          class: "btn btn-danger" %>
+        <% end %>
+        
+        <% if %w[submitted rejected].include?(@my_offer.status.to_s) %>
+          <%= button_to "Delete", offer_path(@my_offer), method: :delete, data: { turbo_confirm: "Delete this offer?" } %>
+        <% end %>
       <% elsif policy(Offer.new(request: @request)).new?%>
         <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
       <% end %>

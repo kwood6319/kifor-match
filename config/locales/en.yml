@@ -95,7 +95,6 @@ en:
       approved_message: "We have notified the donor and are awaiting the shipping information."
       rejected_message: "You have rejected this offer."
       received_message: "You have marked this offer as received."
-
   buttons:
     save: "Save"
     edit_offer: "Edit offer"

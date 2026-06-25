@@ -35,11 +35,17 @@
   <h5 class="mt-2"> <%= t("offers.status") %>: </h5>
   <p> <%= t("statuses.#{offer.status}") %> </p>
   <% if offer.status == "submitted" %>
+<<<<<<< HEAD
     <p> <%= t("statuses.donors.submitted_message") %> </p>
   <% elsif offer.status == "approved" %>
     <%= t("statuses.donors.approved_message") %>
   <% elsif offer.status == "accepted" %>
     <p> <%= t("statuses.donors.accepted_message") %>: </p>
+=======
+    <p> <%= t("statuses.submitted_message") %> </p>
+  <% elsif offer.status == "approved" %>
+    <p> <%= t("statuses.approved_message") %>: </p>
+>>>>>>> master
     <%= simple_form_for offer,
       url: mark_as_shipped_offer_path(offer),
       method: :patch do |f| %>
