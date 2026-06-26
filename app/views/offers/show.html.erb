@@ -1,44 +1,76 @@
 <% content_for :title, "Offer Details" %>
-<h1>Offer Details</h1>
-<div>
-  <div><strong>Request:</strong> <%= @request.title %></div>
-  <% if @request.description.present? %>
-    <div><strong>Description:</strong> <%= @request.description %></div>
-  <% end %>
-  <div><strong>Charity:</strong> <%= @charity.org_name %></div>
-  <% if @request.quantity_remaining.present? %>
-    <div><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></div>
-  <% end %>
-</div>
-<div>
-  <div><strong>Donor:</strong> <%= @donor.display_name %></div>
-  <div><strong>Quantity offered:</strong> <%= @offer.quantity_offered %> <%= @request.units %></div>
-  <div><strong>Condition:</strong> <%= @offer.condition %></div>
-  <% if @offer.message.present? %>
-    <div><strong>Message:</strong> <%= @offer.message %></div>
-  <% end %>
-  <% if @offer.can_ship_by.present? %>
-    <div><strong>Can ship by:</strong> <%= @offer.can_ship_by %></div>
-  <% end %>
-  <% if @offer.tracking_number.present? %>
-    <div><strong>Tracking number:</strong> <%= @offer.tracking_number %></div>
-  <% end %>
-  <div><strong>Status:</strong> <%= @offer.status %></div>
-  <% if @offer.photo.attached? %>
-    <%= cl_image_tag @offer.photo.key, width: 300, crop: :fill %>
-  <% end %>
-</div>
-<div>
-  <% if @can_approve %>
-    <%= button_to "Approve", approve_offer_path(@offer), method: :patch %>
-  <% end %>
-  <% if @can_reject %>
-    <%= button_to "Reject", reject_offer_path(@offer), method: :patch %>
-  <% end %>
-  <% if @can_mark_received %>
-    <%= button_to "Mark as Received", mark_received_offer_path(@offer), method: :patch %>
-  <% end %>
-</div>
-<div>
-  <%= link_to "Back to Offers", request_offers_path(@request) %>
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <h1 class="mb-4">Offer Details</h1>
+
+      <div class="tall-card rounded p-4 mb-4">
+        <%# Request info %>
+        <div class="mb-3">
+          <h5 class="text-muted text-uppercase small mb-2">Request</h5>
+          <p class="mb-1"><strong><%= @request.title %></strong></p>
+          <% if @request.description.present? %>
+            <p class="mb-1 text-muted"><%= @request.description %></p>
+          <% end %>
+          <p class="mb-1"><strong>Charity:</strong> <%= @charity.org_name %></p>
+          <% if @request.quantity_remaining.present? %>
+            <p class="mb-0"><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></p>
+          <% end %>
+        </div>
+
+        <hr>
+
+        <%# Offer info %>
+        <div class="mb-3">
+          <h5 class="text-muted text-uppercase small mb-2">Offer</h5>
+          <p class="mb-1"><strong>Donor:</strong> <%= @donor.display_name %></p>
+          <p class="mb-1"><strong>Quantity offered:</strong> <%= @offer.quantity_offered %> <%= @request.units %></p>
+          <p class="mb-1"><strong>Condition:</strong> <%= @offer.condition %></p>
+          <% if @offer.message.present? %>
+            <p class="mb-1"><strong>Message:</strong> <%= @offer.message %></p>
+          <% end %>
+          <% if @offer.can_ship_by.present? %>
+            <p class="mb-1"><strong>Can ship by:</strong> <%= @offer.can_ship_by %></p>
+          <% end %>
+          <% if @offer.tracking_number.present? %>
+            <p class="mb-1"><strong>Tracking number:</strong> <%= @offer.tracking_number %></p>
+          <% end %>
+          <p class="mb-0">
+            <strong>Status:</strong>
+            <span class="badge bg-secondary text-capitalize"><%= @offer.status %></span>
+          </p>
+        </div>
+
+        <% if @offer.photo.attached? %>
+          <div class="mb-3">
+            <%= cl_image_tag @offer.photo.key, width: 300, crop: :fill, class: "img-fluid rounded" %>
+          </div>
+        <% end %>
+
+        <%# Actions %>
+        <% if @can_approve || @can_reject || @can_mark_received %>
+          <hr>
+          <div class="d-flex gap-2 flex-wrap">
+            <% if @can_approve %>
+              <%= button_to "Approve", approve_offer_path(@offer), method: :patch,
+                    class: "btn btn-success btn-sm" %>
+            <% end %>
+            <% if @can_reject %>
+              <%= button_to "Reject", reject_offer_path(@offer), method: :patch,
+                    class: "btn btn-danger btn-sm" %>
+            <% end %>
+            <% if @can_mark_received %>
+              <%= button_to "Mark as Received", mark_received_offer_path(@offer), method: :patch,
+                    class: "btn btn-primary btn-sm" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%= link_to "← Back to Offers", request_offers_path(@request), class: "text-muted small" %>
+
+    </div>
+  </div>
 </div>
