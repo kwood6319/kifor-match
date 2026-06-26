@@ -33,7 +33,6 @@
     </div>
   </div>
   <h5 class="mt-2"> <%= t("offers.status") %>: </h5>
-  <p> <%= t("statuses.#{offer.status}") %> </p>
   <% if offer.status == "submitted" %>
     <p> <%= t("statuses.submitted_message") %> </p>
   <% elsif offer.status == "approved" %>
@@ -54,6 +53,8 @@
     <% end %>
   <% elsif offer.status == "rejected" %>
     <p> <%= t("statuses.rejected_message") %> </p>
+    <h5 class="mt-2"> <%= t("statuses.reason") %>: </h5>
+    <p> <%= offer.rejection_reason %></p>
   <% elsif offer.status == "shipped" %>
     <p> <%= t("statuses.shipped_message") %>: </p>
     <p> <%= t("statuses.arriving") %>: <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %> </p>

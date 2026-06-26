@@ -62,6 +62,7 @@ ja:
     received_message: "商品が受け取られました。ありがとうございます！"
     tracking_info: "配送状況"
     tracking_prompt: "追跡番号を入力してください"
+    reason: "理由"
   buttons:
     save: "保存"
     edit_offer: "オファーを編集"

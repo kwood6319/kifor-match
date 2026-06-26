@@ -91,6 +91,7 @@ en:
     received_message: "The item has been marked as received. Thank you!"
     tracking_info: "Tracking information"
     tracking_prompt: "Enter tracking number"
+    reason: "Reason"
   buttons:
     save: "Save"
     edit_offer: "Edit offer"
