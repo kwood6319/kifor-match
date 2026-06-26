@@ -68,6 +68,8 @@ ja:
     view_request: "リクエストを表示"
     approve_offer: "承認する"
     reject_offer: "拒否する"
+    close: "閉じる"
+    cancel: "キャンセル"
   requests:
     tell_us: "ご要望について、もう少し詳しく教えてください"
     edit_request: "リクエストを編集"
@@ -89,3 +91,12 @@ ja:
     liter: "リットル"
     pair: "ペア"
     set: "セット"
+  modals:
+    reject_offer:
+      title: "オファーを拒否する"
+      description: "この申し出を辞退する理由をご記入ください。この内容は寄付者に伝えられます。"
+      placeholder: "例：品質が当社のニーズに合わない、この商品はもう必要ない、など。"
+  activerecord:
+    attributes:
+      offer:
+        rejection_reason: "却下の理由"

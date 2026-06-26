@@ -30,6 +30,8 @@ class ApplicationController < ActionController::Base
 
   private
 
+  protect_from_forgery with: :exception
+
   def skip_pundit?
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/
   end

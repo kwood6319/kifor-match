@@ -20,7 +20,8 @@ class Offer < ApplicationRecord
   private
 
   def donor_amendment?
-    %w[approved rejected].include?(status) && (changes.keys - ["status", "updated_at"] - SHIPPING_FIELDS).any?
+    %w[approved rejected]
+      .include?(status_was) && (changes.keys - ["status", "updated_at", "rejection_reason"] - SHIPPING_FIELDS).any?
   end
 
   def resubmit_if_amended

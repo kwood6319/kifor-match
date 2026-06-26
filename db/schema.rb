@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_04_060000) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_26_080615) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -75,6 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_04_060000) do
     t.date "estimated_arrival"
     t.text "message"
     t.integer "quantity_offered", null: false
+    t.text "rejection_reason"
     t.bigint "request_id", null: false
     t.string "status", default: "submitted", null: false
     t.string "tracking_number"

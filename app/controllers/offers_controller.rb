@@ -92,9 +92,8 @@ class OffersController < ApplicationController
   # TODO: reject , reject offer (only Charities can reject offers)
   def reject
     authorize @offer
-    @offer.status = "rejected"
-    @offer.save
-    redirect_to request_path(@offer.request)
+    @offer.update(rejection_reason: params[:rejection_reason], status: :rejected)
+    redirect_to request_path(@offer.request), status: :see_other
   end
 
   # TODO: search , implement search scope on Offer model when ready
@@ -138,7 +137,7 @@ class OffersController < ApplicationController
   # TODO: strong params, whitelist params
   def offer_params
     params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :photo, :estimated_arrival,
-                                  :tracking_number)
+                                  :tracking_number, :rejection_reason)
   end
 
   def set_offer
