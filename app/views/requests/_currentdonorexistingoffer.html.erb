@@ -33,30 +33,33 @@
     </div>
   </div>
   <h5 class="mt-2"> <%= t("offers.status") %>: </h5>
-  <p> <%= t("statuses.#{offer.status}") %> </p>
   <% if offer.status == "submitted" %>
-    <p> <%= t("statuses.submitted_message") %> </p>
+    <p> <%= t("statuses.donor.submitted_message") %> </p>
   <% elsif offer.status == "approved" %>
-    <p> <%= t("statuses.approved_message") %>: </p>
+    <%= t("statuses.donor.approved_message") %>
+    <%= t("statuses.donor.charity_shipping_info") %>
+    <p class="my-2 mx-5"> <%= offer.request.charity.shipping_address %> </p>
     <%= simple_form_for offer,
       url: mark_as_shipped_offer_path(offer),
       method: :patch do |f| %>
-      <div class="row">
+      <div class="row mt-2">
         <div class="col-md-6">
           <%= f.input :estimated_arrival, label: t("statuses.arriving"), as: :date, html5: true %>
         </div>
         <div class="col-md-6">
-          <%= f.input :tracking_number, label: t("statuses.tracking_info"), placeholder: t("statuses.tracking_prompt") %>
+          <%= f.input :tracking_number, label: t("statuses.donor.tracking_info"), placeholder: t("statuses.donor.tracking_prompt") %>
         </div>
       </div>
       <%= f.submit t("buttons.save"),
         class: "btn btn-danger" %>
     <% end %>
   <% elsif offer.status == "rejected" %>
-    <p> <%= t("statuses.rejected_message") %> </p>
+    <p> <%= t("statuses.donor.rejected_message") %> </p>
   <% elsif offer.status == "shipped" %>
-    <p> <%= t("statuses.shipped_message") %>: </p>
-    <p> <%= t("statuses.arriving") %>: <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %> </p>
-    <p> <%= t("statuses.tracking_info") %>: <%= offer.tracking_number != "" ? offer.tracking_number : "?" %> </p>
+    <p> <%= t("statuses.donor.shipped_message") %>: </p>
+    <p> <%= t("statuses.donor.arriving") %>: <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %> </p>
+    <p> <%= t("statuses.donor.tracking_info") %>: <%= offer.tracking_number != "" ? offer.tracking_number : "?" %> </p>
+  <% elsif offer.status == "received" %>
+    <p> <%= t("statuses.donor.received_message") %> </p>
   <% end %>
 </div>

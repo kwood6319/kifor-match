@@ -3,10 +3,9 @@ class Request < ApplicationRecord
   has_many :offers
 
   STATUSES = %w[
-    submitted
     active
-    inactive
     fulfilled
+    flagged
   ]
 
   CONDITIONS = [

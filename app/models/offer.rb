@@ -12,7 +12,7 @@ class Offer < ApplicationRecord
     rejected
     shipped
     received
-    sent
+    flagged
   ].freeze
 
   SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
