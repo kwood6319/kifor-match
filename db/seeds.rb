@@ -211,7 +211,7 @@ request1 = Request.create!(
   description: "charger included",
   quantity_needed: 2,
   quantity_remaining: 2,
-  status: "submitted",
+  status: "active",
   title: "Laptops",
   units: "units",
   urgency: "high"
@@ -226,7 +226,7 @@ request2 = Request.create!(
   description: "Clean, good condition",
   quantity_needed: 10,
   quantity_remaining: 10,
-  status: "submitted",
+  status: "active",
   title: "Winter coats (adult)",
   units: "coats",
   urgency: "medium"
@@ -241,7 +241,7 @@ request3 = Request.create!(
   description: "Good condition",
   quantity_needed: 15,
   quantity_remaining: 15,
-  status: "submitted",
+  status: "active",
   title: "Kids shoes (sizes 18-22cm)",
   units: "pairs",
   urgency: "medium"
@@ -256,7 +256,7 @@ request4 = Request.create!(
   description: "Sealed preferred",
   quantity_needed: 50,
   quantity_remaining: 50,
-  status: "submitted",
+  status: "active",
   title: "Hygiene kits",
   units: "kits",
   urgency: "high"
@@ -272,7 +272,7 @@ request5 = Request.create!(
   description: "Expiry 3+ months",
   quantity_needed: 20,
   quantity_remaining: 20,
-  status: "submitted",
+  status: "active",
   title: "Rice (unopened)",
   units: "kg",
   urgency: "medium"
@@ -287,7 +287,7 @@ request6 = Request.create!(
   description: "New or like new",
   quantity_needed: 30,
   quantity_remaining: 30,
-  status: "submitted",
+  status: "active",
   title: "Towels",
   units: "units",
   urgency: "medium"
@@ -302,7 +302,7 @@ request7 = Request.create!(
   description: "Clean/ New",
   quantity_needed: 20,
   quantity_remaining: 20,
-  status: "submitted",
+  status: "active",
   title: "Blankets",
   units: "units",
   urgency: "high"
@@ -317,7 +317,7 @@ request8 = Request.create!(
   description: "Full sets",
   quantity_needed: 40,
   quantity_remaining: 40,
-  status: "submitted",
+  status: "active",
   title: "Stationery sets",
   units: "sets",
   urgency: "medium"
@@ -332,7 +332,7 @@ request9 = Request.create!(
   description: "USB-C type",
   quantity_needed: 25,
   quantity_remaining: 25,
-  status: "submitted",
+  status: "active",
   title: "Phone chargers",
   units: "units",
   urgency: "low"
@@ -347,7 +347,7 @@ request10 = Request.create!(
   description: "Backpacks for kids",
   quantity_needed: 20,
   quantity_remaining: 20,
-  status: "submitted",
+  status: "active",
   title: "Backpacks (kids)",
   units: "units",
   urgency: "medium"
@@ -362,7 +362,7 @@ request11 = Request.create!(
   description: "Laptops needed",
   quantity_needed: 2,
   quantity_remaining: 2,
-  status: "submitted",
+  status: "active",
   title: "Laptops",
   units: "units",
   urgency: "high"
@@ -377,7 +377,7 @@ request12 = Request.create!(
   description: "Disposable diapers, mixed sizes welcome",
   quantity_needed: 25,
   quantity_remaining: 25,
-  status: "submitted",
+  status: "active",
   title: "Baby diapers",
   units: "pack",
   urgency: "urgent"
@@ -407,7 +407,7 @@ request14 = Request.create!(
   description: "Toothbrush + toothpaste bundles preferred",
   quantity_needed: 30,
   quantity_remaining: 30,
-  status: "submitted",
+  status: "active",
   title: "Dental hygiene kits",
   units: "set",
   urgency: "medium"
@@ -437,7 +437,7 @@ request16 = Request.create!(
   description: "Kitchen and bathroom cleaner",
   quantity_needed: 15,
   quantity_remaining: 15,
-  status: "submitted",
+  status: "active",
   title: "Cleaning supplies",
   units: "box",
   urgency: "high"
@@ -467,7 +467,7 @@ request18 = Request.create!(
   description: "Children's rain boots, sizes mixed",
   quantity_needed: 12,
   quantity_remaining: 12,
-  status: "submitted",
+  status: "active",
   title: "Kids rain boots",
   units: "pair",
   urgency: "medium"
@@ -482,7 +482,7 @@ request19 = Request.create!(
   description: "Rice cookers or electric kettles welcome",
   quantity_needed: 6,
   quantity_remaining: 6,
-  status: "inactive",
+  status: "active",
   title: "Kitchen appliances",
   units: "item",
   urgency: "low"
@@ -512,7 +512,7 @@ request21 = Request.create!(
   description: "Reusable backpacks for school-age children",
   quantity_needed: 14,
   quantity_remaining: 14,
-  status: "submitted",
+  status: "active",
   title: "School backpacks",
   units: "item",
   urgency: "medium"
@@ -557,7 +557,7 @@ offer2 = Offer.create!(
   message: "",
   quantity_offered: 20,
   request: request4,
-  status: "accepted",
+  status: "approved",
   tracking_number: ""
 )
 
@@ -570,7 +570,7 @@ offer3 = Offer.create!(
   message: "",
   quantity_offered: 5,
   request: request2,
-  status: "declined",
+  status: "rejected",
   tracking_number: ""
 )
 
@@ -609,7 +609,7 @@ offer6 = Offer.create!(
   message: "Laptops like new",
   quantity_offered: 2,
   request: request11,
-  status: "accepted",
+  status: "approved",
   tracking_number: "XXXXXX"
 )
 

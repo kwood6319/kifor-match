@@ -28,8 +28,9 @@
           <p class="mb-0"> <strong> <%= t("navigation.condition") %>: </strong> <%= t("conditions.#{offer.condition}") %> </p>
           <p class="mb-0"> <strong> <%= t("offers.can_ship_by") %></strong> <%= offer.can_ship_by ? offer.can_ship_by.strftime("%b %e") : "N/A" %> </p>
           <p class="mb-0"> <strong> <%= t("offers.message") %>: </strong> <%= offer.message %> </p>
+          <h5 class="mt-2"> <%= t("offers.status") %>: </h5>
           <% if offer.status == "submitted" %>
-            <div class="row mt-1">
+            <div class="row">
               <div class="col-lg-6">
                 <% if policy(offer).approve? %>
                   <%= button_to t("buttons.approve_offer"), approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
@@ -47,14 +48,20 @@
                 <% end %>
               </div>
             </div>
-          <% elsif %w[approved shipped].include?(offer.status) %>
+          <% elsif offer.status == "approved"%>
+            <p class="mb-0"> <%= t("statuses.charity.approved_message") %> </p>
+          <% elsif offer.status == "shipped" %>
             <p class="mb-0">
               <strong> <%= t("statuses.arriving") %>: </strong> <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %>
             </p>
             <p class="mb-0">
               <strong> <%= t("statuses.tracking_info") %>: </strong> <%= offer.tracking_number != "" ? offer.tracking_number : "?" %>
             </p>
-            <%= button_to "Received!", mark_received_offer_path(offer), method: :patch, class: "btn btn-danger" %>
+            <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "btn btn-danger" %>
+          <% elsif offer.status == "rejected" %>
+            <p class="mb-0"> <%= t("statuses.charity.rejected_message") %> </p>
+          <% elsif offer.status == "received" %>
+            <p class="mb-0"> <%= t("statuses.charity.received_message") %> </p>
           <% end %>
         </div>
       </div>
