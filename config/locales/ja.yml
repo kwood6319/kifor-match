@@ -17,6 +17,7 @@ ja:
     description: "詳細"
   messages:
     welcome_back: "おかえりなさい"
+    your_requests: "現在進行中のリクエスト"
   urgencies:
     select_urgency: "緊急度を選択"
     low: "低い"

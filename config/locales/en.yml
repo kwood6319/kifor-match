@@ -46,6 +46,7 @@ en:
     description: "Description"
   messages:
     welcome_back: "Welcome back"
+    your_requests: "Your active requests"
   urgencies:
     select_urgency: "Select Urgency"
     low: "low"

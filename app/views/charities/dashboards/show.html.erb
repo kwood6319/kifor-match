@@ -1,5 +1,6 @@
 <div class="container mt-5 mb-4">
   <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%="様" if I18n.locale == :ja %>!</h3>
+  <h3> <%= t("messages.your_requests") %>: </h3>
 </div>
 <div class="container mb-5">
   <div class="row justify-content-center gap-3">
