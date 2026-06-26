@@ -91,6 +91,7 @@ en:
       arriving: "Estimated arrival"
       received: "Received"
       received_message: "Your item has been marked as received by the charity. Thank you, from the bottom of our hearts. ♡"
+      charity_shipping_info: "Please ship the information to the following address:"
     charity:
       approved_message: "We have notified the donor and are awaiting the shipping information."
       rejected_message: "You have rejected this offer."

@@ -37,6 +37,7 @@
     <p> <%= t("statuses.donor.submitted_message") %> </p>
   <% elsif offer.status == "approved" %>
     <%= t("statuses.donor.approved_message") %>
+    <%= t("statuses.donor.charity_shipping_info") %>
     <%= simple_form_for offer,
       url: mark_as_shipped_offer_path(offer),
       method: :patch do |f| %>
