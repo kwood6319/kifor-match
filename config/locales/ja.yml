@@ -48,7 +48,7 @@ ja:
     requests:
       active: "アクティブ"
       fulfilled: "完了"
-    offers:
+    donor:
       submitted: "確認待ち"
       submitted_message: "現在、当該慈善団体からの返答を待っているところです。返答があり次第、お知らせします！"
       approved: "承認済み"
