@@ -38,7 +38,13 @@
               </div>
               <div class="col-lg-6">
                 <% if policy(offer).reject? %>
-                  <%= button_to t("buttons.reject_offer"), reject_offer_path(offer), method: :patch, class: "btn btn-danger" %>
+                  <button type="button"
+                    class="btn btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#rejectOfferModal"
+                    data-reject-url="<%= reject_offer_path(offer) %>">
+                    <%= t("buttons.reject_offer") %>
+                  </button>
                 <% end %>
               </div>
             </div>

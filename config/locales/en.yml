@@ -103,6 +103,8 @@ en:
     view_request: "View Request"
     approve_offer: "Approve Offer"
     reject_offer: "Reject Offer"
+    close: "Close"
+    cancel: "Cancel"
   requests:
     tell_us: "Tell us a little more about your request"
     edit_request: "Edit Request"
@@ -124,3 +126,12 @@ en:
     liter: "liter"
     pair: "pair"
     set: "set"
+  modals:
+    reject_offer:
+      title: "Reject Offer"
+      description: "Please provide a reason for rejecting this offer. This will be shared with the donor."
+      placeholder: "E.g., The quality doesn't match our needs, we no longer need this item, etc."
+  activerecord:
+    attributes:
+      offer:
+        rejection_reason: "Reason for rejection"

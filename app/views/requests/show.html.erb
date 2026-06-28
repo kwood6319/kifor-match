@@ -47,12 +47,39 @@
           request_path(@request, edit_offer: @my_offer.id),
           class: "btn btn-danger" %>
         <% end %>
-        
         <% if %w[submitted rejected].include?(@my_offer.status.to_s) %>
           <%= button_to "Delete", offer_path(@my_offer), method: :delete, data: { turbo_confirm: "Delete this offer?" } %>
         <% end %>
       <% elsif policy(Offer.new(request: @request)).new?%>
         <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%# ------------------ %>
+<%# Rejection modal %>
+<div class="modal fade"
+      id="rejectOfferModal"
+      tabindex="-1"
+      aria-hidden="true"
+      data-controller="reject-offer">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= t("modals.reject_offer.title") %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <%= form_tag "#", method: :patch, id: "rejectOfferForm" do %>
+        <div class="modal-body">
+          <div class="mb-3">
+            <%= label_tag :rejection_reason, t("activerecord.attributes.offer.rejection_reason"), class: "form-label" %>
+            <%= text_area_tag :rejection_reason, nil, class: "form-control", rows: 4, id: "rejection_reason" %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
+          <%= submit_tag t("buttons.reject_offer"), class: "btn btn-danger" %>
+        </div>
       <% end %>
     </div>
   </div>
