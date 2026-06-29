@@ -76,6 +76,7 @@ ja:
     reject_offer: "拒否する"
     close: "閉じる"
     cancel: "キャンセル"
+    delete: "削除"
   requests:
     tell_us: "ご要望について、もう少し詳しく教えてください"
     edit_request: "リクエストを編集"
@@ -102,6 +103,8 @@ ja:
       title: "オファーを拒否する"
       description: "この申し出を辞退する理由をご記入ください。この内容は寄付者に伝えられます。"
       placeholder: "例：品質が当社のニーズに合わない、この商品はもう必要ない、など。"
+    delete_offer:
+      title: "オファーを削除"
   activerecord:
     attributes:
       offer:
