@@ -25,7 +25,7 @@
       <p class="mb-0"> <i class="fa-solid fa-location-dot"></i> <%= t("prefectures.#{offer.donor.prefecture}") if offer.donor.prefecture %> </p>
       <p class="mb-0">
         <strong> <%= t("navigation.condition") %>: </strong>
-        <%= offer.condition.present? ? t("conditions.#{offer.condition}") : "No condition provided by donor" %>
+        <%= offer.condition.present? ? t("conditions.#{offer.condition}") : t("conditions.no_condition") %>
       </p>
       <% if offer.can_ship_by %>
         <p class="mb-0"> <strong> <%= t("offers.can_ship_by") %>: </strong> <%= offer.can_ship_by.strftime("%b %e") %> </p>
