@@ -59,6 +59,7 @@ en:
     used_like_new: "Used - Like New"
     used_very_good: "Used - Very Good"
     used_good: "Used - Good"
+    no_condition: "No condition provided"
   offers:
     offers: "Offers"
     no_offers: "No offers yet"

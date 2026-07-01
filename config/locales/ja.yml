@@ -30,6 +30,7 @@ ja:
     used_like_new: "中古 - 新品同様"
     used_very_good: "中古 - 非常に良い"
     used_good: "中古 - 良い"
+    no_condition: "状態未指定"
   offers:
     offers: "オファー"
     no_offers: "まだオファーはありません"
