@@ -50,7 +50,7 @@ class OffersController < ApplicationController
     @offer.donor ||= @donor
     authorize @offer
     if @offer.save
-      redirect_to @offer
+      redirect_to offers_path
     else
       render :new
     end
@@ -78,7 +78,7 @@ class OffersController < ApplicationController
   def destroy
     authorize @offer
     @offer.destroy
-    redirect_to request_offers_path(@offer.request)
+    redirect_to offers_path
   end
 
   # TODO: approve , approve offer (only Charities can approve offers)

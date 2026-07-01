@@ -42,14 +42,24 @@
         <%= render "offers/form", request: @request, offer: @my_offer %>
       <% elsif @my_offer.present? %>
         <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
+      <div class="d-flex gap-2 mt-2">
         <% if %w]submitted approved rejected].include?(@my_offer.status.to_s) %>
           <%= link_to t("buttons.edit_offer"),
           request_path(@request, edit_offer: @my_offer.id),
-          class: "btn btn-danger" %>
+          class: "btn btn-secondary" %>
         <% end %>
+
         <% if %w[submitted rejected].include?(@my_offer.status.to_s) %>
-          <%= button_to "Delete", offer_path(@my_offer), method: :delete, data: { turbo_confirm: "Delete this offer?" } %>
+          <button type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteOfferModal"
+              data-delete-url="<%= offer_path(@my_offer) %>">
+              <%= t("buttons.delete") %>
+            </button>
         <% end %>
+
+      </div>
       <% elsif policy(Offer.new(request: @request)).new?%>
         <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
       <% end %>
@@ -57,6 +67,7 @@
   </div>
 </div>
 <%# ------------------ %>
+
 <%# Rejection modal %>
 <div class="modal fade"
       id="rejectOfferModal"
@@ -79,6 +90,29 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
           <%= submit_tag t("buttons.reject_offer"), class: "btn btn-danger" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<%# Delete modal %>
+<div class="modal fade"
+      id="deleteOfferModal"
+      tabindex="-1"
+      aria-hidden="true"
+      data-controller="delete-offer">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= t("modals.delete_offer.title") %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <%= form_tag "#", method: :delete, id: "deleteOfferForm" do %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
+          <%= submit_tag t("buttons.delete"), class: "btn btn-danger" %>
         </div>
       <% end %>
     </div>

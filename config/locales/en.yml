@@ -106,6 +106,7 @@ en:
     reject_offer: "Reject Offer"
     close: "Close"
     cancel: "Cancel"
+    delete: "Delete"
   requests:
     tell_us: "Tell us a little more about your request"
     edit_request: "Edit Request"
@@ -132,6 +133,8 @@ en:
       title: "Reject Offer"
       description: "Please provide a reason for rejecting this offer. This will be shared with the donor."
       placeholder: "E.g., The quality doesn't match our needs, we no longer need this item, etc."
+    delete_offer:
+      title: "Delete Offer"
   activerecord:
     attributes:
       offer:
