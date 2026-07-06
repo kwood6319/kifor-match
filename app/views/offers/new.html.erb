@@ -1,6 +1,5 @@
 <% content_for :title, "New Offer" %>
 <h1 class="mb-4">New Offer</h1>
-
 <div class="card mb-4 border-info">
   <div class="card-header bg-info-subtle">
     <h2 class="h5 mb-0">Request Details <small class="text-muted">(what the charity needs)</small></h2>
@@ -13,7 +12,6 @@
     <% if @request.quantity_remaining.present? %>
       <div><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></div>
     <% end %>
-    <div><strong>Units:</strong> <%= @request.units %></div>
     <% if @request.respond_to?(:condition) && @request.condition.present? %>
       <div><strong>Condition:</strong> <%= @request.condition %></div>
     <% end %>
@@ -24,7 +22,6 @@
     <div><strong>Region:</strong> <%= @request.charity.region %></div>
   </div>
 </div>
-
 <div class="card mb-4 border-success">
   <div class="card-header bg-success-subtle">
     <h2 class="h5 mb-0">Your Offer <small class="text-muted">(what you're donating)</small></h2>
@@ -40,11 +37,9 @@
         </ul>
       </div>
     <% end %>
-
     <%= render "form" %>
   </div>
 </div>
-
 <div>
   <%= link_to "Back to Request", request_path(@request) %>
 </div>

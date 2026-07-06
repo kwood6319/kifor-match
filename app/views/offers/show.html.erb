@@ -1,11 +1,8 @@
 <% content_for :title, "Offer Details" %>
-
 <div class="container py-4">
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
-
       <h1 class="mb-4">Offer Details</h1>
-
       <div class="tall-card rounded p-4 mb-4">
         <%# Request info %>
         <div class="mb-3">
@@ -19,14 +16,12 @@
             <p class="mb-0"><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></p>
           <% end %>
         </div>
-
         <hr>
-
         <%# Offer info %>
         <div class="mb-3">
           <h5 class="text-muted text-uppercase small mb-2">Offer</h5>
           <p class="mb-1"><strong>Donor:</strong> <%= @donor.display_name %></p>
-          <p class="mb-1"><strong>Quantity offered:</strong> <%= @offer.quantity_offered %> <%= @request.units %></p>
+          <p class="mb-1"><strong>Quantity offered:</strong> <%= @offer.quantity_offered %></p>
           <p class="mb-1"><strong>Condition:</strong> <%= @offer.condition %></p>
           <% if @offer.message.present? %>
             <p class="mb-1"><strong>Message:</strong> <%= @offer.message %></p>
@@ -42,13 +37,11 @@
             <span class="badge bg-secondary text-capitalize"><%= @offer.status %></span>
           </p>
         </div>
-
         <% if @offer.photo.attached? %>
           <div class="mb-3">
             <%= cl_image_tag @offer.photo.key, width: 300, crop: :fill, class: "img-fluid rounded" %>
           </div>
         <% end %>
-
         <%# Actions %>
         <% if @can_approve || @can_reject || @can_mark_received %>
           <hr>
@@ -68,9 +61,7 @@
           </div>
         <% end %>
       </div>
-
       <%= link_to "← Back to Offers", request_offers_path(@request), class: "text-muted small" %>
-
     </div>
   </div>
 </div>
