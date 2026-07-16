@@ -213,7 +213,6 @@ request1 = Request.create!(
   quantity_remaining: 2,
   status: "active",
   title: "Laptops",
-  units: "units",
   urgency: "high"
 )
 
@@ -228,7 +227,6 @@ request2 = Request.create!(
   quantity_remaining: 10,
   status: "active",
   title: "Winter coats (adult)",
-  units: "coats",
   urgency: "medium"
 )
 
@@ -243,7 +241,6 @@ request3 = Request.create!(
   quantity_remaining: 15,
   status: "active",
   title: "Kids shoes (sizes 18-22cm)",
-  units: "pairs",
   urgency: "medium"
 )
 
@@ -258,7 +255,6 @@ request4 = Request.create!(
   quantity_remaining: 50,
   status: "active",
   title: "Hygiene kits",
-  units: "kits",
   urgency: "high"
 )
 
@@ -274,7 +270,6 @@ request5 = Request.create!(
   quantity_remaining: 20,
   status: "active",
   title: "Rice (unopened)",
-  units: "kg",
   urgency: "medium"
 )
 
@@ -289,7 +284,6 @@ request6 = Request.create!(
   quantity_remaining: 30,
   status: "active",
   title: "Towels",
-  units: "units",
   urgency: "medium"
 )
 
@@ -304,7 +298,6 @@ request7 = Request.create!(
   quantity_remaining: 20,
   status: "active",
   title: "Blankets",
-  units: "units",
   urgency: "high"
 )
 
@@ -319,7 +312,6 @@ request8 = Request.create!(
   quantity_remaining: 40,
   status: "active",
   title: "Stationery sets",
-  units: "sets",
   urgency: "medium"
 )
 
@@ -334,7 +326,6 @@ request9 = Request.create!(
   quantity_remaining: 25,
   status: "active",
   title: "Phone chargers",
-  units: "units",
   urgency: "low"
 )
 
@@ -349,7 +340,6 @@ request10 = Request.create!(
   quantity_remaining: 20,
   status: "active",
   title: "Backpacks (kids)",
-  units: "units",
   urgency: "medium"
 )
 
@@ -364,7 +354,6 @@ request11 = Request.create!(
   quantity_remaining: 2,
   status: "active",
   title: "Laptops",
-  units: "units",
   urgency: "high"
 )
 
@@ -379,7 +368,6 @@ request12 = Request.create!(
   quantity_remaining: 25,
   status: "active",
   title: "Baby diapers",
-  units: "pack",
   urgency: "urgent"
 )
 
@@ -394,7 +382,6 @@ request13 = Request.create!(
   quantity_remaining: 40,
   status: "active",
   title: "Canned soup",
-  units: "item",
   urgency: "high"
 )
 
@@ -409,7 +396,6 @@ request14 = Request.create!(
   quantity_remaining: 30,
   status: "active",
   title: "Dental hygiene kits",
-  units: "set",
   urgency: "medium"
 )
 
@@ -424,7 +410,6 @@ request15 = Request.create!(
   quantity_remaining: 20,
   status: "active",
   title: "School supply sets",
-  units: "set",
   urgency: "medium"
 )
 
@@ -439,7 +424,6 @@ request16 = Request.create!(
   quantity_remaining: 15,
   status: "active",
   title: "Cleaning supplies",
-  units: "box",
   urgency: "high"
 )
 
@@ -454,7 +438,6 @@ request17 = Request.create!(
   quantity_remaining: 18,
   status: "active",
   title: "Winter blankets",
-  units: "item",
   urgency: "urgent"
 )
 
@@ -469,7 +452,6 @@ request18 = Request.create!(
   quantity_remaining: 12,
   status: "active",
   title: "Kids rain boots",
-  units: "pair",
   urgency: "medium"
 )
 
@@ -484,7 +466,6 @@ request19 = Request.create!(
   quantity_remaining: 6,
   status: "active",
   title: "Kitchen appliances",
-  units: "item",
   urgency: "low"
 )
 
@@ -499,7 +480,6 @@ request20 = Request.create!(
   quantity_remaining: 24,
   status: "fulfilled",
   title: "Milk cartons",
-  units: "liter",
   urgency: "medium"
 )
 
@@ -514,7 +494,6 @@ request21 = Request.create!(
   quantity_remaining: 14,
   status: "active",
   title: "School backpacks",
-  units: "item",
   urgency: "medium"
 )
 

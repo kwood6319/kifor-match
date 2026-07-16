@@ -29,15 +29,15 @@ class Request < ApplicationRecord
     necessities
   ]
 
-  UNITS = %w[
-    item
-    box
-    pack
-    kg
-    liter
-    pair
-    set
-  ]
+  # UNITS = %w[
+  #   item
+  #   box
+  #   pack
+  #   kg
+  #   liter
+  #   pair
+  #   set
+  # ]
 
   URGENCIES = %w[
     low
@@ -65,11 +65,10 @@ class Request < ApplicationRecord
   # Setting qty remaining = qty needed for now
   before_validation :sync_quantity_remaining, on: :create
 
-  validates :title, :category, :description, :units, :condition, :urgency, presence: true
+  validates :title, :category, :description, :condition, :urgency, presence: true
   validates :status, inclusion: { in: STATUSES }
   validates :quantity_needed, numericality: { greater_than_or_equal_to: 0 }
   validates :quantity_remaining, numericality: { greater_than_or_equal_to: 0 }
-
 
   def set_default_status
     self.status ||= "active"

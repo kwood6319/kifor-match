@@ -1,26 +1,24 @@
 <% content_for :title, "Offers" %>
 <h1>Offers</h1>
-
 <% status_badge = lambda do |status| %>
   <% normalized_status = status.to_s.strip.downcase %>
   <% label = normalized_status.capitalize %>
   <% badge_class = case normalized_status %>
-  <% when "submitted" %>
-    <% "status-badge status-badge--submitted" %>
-  <% when "approved" %>
-    <% "status-badge status-badge--approved" %>
-  <% when "rejected" %>
-    <% "status-badge status-badge--rejected" %>
-  <% when "shipped" %>
-    <% "status-badge status-badge--shipped" %>
-  <% when "received" %>
-    <% "status-badge status-badge--received" %>
-  <% else %>
-    <% "status-badge" %>
-  <% end %>
-  <%= content_tag(:span, label, class: badge_class) %>
+<% when "submitted" %>
+  <% "status-badge status-badge--submitted" %>
+<% when "approved" %>
+  <% "status-badge status-badge--approved" %>
+<% when "rejected" %>
+  <% "status-badge status-badge--rejected" %>
+<% when "shipped" %>
+  <% "status-badge status-badge--shipped" %>
+<% when "received" %>
+  <% "status-badge status-badge--received" %>
+<% else %>
+  <% "status-badge" %>
 <% end %>
-
+<%= content_tag(:span, label, class: badge_class) %>
+<% end %>
 <% if @viewer_role == :donor %>
   <table>
     <thead>
@@ -39,7 +37,6 @@
           <td>
             <div><%= request.title %></div>
             <div>Charity: <%= request.charity.org_name %></div>
-            <div>Units: <%= request.units %></div>
             <% if request.quantity_remaining.present? %>
               <div>Quantity remaining: <%= request.quantity_remaining %></div>
             <% end %>
@@ -50,7 +47,7 @@
           <td>
             <%= link_to "View", offer_path(offer)%>
             <% if offer.status.to_s == "approved" && request.donor_id == @donor.id %>
-            <%= button_to "Mark as Shipped", mark_as_shipped_offer_path(offer), method: :patch %>
+              <%= button_to "Mark as Shipped", mark_as_shipped_offer_path(offer), method: :patch %>
             <% end %>
           </td>
         </tr>
@@ -58,7 +55,6 @@
     </tbody>
   </table>
 <% end %>
-
 <% if @viewer_role == :charity %>
   <table>
     <thead>
@@ -77,7 +73,6 @@
           <td>
             <div><%= request.title %></div>
             <div>Charity: <%= request.charity.org_name %></div>
-            <div>Units: <%= request.units %></div>
             <% if request.quantity_remaining.present? %>
               <div>Quantity remaining: <%= request.quantity_remaining %></div>
             <% end %>
@@ -92,13 +87,13 @@
           <td>
             <%= link_to "View", offer_path(offer) %>
             <% if offer.status.to_s == "submitted" && request.charity_id == @charity.id %>
-            <%= button_to "Approve", approve_offer_path(offer), method: :patch %>
+              <%= button_to "Approve", approve_offer_path(offer), method: :patch %>
             <% end %>
             <% if offer.status.to_s == "submitted" && request.charity_id == @charity.id %>
-            <%= button_to "Reject", reject_offer_path(offer), method: :patch %>
+              <%= button_to "Reject", reject_offer_path(offer), method: :patch %>
             <% end %>
             <% if offer.status.to_s == "shipped" && request.charity_id == @charity.id %>
-            <%= button_to "Mark as Received", mark_received_offer_path(offer), method: :patch %>
+              <%= button_to "Mark as Received", mark_received_offer_path(offer), method: :patch %>
             <% end %>
           </td>
         </tr>
@@ -106,5 +101,4 @@
     </tbody>
   </table>
 <% end %>
-
 <%#TODO: add search form button at top if search action/view is used%>
