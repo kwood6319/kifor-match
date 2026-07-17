@@ -1,25 +1,24 @@
-<div class="container mt-5 mb-4">
+<div class="container mt-3 mb-4">
   <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%="様" if I18n.locale == :ja %>!</h3>
 </div>
 <div class="container-fluid mt-4">
   <div class="row mb-4">
-    <!-- Left grid: 8 columns -->
+    <!-- Left grid -->
     <div class="col-md-8">
       <div class="row row-cols-3 g-3">
         <% 8.times do %>
           <div class="col">
-            <div class="card text-center h-100 bg-light border-0 py-4">
+            <div class="card category-card text-center h-100 border-0 py-4">
               <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                <!-- icon here -->
+                <i class="fa-solid fa-desktop fa-3x"></i>
                 <p class="card-text mt-2 fs-5">electronics</p>
               </div>
             </div>
           </div>
         <% end %>
-        <!-- repeat .col for each category -->
       </div>
     </div>
-    <!-- Right pending panel: 4 columns -->
+    <!-- Right panel -->
     <div class="col-md-4">
       <div class="card bg-light border-0" style="max-height: 80vh; overflow-y: auto;">
         <div class="card-body">
@@ -36,7 +35,6 @@
               <p class="mb-0"><strong>Alerts:</strong> Shipping info needed</p>
             </div>
           <% end %>
-          <!-- repeat .pending-item for each entry -->
         </div>
       </div>
     </div>
