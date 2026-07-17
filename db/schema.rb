@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_06_114003) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_17_133849) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -85,7 +85,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_06_114003) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.string "category"
+    t.string "category", default: [], array: true
     t.bigint "charity_id", null: false
     t.string "condition"
     t.datetime "created_at", null: false
@@ -93,6 +93,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_06_114003) do
     t.integer "quantity_needed"
     t.integer "quantity_remaining"
     t.string "status", default: "active", null: false
+    t.string "subcategory", default: [], array: true
     t.string "title"
     t.datetime "updated_at", null: false
     t.string "urgency"
