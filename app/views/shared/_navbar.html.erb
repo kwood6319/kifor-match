@@ -20,6 +20,10 @@
         <li>
           <%= link_to t("navigation.donors"), donors_path, class: "nav-link" %>
         </li>
+      <% elsif current_user.donor? %>
+        <li>
+          <%= link_to t("navigation.requests"), requests_path, class: "nav-link" %>
+        </li>
       <% end %>
       <li>
         <%= link_to t("navigation.sign_out"), destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>

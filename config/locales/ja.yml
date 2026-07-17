@@ -15,6 +15,7 @@ ja:
     prefecture: "都道府県"
     condition: "状態"
     description: "詳細"
+    requests: "リクエスト"
   messages:
     welcome_back: "おかえりなさい"
     your_requests: "現在進行中のリクエスト"

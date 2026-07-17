@@ -44,6 +44,7 @@ en:
     prefecture: "Prefecture"
     condition: "Condition"
     description: "Description"
+    requests: "Requests"
   messages:
     welcome_back: "Welcome back"
     your_requests: "Your active requests"
