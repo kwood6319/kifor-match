@@ -1,31 +1,40 @@
 <div class="container mt-5 mb-4">
-  <h3>Welcome back, <%= current_user.email.gsub(/@.*$/, "").capitalize %>!</h3>
+  <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%="様" if I18n.locale == :ja %>!</h3>
 </div>
 <div class="container mb-4">
   <div class="card shadow-sm p-4">
-    <h5 class="mb-3"><i class="fa-solid fa-filter me-2"></i>Filter Requests</h5>
+    <h5 class="mb-3"><i class="fa-solid fa-filter me-2"></i><%= t("navigation.filter_requests") %></h5>
     <%= form_with url: requests_path, method: :get, data: { controller: "form-submission", turbo_frame: "requests_list" }, class: "row g-3" do |f| %>
       <%# Search Bar %>
       <div class="col-md-12 col-lg-4">
-        <%= f.label :query, "Search", class: "form-label fw-bold" %>
-        <%= f.text_field :query, value: params[:query], placeholder: "Search items or charities...", class: "form-control", data: { action: "input->form-submission#search" } %>
+        <%= f.label :query, t("navigation.search"), class: "form-label fw-bold" %>
+        <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_items"), class: "form-control", data: { action: "input->form-submission#search" } %>
       </div>
       <%# Category Dropdown %>
       <div class="col-md-4 col-lg-3">
-        <%= f.label :category, "Category", class: "form-label fw-bold" %>
-        <%= f.select :category, @categories.map { |c| [c.capitalize, c] }, { include_blank: "All Categories", selected: params[:category] }, class: "form-select", data: { action: "change->form-submission#search" } %>
+        <%= f.label :category, t("navigation.category"), class: "form-label fw-bold" %>
+        <%= f.select :category, @categories.map { |c| [t("categories.#{c}"), c] }, { include_blank: t("categories.all"), selected: params[:category] }, class: "form-select", data: { action: "change->form-submission#search" } %>
       </div>
       <%# Prefecture Dropdown %>
       <div class="col-md-4 col-lg-3">
-        <%= f.label :prefecture, "Location", class: "form-label fw-bold" %>
+        <%= f.label :prefecture, t("navigation.location"), class: "form-label fw-bold" %>
         <%# Passing the grouped Hash directly creates an organized dropdown with Region headers %>
-        <%= f.select :prefecture, Request::REGIONS_AND_PREFECTURES, { include_blank: "All Prefectures", selected: params[:prefecture] }, class: "form-select", data: { action: "change->form-submission#search" } %>
+        <%= f.select :prefecture,
+          Request::REGIONS_AND_PREFECTURES.transform_keys { |region|
+          t("regions.#{region}")
+          }.transform_values { |prefectures|
+          prefectures.map { |prefecture|
+            [t("prefectures.#{prefecture}"), prefecture] }},
+          { include_blank: t("prefectures.all"),
+          selected: params[:prefecture]},
+          class: "form-select",
+          data: { action: "change->form-submission#search" } %>
       </div>
       <%# No Offers Checkbox %>
       <div class="col-md-4 col-lg-2 d-flex align-items-end mb-2">
         <div class="form-check">
           <%= f.check_box :no_offers, { checked: params[:no_offers] == "1", class: "form-check-input", data: { action: "change->form-submission#search" } }, "1", "0" %>
-          <%= f.label :no_offers, "No offers yet", class: "form-check-label fw-bold text-nowrap" %>
+          <%= f.label :no_offers, t("navigation.no_offers_yet"), class: "form-check-label fw-bold text-nowrap" %>
         </div>
       </div>
     <% end %>
@@ -33,45 +42,45 @@
 </div>
 <div class="container mb-5">
   <div class="row g-4">
-    <% @requests.each do |request| %>
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <div class="request-card card h-100">
-          <div class="request-card-infos">
-            <div class="row mb-2">
-              <div class="col-8">
-                <h4><strong><%= request.title %></strong></h4>
-              </div>
-              <div class="col-4 text-center">
-                <h4 class="mb-0"> x<%= request.quantity_remaining %> </h4>
-                <div class="badge rounded-pill pill-<%= request.urgency %>"> <%= request.urgency %> </div>
-              </div>
-            </div>
-            <%# Let's add the category tag so users can see it! %>
-            <span class="badge text-bg-secondary mb-2"><%= request.category.capitalize %></span>
-            <br>
-            <i class="fa-solid fa-box-open"></i>
-            <% request.acceptable_conditions.each do |condition| %>
-              <span class="badge text-bg-info mb-2">
-                <%= condition %>
-              </span>
-            <% end %>
-            <br>
-            <span>
-              <i class="fa-solid fa-hand-holding-heart mb-2"></i>
-              <strong>Charity: </strong>
-              <%= request.charity.org_name %>
-            </span>
-            <br>
-            <span>
-              <i class="fa-solid fa-location-dot mb-2"></i>
-              <strong>Prefecture: </strong>
-              <%= request.charity.prefecture %>
-            </span>
-            <br>
-          </div>
-          <%= link_to "View Request", request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
-        </div>
+    <% if @requests.empty? %>
+      <div class="col-12 text-center mt-5">
+        <h4 class="text-muted"><%= t("navigation.no_requests") %></h4>
       </div>
+    <% else %>
+      <% @requests.each do |request| %>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <div class="request-card card h-100">
+            <div class="request-card-infos">
+              <div class="row mb-2">
+                <div class="col-8">
+                  <h4><strong><%= request.title %></strong></h4>
+                </div>
+                <div class="col-4 text-center">
+                  <h4 class="mb-0"> x<%= request.quantity_remaining %> </h4>
+                  <div class="badge rounded-pill pill-<%= request.urgency %>"> <%= t("urgencies.#{request.urgency}") %> </div>
+                </div>
+              </div>
+              <%# Let's add the category tag so users can see it! %>
+              <span class="badge text-bg-secondary mb-2"><%= t("categories.#{request.category}") %></span>
+              <br>
+              <i class="fa-solid fa-box-open"></i>
+              <% request.acceptable_conditions.each do |condition| %>
+                <span class="badge text-bg-info mb-2">
+                  <%= t("conditions.#{condition}") %>
+                </span>
+              <% end %>
+              <br>
+              <span>
+                <i class="fa-solid fa-location-dot mb-2"></i>
+                <strong> <%= t("navigation.prefecture")%>: </strong>
+                <%= t("prefectures.#{request.charity.prefecture}") %>
+              </span>
+              <br>
+            </div>
+            <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
+          </div>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>
