@@ -6,7 +6,7 @@ module CategoryList
     },
     "food" => {
       icons: %w[fa-utensils],
-      subcategories: %w[canned fresh snacks baby_food preserved instant other]
+      subcategories: %w[canned fresh snacks baby_food nonperishable instant other]
     },
     "kids" => {
       icons: %w[fa-child-reaching],
@@ -57,5 +57,13 @@ module CategoryList
 
   def self.label_for(key)
     I18n.t("categories.#{key}")
+  end
+
+  def self.subcategory_label_for(category_key, subcategory_key)
+    I18n.t("subcategories.#{category_key}.#{subcategory_key}")
+  end
+
+  def self.subcategories_for(category_key)
+    CATEGORIES.dig(category_key, :subcategories) || []
   end
 end

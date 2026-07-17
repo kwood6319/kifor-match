@@ -100,6 +100,6 @@ class Request < ApplicationRecord
 
     allowed = category.flat_map { |cat| CategoryList.subcategories_for(cat) }
     invalid = subcategory - allowed
-    errors.add(:subcategory, "contains invalid values: #{invalid, join(', ')}") if invalid.any?
+    errors.add(:subcategory, "contains invalid values: #{invalid.join(', ')}") if invalid.any?
   end
 end
