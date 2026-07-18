@@ -34,7 +34,7 @@ en:
     log_in: "Log in"
     charities: "Charities"
     donors: "Donors"
-    filter_requests: "Filter Requests"
+    filter: "Filter"
     search: "Search"
     category: "Category"
     location: "Location"

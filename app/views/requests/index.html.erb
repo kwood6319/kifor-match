@@ -10,10 +10,21 @@
         <%= f.label :query, t("navigation.search"), class: "form-label fw-bold" %>
         <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_items"), class: "form-control", data: { action: "input->form-submission#search" } %>
       </div>
-      <%# Category Dropdown %>
+      <%# Category Checkboxes %>
       <div class="col-md-4 col-lg-3">
-        <%= f.label :category, t("navigation.category"), class: "form-label fw-bold" %>
-        <%= f.select :category, @categories.map { |c| [t("categories.#{c}"), c] }, { include_blank: t("categories.all"), selected: params[:category] }, class: "form-select", data: { action: "change->form-submission#search" } %>
+        <%= label_tag nil, t("navigation.category"), class: "form-label fw-bold" %>
+        <div class="border rounded p-2" data-form-submission-target="categoryGroup">
+          <div class="form-check">
+            <%= check_box_tag "category[]", "", params[:category].blank?, id: "category_all", class: "form-check-input", data: { action: "change->form-submission#allCategoryChanged" } %>
+            <%= label_tag "category_all", t("categories.all"), class: "form-check-label" %>
+          </div>
+          <%= f.collection_check_boxes :category, @categories.map { |c| [c, t("categories.#{c}")] }, :first, :last, include_hidden: false do |b| %>
+            <div class="form-check">
+              <%= b.check_box class: "form-check-input", checked: params[:category]&.include?(b.value), data: { action: "change->form-submission#categoryChanged" } %>
+              <%= b.label class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
       </div>
       <%# Prefecture Dropdown %>
       <div class="col-md-4 col-lg-3">
@@ -21,12 +32,12 @@
         <%# Passing the grouped Hash directly creates an organized dropdown with Region headers %>
         <%= f.select :prefecture,
           Request::REGIONS_AND_PREFECTURES.transform_keys { |region|
-          t("regions.#{region}")
+            t("regions.#{region}")
           }.transform_values { |prefectures|
-          prefectures.map { |prefecture|
-            [t("prefectures.#{prefecture}"), prefecture] }},
-          { include_blank: t("prefectures.all"),
-          selected: params[:prefecture]},
+            prefectures.map { |prefecture|
+            [t("prefectures.#{prefecture}"), prefecture] }
+          },
+          { include_blank: t("prefectures.all"), selected: params[:prefecture] },
           class: "form-select",
           data: { action: "change->form-submission#search" } %>
       </div>
@@ -36,6 +47,11 @@
           <%= f.check_box :no_offers, { checked: params[:no_offers] == "1", class: "form-check-input", data: { action: "change->form-submission#search" } }, "1", "0" %>
           <%= f.label :no_offers, t("navigation.no_offers_yet"), class: "form-check-label fw-bold text-nowrap" %>
         </div>
+      </div>
+      <%# Submit & Reset Buttons %>
+      <div class="col-md-12 d-flex justify-content-end">
+        <%= link_to t("navigation.reset"), requests_path, class: "btn btn-outline-secondary me-3", data: { turbo_frame: "requests_list" } %>
+        <%= f.submit t("navigation.filter"), class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>
@@ -60,8 +76,9 @@
                   <div class="badge rounded-pill pill-<%= request.urgency %>"> <%= t("urgencies.#{request.urgency}") %> </div>
                 </div>
               </div>
-              <%# Let's add the category tag so users can see it! %>
-              <span class="badge text-bg-secondary mb-2"><%= t("categories.#{request.category}") %></span>
+              <% request.category.each do |cat| %>
+                <span class="badge text-bg-secondary mb-2"><%= t("categories.#{cat}") %></span>
+              <% end %>
               <br>
               <i class="fa-solid fa-box-open"></i>
               <% request.acceptable_conditions.each do |condition| %>
