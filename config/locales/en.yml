@@ -141,3 +141,15 @@ en:
     attributes:
       offer:
         rejection_reason: "Reason for rejection"
+
+  dashboard:
+    pending: "Pending"
+    days_ago:
+      one: "%{count} day ago"
+      other: "%{count} days ago"
+    condition: "Condition"
+    can_ship_by: "Can ship by"
+    alerts: "Alerts"
+    shipping_info_needed: "Shipping info needed"
+    no_pending_offers: "No pending offers right now"
+    today: "Today"
