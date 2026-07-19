@@ -57,3 +57,19 @@
     </div>
   </div>
 </div>
+<%# Toast notification %>
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080">
+  <% @notifications.each do |notification|%>
+    <%= turbo_frame_tag "notification_#{notification.id}" do %>
+      <div class="toast show mb-2" role="alert" id="notification_<%= notification.id %>">
+        <div class="toast-header">
+          <strong class="me-auto"><%= t("notification.title") %></strong>
+          <%= button_to notification_dismiss_path(notification), method: :patch, class: "btn-close", form: { data: { turbo_frame: "notification_#{note.id}" } } %>
+        </div>
+        <div class="toast-body">
+          <%= link_to notification.message, notification.link_path, class: "text-decoration-none" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

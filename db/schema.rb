@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_19_051221) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_19_073048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -74,7 +74,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_051221) do
     t.index ["user_id"], name: "index_donors_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "dismissed", default: false, null: false
+    t.bigint "offer_id"
+    t.bigint "recipient_id", null: false
+    t.string "recipient_type", null: false
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["offer_id"], name: "index_notifications_on_offer_id"
+    t.index ["recipient_type", "recipient_id", "dismissed"], name: "idx_on_recipient_type_recipient_id_dismissed_d3ad7660cd"
+    t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
+  end
+
   create_table "offers", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.date "can_ship_by"
     t.string "condition", null: false
     t.datetime "created_at", null: false
@@ -124,6 +138,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_051221) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "charities", "users"
   add_foreign_key "donors", "users"
+  add_foreign_key "notifications", "offers"
   add_foreign_key "offers", "donors"
   add_foreign_key "offers", "requests"
   add_foreign_key "requests", "charities"

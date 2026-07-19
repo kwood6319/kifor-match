@@ -9,6 +9,9 @@ module Donors
 
       @top_categories = CategoryList.top_categories
 
+      @pending_offers = current_donor.offers.active.includes(request: :charity).order(updated_at: :desc)
+      @notifications = current_donor.notifications.undismissed.includes(offer: :request).order(created_at: :desc)
+
       # # Setup dynamic variables for your dropdown menus
       # @categories = Request.pluck(:category).uniq.sort
 
