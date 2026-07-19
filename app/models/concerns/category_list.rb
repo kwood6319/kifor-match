@@ -35,24 +35,7 @@ module CategoryList
     "other_items" => {
       icons: %w[fa-box],
       subcategories: %w[]
-    },
-    "cooking" => {
-      icons: %w[],
-      subcategories: %w[]
-    },
-    "cleaning" => {
-      icons: %w[],
-      subcategories: %w[]
-    },
-    "seasonal" => {
-      icons: %w[],
-      subcategories: %w[]
-    },
-    "necessities" => {
-      icons: %w[],
-      subcategories: %w[]
     }
-
   }.freeze
 
   def self.label_for(key)
@@ -65,5 +48,27 @@ module CategoryList
 
   def self.subcategories_for(category_key)
     CATEGORIES.dig(category_key, :subcategories) || []
+  end
+
+  def self.top_categories
+    DashboardSetting.top_categories
+  end
+
+  def self.recalculate_top_categories!
+    sql = <<~SQL
+      SELECT unnest(category) AS category, COUNT(*) AS request_count
+      FROM requests
+      WHERE status = 'active'
+      GROUP BY category
+      ORDER BY request_count DESC
+      LIMIT 8
+    SQL
+
+    result = ActiveRecord::Base.connection.execute(sql)
+    top = result.map { |row| row["category"] }
+
+    setting = DashboardSetting.instance
+    setting.update!(top_categories: top, top_categories_updated_at: Time.current)
+    top
   end
 end

@@ -431,7 +431,7 @@ request15 = Request.create!(
 puts "Created request for #{request15.quantity_needed} #{request15.title}."
 
 request16 = Request.create!(
-  category: ["cleaning"],
+  category: ["home_goods"],
   subcategory: [],
   charity: charity2,
   condition: "new",

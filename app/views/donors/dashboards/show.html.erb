@@ -6,16 +6,33 @@
     <!-- Left grid -->
     <div class="col-md-8">
       <div class="row row-cols-3 g-3">
-        <% 8.times do %>
+        <% @top_categories.each do |key| %>
+          <% category_data = CategoryList::CATEGORIES[key] %>
+          <% next unless category_data %>
           <div class="col">
-            <div class="card category-card text-center h-100 border-0 py-4">
-              <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                <i class="fa-solid fa-desktop fa-3x"></i>
-                <p class="card-text mt-2 fs-5">electronics</p>
+            <%= link_to requests_path(category: [key]), class: "text-decoration-none text-dark" do %>
+              <div class="card text-center h-100 bg-light border-0 py-4">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                  <% icon = CategoryList::CATEGORIES[key][:icons].first %>
+                  <% if icon %>
+                    <i class="fa-solid <%= icon %> fa-3x mb-2"></i>
+                  <% end %>
+                  <p class="card-text fs-5 mb-0"><%= CategoryList.label_for(key) %></p>
+                </div>
               </div>
-            </div>
+            <% end %>
           </div>
         <% end %>
+        <div class="col">
+          <%= link_to requests_path, class: "text-decoration-none text-dark" do %>
+            <div class="card text-center h-100 bg-light border-0 py-4">
+              <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                <i class="fa-solid fa-ellipsis fa-3x mb-2"></i>
+                <p class="card-text fs-5 mb-0">All categories</p>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
     <!-- Right panel -->
