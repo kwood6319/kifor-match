@@ -36,8 +36,8 @@
       </div>
     </div>
     <%# Right column %>
-    <div class="col-md-4">
-      <div class="card bg-light border-0" style="max-height: 80vh; overflow-y: auto;">
+    <div class="col-md-4 d-flex">
+      <div class="card bg-light border-0 w-100" style="max-height: 80vh; overflow-y: auto;">
         <div class="card-body">
           <h5 class="card-title mb-3"><%= t("dashboard.pending") %>:</h5>
           <% if @pending_offers.any? %>
@@ -62,11 +62,9 @@
                       <strong><%= t("dashboard.can_ship_by") %>:</strong> <%= offer.can_ship_by.strftime("%b %-d") %>
                     </p>
                   <% end %>
-                  <% if offer.tracking_number.blank? %>
-                    <p class="mb-0">
-                      <strong><%= t("dashboard.alerts") %>:</strong> <%= t("dashboard.shipping_info_needed") %>
-                    </p>
-                  <% end %>
+                  <p class="mb-0">
+                    <strong><%= t("dashboard.alerts") %>:</strong> <%= offer.alert_message %>
+                  </p>
                 </div>
               <% end %>
             <% end %>

@@ -23,6 +23,10 @@ class Offer < ApplicationRecord
     "rejected" => OfferRejectedNotification
   }.freeze
 
+  ALERT_STATUS_ALIASES = {
+    "flagged" => "received"
+  }.freeze
+
   validates :status, inclusion: { in: STATUSES }
   validates :conditon, inclusion: { in: Request::CONDITIONS }
 
@@ -32,6 +36,11 @@ class Offer < ApplicationRecord
 
   before_save :set_active_from_status
   after_update :create_terminal_notification, if: :saved_change_to_status?
+
+  def alert_message
+    key = ALERT_STATUS_ALIASES.fetch(status, status)
+    I18n.t("dashboard.alert_messages.#{key}")
+  end
 
   private
 

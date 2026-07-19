@@ -2,6 +2,7 @@ class NotificationsController < ApplicationController
   def dismiss
     @notification = current_recipient.notifications.find(params[:id])
     @notification.update!(dismissed: true)
+    @notification.offer&.update!(active: false)
 
     respond_to do |format|
       format.turbo_stream

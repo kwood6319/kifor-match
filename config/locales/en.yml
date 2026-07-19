@@ -141,7 +141,6 @@ en:
     attributes:
       offer:
         rejection_reason: "Reason for rejection"
-
   dashboard:
     pending: "Pending"
     minutes_ago:
@@ -154,3 +153,9 @@ en:
       one: "%{count}d ago"
       other: "%{count}d ago"
     seven_plus_days_ago: "7+ days ago"
+    alert_messages:
+      submitted: "Awaiting charity's response"
+      approved: "Shipping info needed"
+      rejected: "The charity has decided to decline"
+      shipped: "Awaiting confirmation the charity has received the package"
+      received: "The charity has received the package"
