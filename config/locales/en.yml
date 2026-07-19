@@ -48,6 +48,7 @@ en:
   messages:
     welcome_back: "Welcome back"
     your_requests: "Your active requests"
+    top_categories: "Here's what's most needed in Japan this month"
   urgencies:
     select_urgency: "Select Urgency"
     low: "low"
