@@ -144,12 +144,13 @@ en:
 
   dashboard:
     pending: "Pending"
+    minutes_ago:
+      one: "%{count}m ago"
+      other: "%{count}m ago"
+    hours_ago:
+      one: "%{count}h ago"
+      other: "%{count}h ago"
     days_ago:
-      one: "%{count} day ago"
-      other: "%{count} days ago"
-    condition: "Condition"
-    can_ship_by: "Can ship by"
-    alerts: "Alerts"
-    shipping_info_needed: "Shipping info needed"
-    no_pending_offers: "No pending offers right now"
-    today: "Today"
+      one: "%{count}d ago"
+      other: "%{count}d ago"
+    seven_plus_days_ago: "7+ days ago"

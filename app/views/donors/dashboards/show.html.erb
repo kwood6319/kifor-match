@@ -47,12 +47,7 @@
                   <div class="d-flex justify-content-between align-items-start">
                     <strong><%= offer.request.title %></strong>
                     <div class="text-nowrap">
-                      <% days_ago = (Time.current - offer.updated_at).to_i / 1.day %>
-                      <% if days_ago == 0 %>
-                        <span class="badge rounded-pill bg-danger"><%= t("dashboard.today") %></span>
-                      <% else %>
-                        <span class="badge rounded-pill bg-danger"><%= t("dashboard.days_ago", count: days_ago) %></span>
-                      <% end %>
+                      <span class="badge rounded-pill bg-danger"><%= time_ago_badge(offer.updated_at) %></span>
                       <span class="ms-1 text-muted">x<%= offer.quantity_offered %></span>
                     </div>
                   </div>

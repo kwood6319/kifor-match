@@ -114,12 +114,7 @@ ja:
         rejection_reason: "却下の理由"
   dashboard:
     pending: "Pending"
-    days_ago:
-      one: "%{count} day ago"
-      other: "%{count} days ago"
-    condition: "Condition"
-    can_ship_by: "Can ship by"
-    alerts: "Alerts"
-    shipping_info_needed: "Shipping info needed"
-    no_pending_offers: "No pending offers right now"
-    today: "本日"
+    minutes_ago: "%{count}分前"
+    hours_ago: "%{count}時間前"
+    days_ago: "%{count}日前"
+    seven_plus_days_ago: "7日以上前"
