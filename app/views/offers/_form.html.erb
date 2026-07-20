@@ -51,33 +51,31 @@
       <%= form.hidden_field :donor_id, value: @donor&.id %>
       <div class="d-grid mt-4">
         <%# Using an inline style to pull in your KiFor Pink from the previous FAB button! %>
-        <%= form.submit(offer.persisted? ? t("offers.save_changes") : t("offers.send_offer")),
-        class: "btn text-white fs-5",
-        style: "background-color: #E84393;",
-        disabled: true,
-        data: { "postage-acknowledgment-target": "submitButton" } %>
+        <%= form.submit offer.persisted? ? t("offers.save_changes") : t("offers.send_offer"),
+          class: "btn text-white fs-5",
+          style: "background-color: #E84393;",
+          disabled: true,
+          data: { "postage-acknowledgment-target": "submitButton" } %>
       </div>
     <% end %>
   </div>
-</div>
-<%# Postage modal %>
-<div class="modal fade" id="postageModal" tabindex="-1"
-  aria-labelledby="postageModalLabel" aria-hidden="true"
-  data-controller="postage-acknowledgment"
-  data-postage-acknowledgment-target="modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="postageModalLabel"><%= t("offers.postage_modal_title") %></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p><%= t("offers.postage_modal_body") %></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-action="click->postage-acknowledgment#acknowledge">
-          <%= t("offers.postage_modal_confirm") %>
-        </button>
+  <%# Postage modal %>
+  <div class="modal fade" id="postageModal" tabindex="-1"
+  aria-labelledby="postageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="postageModalLabel"><%= t("offers.postage_modal_title") %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><%= t("offers.postage_modal_body") %></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-action="click->postage-acknowledgment#acknowledge">
+            <%= t("offers.postage_modal_confirm") %>
+          </button>
+        </div>
       </div>
     </div>
   </div>
