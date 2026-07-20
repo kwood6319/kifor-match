@@ -1,0 +1,5 @@
+en:
+  notifications:
+    title: "Update"
+    offer_completed: "Your offer for \"%{title}\" has been marked as completed."
+    offer_rejected: "Your offer for \"%{title}\" has been marked as rejected."

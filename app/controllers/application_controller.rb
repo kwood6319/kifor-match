@@ -28,6 +28,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :current_donor, :current_charity
+
   private
 
   protect_from_forgery with: :exception
@@ -42,5 +44,13 @@ class ApplicationController < ActionController::Base
 
   def default_url_options
     { locale: I18n.locale }
+  end
+
+  def current_donor
+    @current_donor ||= current_user&.donor
+  end
+
+  def current_charity
+    @current_charity ||= current_user&.charity
   end
 end

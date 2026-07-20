@@ -15,9 +15,11 @@ ja:
     prefecture: "都道府県"
     condition: "状態"
     description: "詳細"
+    requests: "リクエスト"
   messages:
     welcome_back: "おかえりなさい"
     your_requests: "現在進行中のリクエスト"
+    top_categories: "今月、日本で最も必要とされているものは以下の通りです"
   urgencies:
     select_urgency: "緊急度を選択"
     low: "低い"
@@ -110,3 +112,15 @@ ja:
     attributes:
       offer:
         rejection_reason: "却下の理由"
+  dashboard:
+    pending: "Pending"
+    minutes_ago: "%{count}分前"
+    hours_ago: "%{count}時間前"
+    days_ago: "%{count}日前"
+    seven_plus_days_ago: "7日以上前"
+    alert_messages:
+      submitted: "団体からの返答をお待ちください"
+      approved: "配送情報が必要です"
+      rejected: "団体が辞退を決定しました"
+      shipped: "団体が荷物を受け取ったことの確認をお待ちください"
+      received: "団体が荷物を受け取りました"

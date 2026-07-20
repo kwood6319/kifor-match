@@ -1,91 +1,95 @@
-<div class="container mt-5 mb-4">
-  <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%="様" if I18n.locale == :ja %>!</h3>
+<div class="container mt-3 mb-4">
+  <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%="様" if I18n.locale == :ja %>! <%= t("messages.top_categories") %>:</h3>
 </div>
-<div class="container mb-4">
-  <div class="card shadow-sm p-4">
-    <h5 class="mb-3"><i class="fa-solid fa-filter me-2"></i><%= t("navigation.filter_requests") %></h5>
-    <%= form_with url: requests_path, method: :get, data: { controller: "form-submission", turbo_frame: "requests_list" }, class: "row g-3" do |f| %>
-      <%# Search Bar %>
-      <div class="col-md-12 col-lg-4">
-        <%= f.label :query, t("navigation.search"), class: "form-label fw-bold" %>
-        <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_items"), class: "form-control", data: { action: "input->form-submission#search" } %>
-      </div>
-      <%# Category Dropdown %>
-      <div class="col-md-4 col-lg-3">
-        <%= f.label :category, t("navigation.category"), class: "form-label fw-bold" %>
-        <%= f.select :category, @categories.map { |c| [t("categories.#{c}"), c] }, { include_blank: t("categories.all"), selected: params[:category] }, class: "form-select", data: { action: "change->form-submission#search" } %>
-      </div>
-      <%# Prefecture Dropdown %>
-      <div class="col-md-4 col-lg-3">
-        <%= f.label :prefecture, t("navigation.location"), class: "form-label fw-bold" %>
-        <%# Passing the grouped Hash directly creates an organized dropdown with Region headers %>
-        <%= f.select :prefecture,
-          Request::REGIONS_AND_PREFECTURES.transform_keys { |region|
-          t("regions.#{region}")
-          }.transform_values { |prefectures|
-          prefectures.map { |prefecture|
-            [t("prefectures.#{prefecture}"), prefecture] }},
-          { include_blank: t("prefectures.all"),
-          selected: params[:prefecture]},
-          class: "form-select",
-          data: { action: "change->form-submission#search" } %>
-      </div>
-      <%# No Offers Checkbox %>
-      <div class="col-md-4 col-lg-2 d-flex align-items-end mb-2">
-        <div class="form-check">
-          <%= f.check_box :no_offers, { checked: params[:no_offers] == "1", class: "form-check-input", data: { action: "change->form-submission#search" } }, "1", "0" %>
-          <%= f.label :no_offers, t("navigation.no_offers_yet"), class: "form-check-label fw-bold text-nowrap" %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
-<div class="container mb-5">
-  <div class="row g-4">
-    <% if @requests.empty? %>
-      <div class="col-12 text-center mt-5">
-        <h4 class="text-muted"><%= t("navigation.no_requests") %></h4>
-      </div>
-    <% else %>
-      <% @requests.each do |request| %>
-        <div class="col-sm-12 col-md-6 col-lg-4">
-          <div class="request-card card h-100">
-            <div class="request-card-infos">
-              <div class="row mb-2">
-                <div class="col-8">
-                  <h4><strong><%= request.title %></strong></h4>
-                </div>
-                <div class="col-4 text-center">
-                  <h4 class="mb-0"> x<%= request.quantity_remaining %> </h4>
-                  <div class="badge rounded-pill pill-<%= request.urgency %>"> <%= t("urgencies.#{request.urgency}") %> </div>
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <!-- Left grid -->
+    <div class="col-md-8">
+      <div class="row row-cols-3 g-3">
+        <% @top_categories.each do |key| %>
+          <% category_data = CategoryList::CATEGORIES[key] %>
+          <% next unless category_data %>
+          <div class="col">
+            <%= link_to requests_path(category: [key]), class: "text-decoration-none text-dark" do %>
+              <div class="card text-center h-100 bg-light border-0 py-4">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                  <% icon = CategoryList::CATEGORIES[key][:icons].first %>
+                  <% if icon %>
+                    <i class="fa-solid <%= icon %> fa-3x mb-2"></i>
+                  <% end %>
+                  <p class="card-text fs-5 mb-0"><%= CategoryList.label_for(key) %></p>
                 </div>
               </div>
-              <%# Let's add the category tag so users can see it! %>
-              <span class="badge text-bg-secondary mb-2"><%= t("categories.#{request.category}") %></span>
-              <br>
-              <i class="fa-solid fa-box-open"></i>
-              <% request.acceptable_conditions.each do |condition| %>
-                <span class="badge text-bg-info mb-2">
-                  <%= t("conditions.#{condition}") %>
-                </span>
-              <% end %>
-              <br>
-              <span>
-                <i class="fa-solid fa-location-dot mb-2"></i>
-                <strong> <%= t("navigation.prefecture")%>: </strong>
-                <%= t("prefectures.#{request.charity.prefecture}") %>
-              </span>
-              <br>
-            </div>
-            <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
+            <% end %>
           </div>
+        <% end %>
+        <div class="col">
+          <%= link_to requests_path, class: "text-decoration-none text-dark" do %>
+            <div class="card text-center h-100 bg-light border-0 py-4">
+              <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                <i class="fa-solid fa-ellipsis fa-3x mb-2"></i>
+                <p class="card-text fs-5 mb-0"><%= t("categories.all") %> </p>
+              </div>
+            </div>
+          <% end %>
         </div>
-      <% end %>
-    <% end %>
+      </div>
+    </div>
+    <%# Right column %>
+    <div class="col-md-4 d-flex">
+      <div class="card bg-light border-0 w-100" style="max-height: 80vh; overflow-y: auto;">
+        <div class="card-body">
+          <h5 class="card-title mb-3"><%= t("dashboard.pending") %>:</h5>
+          <% if @pending_offers.any? %>
+            <% @pending_offers.each do |offer| %>
+              <%= link_to request_path(offer.request), class: "text-decoration-none text-dark" do %>
+                <div class="pending-item mb-3 pb-3 border-bottom">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <strong><%= offer.request.title %></strong>
+                    <div class="text-nowrap">
+                      <span class="badge rounded-pill bg-danger"><%= time_ago_badge(offer.updated_at) %></span>
+                      <span class="ms-1 text-muted">x<%= offer.quantity_offered %></span>
+                    </div>
+                  </div>
+                  <p class="mb-1">
+                    <%= t("regions.#{offer.request.charity.region}") %> - <%= t("prefectures.#{offer.request.charity.prefecture}") %>
+                  </p>
+                  <p class="mb-1">
+                    <strong><%= t("dashboard.condition") %>:</strong> <%= t("conditions.#{offer.condition}") %>
+                  </p>
+                  <% if offer.can_ship_by.present? %>
+                    <p class="mb-1">
+                      <strong><%= t("dashboard.can_ship_by") %>:</strong> <%= offer.can_ship_by.strftime("%b %-d") %>
+                    </p>
+                  <% end %>
+                  <p class="mb-0">
+                    <strong><%= t("dashboard.alerts") %>:</strong> <%= offer.alert_message %>
+                  </p>
+                </div>
+              <% end %>
+            <% end %>
+          <% else %>
+            <p class="text-muted mb-0"><%= t("dashboard.no_pending_offers") %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-<% if policy(Request).new? %>
-  <%= link_to new_request_path, class: "btn-kifor-fab" do %>
-    <i class="fa-solid fa-plus"></i>
+</div>
+<%# Toast notification %>
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080">
+  <% @notifications.each do |notification|%>
+    <%= turbo_frame_tag "notification_#{notification.id}" do %>
+      <div class="toast show mb-2" role="alert" id="notification_<%= notification.id %>">
+        <div class="toast-header">
+          <strong class="me-auto"><%= t("notification.title") %></strong>
+          <%= button_to notification_dismiss_path(notification), method: :patch, class: "btn-close", form: { data: { turbo_frame: "notification_#{note.id}" } } %>
+        </div>
+        <div class="toast-body">
+          <%= link_to notification.message, notification.link_path, class: "text-decoration-none" %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>
