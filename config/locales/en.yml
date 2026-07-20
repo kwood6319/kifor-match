@@ -75,6 +75,11 @@ en:
     existing_offer: "Your offer has been submitted"
     no_image: "No image"
     status: "Status"
+    postage_acknowledgment: "I understand I am responsible for postage costs."
+    read_more: "read more"
+    postage_modal_title: "Postage Costs"
+    postage_modal_body: "As the donor, you are responsible for covering the cost of shipping this item to the charity. Please factor this into your decision before submitting your offer."
+    postage_modal_confirm: "I understand"
   statuses:
     requests:
       active: "Active"
