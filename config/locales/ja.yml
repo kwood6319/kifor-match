@@ -48,6 +48,11 @@ ja:
     existing_offer: "ご提案が送信されました"
     no_image: "画像なし"
     status: "ステータス"
+    postage_acknowledgment: "送料は自分の負担であることを理解しました"
+    read_more: "詳細"
+    postage_modal_title: "送料について"
+    postage_modal_body: "寄付者として、この商品を団体へ発送する送料をご負担いただく必要があります。オファーを送信する前にご確認ください。"
+    postage_modal_confirm: "理解しました"
   statuses:
     requests:
       active: "アクティブ"

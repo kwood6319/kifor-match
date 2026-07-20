@@ -1,42 +1,82 @@
-<div class="card shadow-sm p-4">
-  <h4 class="mb-4 text-center"><%= t("offers.make_an_offer")%></h4>
-  <% offer ||= Offer.new %>
-  <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(request)) do |form| %>
-    <div class="mb-3">
-      <%= form.label t("offers.quantity_offered"), class: "form-label fw-bold" %>
-      <%= form.number_field :quantity_offered, min: 1, class: "form-control" %>
-    </div>
-    <div class="mb-3">
-      <%= form.label t("navigation.condition"), class: "form-label fw-bold" %>
-      <%= form.select :condition,
+<div data-controller="postage-acknowledgment">
+  <div class="card shadow-sm p-4">
+    <h4 class="mb-4 text-center"><%= t("offers.make_an_offer")%></h4>
+    <% offer ||= Offer.new %>
+    <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(request)) do |form| %>
+      <div class="mb-3">
+        <%= form.label t("offers.quantity_offered"), class: "form-label fw-bold" %>
+        <%= form.number_field :quantity_offered, min: 1, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= form.label t("navigation.condition"), class: "form-label fw-bold" %>
+        <%= form.select :condition,
       Request::CONDITIONS.map { |condition|
         [t("conditions.#{condition}"), condition]
       },
       { prompt: t("conditions.select") },
       class: "form-select" %>
-    </div>
-    <div class="mb-3">
-      <%= form.label t("offers.message"), class: "form-label fw-bold" %>
-      <%= form.text_area :message, rows: 4, class: "form-control", placeholder: t("offers.message_prompt") %>
-    </div>
-    <div class="mb-4">
-      <%= form.label t("offers.can_ship_by"), class: "form-label fw-bold" %>
-      <%= form.date_field :can_ship_by, class: "form-control" %>
-    </div>
-    <div class="mb-4 p-3 bg-light border rounded">
-      <% if offer.photo.attached? %>
-        <%= image_tag offer.photo,
+      </div>
+      <div class="mb-3">
+        <%= form.label t("offers.message"), class: "form-label fw-bold" %>
+        <%= form.text_area :message, rows: 4, class: "form-control", placeholder: t("offers.message_prompt") %>
+      </div>
+      <div class="mb-4">
+        <%= form.label t("offers.can_ship_by"), class: "form-label fw-bold" %>
+        <%= form.date_field :can_ship_by, class: "form-control" %>
+      </div>
+      <div class="mb-4 p-3 bg-light border rounded">
+        <% if offer.photo.attached? %>
+          <%= image_tag offer.photo,
         class: "img-fluid rounded mb-3" %>
-      <% end %>
-      <%= form.label :photo, t("offers.photo_of_item"), class: "form-label fw-bold" %>
-      <%= form.file_field :photo, accept: "image/*", class: "form-control" %>
-      <div class="form-text mt-2"><%= t("offers.photo_expl") %></div>
+        <% end %>
+        <%= form.label :photo, t("offers.photo_of_item"), class: "form-label fw-bold" %>
+        <%= form.file_field :photo, accept: "image/*", class: "form-control" %>
+        <div class="form-text mt-2"><%= t("offers.photo_expl") %></div>
+      </div>
+      <%# Postage acknowledgment checkbox %>
+      <div class="mb-4">
+        <div class="form-check">
+          <%= check_box_tag "postage_acknowledged", "1", false,
+            id: "postage_acknowledged", class: "form-check-input",
+            disabled: true,
+            data: { "postage-acknowledgment-target": "checkbox" } %>
+          <%= label_tag "postage_acknowledged", t("offers.postage_acknowledgment"), class: "form-check-label" %>
+          <button type="button" class="btn btn-link p-0 ms-1 align-baseline"
+            data-bs-toggle="modal" data-bs-target="#postageModal">
+            (<%= t("offers.read_more") %>)
+          </button>
+        </div>
+      </div>
+      <%= form.hidden_field :request_id, value: @request.id %>
+      <%= form.hidden_field :donor_id, value: @donor&.id %>
+      <div class="d-grid mt-4">
+        <%# Using an inline style to pull in your KiFor Pink from the previous FAB button! %>
+        <%= form.submit offer.persisted? ? t("offers.save_changes") : t("offers.send_offer"),
+          class: "btn text-white fs-5",
+          style: "background-color: #E84393;",
+          disabled: true,
+          data: { "postage-acknowledgment-target": "submitButton" } %>
+      </div>
+    <% end %>
+  </div>
+  <%# Postage modal %>
+  <div class="modal fade" id="postageModal" tabindex="-1"
+  aria-labelledby="postageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="postageModalLabel"><%= t("offers.postage_modal_title") %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><%= t("offers.postage_modal_body") %></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-action="click->postage-acknowledgment#acknowledge">
+            <%= t("offers.postage_modal_confirm") %>
+          </button>
+        </div>
+      </div>
     </div>
-    <%= form.hidden_field :request_id, value: @request.id %>
-    <%= form.hidden_field :donor_id, value: @donor&.id %>
-    <div class="d-grid mt-4">
-      <%# Using an inline style to pull in your KiFor Pink from the previous FAB button! %>
-      <%= form.submit(offer.persisted? ? t("offers.save_changes") : t("offers.send_offer"), class: "btn text-white fs-5", style: "background-color: #E84393;") %>
-    </div>
-  <% end %>
+  </div>
 </div>
