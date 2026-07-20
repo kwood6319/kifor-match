@@ -17,6 +17,12 @@ class Offer < ApplicationRecord
 
   SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
 
+  validates :quantity_offered, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :condition, presence: true, inclusion: { in: Request::CONDITIONS }
+  validates :can_ship_by, presence: true
+  validates :photo, presence: true
+  validates :status, inclusion: { in: STATUSES }
+
   private
 
   def donor_amendment?
