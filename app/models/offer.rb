@@ -28,7 +28,7 @@ class Offer < ApplicationRecord
   }.freeze
 
   validates :status, inclusion: { in: STATUSES }
-  validates :conditon, inclusion: { in: Request::CONDITIONS }
+  validates :condition, inclusion: { in: Request::CONDITIONS }
 
   scope :active, -> { where(active: true) }
 
