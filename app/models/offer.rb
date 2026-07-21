@@ -13,7 +13,24 @@ class Offer < ApplicationRecord
     shipped
     received
     flagged
+    completed
   ].freeze
+
+  TERMINAL_STATUSES = %w[rejected completed]
+
+  NOTIFICATION_CLASSES = {
+    "completed" => OfferCompletedNotification,
+    "rejected" => OfferRejectedNotification
+  }.freeze
+
+  ALERT_STATUS_ALIASES = {
+    "flagged" => "received"
+  }.freeze
+
+  validates :status, inclusion: { in: STATUSES }
+  validates :conditon, inclusion: { in: Request::CONDITIONS }
+
+  scope :active, -> { where(active: true) }
 
   SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
 
@@ -22,6 +39,13 @@ class Offer < ApplicationRecord
   validates :can_ship_by, presence: true
   validates :photo, presence: true
   validates :status, inclusion: { in: STATUSES }
+  before_save :set_active_from_status
+  after_update :create_terminal_notification, if: :saved_change_to_status?
+
+  def alert_message
+    key = ALERT_STATUS_ALIASES.fetch(status, status)
+    I18n.t("dashboard.alert_messages.#{key}")
+  end
 
   private
 
@@ -38,5 +62,16 @@ class Offer < ApplicationRecord
     return unless saved_change_to_status == ["submitted", "approved"]
 
     request.update!(quantity_remaining: request.quantity_needed - quantity_offered)
+  end
+
+  def set_active_from_status
+    self.active = !TERMINAL_STATUSES.include?(status)
+  end
+
+  def create_terminal_notification
+    notification_class = NOTIFICATION_CLASSES[status]
+    return unless notification_class
+
+    notification_class.create!(recipient: donor, offer: self)
   end
 end

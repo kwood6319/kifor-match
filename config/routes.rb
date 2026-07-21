@@ -67,5 +67,9 @@ Rails.application.routes.draw do
         patch :deactivate
       end
     end
+
+    resources :notifications, only: [] do
+      member { patch :dismiss }
+    end
   end
 end

@@ -205,7 +205,8 @@ puts "----------------------------------------------"
 puts "Creating requests..."
 
 request1 = Request.create!(
-  category: "electronics",
+  category: ["electronics"],
+  subcategory: ["laptops"],
   charity: charity1,
   condition: "used_good",
   description: "charger included",
@@ -219,7 +220,8 @@ request1 = Request.create!(
 puts "Created request for #{request1.quantity_needed} #{request1.title}."
 
 request2 = Request.create!(
-  category: "clothes",
+  category: ["clothes"],
+  subcategory: ["mens", "womens"],
   charity: charity1,
   condition: "used_good",
   description: "Clean, good condition",
@@ -233,7 +235,8 @@ request2 = Request.create!(
 puts "Created request for #{request2.quantity_needed} #{request2.title}."
 
 request3 = Request.create!(
-  category: "clothes",
+  category: ["clothes"],
+  subcategory: ["childrens", "shoes"],
   charity: charity2,
   condition: "used_good",
   description: "Good condition",
@@ -247,7 +250,8 @@ request3 = Request.create!(
 puts "Created request for #{request3.quantity_needed} #{request3.title}."
 
 request4 = Request.create!(
-  category: "necessities",
+  category: ["hygiene"],
+  subcategory: [],
   charity: charity3,
   condition: "new",
   description: "Sealed preferred",
@@ -262,7 +266,8 @@ puts "Created request for #{request4.quantity_needed} #{request4.title}."
 
 
 request5 = Request.create!(
-  category: "food",
+  category: ["food"],
+  subcategory: ["nonperishable"],
   charity: charity2,
   condition: "new",
   description: "Expiry 3+ months",
@@ -276,10 +281,11 @@ request5 = Request.create!(
 puts "Created request for #{request5.quantity_needed} #{request5.title}."
 
 request6 = Request.create!(
-  category: "clothes",
+  category: ["home_goods"],
+  subcategory: ["bedding"],
   charity: charity1,
   condition: "used_very_good",
-  description: "New or like new",
+  description: "Bathing towels",
   quantity_needed: 30,
   quantity_remaining: 30,
   status: "active",
@@ -290,7 +296,8 @@ request6 = Request.create!(
 puts "Created request for #{request6.quantity_needed} #{request6.title}."
 
 request7 = Request.create!(
-  category: "clothes",
+  category: ["home_goods"],
+  subcategory: ["bedding"],
   charity: charity3,
   condition: "new",
   description: "Clean/ New",
@@ -304,7 +311,8 @@ request7 = Request.create!(
 puts "Created request for #{request7.quantity_needed} #{request7.title}."
 
 request8 = Request.create!(
-  category: "stationery",
+  category: ["stationery"],
+  subcategory: [],
   charity: charity2,
   condition: "new",
   description: "Full sets",
@@ -318,7 +326,8 @@ request8 = Request.create!(
 puts "Created request for #{request8.quantity_needed} #{request8.title}."
 
 request9 = Request.create!(
-  category: "electronics",
+  category: ["electronics"],
+  subcategory: ["phones", "other"],
   charity: charity1,
   condition: "used_good",
   description: "USB-C type",
@@ -332,7 +341,8 @@ request9 = Request.create!(
 puts "Created request for #{request9.quantity_needed} #{request9.title}."
 
 request10 = Request.create!(
-  category: "clothes",
+  category: ["kids"],
+  subcategory: ["school_supplies"],
   charity: charity3,
   condition: "used_good",
   description: "Backpacks for kids",
@@ -346,7 +356,8 @@ request10 = Request.create!(
 puts "Created request for #{request10.quantity_needed} #{request10.title}."
 
 request11 = Request.create!(
-  category: "electronics",
+  category: ["electronics"],
+  subcategory: ["laptops"],
   charity: charity4,
   condition: "used_good",
   description: "Laptops needed",
@@ -360,7 +371,8 @@ request11 = Request.create!(
 puts "Created request for #{request11.quantity_needed} #{request11.title}."
 
 request12 = Request.create!(
-  category: "baby",
+  category: ["kids"],
+  subcategory: ["other"],
   charity: charity2,
   condition: "new",
   description: "Disposable diapers, mixed sizes welcome",
@@ -374,7 +386,8 @@ request12 = Request.create!(
 puts "Created request for #{request12.quantity_needed} #{request12.title}."
 
 request13 = Request.create!(
-  category: "food",
+  category: ["food"],
+  subcategory: ["canned"],
   charity: charity4,
   condition: "new",
   description: "Unopened canned soup, expiry 3+ months",
@@ -388,7 +401,8 @@ request13 = Request.create!(
 puts "Created request for #{request13.quantity_needed} #{request13.title}."
 
 request14 = Request.create!(
-  category: "hygiene",
+  category: ["hygiene"],
+  subcategory: [],
   charity: charity3,
   condition: "new",
   description: "Toothbrush + toothpaste bundles preferred",
@@ -402,7 +416,8 @@ request14 = Request.create!(
 puts "Created request for #{request14.quantity_needed} #{request14.title}."
 
 request15 = Request.create!(
-  category: "stationery",
+  category: ["stationery"],
+  subcategory: [],
   charity: charity1,
   condition: "new",
   description: "Pens, pencils, erasers included",
@@ -416,7 +431,8 @@ request15 = Request.create!(
 puts "Created request for #{request15.quantity_needed} #{request15.title}."
 
 request16 = Request.create!(
-  category: "cleaning",
+  category: ["home_goods"],
+  subcategory: [],
   charity: charity2,
   condition: "new",
   description: "Kitchen and bathroom cleaner",
@@ -430,7 +446,8 @@ request16 = Request.create!(
 puts "Created request for #{request16.quantity_needed} #{request16.title}."
 
 request17 = Request.create!(
-  category: "seasonal",
+  category: ["home_goods"],
+  subcategory: ["bedding"],
   charity: charity3,
   condition: "used_good",
   description: "Warm blankets for winter shelter",
@@ -444,7 +461,8 @@ request17 = Request.create!(
 puts "Created request for #{request17.quantity_needed} #{request17.title}."
 
 request18 = Request.create!(
-  category: "clothes",
+  category: ["clothes"],
+  subcategory: ["childrens", "shoes"],
   charity: charity4,
   condition: "used_like_new",
   description: "Children's rain boots, sizes mixed",
@@ -458,7 +476,8 @@ request18 = Request.create!(
 puts "Created request for #{request18.quantity_needed} #{request18.title}."
 
 request19 = Request.create!(
-  category: "cooking",
+  category: ["electronics"],
+  subcategory: ["other"],
   charity: charity1,
   condition: "used_good",
   description: "Rice cookers or electric kettles welcome",
@@ -472,7 +491,8 @@ request19 = Request.create!(
 puts "Created request for #{request19.quantity_needed} #{request19.title}."
 
 request20 = Request.create!(
-  category: "food",
+  category: ["food"],
+  subcategory: ["other"],
   charity: charity2,
   condition: "new",
   description: "Shelf-stable milk cartons",
@@ -486,7 +506,8 @@ request20 = Request.create!(
 puts "Created request for #{request20.quantity_needed} #{request20.title}."
 
 request21 = Request.create!(
-  category: "other",
+  category: ["kids"],
+  subcategory: ["school_supplies"],
   charity: charity4,
   condition: "used_good",
   description: "Reusable backpacks for school-age children",

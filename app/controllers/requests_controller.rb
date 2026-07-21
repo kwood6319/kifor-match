@@ -6,7 +6,7 @@ class RequestsController < ApplicationController
     @requests = policy_scope(Request).includes(:charity).where.not(status: "inactive")
 
     # Setup dynamic variables for your dropdown menus
-    @categories = Request.pluck(:category).uniq.sort
+    @categories = CategoryList::CATEGORIES.keys
 
     # 1. Text Search (Title or Charity Name)
     if params[:query].present?
@@ -17,7 +17,10 @@ class RequestsController < ApplicationController
     end
 
     # 2. Category Filter
-    @requests = @requests.where(category: params[:category]) if params[:category].present?
+    if params[:category].present?
+      categories = Array(params[:category]).reject(&:blank?)
+      @requests = @requests.where("category && ARRAY[?]::varchar[]", categories) if categories.any?
+    end
 
     # 3. Prefecture Filter
     if params[:prefecture].present?

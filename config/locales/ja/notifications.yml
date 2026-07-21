@@ -1,0 +1,5 @@
+ja:
+  notifications:
+    title: "更新"
+    offer_completed: "「%{title}」へのオファーが完了としてマークされました。"
+    offer_rejected: "「%{title}」へのオファーが却下としてマークされました。"
