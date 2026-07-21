@@ -34,6 +34,11 @@ class Offer < ApplicationRecord
 
   SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
 
+  validates :quantity_offered, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :condition, presence: true, inclusion: { in: Request::CONDITIONS }
+  validates :can_ship_by, presence: true
+  validates :photo, presence: true
+  validates :status, inclusion: { in: STATUSES }
   before_save :set_active_from_status
   after_update :create_terminal_notification, if: :saved_change_to_status?
 
