@@ -1,3 +1,5 @@
+require "open-uri"
+
 puts "Cleaning database..."
 
 Offer.destroy_all
@@ -11,75 +13,25 @@ puts "#{Request.count} requests, #{Offer.count} offers."
 
 puts "----------------------------------------------"
 
-puts "Creating users for charities..."
+puts "Creating users..."
 
-user1 = User.create!(
-  role: 1,
-  email: "tokyo-shelter@demo.org",
-  password: "123456"
-)
+USERS = [
+  { key: :user1, role: 1, email: "tokyo-shelter@demo.org" },
+  { key: :user2, role: 1, email: "osaka-food@demo.org" },
+  { key: :user3, role: 1, email: "kanazawa-community@demo.org" },
+  { key: :user4, role: 0, email: "sam@donor.com" },
+  { key: :user5, role: 0, email: "hana@donor.com" },
+  { key: :user6, role: 0, email: "alice@abccorp.com" },
+  { key: :user7, role: 2, email: "francis@admin" },
+  { key: :user8, role: 0, email: "lewagon@donor.com" },
+  { key: :user9, role: 1, email: "youmewe@charity.com" },
+  { key: :user10, role: 1, email: "refugeechildren@charity.com" },
+  { key: :user11, role: 0, email: "childrens@donor.com" }
+].freeze
 
-user2 = User.create!(
-  role: 1,
-  email: "osaka-food@demo.org",
-  password: "123456"
-)
-
-user3 = User.create!(
-  role: 1,
-  email: "kanazawa-community@demo.org",
-  password: "123456"
-)
-
-puts "Creating users for donors..."
-
-user4 = User.create!(
-  role: 0,
-  email: "sam@donor.com",
-  password: "123456"
-)
-
-user5 = User.create!(
-  role: 0,
-  email: "hana@donor.com",
-  password: "123456"
-)
-
-user6 = User.create!(
-  role: 0,
-  email: "alice@abccorp.com",
-  password: "123456"
-)
-
-user7 = User.create!(
-  role: 2,
-  email: "francis@admin.com",
-  password: "123456"
-)
-
-user8 = User.create!(
-  role: 0,
-  email: "lewagon@donor.com",
-  password: "123456"
-)
-
-user9 = User.create!(
-  role: 1,
-  email: "youmewe@charity.com",
-  password: "123456"
-)
-
-user10 = User.create!(
-  role: 1,
-  email: "refugeechildren@charity.com",
-  password: "123456"
-)
-
-user11 = User.create!(
-  role: 0,
-  email: "childrens@donor.com",
-  password: "123456"
-)
+users = USERS.each_with_object({}) do |attrs, hash|
+  hash[attrs[:key]] = User.create!(role: attrs[:role], email: attrs[:email], password: "123456")
+end
 
 puts "#{User.count} users created!"
 
@@ -87,60 +39,40 @@ puts "----------------------------------------------"
 
 puts "Creating charities..."
 
-charity1 = Charity.create!(
-  user: user1,
-  prefecture: "Tokyo",
-  description: "Emergency shelter support for Single Mothers escaping from abuse (demo)",
-  org_name: "Tokyo Single Mothers Shelter (DEMO)",
-  region: "Kanto",
-  shipping_address: "1-2-3 Demo, Shibuya-ku, Tokyo"
+CHARITIES = [
+  { key: :charity1, user: :user1, prefecture: "Tokyo", region: "Kanto",
+    org_name: "Tokyo Single Mothers Shelter (DEMO)",
+    description: "Emergency shelter support for Single Mothers escaping from abuse (demo)",
+    shipping_address: "1-2-3 Demo, Shibuya-ku, Tokyo" },
+  { key: :charity2, user: :user2, prefecture: "Osaka", region: "Kansai",
+    org_name: "Osaka Food Support (DEMO)",
+    description: "Food support NPO for families that need support (demo)",
+    shipping_address: "4-5-6 Demo, Osaka-shi, Osaka" },
+  { key: :charity3, user: :user3, prefecture: "Ishikawa", region: "Chubu",
+    org_name: "Kanazawa Children's Community Space (DEMO)",
+    description: "Community center for children who need community / food support (demo)",
+    shipping_address: "7-8-9 Demo, Kanazawa, Ishikawa" },
+  { key: :charity4, user: :user9, prefecture: "Tokyo", region: "Kanto",
+    org_name: "YouWeMe",
+    description: "Looking for laptops",
+    shipping_address: "123 Tokyo" },
+  { key: :charity5, user: :user10, prefecture: "Tokyo", region: "Kanto",
+    org_name: "Refugee Children",
+    description: "A charity supporting refugee children",
+    shipping_address: "456 Tokyo" }
+].freeze
+
+charities = CHARITIES.each_with_object({}) do |attrs, hash|
+  hash[attrs[:key]] = Charity.create!(
+    user: users.fetch(attrs[:user]),
+    prefecture: attrs[:prefecture],
+    region: attrs[:region],
+    org_name: attrs[:org_name],
+    description: attrs[:description],
+    shipping_address: attrs[:shipping_address]
   )
-
-puts "Charity #{charity1.org_name} created."
-
-charity2 = Charity.create!(
-  user: user2,
-  prefecture: "Osaka",
-  description: "Food support NPO for families that need support (demo)",
-  org_name: "Osaka Food Support (DEMO)",
-  region: "Kansai",
-  shipping_address: "4-5-6 Demo, Osaka-shi, Osaka"
-)
-
-puts "Charity #{charity2.org_name} created."
-
-charity3 = Charity.create!(
-  user: user3,
-  prefecture: "Ishikawa",
-  description: "Community center for children who need community / food support (demo)",
-  org_name: "Kanazawa Children’s Community Space (DEMO)",
-  region: "Chubu",
-  shipping_address: "7-8-9 Demo, Kanazawa, Ishikawa"
-)
-
-puts "Charity #{charity3.org_name} created."
-
-charity4 = Charity.create!(
-  user: user9,
-  prefecture: "Tokyo",
-  description: "Looking for laptops",
-  org_name: "YouWeMe",
-  region: "Kanto",
-  shipping_address: "123 Tokyo"
-)
-
-puts "Charity #{charity4.org_name} created."
-
-charity5 = Charity.create!(
-  user: user10,
-  prefecture: "Tokyo",
-  description: "A charity supporting refugee children",
-  org_name: "Refugee Children",
-  region: "Kanto",
-  shipping_address: "456 Tokyo"
-)
-
-puts "Charity #{charity5.org_name} created."
+  puts "Charity #{attrs[:org_name]} created."
+end
 
 puts "#{Charity.count} charities created!"
 
@@ -148,55 +80,24 @@ puts "----------------------------------------------"
 
 puts "Creating donors..."
 
-donor1 = Donor.create!(
-  user: user4,
-  prefecture: "Tokyo",
-  display_name: "Sam Samson",
-  donor_type: "individual",
-  region: "Kanto"
-)
+DONORS = [
+  { key: :donor1, user: :user4,  prefecture: "Tokyo", region: "Kanto",  display_name: "Sam Samson",     donor_type: "individual" },
+  { key: :donor2, user: :user5,  prefecture: "Osaka", region: "Kansai", display_name: "Hana Tanaka",     donor_type: "individual" },
+  { key: :donor3, user: :user6,  prefecture: "Tokyo", region: "Kanto",  display_name: "ABC Corp",        donor_type: "company" },
+  { key: :donor4, user: :user8,  prefecture: "Tokyo", region: "Kanto",  display_name: "Le Wagon Tokyo",  donor_type: "company" },
+  { key: :donor5, user: :user11, prefecture: "Tokyo", region: "Kanto",  display_name: "Toy Donor",       donor_type: "individual" }
+].freeze
 
-puts "Donor #{donor1.display_name} created."
-
-donor2 = Donor.create!(
-  user: user5,
-  prefecture: "Osaka",
-  display_name: "Hana Tanaka",
-  donor_type: "individual",
-  region: "Kansai"
-)
-
-puts "Donor #{donor2.display_name} created."
-
-donor3 = Donor.create!(
-  user: user6,
-  prefecture: "Tokyo",
-  display_name: "ABC Corp",
-  donor_type: "company",
-  region: "Kanto"
-)
-
-puts "Donor #{donor3.display_name} created."
-
-donor4 = Donor.create!(
-  user: user8,
-  prefecture: "Tokyo",
-  display_name: "Le Wagon Tokyo",
-  donor_type: "company",
-  region: "Kanto"
-)
-
-puts "Donor #{donor4.display_name} created."
-
-donor5 = Donor.create!(
-  user: user11,
-  prefecture: "Tokyo",
-  display_name: "Toy Donor",
-  donor_type: "individual",
-  region: "Kanto"
-)
-
-puts "Donor #{donor5.display_name} created."
+donors = DONORS.each_with_object({}) do |attrs, hash|
+  hash[attrs[:key]] = Donor.create!(
+    user: users.fetch(attrs[:user]),
+    prefecture: attrs[:prefecture],
+    region: attrs[:prefecture],
+    display_name: attrs[:display_name],
+    donor_type: attrs[:donor_type]
+  )
+  puts "Donor #{attrs[:display_name]} created."
+end
 
 puts "#{Donor.count} donors created!"
 
@@ -204,415 +105,137 @@ puts "----------------------------------------------"
 
 puts "Creating requests..."
 
-request1 = Request.create!(
-  category: ["electronics"],
-  subcategory: ["laptops"],
-  charity: charity1,
-  condition: "used_good",
-  description: "charger included",
-  quantity_needed: 2,
-  quantity_remaining: 2,
-  status: "active",
-  title: "Laptops",
-  urgency: "high"
-)
+REQUESTS = [
+  { key: :request1,  charity: :charity1, category: ["electronics"], subcategory: ["laptops"],
+    title: "Laptops", condition: "used_good", description: "charger included",
+    quantity_needed: 2, urgency: "high" },
+  { key: :request2,  charity: :charity1, category: ["clothes"], subcategory: %w[mens womens],
+    title: "Winter coats (adult)", condition: "used_good", description: "Clean, good condition",
+    quantity_needed: 10, urgency: "medium" },
+  { key: :request3,  charity: :charity2, category: ["clothes"], subcategory: %w[childrens shoes],
+    title: "Kids shoes (sizes 18-22cm)", condition: "used_good", description: "Good condition",
+    quantity_needed: 15, urgency: "medium" },
+  { key: :request4,  charity: :charity3, category: ["hygiene"], subcategory: [],
+    title: "Hygiene kits", condition: "new", description: "Sealed preferred",
+    quantity_needed: 50, urgency: "high" },
+  { key: :request5,  charity: :charity2, category: ["food"], subcategory: ["nonperishable"],
+    title: "Rice (unopened)", condition: "new", description: "Expiry 3+ months",
+    quantity_needed: 20, urgency: "medium" },
+  { key: :request6,  charity: :charity1, category: ["home_goods"], subcategory: ["bedding"],
+    title: "Towels", condition: "used_very_good", description: "Bathing towels",
+    quantity_needed: 30, urgency: "medium" },
+  { key: :request7,  charity: :charity3, category: ["home_goods"], subcategory: ["bedding"],
+    title: "Blankets", condition: "new", description: "Clean/ New",
+    quantity_needed: 20, urgency: "high" },
+  { key: :request8,  charity: :charity2, category: ["stationery"], subcategory: [],
+    title: "Stationery sets", condition: "new", description: "Full sets",
+    quantity_needed: 40, urgency: "medium" },
+  { key: :request9,  charity: :charity1, category: ["electronics"], subcategory: %w[phones other],
+    title: "Phone chargers", condition: "used_good", description: "USB-C type",
+    quantity_needed: 25, urgency: "low" },
+  { key: :request10, charity: :charity3, category: ["kids"], subcategory: ["school_supplies"],
+    title: "Backpacks (kids)", condition: "used_good", description: "Backpacks for kids",
+    quantity_needed: 20, urgency: "medium" },
+  { key: :request11, charity: :charity4, category: ["electronics"], subcategory: ["laptops"],
+    title: "Laptops", condition: "used_good", description: "Laptops needed",
+    quantity_needed: 2, urgency: "high" },
+  { key: :request12, charity: :charity2, category: ["kids"], subcategory: ["other"],
+    title: "Baby diapers", condition: "new", description: "Disposable diapers, mixed sizes welcome",
+    quantity_needed: 25, urgency: "urgent" },
+  { key: :request13, charity: :charity4, category: ["food"], subcategory: ["canned"],
+    title: "Canned soup", condition: "new", description: "Unopened canned soup, expiry 3+ months",
+    quantity_needed: 40, urgency: "high" },
+  { key: :request14, charity: :charity3, category: ["hygiene"], subcategory: [],
+    title: "Dental hygiene kits", condition: "new", description: "Toothbrush + toothpaste bundles preferred",
+    quantity_needed: 30, urgency: "medium" },
+  { key: :request15, charity: :charity1, category: ["stationery"], subcategory: [],
+    title: "School supply sets", condition: "new", description: "Pens, pencils, erasers included",
+    quantity_needed: 20, urgency: "medium" },
+  { key: :request16, charity: :charity2, category: ["home_goods"], subcategory: [],
+    title: "Cleaning supplies", condition: "new", description: "Kitchen and bathroom cleaner",
+    quantity_needed: 15, urgency: "high" },
+  { key: :request17, charity: :charity3, category: ["home_goods"], subcategory: ["bedding"],
+    title: "Winter blankets", condition: "used_good", description: "Warm blankets for winter shelter",
+    quantity_needed: 18, urgency: "urgent" },
+  { key: :request18, charity: :charity4, category: ["clothes"], subcategory: %w[childrens shoes],
+    title: "Kids rain boots", condition: "used_like_new", description: "Children's rain boots, sizes mixed",
+    quantity_needed: 12, urgency: "medium" },
+  { key: :request19, charity: :charity1, category: ["electronics"], subcategory: ["other"],
+    title: "Kitchen appliances", condition: "used_good", description: "Rice cookers or electric kettles welcome",
+    quantity_needed: 6, urgency: "low" },
+  { key: :request20, charity: :charity2, category: ["food"], subcategory: ["other"],
+    title: "Milk cartons", condition: "new", description: "Shelf-stable milk cartons",
+    quantity_needed: 24, urgency: "medium", status: "fulfilled" },
+  { key: :request21, charity: :charity4, category: ["kids"], subcategory: ["school_supplies"],
+    title: "School backpacks", condition: "used_good", description: "Reusable backpacks for school-age children",
+    quantity_needed: 14, urgency: "medium" }
+].freeze
 
-puts "Created request for #{request1.quantity_needed} #{request1.title}."
-
-request2 = Request.create!(
-  category: ["clothes"],
-  subcategory: ["mens", "womens"],
-  charity: charity1,
-  condition: "used_good",
-  description: "Clean, good condition",
-  quantity_needed: 10,
-  quantity_remaining: 10,
-  status: "active",
-  title: "Winter coats (adult)",
-  urgency: "medium"
-)
-
-puts "Created request for #{request2.quantity_needed} #{request2.title}."
-
-request3 = Request.create!(
-  category: ["clothes"],
-  subcategory: ["childrens", "shoes"],
-  charity: charity2,
-  condition: "used_good",
-  description: "Good condition",
-  quantity_needed: 15,
-  quantity_remaining: 15,
-  status: "active",
-  title: "Kids shoes (sizes 18-22cm)",
-  urgency: "medium"
-)
-
-puts "Created request for #{request3.quantity_needed} #{request3.title}."
-
-request4 = Request.create!(
-  category: ["hygiene"],
-  subcategory: [],
-  charity: charity3,
-  condition: "new",
-  description: "Sealed preferred",
-  quantity_needed: 50,
-  quantity_remaining: 50,
-  status: "active",
-  title: "Hygiene kits",
-  urgency: "high"
-)
-
-puts "Created request for #{request4.quantity_needed} #{request4.title}."
-
-
-request5 = Request.create!(
-  category: ["food"],
-  subcategory: ["nonperishable"],
-  charity: charity2,
-  condition: "new",
-  description: "Expiry 3+ months",
-  quantity_needed: 20,
-  quantity_remaining: 20,
-  status: "active",
-  title: "Rice (unopened)",
-  urgency: "medium"
-)
-
-puts "Created request for #{request5.quantity_needed} #{request5.title}."
-
-request6 = Request.create!(
-  category: ["home_goods"],
-  subcategory: ["bedding"],
-  charity: charity1,
-  condition: "used_very_good",
-  description: "Bathing towels",
-  quantity_needed: 30,
-  quantity_remaining: 30,
-  status: "active",
-  title: "Towels",
-  urgency: "medium"
-)
-
-puts "Created request for #{request6.quantity_needed} #{request6.title}."
-
-request7 = Request.create!(
-  category: ["home_goods"],
-  subcategory: ["bedding"],
-  charity: charity3,
-  condition: "new",
-  description: "Clean/ New",
-  quantity_needed: 20,
-  quantity_remaining: 20,
-  status: "active",
-  title: "Blankets",
-  urgency: "high"
-)
-
-puts "Created request for #{request7.quantity_needed} #{request7.title}."
-
-request8 = Request.create!(
-  category: ["stationery"],
-  subcategory: [],
-  charity: charity2,
-  condition: "new",
-  description: "Full sets",
-  quantity_needed: 40,
-  quantity_remaining: 40,
-  status: "active",
-  title: "Stationery sets",
-  urgency: "medium"
-)
-
-puts "Created request for #{request8.quantity_needed} #{request8.title}."
-
-request9 = Request.create!(
-  category: ["electronics"],
-  subcategory: ["phones", "other"],
-  charity: charity1,
-  condition: "used_good",
-  description: "USB-C type",
-  quantity_needed: 25,
-  quantity_remaining: 25,
-  status: "active",
-  title: "Phone chargers",
-  urgency: "low"
-)
-
-puts "Created request for #{request9.quantity_needed} #{request9.title}."
-
-request10 = Request.create!(
-  category: ["kids"],
-  subcategory: ["school_supplies"],
-  charity: charity3,
-  condition: "used_good",
-  description: "Backpacks for kids",
-  quantity_needed: 20,
-  quantity_remaining: 20,
-  status: "active",
-  title: "Backpacks (kids)",
-  urgency: "medium"
-)
-
-puts "Created request for #{request10.quantity_needed} #{request10.title}."
-
-request11 = Request.create!(
-  category: ["electronics"],
-  subcategory: ["laptops"],
-  charity: charity4,
-  condition: "used_good",
-  description: "Laptops needed",
-  quantity_needed: 2,
-  quantity_remaining: 2,
-  status: "active",
-  title: "Laptops",
-  urgency: "high"
-)
-
-puts "Created request for #{request11.quantity_needed} #{request11.title}."
-
-request12 = Request.create!(
-  category: ["kids"],
-  subcategory: ["other"],
-  charity: charity2,
-  condition: "new",
-  description: "Disposable diapers, mixed sizes welcome",
-  quantity_needed: 25,
-  quantity_remaining: 25,
-  status: "active",
-  title: "Baby diapers",
-  urgency: "urgent"
-)
-
-puts "Created request for #{request12.quantity_needed} #{request12.title}."
-
-request13 = Request.create!(
-  category: ["food"],
-  subcategory: ["canned"],
-  charity: charity4,
-  condition: "new",
-  description: "Unopened canned soup, expiry 3+ months",
-  quantity_needed: 40,
-  quantity_remaining: 40,
-  status: "active",
-  title: "Canned soup",
-  urgency: "high"
-)
-
-puts "Created request for #{request13.quantity_needed} #{request13.title}."
-
-request14 = Request.create!(
-  category: ["hygiene"],
-  subcategory: [],
-  charity: charity3,
-  condition: "new",
-  description: "Toothbrush + toothpaste bundles preferred",
-  quantity_needed: 30,
-  quantity_remaining: 30,
-  status: "active",
-  title: "Dental hygiene kits",
-  urgency: "medium"
-)
-
-puts "Created request for #{request14.quantity_needed} #{request14.title}."
-
-request15 = Request.create!(
-  category: ["stationery"],
-  subcategory: [],
-  charity: charity1,
-  condition: "new",
-  description: "Pens, pencils, erasers included",
-  quantity_needed: 20,
-  quantity_remaining: 20,
-  status: "active",
-  title: "School supply sets",
-  urgency: "medium"
-)
-
-puts "Created request for #{request15.quantity_needed} #{request15.title}."
-
-request16 = Request.create!(
-  category: ["home_goods"],
-  subcategory: [],
-  charity: charity2,
-  condition: "new",
-  description: "Kitchen and bathroom cleaner",
-  quantity_needed: 15,
-  quantity_remaining: 15,
-  status: "active",
-  title: "Cleaning supplies",
-  urgency: "high"
-)
-
-puts "Created request for #{request16.quantity_needed} #{request16.title}."
-
-request17 = Request.create!(
-  category: ["home_goods"],
-  subcategory: ["bedding"],
-  charity: charity3,
-  condition: "used_good",
-  description: "Warm blankets for winter shelter",
-  quantity_needed: 18,
-  quantity_remaining: 18,
-  status: "active",
-  title: "Winter blankets",
-  urgency: "urgent"
-)
-
-puts "Created request for #{request17.quantity_needed} #{request17.title}."
-
-request18 = Request.create!(
-  category: ["clothes"],
-  subcategory: ["childrens", "shoes"],
-  charity: charity4,
-  condition: "used_like_new",
-  description: "Children's rain boots, sizes mixed",
-  quantity_needed: 12,
-  quantity_remaining: 12,
-  status: "active",
-  title: "Kids rain boots",
-  urgency: "medium"
-)
-
-puts "Created request for #{request18.quantity_needed} #{request18.title}."
-
-request19 = Request.create!(
-  category: ["electronics"],
-  subcategory: ["other"],
-  charity: charity1,
-  condition: "used_good",
-  description: "Rice cookers or electric kettles welcome",
-  quantity_needed: 6,
-  quantity_remaining: 6,
-  status: "active",
-  title: "Kitchen appliances",
-  urgency: "low"
-)
-
-puts "Created request for #{request19.quantity_needed} #{request19.title}."
-
-request20 = Request.create!(
-  category: ["food"],
-  subcategory: ["other"],
-  charity: charity2,
-  condition: "new",
-  description: "Shelf-stable milk cartons",
-  quantity_needed: 24,
-  quantity_remaining: 24,
-  status: "fulfilled",
-  title: "Milk cartons",
-  urgency: "medium"
-)
-
-puts "Created request for #{request20.quantity_needed} #{request20.title}."
-
-request21 = Request.create!(
-  category: ["kids"],
-  subcategory: ["school_supplies"],
-  charity: charity4,
-  condition: "used_good",
-  description: "Reusable backpacks for school-age children",
-  quantity_needed: 14,
-  quantity_remaining: 14,
-  status: "active",
-  title: "School backpacks",
-  urgency: "medium"
-)
-
-puts "Created request for #{request21.quantity_needed} #{request21.title}."
+requests = REQUESTS.each_with_object({}) do |attrs, hash|
+  request = Request.create!(
+    charity: charities.fetch(attrs[:charity]),
+    category: attrs[:category],
+    subcategory: attrs[:subcategory],
+    title: attrs[:title],
+    condition: attrs[:condition],
+    description: attrs[:description],
+    quantity_needed: attrs[:quantity_needed],
+    quantity_remaining: attrs[:quantity_remaining],
+    urgency: attrs[:urgency],
+    status: attrs[:status] || "active"
+  )
+  hash[attrs[:key]] = request
+  puts "Created request for #{request.quantity_needed} #{request.title}."
+end
 
 puts "----------------------------------------------"
 
 puts "Creating offers..."
 
-offer1a = Offer.create!(
-  can_ship_by: Date.today + 7.days,
-  condition: "used_good",
-  donor: donor1,
-  message: "Can ship next week",
-  quantity_offered: 2,
-  request: request1,
-  status: "submitted",
-  tracking_number: ""
-)
+# A handful of stable placeholder images (Picsum's fixed-seed URLs return the
+# same image every time, so seeding is reproducible run to run).
+DUMMY_PHOTO_URLS = [
+  "https://picsum.photos/seed/kifor1/600/400",
+  "https://picsum.photos/seed/kifor2/600/400",
+  "https://picsum.photos/seed/kifor3/600/400",
+  "https://picsum.photos/seed/kifor4/600/400"
+].freeze
 
-puts "Created offer for #{offer1a.quantity_offered} for #{offer1a.request.title} by #{offer1a.donor.display_name}"
+def attach_dummy_photo(offer, url, filename)
+  file = URI.open(url)
+  offer.photo.attach(io: file, filename: filename, content_type: "image/jpeg")
+rescue OpenURI::HTTPError, SocketError => e
+  puts "  (could not fetch dummy photo from #{url}: #{e.message})"
+end
 
-offer1b = Offer.create!(
-  can_ship_by: Date.today + 7.days,
-  condition: "used_like_new",
-  donor: donor2,
-  message: "Can ship next week",
-  quantity_offered: 1,
-  request: request1,
-  status: "submitted",
-  tracking_number: ""
-)
+OFFERS = [
+  { key: :offer1a, request: :request1,  donor: :donor1, condition: "used_good",      quantity_offered: 2,  status: "submitted", can_ship_by: 7.days.from_now.to_date,  message: "Can ship next week" },
+  { key: :offer1b, request: :request1,  donor: :donor2, condition: "used_like_new",  quantity_offered: 1,  status: "submitted", can_ship_by: 7.days.from_now.to_date,  message: "Can ship next week" },
+  { key: :offer2,  request: :request4,  donor: :donor3, condition: "new",            quantity_offered: 20, status: "approved",  can_ship_by: Date.today },
+  { key: :offer3,  request: :request2,  donor: :donor1, condition: "used_good",      quantity_offered: 5,  status: "rejected",  can_ship_by: Date.today },
+  { key: :offer4,  request: :request7,  donor: :donor3, condition: "new",            quantity_offered: 10, status: "shipped",   can_ship_by: Date.yesterday,          tracking_number: "EE123456789JP" },
+  { key: :offer5,  request: :request8,  donor: :donor2, condition: "new",            quantity_offered: 40, status: "received",  can_ship_by: 7.days.ago.to_date },
+  { key: :offer6,  request: :request11, donor: :donor4, condition: "used_like_new",  quantity_offered: 2,  status: "approved",  can_ship_by: 3.days.ago.to_date,       tracking_number: "XXXXXX", message: "Laptops like new" }
+].freeze
 
-puts "Created offer for #{offer1b.quantity_offered} for #{offer1b.request.title} by #{offer1b.donor.display_name}"
+OFFERS.each_with_index do |attrs, index|
+  offer = Offer.new(
+    request: requests.fetch(attrs[:request]),
+    donor: donors.fetch(attrs[:donor]),
+    condition: attrs[:condition],
+    quantity_offered: attrs[:quantity_offered],
+    status: attrs[:status],
+    can_ship_by: attrs[:can_ship_by],
+    message: attrs[:message] || "",
+    tracking_number: attrs[:tracking_number] || ""
+  )
 
-offer2 = Offer.create!(
-  can_ship_by: Date.today,
-  condition: "new",
-  donor: donor3,
-  message: "",
-  quantity_offered: 20,
-  request: request4,
-  status: "approved",
-  tracking_number: ""
-)
+  filename = "#{attrs[:key]}-item.jpg"
+  attach_dummy_photo(offer, DUMMY_PHOTO_URLS[index % DUMMY_PHOTO_URLS.size], filename)
 
-puts "Created offer for #{offer2.quantity_offered} for #{offer2.request.title} by #{offer2.donor.display_name}"
+  offer.save!
 
-offer3 = Offer.create!(
-  can_ship_by: Date.today,
-  condition: "used_good",
-  donor: donor1,
-  message: "",
-  quantity_offered: 5,
-  request: request2,
-  status: "rejected",
-  tracking_number: ""
-)
+  puts "Created offer for #{offer.quantity_offered} for #{offer.request.title} by #{offer.donor.display_name}"
+end
 
-puts "Created offer for #{offer3.quantity_offered} for #{offer3.request.title} by #{offer3.donor.display_name}"
-
-offer4 = Offer.create!(
-  can_ship_by: Date.yesterday,
-  condition: "new",
-  donor: donor3,
-  message: "",
-  quantity_offered: 10,
-  request: request7,
-  status: "shipped",
-  tracking_number: "EE123456789JP"
-)
-
-puts "Created offer for #{offer4.quantity_offered} for #{offer4.request.title} by #{offer4.donor.display_name}"
-
-offer5 = Offer.create!(
-  can_ship_by: Date.today - 7.days,
-  condition: "new",
-  donor: donor2,
-  message: "",
-  quantity_offered: 40,
-  request: request8,
-  status: "received",
-  tracking_number: ""
-)
-
-puts "Created offer for #{offer5.quantity_offered} for #{offer5.request.title} by #{offer5.donor.display_name}"
-
-offer6 = Offer.create!(
-  can_ship_by: Date.today - 3.days,
-  condition: "used_like_new",
-  donor: donor4,
-  message: "Laptops like new",
-  quantity_offered: 2,
-  request: request11,
-  status: "approved",
-  tracking_number: "XXXXXX"
-)
-
-puts "Created offer for #{offer6.quantity_offered} for #{offer6.request.title} by #{offer6.donor.display_name}"
-
-puts "Seed finished!"
+puts "Seed finished! おつかれ"
