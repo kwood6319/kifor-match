@@ -43,7 +43,7 @@
           </div>
         <% end %>
         <%# Actions %>
-        <% if @can_approve || @can_reject || @can_mark_received %>
+        <% if @can_approve || @can_reject || @can_mark_received || @can_give_feedback %>
           <hr>
           <div class="d-flex gap-2 flex-wrap">
             <% if @can_approve %>
@@ -56,6 +56,10 @@
             <% end %>
             <% if @can_mark_received %>
               <%= button_to "Mark as Received", mark_received_offer_path(@offer), method: :patch,
+                    class: "btn btn-primary btn-sm" %>
+            <% end %>
+            <% if @can_give_feedback %>
+              <%= link_to "Give Feedback", new_request_feedback_path(@request),
                     class: "btn btn-primary btn-sm" %>
             <% end %>
           </div>

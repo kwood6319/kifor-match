@@ -524,11 +524,17 @@ puts "----------------------------------------------"
 
 puts "Creating offers..."
 
+def seed_photo
+  { io: StringIO.new(File.binread(Rails.root.join("public/icon.png"))), filename: "placeholder.png",
+    content_type: "image/png" }
+end
+
 offer1a = Offer.create!(
   can_ship_by: Date.today + 7.days,
   condition: "used_good",
   donor: donor1,
   message: "Can ship next week",
+  photo: seed_photo,
   quantity_offered: 2,
   request: request1,
   status: "submitted",
@@ -542,6 +548,7 @@ offer1b = Offer.create!(
   condition: "used_like_new",
   donor: donor2,
   message: "Can ship next week",
+  photo: seed_photo,
   quantity_offered: 1,
   request: request1,
   status: "submitted",
@@ -555,6 +562,7 @@ offer2 = Offer.create!(
   condition: "new",
   donor: donor3,
   message: "",
+  photo: seed_photo,
   quantity_offered: 20,
   request: request4,
   status: "approved",
@@ -568,6 +576,7 @@ offer3 = Offer.create!(
   condition: "used_good",
   donor: donor1,
   message: "",
+  photo: seed_photo,
   quantity_offered: 5,
   request: request2,
   status: "rejected",
@@ -581,6 +590,7 @@ offer4 = Offer.create!(
   condition: "new",
   donor: donor3,
   message: "",
+  photo: seed_photo,
   quantity_offered: 10,
   request: request7,
   status: "shipped",
@@ -594,6 +604,7 @@ offer5 = Offer.create!(
   condition: "new",
   donor: donor2,
   message: "",
+  photo: seed_photo,
   quantity_offered: 40,
   request: request8,
   status: "received",
@@ -607,6 +618,7 @@ offer6 = Offer.create!(
   condition: "used_like_new",
   donor: donor4,
   message: "Laptops like new",
+  photo: seed_photo,
   quantity_offered: 2,
   request: request11,
   status: "approved",
@@ -614,5 +626,19 @@ offer6 = Offer.create!(
 )
 
 puts "Created offer for #{offer6.quantity_offered} for #{offer6.request.title} by #{offer6.donor.display_name}"
+
+offer7 = Offer.create!(
+  can_ship_by: Date.today - 5.days,
+  condition: "new",
+  donor: donor1,
+  message: "Delivered, ready for feedback",
+  photo: seed_photo,
+  quantity_offered: 20,
+  request: request5,
+  status: "received",
+  tracking_number: ""
+)
+
+puts "Created offer for #{offer7.quantity_offered} for #{offer7.request.title} by #{offer7.donor.display_name}"
 
 puts "Seed finished!"

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
     resources :requests do
       resources :offers, only: [ :index, :new, :create ]
+      resource :feedback, only: [ :new, :create ]
       member do
         patch :activate
         patch :deactivate

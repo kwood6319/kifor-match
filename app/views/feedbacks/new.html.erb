@@ -1,0 +1,51 @@
+<% content_for :title, "Feedback" %>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <h1 class="mb-4">FEEDBACK</h1>
+      <div class="tall-card rounded p-4 mb-4">
+        <div class="mb-3">
+          <p class="mb-1"><strong><%= @request.title %></strong></p>
+        </div>
+        <p class="text-muted small mb-4">
+          This will not be shared with the donor — it is for internal use only.
+        </p>
+
+        <%= form_with url: request_feedback_path(@request), method: :post do %>
+          <% FeedbackTags::GROUPS.each do |group| %>
+            <% tags = @grouped_tags[group] %>
+            <% next if tags.blank? %>
+            <div class="mb-4">
+              <h5 class="text-muted text-uppercase small mb-2"><%= group %></h5>
+              <% tags.each do |tag| %>
+                <div class="form-check">
+                  <%= check_box_tag "feedback[tags][]", tag[:slug], false,
+                        id: "feedback_tags_#{tag[:slug]}", class: "form-check-input" %>
+                  <%= label_tag "feedback_tags_#{tag[:slug]}", tag[:label], class: "form-check-label" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= label_tag "feedback_comment", "Additional feedback", class: "form-label fw-bold" %>
+            <%= text_area_tag "feedback[comment]", nil, id: "feedback_comment", rows: 4, class: "form-control" %>
+          </div>
+
+          <div class="mb-4">
+            <div class="form-check">
+              <%= check_box_tag "feedback[escalate]", "1", false,
+                    id: "feedback_escalate", class: "form-check-input" %>
+              <%= label_tag "feedback_escalate", "Escalate to admin", class: "form-check-label" %>
+            </div>
+          </div>
+
+          <div class="d-grid">
+            <%= submit_tag "Submit Feedback", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+      <%= link_to "← Back to Offer", request_path(@request), class: "text-muted small" %>
+    </div>
+  </div>
+</div>

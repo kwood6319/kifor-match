@@ -30,6 +30,7 @@ class OffersController < ApplicationController
     @can_approve = owns_request && submitted_status
     @can_reject = owns_request && submitted_status
     @can_mark_received = owns_request && %w[approved shipped].include?(@offer.status.to_s)
+    @can_give_feedback = owns_request && @offer.status.to_s == "received"
     authorize @offer
   end
 
