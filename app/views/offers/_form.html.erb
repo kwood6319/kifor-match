@@ -1,4 +1,4 @@
-<div data-controller="postage-acknowledgment">
+<div data-controller="postage-acknowledgment" data-postage-acknowledgment-first-offer-value="<%= @first_offer %>">
   <div class="card shadow-sm p-4">
     <h4 class="mb-4 text-center"><%= t("offers.make_an_offer")%></h4>
     <% offer ||= Offer.new %>
@@ -38,8 +38,10 @@
         <div class="form-check">
           <%= check_box_tag "postage_acknowledged", "1", false,
             id: "postage_acknowledged", class: "form-check-input",
-            disabled: true,
-            data: { "postage-acknowledgment-target": "checkbox" } %>
+            disabled: @first_offer,
+            data: {
+              "postage-acknowledgment-target": "checkbox",
+              action: "change->postage-acknowledgment#toggle"} %>
           <%= label_tag "postage_acknowledged", t("offers.postage_acknowledgment"), class: "form-check-label" %>
           <button type="button" class="btn btn-link p-0 ms-1 align-baseline"
             data-bs-toggle="modal" data-bs-target="#postageModal">
