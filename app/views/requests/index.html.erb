@@ -105,6 +105,9 @@
       <% end %>
     <% end %>
   </div>
+  <div class="mb-3">
+    <%= link_to "← Back", "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary mt-3" %>
+  </div>
 </div>
 <% if policy(Request).new? %>
   <%= link_to new_request_path, class: "btn-kifor-fab" do %>
