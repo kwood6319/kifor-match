@@ -45,6 +45,7 @@ en:
     condition: "Condition"
     description: "Description"
     requests: "Requests"
+    back: "← Back"
   messages:
     welcome_back: "Welcome back"
     your_requests: "Your active requests"
