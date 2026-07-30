@@ -33,15 +33,15 @@ class OffersController < ApplicationController
     authorize @offer
   end
 
-  # TODO: new , form for creating new offer
   def new
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
     @offer = Offer.new(request: @request, donor: @donor)
+    @first_offer = @donor.nil? || @donor.offers.none?
+    Rails.logger.debug "DEBUG first_offer={@first_offer.inspect} donor=#{@donor&.id} offers_count=#{@donor&.offers&.count}"
     authorize @offer
   end
 
-  # TODO: create , persist new offer (default status = submitted)
   def create
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil

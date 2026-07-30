@@ -41,8 +41,11 @@ class RequestsController < ApplicationController
   def show
     authorize @request
     @offers = @request.offers
-    @offer = Offer.new(request: @request, donor: current_user&.donor)
-    @my_offer = (@offers.find_by(donor: current_user.donor) if current_user&.donor?)
+    set_donor
+
+    @offer = Offer.new(request: @request, donor: @donor)
+    @first_offer = @donor.nil? || @donor.offers.none?
+    @my_offer = (@offers.find_by(donor: @donor) if @donor)
     @editing_offer = @offers.find_by(id: params[:edit_offer])
   end
 
@@ -93,6 +96,10 @@ class RequestsController < ApplicationController
 
   def set_request
     @request = Request.find(params[:id])
+  end
+
+  def set_donor
+    @donor = current_user&.donor
   end
 
   def request_params
