@@ -1,5 +1,5 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: %i[show edit update]
+  before_action :set_request, only: %i[show edit update destroy]
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries
@@ -92,10 +92,16 @@ class RequestsController < ApplicationController
   #   authorize @request
   # end
 
+  def destroy
+    authorize @request
+  end
+
   private
 
   def set_request
     @request = Request.find(params[:id])
+    @request.destroy
+    redirect_to requests_path, notice: "Request deleted"
   end
 
   def set_donor
