@@ -31,7 +31,17 @@
           <p> <%= @request.description %> </p>
         </div>
         <% if policy(@request).edit? %>
-          <%= link_to "Edit Request", edit_request_path(@request), class: "btn btn-outline-secondary" %>
+          <%= link_to t("buttons.edit_request"), edit_request_path(@request), class: "btn btn-outline-secondary" %>
+        <% end %>
+        <% if policy(@request).destroy? %>
+          <button type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-delete-url="<%= request_path(@request) %>"
+              data-delete-title="<%= t("modals.delete_request.title") %>" >
+              <%= t("buttons.delete") %>
+            </button>
         <% end %>
       </div>
     </div>
@@ -49,11 +59,13 @@
           class: "btn btn-secondary" %>
           <% end %>
           <% if %w[submitted rejected].include?(@my_offer.status.to_s) %>
-            <button type="button"
+            <button
+              type="button"
               class="btn btn-danger"
               data-bs-toggle="modal"
-              data-bs-target="#deleteOfferModal"
-              data-delete-url="<%= offer_path(@my_offer) %>">
+              data-bs-target="#deleteModal"
+              data-delete-url="<%= offer_path(@my_offer) %>"
+              data-delete-title="<%= t("modals.delete_offer.title") %>" >
               <%= t("buttons.delete") %>
             </button>
           <% end %>
@@ -92,19 +104,21 @@
     </div>
   </div>
 </div>
+
+
 <%# Delete modal %>
 <div class="modal fade"
-      id="deleteOfferModal"
+      id="deleteModal"
       tabindex="-1"
       aria-hidden="true"
-      data-controller="delete-offer">
+      data-controller="delete">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><%= t("modals.delete_offer.title") %></h5>
+        <h5 class="modal-title" data-delete-target="title"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <%= form_tag "#", method: :delete, id: "deleteOfferForm" do %>
+      <%= form_tag "#", method: :delete, data: { delete_target: "form" } do %>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
           <%= submit_tag t("buttons.delete"), class: "btn btn-danger" %>

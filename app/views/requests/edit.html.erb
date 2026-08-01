@@ -2,5 +2,8 @@
   <!-- this is an error check. Make it visible if you need it. -->
   <%# @request.errors.full_messages.inspect %>
   <h1> <%= t("requests.edit_request") %> </h1>
+  <div class="mb-3">
+    <%= link_to "← Back", "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary" %>
+  </div>
   <%= render "request_form", request: @request %>
 </div>

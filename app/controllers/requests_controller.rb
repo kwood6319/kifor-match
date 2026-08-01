@@ -94,14 +94,14 @@ class RequestsController < ApplicationController
 
   def destroy
     authorize @request
+    @request.destroy
+    redirect_to charities_dashboard_path, notice: "Request deleted"
   end
 
   private
 
   def set_request
     @request = Request.find(params[:id])
-    @request.destroy
-    redirect_to requests_path, notice: "Request deleted"
   end
 
   def set_donor
