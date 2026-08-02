@@ -2,7 +2,7 @@ class Offer < ApplicationRecord
   belongs_to :request
   belongs_to :donor
 
-  has_one_attached :photo
+  has_many_attached :photos
 
   before_update :resubmit_if_amended, if: :donor_amendment?
 
@@ -37,7 +37,7 @@ class Offer < ApplicationRecord
   validates :quantity_offered, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :condition, presence: true, inclusion: { in: Request::CONDITIONS }
   validates :can_ship_by, presence: true
-  validates :photo, presence: true
+  validates :photos, presence: true
   validates :status, inclusion: { in: STATUSES }
   before_save :set_active_from_status
   after_update :create_terminal_notification, if: :saved_change_to_status?
