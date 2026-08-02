@@ -7,8 +7,16 @@
               <%= 'rejected-offer' if offer.status == 'rejected' %>">
       <div class="row">
         <div class="col-5">
-          <% if offer.photo.attached? %>
-            <%= image_tag offer.photo, class: "img-fluid rounded" %>
+          <% if offer.photos.attached? %>
+            <div class="position-relative d-inline-block">
+              <%= image_tag offer.photos.first, class: "img-fluid rounded" %>
+              <% remaining = offer.photos.count - 1 %>
+              <% if remaining > 0 %>
+                <span class="badge bg-dark bg-opacity-75 position-absolute bottom-0 end-0 m-2 fs-6">
+                  +<%= remaining %>
+                </span>
+              <% end %>
+            </div>
           <% else %>
             <div class="offer-image-placeholder">
               📷 <%= t("offers.no_image") %>
