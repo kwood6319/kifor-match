@@ -1,4 +1,4 @@
-  .offer-image-placeholder {
+.offer-image-placeholder {
   width: 200px;
   height: 200px;
   background-color: #f3f4f6;
@@ -11,19 +11,30 @@
 
   color: #9ca3af;
   font-size: 14px;
-  }
+}
 
-  .offer-image {
-    width: 200px;
-    height: 200px;
-    background-color: #f3f4f6;
-    border: 2px solid #d1d5db;
-    border-radius: 12px;
+.offer-image {
+  width: 200px;
+  height: 200px;
+  background-color: #f3f4f6;
+  border: 2px solid #d1d5db;
+  border-radius: 12px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    color: #9ca3af;
-    font-size: 14px;
-  }
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.photo-gallery-thumb {
+  opacity: 0.6;
+  border: 2px solid transparent;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.photo-gallery-thumb-active {
+  opacity: 1;
+  border-color: #E84393
+}

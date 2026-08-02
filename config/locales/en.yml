@@ -68,6 +68,7 @@ en:
     no_offers: "No offers yet"
     make_an_offer: "Make an Offer"
     quantity_offered: "Quantity offered"
+    offer_from: "Offer from %{name}"
     message: "Message"
     message_prompt: "Any details you'd like to share with the charity? E.g., broken pieces, history, etc."
     can_ship_by: "Can ship by"

@@ -39,6 +39,7 @@ ja:
     no_offers: "まだオファーはありません"
     make_an_offer: "オファーを出す"
     quantity_offered: "提供数量"
+    offer_from: "%{name}様からのオファー"
     message: "メッセージ"
     message_prompt: "この慈善団体に伝えたいことはありますか？例えば、破損箇所や由来など。"
     can_ship_by: "発送可能日"
