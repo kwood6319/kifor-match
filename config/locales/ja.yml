@@ -16,6 +16,7 @@ ja:
     condition: "状態"
     description: "詳細"
     requests: "リクエスト"
+    back: "← 戻る"
   messages:
     welcome_back: "おかえりなさい"
     your_requests: "現在進行中のリクエスト"
