@@ -1,4 +1,7 @@
 <div class="container mt-5 mb-4">
+  <div class="mb-3 sticky-back">
+    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary mt-3" %>
+  </div>
   <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%="様" if I18n.locale == :ja %>!</h3>
 </div>
 <div class="container mb-4">
@@ -104,9 +107,6 @@
         </div>
       <% end %>
     <% end %>
-  </div>
-  <div class="mb-3">
-    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary mt-3" %>
   </div>
 </div>
 <% if policy(Request).new? %>

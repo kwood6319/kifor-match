@@ -12,6 +12,12 @@
   width: 100px;
 }
 
+.sticky-back {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
 .btn-delete{
   background-color: #FF7DB4;
 }
