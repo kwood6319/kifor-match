@@ -1,6 +1,6 @@
 class Request < ApplicationRecord
   belongs_to :charity
-  has_many :offers
+  has_many :offers, dependent: :destroy
   include CategoryList
 
   STATUSES = %w[

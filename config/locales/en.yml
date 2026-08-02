@@ -108,7 +108,8 @@ en:
       received_message: "You have marked this offer as received."
   buttons:
     save: "Save"
-    edit_offer: "Edit offer"
+    edit_offer: "Edit Offer"
+    edit_request: "Edit Request"
     view_request: "View Request"
     approve_offer: "Approve Offer"
     reject_offer: "Reject Offer"
@@ -143,6 +144,8 @@ en:
       placeholder: "E.g., The quality doesn't match our needs, we no longer need this item, etc."
     delete_offer:
       title: "Delete Offer"
+    delete_request:
+      title: "Delete Request"
   activerecord:
     attributes:
       offer:

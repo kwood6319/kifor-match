@@ -80,6 +80,7 @@ ja:
   buttons:
     save: "保存"
     edit_offer: "オファーを編集"
+    edit_request: "リクエストを編集"
     view_request: "リクエストを表示"
     approve_offer: "承認する"
     reject_offer: "拒否する"
@@ -114,6 +115,8 @@ ja:
       placeholder: "例：品質が当社のニーズに合わない、この商品はもう必要ない、など。"
     delete_offer:
       title: "オファーを削除"
+    delete_request:
+      title: "リクエストを消す"
   activerecord:
     attributes:
       offer:
