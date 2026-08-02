@@ -1,67 +1,85 @@
-<% content_for :title, "Offer Details" %>
-<div class="container py-4">
+<% content_for :title, t("offers.offer_details") %>
+<div class="container mt-5 mb-4">
+  <div class="mb-3">
+    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary" %>
+  </div>
   <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <h1 class="mb-4">Offer Details</h1>
-      <div class="tall-card rounded p-4 mb-4">
+    <div class="col-lg-7">
+      <div class="tall-card p-3">
         <%# Request info %>
-        <div class="mb-3">
-          <h5 class="text-muted text-uppercase small mb-2">Request</h5>
-          <p class="mb-1"><strong><%= @request.title %></strong></p>
-          <% if @request.description.present? %>
-            <p class="mb-1 text-muted"><%= @request.description %></p>
-          <% end %>
-          <p class="mb-1"><strong>Charity:</strong> <%= @charity.org_name %></p>
-          <% if @request.quantity_remaining.present? %>
-            <p class="mb-0"><strong>Quantity remaining:</strong> <%= @request.quantity_remaining %></p>
-          <% end %>
+        <div class="row pt-2">
+          <div class="col-8">
+            <h2><%= @request.title %></h2>
+          </div>
+          <div class="col-4 text-center">
+            <h3>x<%= @offer.quantity_offered %></h3>
+          </div>
         </div>
+        <p><i class="fa-solid fa-location-dot"></i> <%= t("regions.#{@charity.region}") %> - <%= t("prefectures.#{@charity.prefecture}") %></p>
+        <% if @request.description.present? %>
+          <p class="text-muted"><%= @request.description %></p>
+        <% end %>
         <hr>
         <%# Offer info %>
-        <div class="mb-3">
-          <h5 class="text-muted text-uppercase small mb-2">Offer</h5>
-          <p class="mb-1"><strong>Donor:</strong> <%= @donor.display_name %></p>
-          <p class="mb-1"><strong>Quantity offered:</strong> <%= @offer.quantity_offered %></p>
-          <p class="mb-1"><strong>Condition:</strong> <%= @offer.condition %></p>
-          <% if @offer.message.present? %>
-            <p class="mb-1"><strong>Message:</strong> <%= @offer.message %></p>
-          <% end %>
-          <% if @offer.can_ship_by.present? %>
-            <p class="mb-1"><strong>Can ship by:</strong> <%= @offer.can_ship_by %></p>
-          <% end %>
-          <% if @offer.tracking_number.present? %>
-            <p class="mb-1"><strong>Tracking number:</strong> <%= @offer.tracking_number %></p>
-          <% end %>
-          <p class="mb-0">
-            <strong>Status:</strong>
-            <span class="badge bg-secondary text-capitalize"><%= @offer.status %></span>
-          </p>
-        </div>
-        <% if @offer.photo.attached? %>
-          <div class="mb-3">
-            <%= cl_image_tag @offer.photo.key, width: 300, crop: :fill, class: "img-fluid rounded" %>
-          </div>
+        <h5><%= t("offers.offer_from", name: @donor.display_name) %></h5>
+        <p class="mb-1"><strong><%= t("navigation.condition") %>:</strong> <%= t("conditions.#{@offer.condition}") %></p>
+        <% if @offer.message.present? %>
+          <p class="mb-1"><strong><%= t("offers.message") %>:</strong> <%= @offer.message %></p>
         <% end %>
+        <% if @offer.can_ship_by.present? %>
+          <p class="mb-1"><strong><%= t("offers.can_ship_by") %>:</strong> <%= @offer.can_ship_by.strftime("%b %-d") %></p>
+        <% end %>
+        <% if @offer.tracking_number.present? %>
+          <p class="mb-1"><strong><%= t("statuses.tracking_info") %>:</strong> <%= @offer.tracking_number %></p>
+        <% end %>
+        <p class="mb-3">
+          <strong><%= t("offers.status") %>:</strong>
+          <span class="badge bg-secondary text-capitalize"><%= @offer.status %></span>
+        </p>
+        <%# Photo gallery %>
+        <div class="mb-3" data-controller="photo-gallery">
+          <div class="mb-2">
+            <% if @offer.photo.attached? %>
+              <%= image_tag @offer.photo, class: "img-fluid rounded w-100", style: "max-height: 350px; object-fit: cover;", data: { "photo-gallery-target": "mainImage" } %>
+            <% else %>
+              <div class="offer-image-placeholder" data-photo-gallery-target="mainImage">
+                📷 <%= t("offers.no_image") %>
+              </div>
+            <% end %>
+          </div>
+          <div class="d-flex gap-2">
+            <% if @offer.photo.attached? %>
+              <%= image_tag @offer.photo, class: "rounded", style: "width: 70px; height: 70px; object-fit: cover; cursor: pointer;",
+                    data: { action: "click->photo-gallery#select", "photo-gallery-full-src-param": url_for(@offer.photo) } %>
+            <% end %>
+            <%# Placeholder thumbnails — will become real photos once multi-photo upload is merged %>
+            <% 2.times do %>
+              <div class="rounded bg-light border d-flex align-items-center justify-content-center text-muted" style="width: 70px; height: 70px;">
+                <i class="fa-solid fa-image"></i>
+              </div>
+            <% end %>
+          </div>
+        </div>
         <%# Actions %>
         <% if @can_approve || @can_reject || @can_mark_received %>
           <hr>
           <div class="d-flex gap-2 flex-wrap">
             <% if @can_approve %>
-              <%= button_to "Approve", approve_offer_path(@offer), method: :patch,
-                    class: "btn btn-success btn-sm" %>
+              <%= button_to t("buttons.approve_offer"), approve_offer_path(@offer), method: :patch, class: "btn btn-success" %>
             <% end %>
             <% if @can_reject %>
-              <%= button_to "Reject", reject_offer_path(@offer), method: :patch,
-                    class: "btn btn-danger btn-sm" %>
+              <button type="button" class="btn btn-danger"
+                data-bs-toggle="modal" data-bs-target="#rejectOfferModal"
+                data-reject-url="<%= reject_offer_path(@offer) %>">
+                <%= t("buttons.reject_offer") %>
+              </button>
             <% end %>
             <% if @can_mark_received %>
-              <%= button_to "Mark as Received", mark_received_offer_path(@offer), method: :patch,
-                    class: "btn btn-primary btn-sm" %>
+              <%= button_to t("statuses.donor.received"), mark_received_offer_path(@offer), method: :patch, class: "btn btn-primary" %>
             <% end %>
           </div>
         <% end %>
       </div>
-      <%= link_to "← Back to Offers", request_offers_path(@request), class: "text-muted small" %>
     </div>
   </div>
 </div>
