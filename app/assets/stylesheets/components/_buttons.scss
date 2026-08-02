@@ -1,3 +1,5 @@
+@import "config/colors";
+
 .btn-section {
   display: flex;
   justify-content: space-between;
@@ -14,8 +16,9 @@
 
 .sticky-back {
   position: sticky;
-  top: 0;
-  z-index: 1000;
+  top: 64px;
+  z-index: 999;
+  background: $light-pink-gray;
 }
 
 .btn-delete{
