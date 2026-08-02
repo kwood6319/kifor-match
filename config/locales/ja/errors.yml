@@ -1,0 +1,4 @@
+ja:
+  errors:
+    messages:
+      exceeds_remaining: "残りの必要数量（%{max}）を超えることはできません"

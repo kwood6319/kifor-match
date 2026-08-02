@@ -1,0 +1,4 @@
+en:
+  errors:
+    messages:
+      exceeds_remaining: "Cannot exceed the remaining quantity needed (%{max})"
