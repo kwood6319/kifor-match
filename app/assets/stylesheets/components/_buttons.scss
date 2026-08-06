@@ -1,3 +1,5 @@
+@import "config/colors";
+
 .btn-section {
   display: flex;
   justify-content: space-between;
@@ -10,6 +12,13 @@
   border: 2px solid #852221;
   border-radius: 8px;
   width: 100px;
+}
+
+.sticky-back {
+  position: sticky;
+  top: 64px;
+  z-index: 999;
+  background: $light-pink-gray;
 }
 
 .btn-delete{

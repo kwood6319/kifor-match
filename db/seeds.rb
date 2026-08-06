@@ -194,28 +194,30 @@ puts "Creating offers..."
 
 # A handful of stable placeholder images (Picsum's fixed-seed URLs return the
 # same image every time, so seeding is reproducible run to run).
-DUMMY_PHOTO_URLS = [
-  "https://picsum.photos/seed/kifor1/600/400",
-  "https://picsum.photos/seed/kifor2/600/400",
-  "https://picsum.photos/seed/kifor3/600/400",
-  "https://picsum.photos/seed/kifor4/600/400"
-].freeze
+DUMMY_PHOTO_URLS = (1..10).map { |n| "https://picsum.photos/seed/kifor#{n}/600/400" }.freeze
 
-def attach_dummy_photo(offer, url, filename)
-  file = URI.open(url)
-  offer.photo.attach(io: file, filename: filename, content_type: "image/jpeg")
-rescue OpenURI::HTTPError, SocketError => e
-  puts "  (could not fetch dummy photo from #{url}: #{e.message})"
+def attach_dummy_photos(offer, urls)
+  files = urls.filter_map do |url|
+    URI.open(url)
+  rescue OpenURI::HTTPError, SocketError => e
+    puts "(could not fetch dummy photos from #{url}: #{e.message})"
+    nil
+  end
+
+  files.each_with_index do |file, i|
+    offer.photos.attach(io: file, filename: "photo-#{i + 1}.jpg", content_type: "image/jpeg")
+  end
 end
 
 OFFERS = [
-  { key: :offer1a, request: :request1,  donor: :donor1, condition: "used_good",      quantity_offered: 2,  status: "submitted", can_ship_by: 7.days.from_now.to_date,  message: "Can ship next week" },
-  { key: :offer1b, request: :request1,  donor: :donor2, condition: "used_like_new",  quantity_offered: 1,  status: "submitted", can_ship_by: 7.days.from_now.to_date,  message: "Can ship next week" },
-  { key: :offer2,  request: :request4,  donor: :donor3, condition: "new",            quantity_offered: 20, status: "approved",  can_ship_by: Date.today },
-  { key: :offer3,  request: :request2,  donor: :donor1, condition: "used_good",      quantity_offered: 5,  status: "rejected",  can_ship_by: Date.today },
-  { key: :offer4,  request: :request7,  donor: :donor3, condition: "new",            quantity_offered: 10, status: "shipped",   can_ship_by: Date.yesterday,          tracking_number: "EE123456789JP" },
-  { key: :offer5,  request: :request8,  donor: :donor2, condition: "new",            quantity_offered: 40, status: "received",  can_ship_by: 7.days.ago.to_date },
-  { key: :offer6,  request: :request11, donor: :donor4, condition: "used_like_new",  quantity_offered: 2,  status: "approved",  can_ship_by: 3.days.ago.to_date,       tracking_number: "XXXXXX", message: "Laptops like new" }
+  { key: :offer1a, request: :request1,  donor: :donor1, condition: "used_good",      quantity_offered: 2,  status: "submitted", can_ship_by: 7.days.from_now.to_date,  message: "Can ship next week", photo_count: 2 },
+  { key: :offer1b, request: :request1,  donor: :donor2, condition: "used_like_new",  quantity_offered: 1,  status: "submitted", can_ship_by: 7.days.from_now.to_date,  message: "Can ship next week", photo_count: 1 },
+  { key: :offer2,  request: :request4,  donor: :donor3, condition: "new",            quantity_offered: 20, status: "approved",  can_ship_by: Date.today, photo_count: 3 },
+  { key: :offer3,  request: :request2,  donor: :donor1, condition: "used_good",      quantity_offered: 5,  status: "rejected",  can_ship_by: Date.today, photo_count: 1 },
+  { key: :offer4,  request: :request7,  donor: :donor3, condition: "new",            quantity_offered: 10, status: "shipped",   can_ship_by: Date.yesterday, tracking_number: "EE123456789JP", photo_count: 2 },
+  { key: :offer5,  request: :request8,  donor: :donor2, condition: "new",            quantity_offered: 40, status: "received",  can_ship_by: 7.days.ago.to_date, photo_count: 1 },
+  { key: :offer6,  request: :request11, donor: :donor4, condition: "used_like_new",  quantity_offered: 2,  status: "approved",  can_ship_by: 3.days.ago.to_date, tracking_number: "XXXXXX", message: "Laptops like new", photo_count: 2 },
+  { key: :offer7,  request: :request5,  donor: :donor1, condition: "new",            quantity_offered: 20, status: "received",  can_ship_by: 5.days.ago.to_date, message: "Delivered, ready for feedback", photo_count: 2 }
 ].freeze
 
 OFFERS.each_with_index do |attrs, index|
@@ -230,12 +232,13 @@ OFFERS.each_with_index do |attrs, index|
     tracking_number: attrs[:tracking_number] || ""
   )
 
-  filename = "#{attrs[:key]}-item.jpg"
-  attach_dummy_photo(offer, DUMMY_PHOTO_URLS[index % DUMMY_PHOTO_URLS.size], filename)
+  photo_count = attrs[:photo_count] || 1
+  urls = Array.new(photo_count) { |i| DUMMY_PHOTO_URLS[(index + i) % DUMMY_PHOTO_URLS.size] }
+  attach_dummy_photos(offer, urls)
 
   offer.save!
 
-  puts "Created offer for #{offer.quantity_offered} for #{offer.request.title} by #{offer.donor.display_name}"
+  puts "Created offer for #{offer.quantity_offered} for #{offer.request.title} by #{offer.donor.display_name} with #{offer.photos.count} photo(s)"
 end
 
 puts "Seed finished! おつかれ"

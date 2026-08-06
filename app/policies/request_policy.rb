@@ -35,6 +35,10 @@ class RequestPolicy < ApplicationPolicy
     # user: the `current_user` signed in with Devise
   end
 
+  def destroy?
+    record.charity == user.charity
+  end
+
   def deactivate?
     record.charity == user.charity
   end

@@ -33,15 +33,15 @@ class OffersController < ApplicationController
     authorize @offer
   end
 
-  # TODO: new , form for creating new offer
   def new
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
     @offer = Offer.new(request: @request, donor: @donor)
+    @first_offer = @donor.nil? || @donor.offers.none?
+    Rails.logger.debug "DEBUG first_offer={@first_offer.inspect} donor=#{@donor&.id} offers_count=#{@donor&.offers&.count}"
     authorize @offer
   end
 
-  # TODO: create , persist new offer (default status = submitted)
   def create
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
@@ -136,8 +136,8 @@ class OffersController < ApplicationController
 
   # TODO: strong params, whitelist params
   def offer_params
-    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :photo, :estimated_arrival,
-                                  :tracking_number, :rejection_reason)
+    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :estimated_arrival,
+                                  :tracking_number, :rejection_reason, photos: [])
   end
 
   def set_offer

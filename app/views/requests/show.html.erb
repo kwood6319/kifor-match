@@ -1,6 +1,6 @@
 <div class="container mt-5 mb-4">
   <div class="mb-3">
-    <%= link_to "← Back", "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary" %>
+    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary" %>
   </div>
   <div class="row align-items-stretch g-4">
     <div class="col-lg-5">
@@ -37,7 +37,17 @@
           <p> <%= @request.description %> </p>
         </div>
         <% if policy(@request).edit? %>
-          <%= link_to "Edit Request", edit_request_path(@request), class: "btn btn-outline-secondary" %>
+          <%= link_to t("buttons.edit_request"), edit_request_path(@request), class: "btn btn-outline-secondary" %>
+        <% end %>
+        <% if policy(@request).destroy? %>
+          <button type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-delete-url="<%= request_path(@request) %>"
+              data-delete-title="<%= t("modals.delete_request.title") %>" >
+              <%= t("buttons.delete") %>
+            </button>
         <% end %>
         <% if policy(@request).archive? %>
           <%= button_to t("buttons.archive_request"), archive_request_path(@request), method: :patch,
@@ -53,24 +63,24 @@
         <%= render "offers/form", request: @request, offer: @my_offer %>
       <% elsif @my_offer.present? %>
         <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
-      <div class="d-flex gap-2 mt-2">
-        <% if %w]submitted approved rejected].include?(@my_offer.status.to_s) %>
-          <%= link_to t("buttons.edit_offer"),
+        <div class="d-flex gap-2 mt-2">
+          <% if %w[submitted approved rejected].include?(@my_offer.status.to_s) %>
+            <%= link_to t("buttons.edit_offer"),
           request_path(@request, edit_offer: @my_offer.id),
           class: "btn btn-secondary" %>
-        <% end %>
-
-        <% if %w[submitted rejected].include?(@my_offer.status.to_s) %>
-          <button type="button"
+          <% end %>
+          <% if %w[submitted rejected].include?(@my_offer.status.to_s) %>
+            <button
+              type="button"
               class="btn btn-danger"
               data-bs-toggle="modal"
-              data-bs-target="#deleteOfferModal"
-              data-delete-url="<%= offer_path(@my_offer) %>">
+              data-bs-target="#deleteModal"
+              data-delete-url="<%= offer_path(@my_offer) %>"
+              data-delete-title="<%= t("modals.delete_offer.title") %>" >
               <%= t("buttons.delete") %>
             </button>
-        <% end %>
-
-      </div>
+          <% end %>
+        </div>
       <% elsif policy(Offer.new(request: @request)).new?%>
         <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
       <% end %>
@@ -78,7 +88,6 @@
   </div>
 </div>
 <%# ------------------ %>
-
 <%# Rejection modal %>
 <div class="modal fade"
       id="rejectOfferModal"
@@ -110,17 +119,17 @@
 
 <%# Delete modal %>
 <div class="modal fade"
-      id="deleteOfferModal"
+      id="deleteModal"
       tabindex="-1"
       aria-hidden="true"
-      data-controller="delete-offer">
+      data-controller="delete">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><%= t("modals.delete_offer.title") %></h5>
+        <h5 class="modal-title" data-delete-target="title"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <%= form_tag "#", method: :delete, id: "deleteOfferForm" do %>
+      <%= form_tag "#", method: :delete, data: { delete_target: "form" } do %>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
           <%= submit_tag t("buttons.delete"), class: "btn btn-danger" %>

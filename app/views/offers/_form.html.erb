@@ -1,4 +1,4 @@
-<div data-controller="postage-acknowledgment">
+<div data-controller="postage-acknowledgment" data-postage-acknowledgment-first-offer-value="<%= @first_offer %>">
   <div class="card shadow-sm p-4">
     <h4 class="mb-4 text-center"><%= t("offers.make_an_offer")%></h4>
     <% offer ||= Offer.new %>
@@ -25,12 +25,15 @@
         <%= form.date_field :can_ship_by, class: "form-control" %>
       </div>
       <div class="mb-4 p-3 bg-light border rounded">
-        <% if offer.photo.attached? %>
-          <%= image_tag offer.photo,
-        class: "img-fluid rounded mb-3" %>
+        <% if offer.photos.attached? %>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <% offer.photos.each do |photo| %>
+              <%= image_tag photo, class: "img-fluid rounded", style: "max-width: 150px; max-height: 150px; object-fit: cover"; %>
+            <% end %>
+          </div>
         <% end %>
-        <%= form.label :photo, t("offers.photo_of_item"), class: "form-label fw-bold" %>
-        <%= form.file_field :photo, accept: "image/*", class: "form-control" %>
+        <%= form.label :photos, t("offers.photos_of_item"), class: "form-label fw-bold" %>
+        <%= form.file_field :photos, multiple: true, accept: "image/*", class: "form-control" %>
         <div class="form-text mt-2"><%= t("offers.photo_expl") %></div>
       </div>
       <%# Postage acknowledgment checkbox %>
@@ -38,8 +41,10 @@
         <div class="form-check">
           <%= check_box_tag "postage_acknowledged", "1", false,
             id: "postage_acknowledged", class: "form-check-input",
-            disabled: true,
-            data: { "postage-acknowledgment-target": "checkbox" } %>
+            disabled: @first_offer,
+            data: {
+              "postage-acknowledgment-target": "checkbox",
+              action: "change->postage-acknowledgment#toggle"} %>
           <%= label_tag "postage_acknowledged", t("offers.postage_acknowledgment"), class: "form-check-label" %>
           <button type="button" class="btn btn-link p-0 ms-1 align-baseline"
             data-bs-toggle="modal" data-bs-target="#postageModal">

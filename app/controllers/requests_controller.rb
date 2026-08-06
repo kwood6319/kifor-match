@@ -1,9 +1,10 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: %i[show edit update archive]
+  before_action :set_request, only: %i[show edit update archive destroy]
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries
     @requests = policy_scope(Request).includes(:charity).where.not(status: %w[inactive archived])
+    @requests = @requests.where("quantity_remaining > 0")
 
     # Setup dynamic variables for your dropdown menus
     @categories = CategoryList::CATEGORIES.keys
@@ -41,8 +42,11 @@ class RequestsController < ApplicationController
   def show
     authorize @request
     @offers = @request.offers
-    @offer = Offer.new(request: @request, donor: current_user&.donor)
-    @my_offer = (@offers.find_by(donor: current_user.donor) if current_user&.donor?)
+    set_donor
+
+    @offer = Offer.new(request: @request, donor: @donor)
+    @first_offer = @donor.nil? || @donor.offers.none?
+    @my_offer = (@offers.find_by(donor: @donor) if @donor)
     @editing_offer = @offers.find_by(id: params[:edit_offer])
   end
 
@@ -95,10 +99,20 @@ class RequestsController < ApplicationController
     redirect_to request_path(@request), notice: t("messages.request_archived")
   end
 
+  def destroy
+    authorize @request
+    @request.destroy
+    redirect_to charities_dashboard_path, notice: "Request deleted"
+  end
+
   private
 
   def set_request
     @request = Request.find(params[:id])
+  end
+
+  def set_donor
+    @donor = current_user&.donor
   end
 
   def request_params
