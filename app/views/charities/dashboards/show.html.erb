@@ -45,3 +45,54 @@
     <% end %>
   <% end %>
 </div>
+<div class="container mb-5">
+  <button class="btn btn-outline-secondary d-flex align-items-center gap-2"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#archivedRequests"
+      aria-expanded="false"
+      aria-controls="archivedRequests">
+    <%= t("navigation.archived_requests") %> (<%= @archived_requests.size %>)
+  </button>
+  <div class="collapse mt-3" id="archivedRequests">
+    <% if @archived_requests.empty? %>
+      <p class="text-muted"><%= t("navigation.no_archived_requests") %></p>
+    <% else %>
+      <div class="row justify-content-center gap-3">
+        <% @archived_requests.each do |request| %>
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="request-card card h-100">
+              <div class="request-card-infos">
+                <div class="row mb-2">
+                  <div class="col-8">
+                    <h4><strong><%= request.title %></strong></h4>
+                  </div>
+                  <div class="col-4 text-center">
+                    <h4 class="mb-0"> x<%= request.quantity_remaining %> </h4>
+                    <div class="badge rounded-pill text-bg-secondary"> <%= t("statuses.requests.archived") %> </div>
+                  </div>
+                </div>
+                <span class="badge text-bg-secondary mb-2"><%= t("categories.#{request.category}") %></span>
+                <br>
+                <i class="fa-solid fa-box-open"></i>
+                <% request.acceptable_conditions.each do |condition| %>
+                  <span class="badge text-bg-info mb-2">
+                    <%= t("conditions.#{condition}") %>
+                  </span>
+                <% end %>
+                <br>
+                <span>
+                  <i class="fa-solid fa-location-dot mb-2"></i>
+                  <strong> <%= t("navigation.prefecture")%>: </strong>
+                  <%= t("prefectures.#{request.charity.prefecture}") %>
+                </span>
+                <br>
+              </div>
+              <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

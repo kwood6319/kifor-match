@@ -7,6 +7,7 @@ class Request < ApplicationRecord
     active
     fulfilled
     flagged
+    archived
   ]
 
   CONDITIONS = [
@@ -86,6 +87,14 @@ class Request < ApplicationRecord
   def acceptable_conditions
     index = CONDITIONS.index(condition)
     CONDITIONS[0..index]
+  end
+
+  def fully_fulfilled?
+    quantity_remaining.to_i <= 0
+  end
+
+  def archived?
+    status == "archived"
   end
 
   private

@@ -16,10 +16,14 @@ ja:
     condition: "状態"
     description: "詳細"
     requests: "リクエスト"
+    archived_requests: "アーカイブ済みのリクエスト"
+    no_archived_requests: "アーカイブ済みのリクエストはありません"
   messages:
     welcome_back: "おかえりなさい"
     your_requests: "現在進行中のリクエスト"
     top_categories: "今月、日本で最も必要とされているものは以下の通りです"
+    request_archived: "リクエストをアーカイブしました。"
+    request_archived_confirm: "このリクエストをアーカイブしますか？寄付者には表示されなくなります。"
   urgencies:
     select_urgency: "緊急度を選択"
     low: "低い"
@@ -57,6 +61,7 @@ ja:
     requests:
       active: "アクティブ"
       fulfilled: "完了"
+      archived: "アーカイブ済み"
     donor:
       submitted: "確認待ち"
       submitted_message: "現在、当該慈善団体からの返答を待っているところです。返答があり次第、お知らせします！"
@@ -85,6 +90,7 @@ ja:
     close: "閉じる"
     cancel: "キャンセル"
     delete: "削除"
+    archive_request: "リクエストをアーカイブ"
   requests:
     tell_us: "ご要望について、もう少し詳しく教えてください"
     edit_request: "リクエストを編集"

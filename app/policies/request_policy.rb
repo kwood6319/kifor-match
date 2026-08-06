@@ -38,4 +38,8 @@ class RequestPolicy < ApplicationPolicy
   def deactivate?
     record.charity == user.charity
   end
+
+  def archive?
+    record.charity == user.charity && record.fully_fulfilled? && !record.archived?
+  end
 end

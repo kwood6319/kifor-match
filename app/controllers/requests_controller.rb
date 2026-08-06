@@ -1,9 +1,9 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: %i[show edit update]
+  before_action :set_request, only: %i[show edit update archive]
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries
-    @requests = policy_scope(Request).includes(:charity).where.not(status: "inactive")
+    @requests = policy_scope(Request).includes(:charity).where.not(status: %w[inactive archived])
 
     # Setup dynamic variables for your dropdown menus
     @categories = CategoryList::CATEGORIES.keys
@@ -88,6 +88,12 @@ class RequestsController < ApplicationController
   # def deactivate
   #   authorize @request
   # end
+
+  def archive
+    authorize @request
+    @request.update(status: "archived")
+    redirect_to request_path(@request), notice: t("messages.request_archived")
+  end
 
   private
 

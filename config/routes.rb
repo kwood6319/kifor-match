@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       member do
         patch :activate
         patch :deactivate
+        patch :archive
       end
     end
 
