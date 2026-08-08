@@ -8,6 +8,7 @@ ja:
     filter_requests: "リクエストのフィルタリング"
     search: "探す"
     category: "カテゴリ"
+    subcategory: "サブカテゴリー"
     location: "場所"
     no_offers_yet: "まだオファーはありません"
     no_requests: "指定した条件に一致するリクエストはありません"
@@ -87,6 +88,7 @@ ja:
     close: "閉じる"
     cancel: "キャンセル"
     delete: "削除"
+    reset_categories: "カテゴリーをリセット"
   requests:
     tell_us: "ご要望について、もう少し詳しく教えてください"
     edit_request: "リクエストを編集"
