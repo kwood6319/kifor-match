@@ -72,5 +72,9 @@ Rails.application.routes.draw do
     resources :notifications, only: [] do
       member { patch :dismiss }
     end
+
+    get "settings", to: "settings#show"
+    patch "settings", to: "settings#update", as: :settings
+    patch "settings/password", to: "settings#update_password", as: :settings_password
   end
 end

@@ -17,6 +17,7 @@ ja:
     description: "詳細"
     requests: "リクエスト"
     back: "← 戻る"
+    settings: "設定"
   messages:
     welcome_back: "おかえりなさい"
     your_requests: "現在進行中のリクエスト"
