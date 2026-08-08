@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :set_locale
   before_action :authenticate_user!
+  skip_before_action :authenticate_user!, if: :devise_controller?
   include Pundit::Authorization
 
   # Pundit: allow-list
@@ -39,18 +40,26 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    locale = resolved_locale
-    I18n.locale = locale
+    if params[:switch_locale].present? && valid_locale?(params[:switch_locale])
+      session[:locale] = params[:switch_locale]
+    end
+
+    I18n.locale = resolved_locale
+    Rails.logger.debug "DEBUG locale: session=#{session[:locale].inspect} user_locale=#{current_user&.locale.inspect} resolved=#{I18n.locale.inspect}"
   end
 
   def resolved_locale
-    if params[:locale].present? && I18n.available_locales.map(&:to_s).include?(params[:locale])
-      params[:locale]
+    if session[:locale].present? && valid_locale?(session[:locale])
+      session[:locale]
     elsif current_user&.locale.present?
       current_user.locale
     else
       I18n.default_locale
     end
+  end
+
+  def valid_locale?(loc)
+    I18n.available_locales.map(&:to_s).include?(loc.to_s)
   end
 
   def default_url_options

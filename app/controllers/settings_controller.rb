@@ -49,7 +49,8 @@ class SettingsController < ApplicationController
   end
 
   def update_locale
-    if current_user.upadte(locale_params)
+    if current_user.update(locale_params)
+      session.delete(:locale)
       redirect_to settings_path, notice: t("settings.language_updated")
     else
       @donor = current_user.donor
