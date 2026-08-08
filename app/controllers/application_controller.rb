@@ -40,12 +40,16 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    if params[:switch_locale].present? && valid_locale?(params[:switch_locale])
-      session[:locale] = params[:switch_locale]
-    end
+    return if devise_controller?
+
+    session[:locale] = params[:switch_locale] if params[:switch_locale].present? && valid_locale?(params[:locale])
 
     I18n.locale = resolved_locale
-    Rails.logger.debug "DEBUG locale: session=#{session[:locale].inspect} user_locale=#{current_user&.locale.inspect} resolved=#{I18n.locale.inspect}"
+    # if params[:switch_locale].present? && valid_locale?(params[:switch_locale])
+    #   session[:locale] = params[:switch_locale]
+    # end
+
+    # I18n.locale = resolved_locale
   end
 
   def resolved_locale
