@@ -48,6 +48,16 @@ class SettingsController < ApplicationController
     end
   end
 
+  def update_locale
+    if current_user.upadte(locale_params)
+      redirect_to settings_path, notice: t("settings.language_updated")
+    else
+      @donor = current_user.donor
+      @charity = current_user.charity
+      render :show, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def donor_params
@@ -60,5 +70,9 @@ class SettingsController < ApplicationController
 
   def password_params
     params.require(:user).permit(:current_password, :password, :password_confirmation)
+  end
+
+  def locale_params
+    params.require(:user).permit(:locale)
   end
 end

@@ -76,5 +76,6 @@ Rails.application.routes.draw do
     get "settings", to: "settings#show", as: :settings
     patch "settings", to: "settings#update"
     patch "settings/password", to: "settings#update_password", as: :settings_password
+    patch "settings/locale", to: "settings#update_locale", as: :settings_locale
   end
 end

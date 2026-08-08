@@ -17,3 +17,8 @@ ja:
     current_password: "現在のパスワード"
     save_profile: "プロフィールを保存"
     change_password: "パスワードを変更"
+    language: "言語"
+    english: "English"
+    japanese: "日本語"
+    save_language: "言語を保存"
+    language_updated: "言語設定を更新しました。"
