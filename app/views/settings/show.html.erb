@@ -70,12 +70,12 @@
                     class: "form-select" %>
             </div>
             <div class="mb-3">
-              <%= f.label :prefecture, t("prefectures.select"), class: "form-label fw-bold" %>
+              <%= f.label :prefecture, t("navigation.prefecture"), class: "form-label fw-bold" %>
               <%= f.select :prefecture,
-                    Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
-                      .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
-                    {},
-                    class: "form-select" %>
+                  Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
+                    .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
+                  { prompt: t("prefectures.select") },
+                  class: "form-select" %>
             </div>
             <div class="mb-3">
               <%= f.label :shipping_address, t("settings.shipping_address"), class: "form-label fw-bold" %>
@@ -105,16 +105,16 @@
             <p class="mb-0"><%= current_user.email %></p>
           </div>
           <div class="mb-3">
+            <%= f.label :current_password, t("settings.current_password"), class: "form-label fw-bold" %>
+            <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password" %>
+          </div>
+          <div class="mb-3">
             <%= f.label :password, t("settings.new_password"), class: "form-label fw-bold" %>
-            <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
+            <%= f.password_field :password, class: "form-control", autocomplete: "new-password", required: true, minlength: 6 %>
           </div>
           <div class="mb-3">
             <%= f.label :password_confirmation, t("settings.confirm_password"), class: "form-label fw-bold" %>
-            <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :current_password, t("settings.current_password"), class: "form-label fw-bold" %>
-            <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password" %>
+            <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", required: true, minlength: 6 %>
           </div>
           <%= f.submit t("settings.change_password"), class: "btn btn-secondary" %>
         <% end %>

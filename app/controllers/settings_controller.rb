@@ -1,5 +1,6 @@
 class SettingsController < ApplicationController
   before_action :authenticate_user!
+  skip_after_action :verify_authorized
 
   def show
     @donor = current_user.donor
@@ -27,8 +28,17 @@ class SettingsController < ApplicationController
   end
 
   def update_password
+    if password_params[:password].blank? && password_params[:password_confirmation].blank?
+      current_user.errors.add(:password, :blank)
+      @donor = current_user.donor
+      @charity = current_user.charity
+      @password_errors = current_user.errors
+      render :show, status: :unprocessable_entity
+      return
+    end
+
     if current_user.update_with_password(password_params)
-      bypass_sign_in(current_user) # keeps the user signed in after password change
+      bypass_sign_in(current_user)
       redirect_to settings_path, notice: t("settings.password_updated")
     else
       @donor = current_user.donor
