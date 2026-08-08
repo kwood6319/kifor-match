@@ -45,11 +45,6 @@ class ApplicationController < ActionController::Base
     session[:locale] = params[:switch_locale] if params[:switch_locale].present? && valid_locale?(params[:locale])
 
     I18n.locale = resolved_locale
-    # if params[:switch_locale].present? && valid_locale?(params[:switch_locale])
-    #   session[:locale] = params[:switch_locale]
-    # end
-
-    # I18n.locale = resolved_locale
   end
 
   def resolved_locale

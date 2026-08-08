@@ -91,7 +91,7 @@
       <div class="tall-card p-4">
         <div class="mb-3">
           <h5 class="mb-3"><%= t("settings.account") %></h5>
-          <%= form_with model: current_user, url: settings_path, method: :patch, scope: :user do |f| %>
+          <%= form_with model: current_user, url: settings_locale_path, method: :patch, scope: :user do |f| %>
             <div class="mb-3">
               <%= f.label :locale, t("settings.language"), class: "form-label fw-bold" %>
               <%= f.select :locale, [[t("settings.english"), "en"], [t("settings.japanese"), "ja"]], {}, class: "form-select" %>
