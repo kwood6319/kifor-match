@@ -1,123 +1,216 @@
-<%# app/views/settings/show.html.erb %>
 <% content_for :title, t("navigation.settings") %>
-<div class="container mt-5 mb-4">
-  <h2 class="mb-4"><%= t("navigation.settings") %></h2>
-  <div class="row g-4">
-    <%# Profile settings — role-specific %>
-    <div class="col-lg-6">
-      <div class="tall-card p-4">
-        <h5 class="mb-3"><%= t("settings.profile") %></h5>
-        <% if current_user.donor? && @donor %>
-          <%= form_with model: @donor, url: settings_path, method: :patch, scope: :donor do |f| %>
-            <% if @donor.errors.any? %>
-              <div class="alert alert-danger">
-                <ul class="mb-0">
-                  <% @donor.errors.full_messages.each do |msg| %>
-                    <li><%= msg %></li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
-            <div class="mb-3">
-              <%= f.label :display_name, t("settings.display_name"), class: "form-label fw-bold" %>
-              <%= f.text_field :display_name, class: "form-control" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :donor_type, t("settings.donor_type"), class: "form-label fw-bold" %>
-              <%= f.select :donor_type, [[t("settings.individual"), "individual"], [t("settings.company"), "company"]], {}, class: "form-select" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :region, t("navigation.location"), class: "form-label fw-bold" %>
-              <%= f.select :region,
-                    Request::REGIONS_AND_PREFECTURES.keys.map { |r| [t("regions.#{r}"), r] },
-                    { include_blank: false },
-                    class: "form-select" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :prefecture, t("prefectures.select"), class: "form-label fw-bold" %>
-              <%= f.select :prefecture,
-                    Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
-                      .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
-                    {},
-                    class: "form-select" %>
-            </div>
-            <%= f.submit t("settings.save_profile"), class: "btn btn-primary" %>
-          <% end %>
-        <% elsif current_user.charity? && @charity %>
-          <%= form_with model: @charity, url: settings_path, method: :patch, scope: :charity do |f| %>
-            <% if @charity.errors.any? %>
-              <div class="alert alert-danger">
-                <ul class="mb-0">
-                  <% @charity.errors.full_messages.each do |msg| %>
-                    <li><%= msg %></li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
-            <div class="mb-3">
-              <%= f.label :org_name, t("settings.org_name"), class: "form-label fw-bold" %>
-              <%= f.text_field :org_name, class: "form-control" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :description, t("settings.description"), class: "form-label fw-bold" %>
-              <%= f.text_area :description, rows: 3, class: "form-control" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :region, t("navigation.location"), class: "form-label fw-bold" %>
-              <%= f.select :region,
-                    Request::REGIONS_AND_PREFECTURES.keys.map { |r| [t("regions.#{r}"), r] },
-                    { include_blank: false },
-                    class: "form-select" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :prefecture, t("navigation.prefecture"), class: "form-label fw-bold" %>
-              <%= f.select :prefecture,
-                  Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
-                    .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
-                  { prompt: t("prefectures.select") },
-                  class: "form-select" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :shipping_address, t("settings.shipping_address"), class: "form-label fw-bold" %>
-              <%= f.text_area :shipping_address, rows: 3, class: "form-control" %>
-            </div>
-            <%= f.submit t("settings.save_profile"), class: "btn btn-primary" %>
-          <% end %>
+<div class="container-fluid mt-4 mb-5">
+  <div class="row">
+    <%# Sidebar %>
+    <div class="col-lg-3 mb-4">
+      <h4 class="mb-4"><%= t("settings.page_title") %></h4>
+      <div class="nav flex-column nav-pills" id="settings-tabs" role="tablist" aria-orientation="vertical">
+        <button class="nav-link active text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-profile" type="button">
+          <i class="fa-solid fa-user"></i> <%= t("settings.tabs.profile") %>
+        </button>
+        <button class="nav-link text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-account" type="button">
+          <i class="fa-solid fa-shield-halved"></i> <%= t("settings.tabs.account") %>
+        </button>
+        <button class="nav-link text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-notifications" type="button">
+          <i class="fa-solid fa-bell"></i> <%= t("settings.tabs.notifications") %>
+        </button>
+        <%# language switching not on current branch, delete if block when added %>
+        <% if false%>
+          <button class="nav-link text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-language" type="button">
+            <i class="fa-solid fa-globe"></i> <%= t("settings.tabs.language") %>
+          </button>
         <% end %>
+        <button class="nav-link text-start d-flex align-items-center gap-2 text-danger" data-bs-toggle="pill" data-bs-target="#tab-danger" type="button">
+          <i class="fa-solid fa-triangle-exclamation"></i> <%= t("settings.tabs.danger_zone") %>
+        </button>
       </div>
     </div>
-    <%# Account settings — email + password, all users %>
-    <div class="col-lg-6">
-      <div class="tall-card p-4">
-        <h5 class="mb-3"><%= t("settings.account") %></h5>
-        <%= form_with model: current_user, url: settings_password_path, method: :patch, scope: :user do |f| %>
-          <% if @password_errors&.any? %>
-            <div class="alert alert-danger">
-              <ul class="mb-0">
-                <% @password_errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>
+    <%# Content %>
+    <div class="col-lg-9">
+      <div class="tab-content">
+        <%# Profile tab %>
+        <div class="tab-pane fade show active" id="tab-profile">
+          <div class="card border-0 shadow-sm p-4">
+            <h5 class="mb-1"><%= t("settings.tabs.profile") %></h5>
+            <p class="text-muted small mb-4"><%= t("settings.profile_description") %></p>
+            <% if current_user.donor? && @donor %>
+              <%= form_with model: @donor, url: settings_path, method: :patch, scope: :donor do |f| %>
+                <% if @donor.errors.any? %>
+                  <div class="alert alert-danger">
+                    <ul class="mb-0">
+                      <% @donor.errors.full_messages.each { |msg| %>
+                      <li><%= msg %></li>
+                      <% } %>
+                    </ul>
+                  </div>
                 <% end %>
-              </ul>
+                <div class="mb-3">
+                  <%= f.label :display_name, t("settings.display_name"), class: "form-label fw-bold" %>
+                  <%= f.text_field :display_name, class: "form-control" %>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :region, t("navigation.location"), class: "form-label fw-bold" %>
+                    <%= f.select :region,
+                      Request::REGIONS_AND_PREFECTURES.keys.map { |r| [t("regions.#{r}"), r] },
+                      { include_blank: false }, class: "form-select" %>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :prefecture, t("prefectures.select"), class: "form-label fw-bold label-space-only" %>
+                    <%= f.select :prefecture,
+                      Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
+                        .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
+                      { prompt: t("prefectures.select") }, class: "form-select" %>
+                  </div>
+                </div>
+                <button type="submit" class="btn text-white" style="background-color: #E84393;">
+                  <%= t("settings.save_profile") %>
+                </button>
+              <% end %>
+            <% elsif current_user.charity? && @charity %>
+              <%= form_with model: @charity, url: settings_path, method: :patch, scope: :charity do |f| %>
+                <% if @charity.errors.any? %>
+                  <div class="alert alert-danger">
+                    <ul class="mb-0">
+                      <% @charity.errors.full_messages.each { |msg| %>
+                      <li><%= msg %></li>
+                      <% } %>
+                    </ul>
+                  </div>
+                <% end %>
+                <div class="mb-3">
+                  <%= f.label :org_name, t("settings.org_name"), class: "form-label fw-bold" %>
+                  <%= f.text_field :org_name, class: "form-control" %>
+                </div>
+                <div class="mb-3">
+                  <%= f.label :description, t("settings.description"), class: "form-label fw-bold" %>
+                  <%= f.text_area :description, rows: 3, class: "form-control" %>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :region, t("navigation.location"), class: "form-label fw-bold" %>
+                    <%= f.select :region,
+                          Request::REGIONS_AND_PREFECTURES.keys.map { |r| [t("regions.#{r}"), r] },
+                          { include_blank: false }, class: "form-select" %>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :prefecture, t("prefectures.select"), class: "form-label fw-bold" %>
+                    <%= f.select :prefecture,
+                          Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
+                            .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
+                          { prompt: t("prefectures.select") }, class: "form-select" %>
+                  </div>
+                </div>
+                <% if @has_shipped_offers %>
+                  <div class="alert alert-warning d-flex align-items-start gap-2">
+                    <i class="fa-solid fa-triangle-exclamation mt-1"></i>
+                    <div><%= t("settings.shipping_address_warning") %></div>
+                  </div>
+                <% end %>
+                <div class="mb-3">
+                  <%= f.label :shipping_address, t("settings.shipping_address"), class: "form-label fw-bold" %>
+                  <%= f.text_area :shipping_address, rows: 3, class: "form-control" %>
+                </div>
+                <button type="submit" class="btn text-white" style="background-color: #E84393;">
+                  <%= t("settings.save_profile") %>
+                </button>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        <%# Account (email + password) tab %>
+        <div class="tab-pane fade" id="tab-account">
+          <div class="card border-0 shadow-sm p-4">
+            <h5 class="mb-1"><%= t("settings.tabs.account") %></h5>
+            <p class="text-muted small mb-4"><%= t("settings.account_description") %></p>
+            <%= form_with model: current_user, url: settings_account_path, method: :patch, scope: :user do |f| %>
+              <% if @account_errors&.any? %>
+                <div class="alert alert-danger">
+                  <ul class="mb-0">
+                    <% @account_errors.full_messages.each { |msg| %>
+                    <li><%= msg %></li>
+                    <% } %>
+                  </ul>
+                </div>
+              <% end %>
+              <div class="mb-3">
+                <%= f.label :email, t("settings.email"), class: "form-label fw-bold" %>
+                <%= f.email_field :email, value: current_user.email, class: "form-control" %>
+              </div>
+              <hr class="my-4">
+              <div class="mb-3">
+                <%= f.label :password, t("settings.new_password"), class: "form-label fw-bold" %>
+                <%= f.password_field :password, class: "form-control", autocomplete: "new-password", minlength: 6 %>
+                <div class="form-text"><%= t("settings.password_optional") %></div>
+              </div>
+              <div class="mb-3">
+                <%= f.label :password_confirmation, t("settings.confirm_password"), class: "form-label fw-bold" %>
+                <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", minlength: 6 %>
+              </div>
+              <div class="mb-3">
+                <%= f.label :current_password, t("settings.current_password"), class: "form-label fw-bold" %>
+                <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password", required: true %>
+                <div class="form-text"><%= t("settings.current_password_help") %></div>
+              </div>
+              <button type="submit" class="btn text-white" style="background-color: #E84393;">
+                <%= t("settings.save_account") %>
+              </button>
+            <% end %>
+          </div>
+        </div>
+        <%# Notifications tab — placeholder %>
+        <div class="tab-pane fade" id="tab-notifications">
+          <div class="card border-0 shadow-sm p-4 text-center py-5">
+            <i class="fa-solid fa-bell fa-2x text-muted mb-3"></i>
+            <h5><%= t("settings.notifications_coming_soon") %></h5>
+            <p class="text-muted mb-0"><%= t("settings.notifications_coming_soon_desc") %></p>
+          </div>
+        </div>
+        <%# Language tab - not in current branch. remove if statement when added %>
+        <% if false %>
+          <div class="tab-pane fade" id="tab-language">
+            <div class="card border-0 shadow-sm p-4">
+              <h5 class="mb-1"><%= t("settings.tabs.language") %></h5>
+              <p class="text-muted small mb-4"><%= t("settings.language_description") %></p>
+              <%= form_with model: current_user, url: settings_locale_path, method: :patch, scope: :user do |f| %>
+                <div class="mb-3" style="max-width: 300px;">
+                  <%= f.select :locale, [[t("settings.english"), "en"], [t("settings.japanese"), "ja"]], {}, class: "form-select" %>
+                </div>
+                <button type="submit" class="btn text-white" style="background-color: #E84393;">
+                  <%= t("settings.save_language") %>
+                </button>
+              <% end %>
             </div>
-          <% end %>
-          <div class="mb-3">
-            <label class="form-label fw-bold"><%= t("settings.email") %></label>
-            <p class="mb-0"><%= current_user.email %></p>
           </div>
-          <div class="mb-3">
-            <%= f.label :current_password, t("settings.current_password"), class: "form-label fw-bold" %>
-            <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password" %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :password, t("settings.new_password"), class: "form-label fw-bold" %>
-            <%= f.password_field :password, class: "form-control", autocomplete: "new-password", required: true, minlength: 6 %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :password_confirmation, t("settings.confirm_password"), class: "form-label fw-bold" %>
-            <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", required: true, minlength: 6 %>
-          </div>
-          <%= f.submit t("settings.change_password"), class: "btn btn-secondary" %>
         <% end %>
+        <%# Danger zone %>
+        <div class="tab-pane fade" id="tab-danger">
+          <div class="card border-0 shadow-sm p-4 border-start border-danger border-4">
+            <h5 class="mb-1 text-danger"><%= t("settings.tabs.danger_zone") %></h5>
+            <p class="text-muted small mb-4"><%= t("settings.danger_zone_description") %></p>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal">
+              <%= t("settings.deactivate_account") %>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%# Deactivate confirmation modal %>
+<div class="modal fade" id="deactivateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= t("settings.deactivate_modal_title") %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p><%= t("settings.deactivate_modal_body") %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
+        <%= button_to t("settings.deactivate_account"), settings_deactivate_path, method: :patch, class: "btn btn-danger" %>
       </div>
     </div>
   </div>

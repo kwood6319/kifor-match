@@ -63,7 +63,7 @@ class SettingsController < ApplicationController
     params.require(:user).permit(:current_password, :password, :password_confirmation)
   end
 
-  def charity_has_shipped_offers
+  def charity_has_shipped_offers?
     return false unless current_user.charity?
 
     Offer.joins(:request)
