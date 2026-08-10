@@ -18,7 +18,9 @@
               </div>
             </div>
             <%# Let's add the category tag so users can see it! %>
-            <span class="badge text-bg-secondary mb-2"><%= t("categories.#{request.category}") %></span>
+            <% request.category.each do |cat| %>
+              <span class="badge text-bg-secondary mb-2"><%= t("categories.#{cat}") %></span>
+            <% end %>
             <br>
             <i class="fa-solid fa-box-open"></i>
             <% request.acceptable_conditions.each do |condition| %>

@@ -37,6 +37,7 @@ en:
     filter: "Filter"
     search: "Search"
     category: "Category"
+    subcategory: "Subcategory"
     location: "Location"
     no_offers_yet: "No offers yet"
     no_requests: "No requests match your filters"
@@ -117,6 +118,7 @@ en:
     close: "Close"
     cancel: "Cancel"
     delete: "Delete"
+    reset_categories: "Reset categories"
   requests:
     tell_us: "Tell us a little more about your request"
     edit_request: "Edit Request"
