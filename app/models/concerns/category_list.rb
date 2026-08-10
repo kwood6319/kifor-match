@@ -43,7 +43,7 @@ module CategoryList
   end
 
   def self.subcategory_label_for(category_key, subcategory_key)
-    I18n.t("subcategories.#{category_key}.#{subcategory_key}")
+    I18n.t("subcategories.#{subcategory_key}")
   end
 
   def self.subcategories_for(category_key)

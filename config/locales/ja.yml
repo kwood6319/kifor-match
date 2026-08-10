@@ -8,6 +8,7 @@ ja:
     filter_requests: "リクエストのフィルタリング"
     search: "探す"
     category: "カテゴリ"
+    subcategory: "サブカテゴリー"
     location: "場所"
     no_offers_yet: "まだオファーはありません"
     no_requests: "指定した条件に一致するリクエストはありません"
@@ -21,6 +22,7 @@ ja:
     back: "← 戻る"
     filter: "フィルター"
     reset: "リセット"
+    settings: "設定"
   messages:
     welcome_back: "おかえりなさい"
     your_requests: "現在進行中のリクエスト"
@@ -46,6 +48,7 @@ ja:
     no_offers: "まだオファーはありません"
     make_an_offer: "オファーを出す"
     quantity_offered: "提供数量"
+    offer_from: "%{name}様からのオファー"
     message: "メッセージ"
     message_prompt: "この慈善団体に伝えたいことはありますか？例えば、破損箇所や由来など。"
     can_ship_by: "発送可能日"
@@ -97,6 +100,7 @@ ja:
     delete: "削除"
     archive_request: "リクエストをアーカイブ"
     give_feedback: "フィードバックを送る"
+    reset_categories: "カテゴリーをリセット"
   requests:
     tell_us: "ご要望について、もう少し詳しく教えてください"
     edit_request: "リクエストを編集"

@@ -46,8 +46,8 @@
               data-bs-target="#deleteModal"
               data-delete-url="<%= request_path(@request) %>"
               data-delete-title="<%= t("modals.delete_request.title") %>" >
-              <%= t("buttons.delete") %>
-            </button>
+            <%= t("buttons.delete") %>
+          </button>
         <% end %>
         <% if policy(@request).archive? %>
           <%= button_to t("buttons.archive_request"), archive_request_path(@request), method: :patch,
@@ -87,36 +87,7 @@
     </div>
   </div>
 </div>
-<%# ------------------ %>
-<%# Rejection modal %>
-<div class="modal fade"
-      id="rejectOfferModal"
-      tabindex="-1"
-      aria-hidden="true"
-      data-controller="reject-offer">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><%= t("modals.reject_offer.title") %></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <%= form_tag "#", method: :patch, id: "rejectOfferForm" do %>
-        <div class="modal-body">
-          <div class="mb-3">
-            <%= label_tag :rejection_reason, t("activerecord.attributes.offer.rejection_reason"), class: "form-label" %>
-            <%= text_area_tag :rejection_reason, nil, class: "form-control", rows: 4, id: "rejection_reason" %>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
-          <%= submit_tag t("buttons.reject_offer"), class: "btn btn-danger" %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-</div>
-
-
+<%= render "shared/reject_offer_modal" %>
 <%# Delete modal %>
 <div class="modal fade"
       id="deleteModal"

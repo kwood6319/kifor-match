@@ -37,6 +37,7 @@ en:
     filter: "Filter"
     search: "Search"
     category: "Category"
+    subcategory: "Subcategory"
     location: "Location"
     no_offers_yet: "No offers yet"
     no_requests: "No requests match your filters"
@@ -50,6 +51,7 @@ en:
     back: "← Back"
     filter_requests: "Filter Requests"
     reset: "Reset"
+    settings: "Settings"
   messages:
     welcome_back: "Welcome back"
     your_requests: "Your active requests"
@@ -75,6 +77,7 @@ en:
     no_offers: "No offers yet"
     make_an_offer: "Make an Offer"
     quantity_offered: "Quantity offered"
+    offer_from: "Offer from %{name}"
     message: "Message"
     message_prompt: "Any details you'd like to share with the charity? E.g., broken pieces, history, etc."
     can_ship_by: "Can ship by"
@@ -126,6 +129,7 @@ en:
     delete: "Delete"
     archive_request: "Archive Request"
     give_feedback: "Give Feedback"
+    reset_categories: "Reset categories"
   requests:
     tell_us: "Tell us a little more about your request"
     edit_request: "Edit Request"

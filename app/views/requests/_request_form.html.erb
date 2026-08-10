@@ -21,11 +21,51 @@
         prompt: t("conditions.select"),
         hint: t("requests.condition_message") %>
     </div>
-    <div class="col-md-4">
-      <%= f.input :category,
-        label: t("navigation.category"),
-        collection: Request::CATEGORIES.map { |c| [t("categories.#{c}"), c] },
-        prompt: t("categories.select") %>
+    <div class="mb-4">
+      <label class="form-label fw-bold"><%= t("navigation.category") %></label>
+      <div class="border rounded p-3" data-controller="category-subcategory">
+        <div class="row row-cols-2 row-cols-md-3 g-2 mb-3">
+          <%= f.collection_check_boxes :category, CategoryList::CATEGORIES.keys.map { |c| [c, t("categories.#{c}")] }, :first, :last do |b| %>
+            <div class="col">
+              <div class="form-check">
+                <%= b.check_box class: "form-check-input",
+                data: {
+                  action: "change->category-subcategory#toggle",
+                  "category-subcategory-target": "categoryCheckbox",
+                  category: b.value
+                } %>
+                <%= b.label class: "form-check-label" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <% CategoryList::CATEGORIES.each do |key, data| %>
+          <% next if data[:subcategories].blank? %>
+          <div class="subcategory-group mb-3 <%= 'd-none' unless f.object.category.include?(key) %>"
+         data-category-subcategory-target="subcategoryGroup"
+         data-category="<%= key %>">
+            <label class="form-label small text-muted mb-1"><%= CategoryList.label_for(key) %> — <%= t("navigation.subcategory") %></label>
+            <div class="row row-cols-2 row-cols-md-4 g-2">
+              <% data[:subcategories].each do |sub| %>
+                <div class="col">
+                  <div class="form-check">
+                    <%= check_box_tag "request[subcategory][]", sub,
+                    f.object.subcategory.include?(sub),
+                    id: "subcategory_#{sub}",
+                    class: "form-check-input",
+                    multiple: true,
+                    data: { "category-subcategory-target": "subcategoryCheckbox" } %>
+                    <%= label_tag "subcategory_#{sub}", CategoryList.subcategory_label_for(key, sub), class: "form-check-label small" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-action="click->category-subcategory#reset">
+          <%= t("buttons.reset_categories") %>
+        </button>
+      </div>
     </div>
   </div>
   <div class="row">

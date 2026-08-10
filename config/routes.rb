@@ -73,5 +73,10 @@ Rails.application.routes.draw do
     resources :notifications, only: [] do
       member { patch :dismiss }
     end
+
+    get "settings", to: "settings#show", as: :settings
+    patch "settings", to: "settings#update"
+    patch "settings/account", to: "settings#update_account", as: :settings_account
+    patch "settings/deactivate", to: "settings#deactivate", as: :settings_deactivate
   end
 end
