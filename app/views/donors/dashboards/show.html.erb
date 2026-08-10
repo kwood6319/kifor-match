@@ -83,8 +83,10 @@
     <%= turbo_frame_tag "notification_#{notification.id}" do %>
       <div class="toast show mb-2" role="alert" id="notification_<%= notification.id %>">
         <div class="toast-header">
-          <strong class="me-auto"><%= t("notification.title") %></strong>
-          <%= button_to notification_dismiss_path(notification), method: :patch, class: "btn-close", form: { data: { turbo_frame: "notification_#{note.id}" } } %>
+          <strong class="me-auto"><%= t("notifications.title") %></strong>
+          <%= button_to "", dismiss_notification_path(notification), method: :patch, class: "btn-close",
+                "aria-label": t("buttons.close"),
+                form: { data: { turbo_frame: "notification_#{notification.id}" } } %>
         </div>
         <div class="toast-body">
           <%= link_to notification.message, notification.link_path, class: "text-decoration-none" %>
