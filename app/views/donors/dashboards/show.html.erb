@@ -89,7 +89,7 @@
                 form: { data: { turbo_frame: "notification_#{notification.id}" } } %>
         </div>
         <div class="toast-body">
-          <%= link_to notification.message, notification.link_path, class: "text-decoration-none" %>
+          <%= link_to notification.message, notification.link_path, class: "text-decoration-none", data: { turbo_frame: "_top" } %>
         </div>
       </div>
     <% end %>
