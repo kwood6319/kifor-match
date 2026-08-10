@@ -48,6 +48,8 @@ en:
     archived_requests: "Archived Requests"
     no_archived_requests: "No archived requests"
     back: "← Back"
+    filter_requests: "Filter Requests"
+    reset: "Reset"
   messages:
     welcome_back: "Welcome back"
     your_requests: "Your active requests"
@@ -123,6 +125,7 @@ en:
     cancel: "Cancel"
     delete: "Delete"
     archive_request: "Archive Request"
+    give_feedback: "Give Feedback"
   requests:
     tell_us: "Tell us a little more about your request"
     edit_request: "Edit Request"
@@ -159,6 +162,10 @@ en:
         rejection_reason: "Reason for rejection"
   dashboard:
     pending: "Pending"
+    no_pending_offers: "No pending offers"
+    condition: "Condition"
+    can_ship_by: "Can ship by"
+    alerts: "Alerts"
     minutes_ago:
       one: "%{count}m ago"
       other: "%{count}m ago"
