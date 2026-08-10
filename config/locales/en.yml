@@ -53,7 +53,8 @@ en:
     your_requests: "Your active requests"
     top_categories: "Here's what's most needed in Japan this month"
     request_archived: "Request archived."
-    request_archived_confirm: "Archive this request? It will no longer be shown to donors."
+    request_archived_confirm: "Archive this request? It will no longer be shown to donors, and any other pending offers will be automatically declined."
+    request_fulfilled_rejection: "This request has already been fulfilled, so we're unable to accept your offer. Thank you so much for your generosity!"
   urgencies:
     select_urgency: "Select Urgency"
     low: "low"

@@ -24,7 +24,8 @@ ja:
     your_requests: "現在進行中のリクエスト"
     top_categories: "今月、日本で最も必要とされているものは以下の通りです"
     request_archived: "リクエストをアーカイブしました。"
-    request_archived_confirm: "このリクエストをアーカイブしますか？寄付者には表示されなくなります。"
+    request_archived_confirm: "このリクエストをアーカイブしますか？寄付者には表示されなくなり、他の保留中のオファーは自動的に却下されます。"
+    request_fulfilled_rejection: "このリクエストはすでに満たされているため、今回のオファーはお受けできません。ご厚意に心より感謝いたします。"
   urgencies:
     select_urgency: "緊急度を選択"
     low: "低い"

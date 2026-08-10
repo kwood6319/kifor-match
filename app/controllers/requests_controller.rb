@@ -95,7 +95,7 @@ class RequestsController < ApplicationController
 
   def archive
     authorize @request
-    @request.update(status: "archived")
+    @request.archive!
     redirect_to request_path(@request), notice: t("messages.request_archived")
   end
 
