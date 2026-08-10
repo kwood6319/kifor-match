@@ -47,6 +47,7 @@ en:
     description: "Description"
     requests: "Requests"
     back: "← Back"
+    settings: "Settings"
   messages:
     welcome_back: "Welcome back"
     your_requests: "Your active requests"
