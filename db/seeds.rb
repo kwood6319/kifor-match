@@ -221,7 +221,7 @@ OFFERS = [
   { key: :offer5,  request: :request8,  donor: :donor2, condition: "new",            quantity_offered: 40, status: "received",  can_ship_by: 7.days.ago.to_date, photo_count: 1 },
   { key: :offer6,  request: :request11, donor: :donor4, condition: "used_like_new",  quantity_offered: 2,  status: "approved",  can_ship_by: 3.days.ago.to_date, tracking_number: "XXXXXX", message: "Laptops like new", photo_count: 2 },
   { key: :offer7,  request: :request5,  donor: :donor1, condition: "new",            quantity_offered: 20, status: "received",  can_ship_by: 5.days.ago.to_date, message: "Delivered, ready for feedback", photo_count: 2 },
-  { key: :offer8,  request: :request22, donor: :donor2, condition: "new",            quantity_offered: 10, status: "completed", can_ship_by: 10.days.ago.to_date, tracking_number: "JP000111222", message: "Delivered and confirmed received", photo_count: 2 }
+  { key: :offer8,  request: :request22, donor: :donor2, condition: "new",            quantity_offered: 10, status: "received",  can_ship_by: 10.days.ago.to_date, tracking_number: "JP000111222", message: "Delivered and confirmed received", photo_count: 2 }
 ].freeze
 
 OFFERS.each_with_index do |attrs, index|
