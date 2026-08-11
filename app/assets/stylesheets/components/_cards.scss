@@ -43,6 +43,14 @@
   transform: translateY(-8px) scale(1.02);
 }
 
+// The stretched-link overlay (z-index: 1) otherwise swallows clicks meant
+// for action buttons layered on top of it, forcing users through the
+// offer's detail page instead.
+.offer-card .btn {
+  position: relative;
+  z-index: 2;
+}
+
 .new-offer {
   background-color: #EDE9E1;
   box-shadow: 4px 4px 4px #bfbfbf;
