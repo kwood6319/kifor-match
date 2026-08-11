@@ -52,6 +52,7 @@ en:
     filter_requests: "Filter Requests"
     reset: "Reset"
     settings: "Settings"
+    view: "View"
   messages:
     welcome_back: "Welcome back"
     your_requests: "Your active requests"
@@ -93,6 +94,7 @@ en:
     postage_modal_title: "Postage Costs"
     postage_modal_body: "As the donor, you are responsible for covering the cost of shipping this item to the charity. Please factor this into your decision before submitting your offer."
     postage_modal_confirm: "I understand"
+    details: "Details"
   statuses:
     requests:
       active: "Active"
@@ -131,6 +133,7 @@ en:
     give_feedback: "Give Feedback"
     reset_categories: "Reset categories"
   requests:
+    request: "Requests"
     tell_us: "Tell us a little more about your request"
     edit_request: "Edit Request"
     title: "Title"

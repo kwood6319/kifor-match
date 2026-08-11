@@ -1,8 +1,9 @@
+<div class="container-fluid px-4">
 <% content_for :title, "Offers" %>
 <h1>Offers</h1>
 <% status_badge = lambda do |status| %>
   <% normalized_status = status.to_s.strip.downcase %>
-  <% label = normalized_status.capitalize %>
+  <% label = t("statuses.donor.#{normalized_status}") %>
   <% badge_class = case normalized_status %>
 <% when "submitted" %>
   <% "status-badge status-badge--submitted" %>
@@ -20,14 +21,17 @@
 <%= content_tag(:span, label, class: badge_class) %>
 <% end %>
 <% if @viewer_role == :donor %>
-  <table>
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
     <thead>
       <tr>
-        <th>Request</th>
-        <th>Quantity Offered</th>
-        <th>Status</th>
-        <th>Can Ship By</th>
-        <th>Details</th>
+        <th><%= t("requests.request") %></th>
+        <th><%= t("offers.quantity_offered") %></th>
+        <th><%= t("offers.status") %></th>
+        <th><%= t("offers.can_ship_by") %></th>
+        <th><%= t("offers.details") %></th>
       </tr>
     </thead>
     <tbody>
@@ -45,7 +49,7 @@
           <td><%= status_badge.call(offer.status) %></td>
           <td><%= offer.can_ship_by %></td>
           <td>
-            <%= link_to "View", offer_path(offer)%>
+            <%= link_to t("navigation.view"), offer_path(offer)%>
             <% if offer.status.to_s == "approved" && request.donor_id == @donor.id %>
               <%= button_to "Mark as Shipped", mark_as_shipped_offer_path(offer), method: :patch %>
             <% end %>
@@ -54,12 +58,15 @@
       <% end %>
     </tbody>
   </table>
+      </div>
+    </div>
+  </div>
 <% end %>
 <% if @viewer_role == :charity %>
   <table>
     <thead>
       <tr>
-        <th>Request</th>
+        <th><%= t("requests.request") %></th>
         <th>Quantity Offered</th>
         <th>Status</th>
         <th>Can Ship By</th>
@@ -101,4 +108,5 @@
     </tbody>
   </table>
 <% end %>
+</div>
 <%#TODO: add search form button at top if search action/view is used%>
