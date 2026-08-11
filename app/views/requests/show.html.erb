@@ -59,7 +59,7 @@
     <div class="col-lg-6 mx-3">
       <% if current_user.charity? && current_user.charity == @request.charity %>
         <%= render "currentcharityrequest", request: @request %>
-      <% elsif @editing_offer == @my_offer %>
+      <% elsif @editing_offer.present? && @editing_offer == @my_offer %>
         <%= render "offers/form", request: @request, offer: @my_offer %>
       <% elsif @my_offer.present? %>
         <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
@@ -82,6 +82,17 @@
           <% end %>
         </div>
       <% elsif policy(Offer.new(request: @request)).new?%>
+        <% if @offer.errors.any? %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>There were problems creating the offer:</strong>
+            <ul class="mb-0">
+              <% @offer.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
         <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
       <% end %>
     </div>
