@@ -33,6 +33,7 @@ class Offer < ApplicationRecord
   scope :active, -> { where(active: true) }
 
   SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
+  IGNORED_AMENDMENT_FIELDS = %w[status updated_at rejection_reason active].freeze
 
   validates :quantity_offered, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :condition, presence: true, inclusion: { in: Request::CONDITIONS }
@@ -53,8 +54,8 @@ class Offer < ApplicationRecord
   private
 
   def donor_amendment?
-    %w[approved rejected]
-      .include?(status_was) && (changes.keys - ["status", "updated_at", "rejection_reason"] - SHIPPING_FIELDS).any?
+    %w[approved rejected].include?(status_was) &&
+      (changes.keys - IGNORED_AMENDMENT_FIELDS - SHIPPING_FIELDS).any?
   end
 
   def resubmit_if_amended

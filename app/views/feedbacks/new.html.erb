@@ -45,7 +45,7 @@
           </div>
         <% end %>
       </div>
-      <%= link_to "← Back to Offer", request_path(@request), class: "text-muted small" %>
+      <%= link_to "← Back to Offer", "#", data: { controller: "history", action: "click->history#back" }, class: "text-muted small" %>
     </div>
   </div>
 </div>

@@ -7,6 +7,7 @@ class Request < ApplicationRecord
     active
     fulfilled
     flagged
+    archived
   ]
 
   CONDITIONS = [
@@ -46,6 +47,8 @@ class Request < ApplicationRecord
     high
     urgent
   ]
+
+  OPEN_OFFER_STATUSES = %w[submitted approved shipped]
 
   REGIONS_AND_PREFECTURES = {
     "Hokkaido" => %w[Hokkaido],
@@ -88,7 +91,32 @@ class Request < ApplicationRecord
     CONDITIONS[0..index]
   end
 
+  def fully_fulfilled?
+    quantity_remaining.to_i <= 0
+  end
+
+  def archived?
+    status == "archived"
+  end
+
+  def archive!
+    transaction do
+      update!(status: "archived")
+      reject_open_offers!
+    end
+  end
+
   private
+
+  def reject_open_offers!
+    offers.where(status: OPEN_OFFER_STATUSES).find_each do |offer|
+      offer.status = "rejected"
+      offer.rejection_reason = I18n.t("messages.request_fulfilled_rejection")
+      # Skip validation: unrelated fields (e.g. photos) on an older offer
+      # shouldn't block a system-driven status change or roll back the archive.
+      offer.save!(validate: false)
+    end
+  end
 
   def categories_are_valid
     invalid = category - CategoryList::CATEGORIES.keys

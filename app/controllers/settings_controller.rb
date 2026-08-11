@@ -67,7 +67,7 @@ class SettingsController < ApplicationController
     return false unless current_user.charity?
 
     Offer.joins(:request)
-         .where(requests: { charity_id: current_charity.id }, status: "shipped"
-         .exists?)
+         .where(requests: { charity_id: current_charity.id }, status: "shipped")
+         .exists?
   end
 end

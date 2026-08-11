@@ -1,6 +1,7 @@
 class NotificationsController < ApplicationController
   def dismiss
     @notification = current_recipient.notifications.find(params[:id])
+    authorize @notification, policy_class: NotificationPolicy
     @notification.update!(dismissed: true)
     @notification.offer&.update!(active: false)
 

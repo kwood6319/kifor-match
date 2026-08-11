@@ -11,9 +11,15 @@
           </div>
           <div class="col-4 text-center">
             <h3> x<%= @request.quantity_remaining %> </h3>
-            <div class="badge rounded-pill pill-<%=@request.urgency%>">
-              <%= t("urgencies.#{@request.urgency}") %>
-            </div>
+            <% if @request.archived? %>
+              <div class="badge rounded-pill text-bg-secondary">
+                <%= t("statuses.requests.archived") %>
+              </div>
+            <% else %>
+              <div class="badge rounded-pill pill-<%=@request.urgency%>">
+                <%= t("urgencies.#{@request.urgency}") %>
+              </div>
+            <% end %>
           </div>
         </div>
         <div>
@@ -42,6 +48,11 @@
               data-delete-title="<%= t("modals.delete_request.title") %>" >
             <%= t("buttons.delete") %>
           </button>
+        <% end %>
+        <% if policy(@request).archive? %>
+          <%= button_to t("buttons.archive_request"), archive_request_path(@request), method: :patch,
+              class: "btn btn-outline-secondary",
+              form: { data: { turbo_confirm: t("messages.request_archived_confirm") } } %>
         <% end %>
       </div>
     </div>
