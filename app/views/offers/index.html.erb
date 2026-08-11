@@ -1,112 +1,118 @@
 <div class="container-fluid px-4">
-<% content_for :title, "Offers" %>
-<h1>Offers</h1>
-<% status_badge = lambda do |status| %>
-  <% normalized_status = status.to_s.strip.downcase %>
-  <% label = t("statuses.donor.#{normalized_status}") %>
-  <% badge_class = case normalized_status %>
-<% when "submitted" %>
-  <% "status-badge status-badge--submitted" %>
-<% when "approved" %>
-  <% "status-badge status-badge--approved" %>
-<% when "rejected" %>
-  <% "status-badge status-badge--rejected" %>
-<% when "shipped" %>
-  <% "status-badge status-badge--shipped" %>
-<% when "received" %>
-  <% "status-badge status-badge--received" %>
-<% else %>
-  <% "status-badge" %>
-<% end %>
-<%= content_tag(:span, label, class: badge_class) %>
+  <% content_for :title, "Offers" %>
+  <h1>Offers</h1>
+  <% status_badge = lambda do |status| %>
+    <% normalized_status = status.to_s.strip.downcase %>
+    <% label = t("statuses.donor.#{normalized_status}") %>
+    <% badge_class = case normalized_status %>
+  <% when "submitted" %>
+    <% "status-badge status-badge--submitted" %>
+  <% when "approved" %>
+    <% "status-badge status-badge--approved" %>
+  <% when "rejected" %>
+    <% "status-badge status-badge--rejected" %>
+  <% when "shipped" %>
+    <% "status-badge status-badge--shipped" %>
+  <% when "received" %>
+    <% "status-badge status-badge--received" %>
+  <% else %>
+    <% "status-badge" %>
+  <% end %>
+  <%= content_tag(:span, label, class: badge_class) %>
 <% end %>
 <% if @viewer_role == :donor %>
   <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
       <div class="table-responsive">
         <table class="table align-middle mb-0">
-    <thead>
-      <tr>
-        <th><%= t("requests.request") %></th>
-        <th><%= t("offers.quantity_offered") %></th>
-        <th><%= t("offers.status") %></th>
-        <th><%= t("offers.can_ship_by") %></th>
-        <th><%= t("offers.details") %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @offers.each do |offer| %>
-        <tr>
-          <% request = offer.request %>
-          <td>
-            <div><%= request.title %></div>
-            <div>Charity: <%= request.charity.org_name %></div>
-            <% if request.quantity_remaining.present? %>
-              <div>Quantity remaining: <%= request.quantity_remaining %></div>
+          <thead>
+            <tr>
+              <th><%= t("requests.request") %></th>
+              <th><%= t("offers.quantity_offered") %></th>
+              <th><%= t("offers.status") %></th>
+              <th><%= t("offers.can_ship_by") %></th>
+              <th><%= t("offers.details") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @offers.each do |offer| %>
+              <tr>
+                <% request = offer.request %>
+                <td>
+                  <div><%= request.title %></div>
+                  <div>Charity: <%= request.charity.org_name %></div>
+                  <% if request.quantity_remaining.present? %>
+                    <div>Quantity remaining: <%= request.quantity_remaining %></div>
+                  <% end %>
+                </td>
+                <td><%= offer.quantity_offered %></td>
+                <td><%= status_badge.call(offer.status) %></td>
+                <td><%= offer.can_ship_by %></td>
+                <td>
+                  <%= link_to t("navigation.view"), offer_path(offer)%>
+                  <% if offer.status.to_s == "approved" && request.donor_id == @donor.id %>
+                    <%= button_to "Mark as Shipped", mark_as_shipped_offer_path(offer), method: :patch %>
+                  <% end %>
+                </td>
+              </tr>
             <% end %>
-          </td>
-          <td><%= offer.quantity_offered %></td>
-          <td><%= status_badge.call(offer.status) %></td>
-          <td><%= offer.can_ship_by %></td>
-          <td>
-            <%= link_to t("navigation.view"), offer_path(offer)%>
-            <% if offer.status.to_s == "approved" && request.donor_id == @donor.id %>
-              <%= button_to "Mark as Shipped", mark_as_shipped_offer_path(offer), method: :patch %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 <% end %>
 <% if @viewer_role == :charity %>
-  <table>
-    <thead>
-      <tr>
-        <th><%= t("requests.request") %></th>
-        <th>Quantity Offered</th>
-        <th>Status</th>
-        <th>Can Ship By</th>
-        <th>Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @offers.each do |offer| %>
-        <tr>
-          <% request = offer.request %>
-          <td>
-            <div><%= request.title %></div>
-            <div>Charity: <%= request.charity.org_name %></div>
-            <% if request.quantity_remaining.present? %>
-              <div>Quantity remaining: <%= request.quantity_remaining %></div>
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th><%= t("requests.request") %></th>
+              <th><%= t("offers.quantity_offered") %></th>
+              <th><%= t("offers.status") %></th>
+              <th><%= t("offers.can_ship_by") %></th>
+              <th><%= t("offers.details") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @offers.each do |offer| %>
+              <tr>
+                <% request = offer.request %>
+                <td>
+                  <div><%= request.title %></div>
+                  <div>Charity: <%= request.charity.org_name %></div>
+                  <% if request.quantity_remaining.present? %>
+                    <div>Quantity remaining: <%= request.quantity_remaining %></div>
+                  <% end %>
+                  <% donor = offer.donor %>
+                  <div>Donor: <%= donor.display_name %></div>
+                  <div>Region: <%= donor.region %></div>
+                  <div>Prefecture: <%= donor.prefecture %></div>
+                </td>
+                <td><%= offer.quantity_offered %></td>
+                <td><%= status_badge.call(offer.status) %></td>
+                <td><%= offer.can_ship_by %></td>
+                <td>
+                  <%= link_to "View", offer_path(offer) %>
+                  <% if offer.status.to_s == "submitted" && request.charity_id == @charity.id %>
+                    <%= button_to "Approve", approve_offer_path(offer), method: :patch %>
+                  <% end %>
+                  <% if offer.status.to_s == "submitted" && request.charity_id == @charity.id %>
+                    <%= button_to "Reject", reject_offer_path(offer), method: :patch %>
+                  <% end %>
+                  <% if offer.status.to_s == "shipped" && request.charity_id == @charity.id %>
+                    <%= button_to "Mark as Received", mark_received_offer_path(offer), method: :patch %>
+                  <% end %>
+                </td>
+              </tr>
             <% end %>
-            <% donor = offer.donor %>
-            <div>Donor: <%= donor.display_name %></div>
-            <div>Region: <%= donor.region %></div>
-            <div>Prefecture: <%= donor.prefecture %></div>
-          </td>
-          <td><%= offer.quantity_offered %></td>
-          <td><%= status_badge.call(offer.status) %></td>
-          <td><%= offer.can_ship_by %></td>
-          <td>
-            <%= link_to "View", offer_path(offer) %>
-            <% if offer.status.to_s == "submitted" && request.charity_id == @charity.id %>
-              <%= button_to "Approve", approve_offer_path(offer), method: :patch %>
-            <% end %>
-            <% if offer.status.to_s == "submitted" && request.charity_id == @charity.id %>
-              <%= button_to "Reject", reject_offer_path(offer), method: :patch %>
-            <% end %>
-            <% if offer.status.to_s == "shipped" && request.charity_id == @charity.id %>
-              <%= button_to "Mark as Received", mark_received_offer_path(offer), method: :patch %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 <% end %>
 </div>
 <%#TODO: add search form button at top if search action/view is used%>
