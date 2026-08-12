@@ -37,6 +37,13 @@
             <br>
           </div>
           <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
+          <% pending_actions = request.offers.where(status: ["submitted", "shipped"]).count %>
+          <% if pending_actions.positive? %>
+            <div class="request-card-notification">
+              <i class="fa-solid fa-bell"></i>
+              <span><%= pending_actions %></span>
+            </div>
+          <% end %>
         </div>
       </div>
     <% end %>

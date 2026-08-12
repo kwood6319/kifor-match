@@ -1,4 +1,5 @@
 .request-card {
+  position: relative;
   overflow: hidden;
   height: 16rem;
   background: white;
@@ -32,4 +33,10 @@
 
 .request-card-infos {
   width: 100%;
+}
+
+.request-card-notification{
+  position: absolute;
+  right: 1.6rem;
+  bottom: 1rem;
 }
