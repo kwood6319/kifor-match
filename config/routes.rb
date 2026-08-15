@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       member do
         patch :activate
         patch :deactivate
+        patch :archive
       end
     end
 
@@ -75,7 +76,8 @@ Rails.application.routes.draw do
 
     get "settings", to: "settings#show", as: :settings
     patch "settings", to: "settings#update"
-    patch "settings/password", to: "settings#update_password", as: :settings_password
     patch "settings/locale", to: "settings#update_locale", as: :settings_locale
+    patch "settings/account", to: "settings#update_account", as: :settings_account
+    patch "settings/deactivate", to: "settings#deactivate", as: :settings_deactivate
   end
 end

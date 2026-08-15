@@ -87,6 +87,20 @@
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
 }
 
+.btn-kifor-soft {
+  background-color: #FFA9C6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-kifor-soft:hover {
+  background-color: #FF7DB4; /* steps up to your existing pill-medium shade on hover */
+  color: white;
+}
+
 /* Makes it slightly smaller on mobile devices so it doesn't take up too much screen space */
 @media (max-width: 768px) {
   .btn-kifor-fab {

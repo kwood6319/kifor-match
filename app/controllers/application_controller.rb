@@ -5,8 +5,16 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
   # Pundit: allow-list
-  after_action :verify_authorized, except: :index, unless: :skip_pundit?
-  after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
+  #
+  # Deliberately not using `only: :index` / `except: :index` here: Rails
+  # validates those action names against each subclass's defined actions
+  # (raise_on_missing_callback_actions, on in test/production by default),
+  # so any controller without a literal :index action - Devise's included
+  # controllers, our own dashboard/feedback/notification controllers - would
+  # raise "Unknown action" on every request. Lambdas check action_name at
+  # runtime instead, sidestepping that validation entirely.
+  after_action :verify_authorized, unless: -> { skip_pundit? || action_name == "index" }
+  after_action :verify_policy_scoped, unless: -> { skip_pundit? || action_name != "index" }
 
   # Uncomment when you *really understand* Pundit!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized

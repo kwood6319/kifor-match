@@ -4,6 +4,6 @@ class OfferCompletedNotification < Notification
   end
 
   def link_path
-    Rails.application.routes.url_helpers.request_path(offer.request)
+    Rails.application.routes.url_helpers.request_path(id: offer.request_id, locale: I18n.locale)
   end
 end

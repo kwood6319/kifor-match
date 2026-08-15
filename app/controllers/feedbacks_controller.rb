@@ -1,11 +1,4 @@
 class FeedbacksController < ApplicationController
-  # No :index action here, so ApplicationController's :only/:except => :index
-  # callbacks raise "Unknown action" on every request (Rails validates those
-  # targets exist on the controller). Replace with unconditional equivalents.
-  skip_after_action :verify_policy_scoped
-  skip_after_action :verify_authorized
-  after_action :verify_authorized, unless: :skip_pundit?
-
   def new
     @request = Request.find(params[:request_id])
     @grouped_tags = FeedbackTags.grouped_for(@request.category)

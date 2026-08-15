@@ -7,4 +7,12 @@ class User < ApplicationRecord
 
   has_one :charity
   has_one :donor
+
+  def active_for_authentication?
+    super && active?
+  end
+
+  def inactive_message
+    active? ? super : :deactivated
+  end
 end

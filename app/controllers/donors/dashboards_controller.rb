@@ -5,7 +5,7 @@ module Donors
     def show
       authorize :donor_dashboard, :show?
       # Start with your policy scope and include charity to avoid N+1 queries
-      @requests = policy_scope(Request).includes(:charity).where.not(status: "inactive").where("quantity_remaining > 0")
+      @requests = policy_scope(Request).includes(:charity).where.not(status: "archived").where("quantity_remaining > 0")
 
       @top_categories = CategoryList.top_categories
 

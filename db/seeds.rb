@@ -168,7 +168,10 @@ REQUESTS = [
     quantity_needed: 24, urgency: "medium", status: "fulfilled" },
   { key: :request21, charity: :charity4, category: ["kids"], subcategory: ["school_supplies"],
     title: "School backpacks", condition: "used_good", description: "Reusable backpacks for school-age children",
-    quantity_needed: 14, urgency: "medium" }
+    quantity_needed: 14, urgency: "medium" },
+  { key: :request22, charity: :charity1, category: ["hygiene"], subcategory: [],
+    title: "Soap and toiletries", condition: "new", description: "Fully fulfilled by a single donor, then archived",
+    quantity_needed: 10, urgency: "medium", status: "archived" }
 ].freeze
 
 requests = REQUESTS.each_with_object({}) do |attrs, hash|
@@ -217,7 +220,8 @@ OFFERS = [
   { key: :offer4,  request: :request7,  donor: :donor3, condition: "new",            quantity_offered: 10, status: "shipped",   can_ship_by: Date.yesterday, tracking_number: "EE123456789JP", photo_count: 2 },
   { key: :offer5,  request: :request8,  donor: :donor2, condition: "new",            quantity_offered: 40, status: "received",  can_ship_by: 7.days.ago.to_date, photo_count: 1 },
   { key: :offer6,  request: :request11, donor: :donor4, condition: "used_like_new",  quantity_offered: 2,  status: "approved",  can_ship_by: 3.days.ago.to_date, tracking_number: "XXXXXX", message: "Laptops like new", photo_count: 2 },
-  { key: :offer7,  request: :request5,  donor: :donor1, condition: "new",            quantity_offered: 20, status: "received",  can_ship_by: 5.days.ago.to_date, message: "Delivered, ready for feedback", photo_count: 2 }
+  { key: :offer7,  request: :request5,  donor: :donor1, condition: "new",            quantity_offered: 20, status: "received",  can_ship_by: 5.days.ago.to_date, message: "Delivered, ready for feedback", photo_count: 2 },
+  { key: :offer8,  request: :request22, donor: :donor2, condition: "new",            quantity_offered: 10, status: "received",  can_ship_by: 10.days.ago.to_date, tracking_number: "JP000111222", message: "Delivered and confirmed received", photo_count: 2 }
 ].freeze
 
 OFFERS.each_with_index do |attrs, index|
@@ -240,5 +244,14 @@ OFFERS.each_with_index do |attrs, index|
 
   puts "Created offer for #{offer.quantity_offered} for #{offer.request.title} by #{offer.donor.display_name} with #{offer.photos.count} photo(s)"
 end
+
+puts "----------------------------------------------"
+
+puts "Marking a fully fulfilled request as archived..."
+
+archived_request = requests.fetch(:request22)
+archived_request.update!(quantity_remaining: 0)
+
+puts "Request \"#{archived_request.title}\" is now #{archived_request.status} with #{archived_request.quantity_remaining} remaining."
 
 puts "Seed finished! おつかれ"

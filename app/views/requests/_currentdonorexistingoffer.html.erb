@@ -53,7 +53,7 @@
       method: :patch do |f| %>
       <div class="row mt-2">
         <div class="col-md-6">
-          <%= f.input :estimated_arrival, label: t("statuses.arriving"), as: :date, html5: true %>
+          <%= f.input :estimated_arrival, label: t("statuses.donor.arriving"), as: :date, html5: true %>
         </div>
         <div class="col-md-6">
           <%= f.input :tracking_number, label: t("statuses.donor.tracking_info"), placeholder: t("statuses.donor.tracking_prompt") %>

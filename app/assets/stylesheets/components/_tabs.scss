@@ -1,0 +1,23 @@
+#settings-tabs .nav-link {
+  color: #333;
+  border-radius: 8px;
+}
+
+#settings-tabs .nav-link.active {
+  background-color: #FFA9C6;
+  color: white;
+}
+
+#settings-tabs .nav-link:hover:not(.active) {
+  background-color: #FFEAF2; /* very light pink tint for hover, non-active */
+  color: #333;
+}
+
+#settings-tabs .nav-link.text-danger.active {
+  background-color: #852221; /* reuses your existing .btn-neg hover red for the danger tab specifically */
+  color: white !important;
+}
+
+.label-space-only {
+  opacity: 0;
+}
