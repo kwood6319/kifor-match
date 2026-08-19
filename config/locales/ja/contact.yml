@@ -1,3 +1,10 @@
 ja:
   contact:
     success: "お問い合わせありがとうございます。追ってご連絡いたします。"
+    email: "メールアドレス"
+    name: "名前"
+    message: "メッセージ"
+    placeholder_email: "メールアドレスを入力してください"
+    placeholder_name: "お名前を入力してください"
+    placeholder_message: "ご用件は何でしょうか？"
+    send: "メッセージ送信"

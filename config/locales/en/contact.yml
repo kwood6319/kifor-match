@@ -1,3 +1,10 @@
 en:
   contact:
     success: "Thank you for reaching out! We'll get back to you as soon as possible"
+    email: "Email Address"
+    name: "Name"
+    message: "Message"
+    placeholder_email: "Enter your email"
+    placeholder_name: "Enter your name"
+    placeholder_message: "How can we help?"
+    send: "Send Message"
