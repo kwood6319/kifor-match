@@ -14,12 +14,9 @@
         <button class="nav-link text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-notifications" type="button">
           <i class="fa-solid fa-bell"></i> <%= t("settings.tabs.notifications") %>
         </button>
-        <%# language switching not on current branch, delete if block when added %>
-        <% if false%>
-          <button class="nav-link text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-language" type="button">
-            <i class="fa-solid fa-globe"></i> <%= t("settings.tabs.language") %>
-          </button>
-        <% end %>
+        <button class="nav-link text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-language" type="button">
+          <i class="fa-solid fa-globe"></i> <%= t("settings.tabs.language") %>
+        </button>
         <button class="nav-link text-start d-flex align-items-center gap-2 text-danger" data-bs-toggle="pill" data-bs-target="#tab-danger" type="button">
           <i class="fa-solid fa-triangle-exclamation"></i> <%= t("settings.tabs.danger_zone") %>
         </button>
@@ -63,7 +60,7 @@
                       { prompt: t("prefectures.select") }, class: "form-select" %>
                   </div>
                 </div>
-                <button type="submit" class="btn text-white" style="background-color: #E84393;">
+                <button type="submit" class="btn-kifor-soft">
                   <%= t("settings.save_profile") %>
                 </button>
               <% end %>
@@ -94,7 +91,7 @@
                           { include_blank: false }, class: "form-select" %>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <%= f.label :prefecture, t("prefectures.select"), class: "form-label fw-bold" %>
+                    <%= f.label :prefecture, t("prefectures.select"), class: "form-label fw-bold label-space-only" %>
                     <%= f.select :prefecture,
                           Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
                             .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
@@ -111,7 +108,7 @@
                   <%= f.label :shipping_address, t("settings.shipping_address"), class: "form-label fw-bold" %>
                   <%= f.text_area :shipping_address, rows: 3, class: "form-control" %>
                 </div>
-                <button type="submit" class="btn text-white" style="background-color: #E84393;">
+                <button type="submit" class="btn-kifor-soft">
                   <%= t("settings.save_profile") %>
                 </button>
               <% end %>
@@ -152,7 +149,7 @@
                 <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password", required: true %>
                 <div class="form-text"><%= t("settings.current_password_help") %></div>
               </div>
-              <button type="submit" class="btn text-white" style="background-color: #E84393;">
+              <button type="submit" class="btn-kifor-soft">
                 <%= t("settings.save_account") %>
               </button>
             <% end %>
@@ -166,23 +163,21 @@
             <p class="text-muted mb-0"><%= t("settings.notifications_coming_soon_desc") %></p>
           </div>
         </div>
-        <%# Language tab - not in current branch. remove if statement when added %>
-        <% if false %>
-          <div class="tab-pane fade" id="tab-language">
-            <div class="card border-0 shadow-sm p-4">
-              <h5 class="mb-1"><%= t("settings.tabs.language") %></h5>
-              <p class="text-muted small mb-4"><%= t("settings.language_description") %></p>
-              <%= form_with model: current_user, url: settings_locale_path, method: :patch, scope: :user do |f| %>
-                <div class="mb-3" style="max-width: 300px;">
-                  <%= f.select :locale, [[t("settings.english"), "en"], [t("settings.japanese"), "ja"]], {}, class: "form-select" %>
-                </div>
-                <button type="submit" class="btn text-white" style="background-color: #E84393;">
-                  <%= t("settings.save_language") %>
-                </button>
-              <% end %>
-            </div>
+        <%# Language tab %>
+        <div class="tab-pane fade" id="tab-language">
+          <div class="card border-0 shadow-sm p-4">
+            <h5 class="mb-1"><%= t("settings.tabs.language") %></h5>
+            <p class="text-muted small mb-4"><%= t("settings.language_description") %></p>
+            <%= form_with model: current_user, url: settings_locale_path, method: :patch, scope: :user do |f| %>
+              <div class="mb-3" style="max-width: 300px;">
+                <%= f.select :locale, [[t("settings.english"), "en"], [t("settings.japanese"), "ja"]], {}, class: "form-select" %>
+              </div>
+              <button type="submit" class="btn-kifor-soft">
+                <%= t("settings.save_language") %>
+              </button>
+            <% end %>
           </div>
-        <% end %>
+        </div>
         <%# Danger zone %>
         <div class="tab-pane fade" id="tab-danger">
           <div class="card border-0 shadow-sm p-4 border-start border-danger border-4">

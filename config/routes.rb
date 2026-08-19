@@ -76,7 +76,10 @@ Rails.application.routes.draw do
 
     get "settings", to: "settings#show", as: :settings
     patch "settings", to: "settings#update"
+    patch "settings/locale", to: "settings#update_locale", as: :settings_locale
     patch "settings/account", to: "settings#update_account", as: :settings_account
     patch "settings/deactivate", to: "settings#deactivate", as: :settings_deactivate
+
+    get "contact", to: "pages#new_contact"
   end
 end
