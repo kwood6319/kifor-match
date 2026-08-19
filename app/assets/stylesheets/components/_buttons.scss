@@ -62,7 +62,9 @@
 /* Floating Action Button (FAB) */
 .btn-kifor-fab {
   position: fixed;
-  bottom: 40px;
+  /* --fab-lift is set by the fab Stimulus controller to the height of footer
+     currently on screen, so the button parks above it instead of overlapping. */
+  bottom: calc(40px + var(--fab-lift, 0px));
   right: 40px;
   width: 65px;
   height: 65px;
@@ -104,7 +106,7 @@
 /* Makes it slightly smaller on mobile devices so it doesn't take up too much screen space */
 @media (max-width: 768px) {
   .btn-kifor-fab {
-    bottom: 20px;
+    bottom: calc(20px + var(--fab-lift, 0px));
     right: 20px;
     width: 55px;
     height: 55px;

@@ -6,5 +6,26 @@ footer {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+footer a.footer-link,
+footer a.footer-link:link,
+footer a.footer-link:visited {
+  color: white;
+  text-decoration: none;
+}
+
+footer a.footer-link:hover,
+footer a.footer-link:focus {
+  color: white;
+  text-decoration: underline;
+}
+
+@media (max-width: 575px) {
+  footer {
+    padding: 0 1rem;
+    font-size: 0.875rem;
+  }
 }

@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :set_locale
   before_action :authenticate_user!
+  skip_before_action :authenticate_user!, if: :devise_controller?
   include Pundit::Authorization
 
   # Pundit: allow-list
@@ -47,7 +48,25 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    I18n.locale = params[:locale].presence || I18n.default_locale
+    return if devise_controller?
+
+    session[:locale] = params[:switch_locale] if params[:switch_locale].present? && valid_locale?(params[:locale])
+
+    I18n.locale = resolved_locale
+  end
+
+  def resolved_locale
+    if session[:locale].present? && valid_locale?(session[:locale])
+      session[:locale]
+    elsif current_user&.locale.present?
+      current_user.locale
+    else
+      I18n.default_locale
+    end
+  end
+
+  def valid_locale?(loc)
+    I18n.available_locales.map(&:to_s).include?(loc.to_s)
   end
 
   def default_url_options

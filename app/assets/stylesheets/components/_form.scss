@@ -1,0 +1,57 @@
+// Reusable card-style wrapper for standalone forms (contact, etc.)
+.form-card {
+  max-width: 32rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  box-shadow: 4px 4px 4px #bfbfbf;
+
+  .form-card-title {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  .form-card-intro {
+    margin-bottom: 1.5rem;
+    color: lighten($gray, 40%);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+
+  .form-control {
+    margin-bottom: 1.25rem;
+
+    &:focus {
+      border-color: $dark-pink;
+      box-shadow: 0 0 0 0.2rem rgba($dark-pink, 0.2);
+    }
+  }
+
+  textarea.form-control {
+    min-height: 8rem;
+  }
+
+  input[type="submit"] {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: none;
+    background-color: #E84393; /* The KiFor Pink, matching the footer */
+    color: white;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #d63384;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .form-card {
+    margin: 1rem;
+    padding: 1.25rem;
+  }
+}

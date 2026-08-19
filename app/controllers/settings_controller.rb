@@ -43,6 +43,17 @@ class SettingsController < ApplicationController
     end
   end
 
+  def update_locale
+    if current_user.update(locale_params)
+      session.delete(:locale)
+      redirect_to settings_path, notice: t("settings.language_updated")
+    else
+      @donor = current_user.donor
+      @charity = current_user.charity
+      render :show, status: :unprocessable_entity
+    end
+  end
+
   def deactivate
     current_user.update!(active: false)
     sign_out(current_user)
@@ -61,6 +72,10 @@ class SettingsController < ApplicationController
 
   def password_params
     params.require(:user).permit(:current_password, :password, :password_confirmation)
+  end
+
+  def locale_params
+    params.require(:user).permit(:locale)
   end
 
   def charity_has_shipped_offers?
