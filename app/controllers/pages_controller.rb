@@ -7,8 +7,4 @@ class PagesController < ApplicationController
   def new_contact
     render :contact
   end
-
-  def create_contact
-    redirect_to root_path, status: :see_other, notice: t("contact.success")
-  end
 end

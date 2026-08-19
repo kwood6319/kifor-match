@@ -80,6 +80,5 @@ Rails.application.routes.draw do
     patch "settings/deactivate", to: "settings#deactivate", as: :settings_deactivate
 
     get "contact", to: "pages#new_contact"
-    post "contact", to: "pages#create_contact"
   end
 end

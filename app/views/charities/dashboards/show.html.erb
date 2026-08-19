@@ -49,7 +49,7 @@
     <% end %>
   </div>
   <% if policy(Request).new? %>
-    <%= link_to new_request_path, class: "btn-kifor-fab" do %>
+    <%= link_to new_request_path, class: "btn-kifor-fab", data: { controller: "fab" } do %>
       <i class="fa-solid fa-plus"></i>
     <% end %>
   <% end %>

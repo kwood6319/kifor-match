@@ -39,12 +39,12 @@
     width: 100%;
     padding: 0.6rem 1rem;
     border: none;
-    background-color: $dark-pink;
+    background-color: #E84393; /* The KiFor Pink, matching the footer */
     color: white;
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: darken($dark-pink, 8%);
+      background-color: #d63384;
     }
   }
 }
