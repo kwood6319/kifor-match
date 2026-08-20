@@ -10,3 +10,4 @@ en:
     send: "Send Message"
     error: "Oops! There was a problem sending your message."
     network_error: "A network error occurred. Please try again."
+    link_text: "Need to Contact Us?"
