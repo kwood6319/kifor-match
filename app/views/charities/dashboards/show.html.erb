@@ -1,107 +1,134 @@
-<div class="container mt-5 mb-4">
+<div class="container mt-3 mb-4">
   <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%="様" if I18n.locale == :ja %>!</h3>
-  <h3> <%= t("messages.your_requests") %>: </h3>
 </div>
-<div class="container mb-5">
-  <div class="row justify-content-center gap-3">
-    <% @requests.each do |request| %>
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <div class="request-card card h-100">
-          <div class="request-card-infos">
-            <div class="row mb-2">
-              <div class="col-8">
-                <h4><strong><%= request.title %></strong></h4>
-              </div>
-              <div class="col-4 text-center">
-                <h4 class="mb-0"> x<%= request.quantity_remaining %> </h4>
-                <div class="badge rounded-pill pill-<%= request.urgency %>"> <%= t("urgencies.#{request.urgency}") %> </div>
-              </div>
-            </div>
-            <%# Let's add the category tag so users can see it! %>
-            <% request.category.each do |cat| %>
-              <span class="badge text-bg-secondary mb-2"><%= t("categories.#{cat}") %></span>
-            <% end %>
-            <br>
-            <i class="fa-solid fa-box-open"></i>
-            <% request.acceptable_conditions.each do |condition| %>
-              <span class="badge text-bg-info mb-2">
-                <%= t("conditions.#{condition}") %>
-              </span>
-            <% end %>
-            <br>
-            <span>
-              <i class="fa-solid fa-location-dot mb-2"></i>
-              <strong> <%= t("navigation.prefecture")%>: </strong>
-              <%= t("prefectures.#{request.charity.prefecture}") %>
-            </span>
-            <br>
-          </div>
-          <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
-          <% pending_actions = request.offers.where(status: ["submitted", "shipped"]).count %>
-          <% if pending_actions.positive? %>
-            <div class="request-card-notification">
-              <i class="fa-solid fa-bell"></i>
-              <span><%= pending_actions %></span>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-  <% if policy(Request).new? %>
-    <%= link_to new_request_path, class: "btn-kifor-fab", data: { controller: "fab" } do %>
-      <i class="fa-solid fa-plus"></i>
-    <% end %>
-  <% end %>
-</div>
-<div class="container mb-5">
-  <button class="btn btn-outline-secondary d-flex align-items-center gap-2"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#archivedRequests"
-      aria-expanded="false"
-      aria-controls="archivedRequests">
-    <%= t("navigation.archived_requests") %> (<%= @archived_requests.size %>)
-  </button>
-  <div class="collapse mt-3" id="archivedRequests">
-    <% if @archived_requests.empty? %>
-      <p class="text-muted"><%= t("navigation.no_archived_requests") %></p>
-    <% else %>
-      <div class="row justify-content-center gap-3">
-        <% @archived_requests.each do |request| %>
-          <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="request-card card h-100">
-              <div class="request-card-infos">
-                <div class="row mb-2">
-                  <div class="col-8">
-                    <h4><strong><%= request.title %></strong></h4>
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <%# Left column — tabbed %>
+    <div class="col-md-8">
+      <ul class="nav nav-pills mb-3" id="charity-dashboard-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-my-requests" type="button">
+            <%= t("dashboard.my_requests") %>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-incoming-offers" type="button">
+            <%= t("dashboard.incoming_offers") %>
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <%# My Requests tab %>
+        <div class="tab-pane fade show active" id="tab-my-requests">
+          <%= form_with url: charities_dashboard_path, method: :get, data: { turbo_frame: "_top" }, class: "mb-3" do %>
+            <div class="d-flex align-items-center gap-2">
+              <label class="form-label fw-bold mb-0"><%= t("dashboard.sort_by") %>:</label>
+              <select name="sort" class="form-select w-auto" onchange="this.form.requestSubmit()">
+                <option value="urgency" <%= "selected" if @sort == "urgency" %>><%= t("dashboard.sort_urgency") %></option>
+                  <option value="newest" <%= "selected" if @sort == "newest" %>><%= t("dashboard.sort_newest") %></option>
+                    <option value="oldest" <%= "selected" if @sort == "oldest" %>><%= t("dashboard.sort_oldest") %></option>
+                      <option value="title" <%= "selected" if @sort == "title" %>><%= t("dashboard.sort_title") %></option>
+                      </select>
+                    </div>
+                  <% end %>
+                  <div class="row g-3">
+                    <% @requests.each do |request| %>
+                      <div class="col-sm-12 col-md-6 col-lg-6">
+                        <%= render "charities/dashboards/request_card", request: request %>
+                      </div>
+                    <% end %>
                   </div>
-                  <div class="col-4 text-center">
-                    <h4 class="mb-0"> x<%= request.quantity_remaining %> </h4>
-                    <div class="badge rounded-pill text-bg-secondary"> <%= t("statuses.requests.archived") %> </div>
+                  <div class="mt-4">
+                    <button class="btn btn-outline-secondary d-flex align-items-center gap-2"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#archivedRequests"
+                aria-expanded="false"
+                aria-controls="archivedRequests">
+                      <%= t("navigation.archived_requests") %> (<%= @archived_requests.size %>)
+                    </button>
+                    <div class="collapse mt-3" id="archivedRequests">
+                      <% if @archived_requests.empty? %>
+                        <p class="text-muted"><%= t("navigation.no_archived_requests") %></p>
+                      <% else %>
+                        <div class="row g-3">
+                          <% @archived_requests.each do |request| %>
+                            <div class="col-sm-12 col-md-6 col-lg-6">
+                              <%= render "charities/dashboards/request_card", request: request, archived: true %>
+                            </div>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
                   </div>
                 </div>
-                <span class="badge text-bg-secondary mb-2"><%= t("categories.#{request.category}") %></span>
-                <br>
-                <i class="fa-solid fa-box-open"></i>
-                <% request.acceptable_conditions.each do |condition| %>
-                  <span class="badge text-bg-info mb-2">
-                    <%= t("conditions.#{condition}") %>
-                  </span>
-                <% end %>
-                <br>
-                <span>
-                  <i class="fa-solid fa-location-dot mb-2"></i>
-                  <strong> <%= t("navigation.prefecture")%>: </strong>
-                  <%= t("prefectures.#{request.charity.prefecture}") %>
-                </span>
-                <br>
+                <%# Incoming Offers tab %>
+                <div class="tab-pane fade" id="tab-incoming-offers">
+                  <% if @incoming_offers.blank? %>
+                    <p class="text-muted"><%= t("dashboard.no_incoming_offers") %></p>
+                  <% else %>
+                    <% %w[approved shipped received completed].each do |status| %>
+                      <% next unless @incoming_offers[status].present? %>
+                      <h5 class="mt-4 mb-3 text-capitalize"><%= t("statuses.#{status}", default: status) %></h5>
+                      <div class="row g-3">
+                        <% @incoming_offers[status].each do |offer| %>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <%= link_to offer_path(offer), class: "text-decoration-none text-dark" do %>
+                              <div class="small-card offer-card p-2">
+                                <strong><%= offer.request.title %></strong>
+                                <p class="mb-1 text-muted"><%= offer.donor.display_name %></p>
+                                <p class="mb-0"><strong><%= t("offers.quantity_offered") %>:</strong> <%= offer.quantity_offered %></p>
+                              </div>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
               </div>
-              <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
+            </div>
+            <%# Right column — actionable offers, mirrors donor dashboard exactly %>
+            <div class="col-md-4 d-flex">
+              <div class="card bg-light border-0 w-100" style="overflow-y: auto;">
+                <div class="card-body">
+                  <h5 class="card-title mb-3"><%= t("dashboard.needs_your_attention") %>:</h5>
+                  <% if @actionable_offers.any? %>
+                    <% @actionable_offers.each do |offer| %>
+                      <%= link_to offer_path(offer), class: "text-decoration-none text-dark" do %>
+                        <div class="pending-item mb-3 pb-3 border-bottom">
+                          <div class="d-flex justify-content-between align-items-start">
+                            <strong><%= offer.request.title %></strong>
+                            <div class="text-nowrap">
+                              <span class="badge rounded-pill bg-danger"><%= time_ago_badge(offer.updated_at) %></span>
+                              <span class="ms-1 text-muted">x<%= offer.quantity_offered %></span>
+                            </div>
+                          </div>
+                          <p class="mb-1"><%= offer.donor.display_name %></p>
+                          <p class="mb-1">
+                            <strong><%= t("dashboard.condition") %>:</strong> <%= t("conditions.#{offer.condition}") %>
+                          </p>
+                          <% if offer.can_ship_by.present? %>
+                            <p class="mb-1">
+                              <strong><%= t("dashboard.can_ship_by") %>:</strong> <%= offer.can_ship_by.strftime("%b %-d") %>
+                            </p>
+                          <% end %>
+                          <p class="mb-0">
+                            <strong><%= t("dashboard.status") %>:</strong> <%= t("statuses.#{offer.status}", default: offer.status) %>
+                          </p>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  <% else %>
+                    <p class="text-muted mb-0"><%= t("dashboard.no_pending_offers") %></p>
+                  <% end %>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+        <% if policy(Request).new? %>
+          <%= link_to new_request_path, class: "btn-kifor-fab", data: { controller: "fab" } do %>
+            <i class="fa-solid fa-plus"></i>
+          <% end %>
         <% end %>
-      </div>
-    <% end %>
-  </div>
-</div>
