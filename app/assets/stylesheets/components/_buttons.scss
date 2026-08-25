@@ -119,10 +119,11 @@
 
 :root {
   --km-radius: 8px;
-  --km-btn-primary-bg: #EC5F97;
-  --km-btn-danger-bg: #B81466;
-  --km-btn-outline-border: #A4A4A4;
-  --km-text-dark: #2C2925;
+  --km-btn-primary-bg: #{$km--primary-pink};
+  --km-btn-danger-bg: #{$km--danger-pink};
+  --km-btn-outline-border: #{$km--gray};
+  --km-text-dark: #{$km--dark};
+  --km-text-light: #{$km--light};
 }
 
 .km--btn {
@@ -132,28 +133,54 @@
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 600;
-  border: none;
+  border: 1px solid transparent;
   border-radius: var(--km-radius);
   cursor: pointer;
-}
+  transition: background-color 0.2s ease, border-color 0.2 ease, transform 0.1s ease;
+  text-decoration: none;
 
-.km--btn-primary {
-  background-color: var(--km-btn-primary-bg);
-  color: #FFFFFF;
-}
+  &:hover{
+    filter: brightness(0.95);
+  }
 
-.km--btn-danger {
-  background-color: var(--km-btn-danger-bg);
-  color: #FFFFFF;
-}
+  &:active {
+    transform: scale(0.98);
+  }
 
-.km--btn-outline {
-  background-color: #FFFFFF;
-  border: 1px solid var(--km-btn-outline-border);
-  color: var(--km-text-dark);
-}
+  &:focus-visible {
+    outline: 2px solid var(--km-btn-primary-bg);
+    outline-offset: 2px;
+  }
 
-.km--btn-wide {
-  display: flex;
-  width: 100%;
+  &:disabled,
+  &:is-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &-primary {
+    background-color: var(--km-btn-primary-bg);
+    color: var(--km-text-light);
+  }
+
+  &-danger {
+    background-color: var(--km-btn-danger-bg);
+    color: var(--km-text-light);
+  }
+
+  &-outline {
+    background-color: var(--km-text-light);
+    border-color: var(--km-btn-outline-border);
+    color: var(--km-text-dark);
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+      filter: none;
+    }
+  }
+
+  &-wide {
+    width: 100%;
+  }
 }

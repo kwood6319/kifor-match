@@ -106,11 +106,71 @@
 // -----------Post-migration values------------
 
 :root {
-  --km-card-bg: #E7E2D8;
+  --km-card-bg: #{$tm--tan};
   --km-divider-color: #D8D2C4;
   --km-radius: 8px;
-  --km-gap: 16px;
+  --km-gap: 1rem;
+  --km-card-padding: 1rem;
 }
+
+.km--card-grid {
+  display: grid;
+  gap: var(--km-gap);
+  // Responsive by default: 1 column on mobile, 3 on desktop
+  grid-template-columns: 1fr;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.km--card {
+  background-color: var(--km-card-bg);
+  border-radius: var(--km-radius);
+  padding: var(--km-card-padding);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  // Modern SCSS syntax for sub-elements
+  &-list {
+    height: 100%;
+
+    &-item {
+      padding-block: 0.75rem;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+
+      // Simplified border divider replacing pseudo-elements
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--km-divider-color);
+      }
+    }
+  }
+  &-horizontal {
+    flex-direction: row;
+    padding: 0; // Padding handled by internal body element
+
+    &__media {
+      width: 40%;
+      flex-shrink: 0;
+      object-fit: cover; // Ensures images scale without distorting
+    }
+
+    &__body {
+      flex: 1;
+      padding: var(--km-card-padding);
+    }
+  }
+}
+
+
 
 // Generic card and grids (3x3)
 
