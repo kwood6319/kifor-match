@@ -113,3 +113,47 @@
     font-size: 24px;
   }
 }
+
+
+// -----------Post-migration values------------
+
+:root {
+  --km-radius: 8px;
+  --km-btn-primary-bg: #EC5F97;
+  --km-btn-danger-bg: #B81466;
+  --km-btn-outline-border: #A4A4A4;
+  --km-text-dark: #2C2925;
+}
+
+.km--btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--km-radius);
+  cursor: pointer;
+}
+
+.km--btn-primary {
+  background-color: var(--km-btn-primary-bg);
+  color: #FFFFFF;
+}
+
+.km--btn-danger {
+  background-color: var(--km-btn-danger-bg);
+  color: #FFFFFF;
+}
+
+.km--btn-outline {
+  background-color: #FFFFFF;
+  border: 1px solid var(--km-btn-outline-border);
+  color: var(--km-text-dark);
+}
+
+.km--btn-wide {
+  display: flex;
+  width: 100%;
+}
