@@ -1,0 +1,38 @@
+<%# app/views/charities/dashboards/_request_card.html.erb %>
+<div class="request-card card h-100">
+  <div class="request-card-infos">
+    <div class="row mb-2">
+      <div class="col-8">
+        <h4><strong><%= request.title %></strong></h4>
+      </div>
+      <div class="col-4 text-center">
+        <% fulfilled = request.quantity_needed - request.quantity_remaining %>
+        <h4 class="mb-0"><%= fulfilled %> / <%= request.quantity_needed %></h4>
+        <% if local_assigns[:archived] %>
+          <div class="badge rounded-pill text-bg-secondary"><%= t("statuses.requests.archived") %></div>
+        <% else %>
+          <div class="badge rounded-pill pill-<%= request.urgency %>"><%= t("urgencies.#{request.urgency}") %></div>
+        <% end %>
+      </div>
+    </div>
+    <% request.category.each do |cat| %>
+      <span class="badge text-bg-secondary mb-2"><%= t("categories.#{cat}") %></span>
+    <% end %>
+    <br>
+    <i class="fa-solid fa-box-open"></i>
+    <% request.acceptable_conditions.each do |condition| %>
+      <span class="badge text-bg-info mb-2"><%= t("conditions.#{condition}") %></span>
+    <% end %>
+    <br>
+  </div>
+  <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
+  <% unless local_assigns[:archived] %>
+    <% pending_actions = request.offers.where(status: %w[submitted shipped]).count %>
+    <% if pending_actions.positive? %>
+      <div class="request-card-notification">
+        <i class="fa-solid fa-bell"></i>
+        <span><%= pending_actions %></span>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,12 @@
+en:
+  dashboard:
+    my_requests: "My Requests"
+    incoming_offers: "Incoming Offers"
+    needs_your_attention: "Needs your attention"
+    no_incoming_offers: "No incoming offers yet."
+    status: "Status"
+    sort_by: "Sort by"
+    sort_urgency: "Urgency"
+    sort_newest: "Newest"
+    sort_oldest: "Oldest"
+    sort_title: "Title (A–Z)"
