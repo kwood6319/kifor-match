@@ -60,7 +60,8 @@
               data-bs-target="#deleteModal"
               data-action-url="<%= request_path(@request) %>"
               data-action-method="patch"
-              data-action-title="<%= t("modals.archive_request.title") %>" >
+              data-action-title="<%= t("modals.archive_request.title") %>"
+              data-action-label="<%= t("buttons.archive") %>" >
               <%= t("buttons.archive_request") %>
             </button>
           <% end %>
@@ -128,7 +129,7 @@
         <input type="hidden" name="_method" value="delete" data-action-modal-target="method">
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
-          <%= submit_tag t("buttons.delete"), class: "btn btn-danger", data: { action_modal_target: "submit"} %>
+          <%= submit_tag t("buttons.delete"), class: "btn btn-danger", data: { action_modal_target: "submit", default_label: t("buttons.delete")} %>
         </div>
       <% end %>
     </div>

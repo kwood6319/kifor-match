@@ -129,6 +129,7 @@ en:
     close: "Close"
     cancel: "Cancel"
     delete: "Delete"
+    archive: "Archive"
     archive_request: "Archive Request"
     give_feedback: "Give Feedback"
     reset_categories: "Reset categories"
