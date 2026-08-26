@@ -29,3 +29,56 @@ footer a.footer-link:focus {
     font-size: 0.875rem;
   }
 }
+
+// -----------Post-migration values------------
+
+// Note to self for implementation:
+
+// .km--footer-thin must be sticky WITHIN the scrollable content
+// wrapper, positioned immediately before .km--footer:
+//
+//   <div class="content-wrapper">   <-- scroll container
+//     ...page content...
+//     <div class="km--footer-thin"></div>
+//   </div>
+//   <footer class="km--footer">...</footer>
+
+:root {
+  --km-footer-bg: #{$km--primary-pink}; // see note: source hex was #E84393, not an exact match
+}
+
+.km--footer-thin {
+  position: sticky;
+  bottom: 0;
+  z-index: 900; // below navbar's 1000, above page content
+  height: 3rem;
+  width: 100%;
+  background-color: var(--km-footer-bg);
+}
+
+.km--footer {
+  background-color: var(--km-footer-bg);
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  font-size: 1rem; // not yet mapped to a typography role — see note
+}
+
+.km--footer-link {
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 575px) {
+  .km--footer {
+    padding: 0 1rem;
+    font-size: 0.875rem;
+  }
+}
