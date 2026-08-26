@@ -163,6 +163,8 @@ en:
       title: "Delete Offer"
     delete_request:
       title: "Delete Request"
+    archive_request:
+      title: "Archive Request"
   activerecord:
     attributes:
       offer:
