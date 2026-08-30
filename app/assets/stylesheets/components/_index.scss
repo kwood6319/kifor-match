@@ -1,8 +1,15 @@
 // Import your components CSS files here.
 @import "alert";
 @import "avatar";
-@import "form";
-@import "form_legend_clear";
-@import "navbar";
-@import "status_badge";
+@import "buttons";
+@import "cards";
 @import "footer";
+@import "form_legend_clear";
+@import "form";
+@import "images";
+@import "navbar";
+@import "pills";
+// KT To do: remove ↓
+@import "status_badge";
+@import "tabs";
+@import "typography";
