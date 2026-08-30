@@ -6,20 +6,8 @@
   </div>
   <ul class="nav-menu">
     <% if user_signed_in? %>
-      <li class="nav-item active">
-        <%= link_to t("navigation.dashboard"), dynamic_dashboard_path(current_user), class: "nav-link" %>
-      </li>
-      <% if current_user.admin? %>
-        <li>
-          <%= link_to t("navigation.charities"), charities_path, class: "nav-link" %>
-        </li>
-        <li>
-          <%= link_to t("navigation.donors"), donors_path, class: "nav-link" %>
-        </li>
-      <% elsif current_user.donor? %>
-        <li>
-          <%= link_to t("navigation.requests"), requests_path, class: "nav-link" %>
-        </li>
+      <% primary_nav_items(current_user).each do |item| %>
+        <li><%= link_to item[:label], item[:path], class: "nav-link km--text-nav km--text-light" %></li>
       <% end %>
       <%# Settings hamburger dropdown %>
       <li class="nav-item dropdown">

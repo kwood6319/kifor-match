@@ -22,7 +22,7 @@ USERS = [
   { key: :user4, role: 0, email: "sam@donor.com" },
   { key: :user5, role: 0, email: "hana@donor.com" },
   { key: :user6, role: 0, email: "alice@abccorp.com" },
-  { key: :user7, role: 2, email: "francis@admin" },
+  { key: :user7, role: 2, email: "francis@admin.com" },
   { key: :user8, role: 0, email: "lewagon@donor.com" },
   { key: :user9, role: 1, email: "youmewe@charity.com" },
   { key: :user10, role: 1, email: "refugeechildren@charity.com" },
