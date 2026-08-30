@@ -16,3 +16,4 @@ module NavigationHelper
     items.flatten
   end
 end
+# KT To do: add unit tests for helper methods
