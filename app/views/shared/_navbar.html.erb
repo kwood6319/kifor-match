@@ -1,29 +1,29 @@
-<nav class="navbar">
-  <div class="logo">
+<nav class="km--navbar">
+  <div class="navbar-brand-wrap">
     <%= link_to "https://www.kifor.jp/", class: "navbar-brand" do %>
-      <%= image_tag "kifor logo.png", class: "logo" %>
+      <%= image_tag "kifor logo.png", class: "km--logo" %>
     <% end %>
   </div>
-  <ul class="nav-menu">
+  <ul class="km--nav-menu">
     <% if user_signed_in? %>
       <li class="nav-item active">
-        <%= link_to t("navigation.dashboard"), dynamic_dashboard_path(current_user), class: "nav-link" %>
+        <%= link_to t("navigation.dashboard"), dynamic_dashboard_path(current_user), class: "nav-link km--text-nav km--text-light" %>
       </li>
       <% if current_user.admin? %>
         <li>
-          <%= link_to t("navigation.charities"), charities_path, class: "nav-link" %>
+          <%= link_to t("navigation.charities"), charities_path, class: "nav-link km--text-nav km--text-light" %>
         </li>
         <li>
-          <%= link_to t("navigation.donors"), donors_path, class: "nav-link" %>
+          <%= link_to t("navigation.donors"), donors_path, class: "nav-link km--text-nav km--text-light" %>
         </li>
       <% elsif current_user.donor? %>
         <li>
-          <%= link_to t("navigation.requests"), requests_path, class: "nav-link" %>
+          <%= link_to t("navigation.requests"), requests_path, class: "nav-link km--text-nav km--text-light" %>
         </li>
       <% end %>
       <%# Settings hamburger dropdown %>
       <li class="nav-item dropdown">
-        <button class="nav-link btn btn-link p-0 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="<%= t("navigation.settings") %>">
+        <button class="nav-link btn btn-link p-0 border-0 km--text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="<%= t("navigation.settings") %>">
           <i class="fa-solid fa-bars"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
@@ -38,14 +38,14 @@
       </li>
     <% else %>
       <li class="nav-item">
-        <%= link_to t("navigation.log_in"), new_user_session_path, class: "nav-link" %>
+        <%= link_to t("navigation.log_in"), new_user_session_path, class: "nav-link km--text-nav km--text-light" %>
       </li>
     <% end %>
     <li>
       <% if I18n.locale == :ja %>
-        <%= link_to "English", url_for(switch_locale: :en), data: { turbo_action: "replace"} %>
+        <%= link_to "English", url_for(switch_locale: :en), class: "nav-link km--text-nav km--text-light", data: { turbo_action: "replace"} %>
       <% else %>
-        <%= link_to "日本語", url_for(switch_locale: :ja), data: {turbo_action: "replace"} %>
+        <%= link_to "日本語", url_for(switch_locale: :ja), class: "nav-link km--text-nav km--text-light", data: {turbo_action: "replace"} %>
       <% end %>
     </li>
   </ul>
