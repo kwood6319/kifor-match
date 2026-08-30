@@ -44,7 +44,7 @@ footer a.footer-link:focus {
 //   <footer class="km--footer">...</footer>
 
 :root {
-  --km-footer-bg: #{$km--primary-pink}; // see note: source hex was #E84393, not an exact match
+  --km-footer-bg: #{$km--primary-pink};
 }
 
 .km--footer-thin {
@@ -64,7 +64,7 @@ footer a.footer-link:focus {
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  font-size: 1rem; // not yet mapped to a typography role — see note
+  font-size: 1rem;
 }
 
 .km--footer-link {
