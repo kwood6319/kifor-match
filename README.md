@@ -26,13 +26,13 @@ Currently at the MVP stage.
 
 ## Features
 
-Charities can post their needs online, specifying the amount, location, and deadlines. Donors can freely browse and either buy what is needed, or ship goods that they do not need.
+Charities can post their needs online, specifying the amount, and location. Donors can freely browse and either buy what is needed, or ship goods that they do not need.
 
 Shipping works through anonymous labels.
 
 Charities can see which donors have made offers, and then choose the best option matching their needs.
 
-Through checklists and images, KiFor aims to minimize the sending of broken or dirty goods, ensuring that those in need are treated humanely.
+Through checklists and images, KiFor Match aims to minimize the sending of broken or dirty goods, ensuring that those in need are treated humanely.
 
 ## Screenshots
 
@@ -40,9 +40,9 @@ Through checklists and images, KiFor aims to minimize the sending of broken or d
 
 *The donor dashboard, showing open requests sorted by category.*
 
-![Stationary dashboard](images/KiFor_stationary.png)
+![Stationery dashboard](images/KiFor_stationary.png)
 
-*Stationary dashboard, showing filtered results.*
+*Stationery dashboard, showing filtered results.*
 
 ![Request match](images/KiFor_request.png)
 
@@ -56,12 +56,6 @@ Through checklists and images, KiFor aims to minimize the sending of broken or d
 ![Sass](https://img.shields.io/badge/SCSS-CC6699?logo=sass&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
-
-## Roadmap
-
-- Next 3–5 things you plan to build, roughly in order
-- Known limitations or things deliberately out of scope for now
 
 ## Contributors
 
