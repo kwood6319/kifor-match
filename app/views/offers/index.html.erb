@@ -50,9 +50,6 @@
                 <td><%= offer.can_ship_by %></td>
                 <td>
                   <%= link_to t("navigation.view"), offer_path(offer)%>
-                  <% if offer.status.to_s == "approved" && request.donor_id == @donor.id %>
-                    <%= button_to "Mark as Shipped", mark_as_shipped_offer_path(offer), method: :patch %>
-                  <% end %>
                 </td>
               </tr>
             <% end %>

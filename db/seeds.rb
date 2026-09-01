@@ -2,6 +2,7 @@ require "open-uri"
 
 puts "Cleaning database..."
 
+Notification.destroy_all
 Offer.destroy_all
 Request.destroy_all
 Donor.destroy_all
