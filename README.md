@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/Kifor-Match-logo.png" alt="KiFor Match" width="420">
+  <img src="images/KiFor-Match-logo.png" alt="KiFor Match" width="420">
 
   <h3>TECH FOR GOOD</h3>
 
