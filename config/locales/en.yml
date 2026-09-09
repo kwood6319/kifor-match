@@ -52,6 +52,7 @@ en:
     filter_requests: "Filter Requests"
     reset: "Reset"
     settings: "Settings"
+    view: "View"
   messages:
     welcome_back: "Welcome back"
     your_requests: "Your active requests"
@@ -93,6 +94,7 @@ en:
     postage_modal_title: "Postage Costs"
     postage_modal_body: "As the donor, you are responsible for covering the cost of shipping this item to the charity. Please factor this into your decision before submitting your offer."
     postage_modal_confirm: "I understand"
+    details: "Details"
   statuses:
     requests:
       active: "Active"
@@ -127,10 +129,12 @@ en:
     close: "Close"
     cancel: "Cancel"
     delete: "Delete"
+    archive: "Archive"
     archive_request: "Archive Request"
     give_feedback: "Give Feedback"
     reset_categories: "Reset categories"
   requests:
+    request: "Requests"
     tell_us: "Tell us a little more about your request"
     edit_request: "Edit Request"
     title: "Title"
@@ -160,6 +164,8 @@ en:
       title: "Delete Offer"
     delete_request:
       title: "Delete Request"
+    archive_request:
+      title: "Archive Request"
   activerecord:
     attributes:
       offer:

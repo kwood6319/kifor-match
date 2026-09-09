@@ -6,20 +6,8 @@
   </div>
   <ul class="km--nav-menu">
     <% if user_signed_in? %>
-      <li class="nav-item active">
-        <%= link_to t("navigation.dashboard"), dynamic_dashboard_path(current_user), class: "nav-link km--text-nav km--text-light" %>
-      </li>
-      <% if current_user.admin? %>
-        <li>
-          <%= link_to t("navigation.charities"), charities_path, class: "nav-link km--text-nav km--text-light" %>
-        </li>
-        <li>
-          <%= link_to t("navigation.donors"), donors_path, class: "nav-link km--text-nav km--text-light" %>
-        </li>
-      <% elsif current_user.donor? %>
-        <li>
-          <%= link_to t("navigation.requests"), requests_path, class: "nav-link km--text-nav km--text-light" %>
-        </li>
+      <% primary_nav_items(current_user).each do |item| %>
+        <li><%= link_to item[:label], item[:path], class: "nav-link km--text-nav km--text-light" %></li>
       <% end %>
       <%# Settings hamburger dropdown %>
       <li class="nav-item dropdown">
@@ -27,6 +15,12 @@
           <i class="fa-solid fa-bars"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
+          <% if current_user&.donor? %>
+            <li>
+              <%= link_to t("offers.offers"), offers_path, class: "dropdown-item" %>
+            </li>
+          <% end %>
+          <li><hr class="dropdown-divider"></li>
           <li>
             <%= link_to t("navigation.settings"), settings_path, class: "dropdown-item" %>
           </li>

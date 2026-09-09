@@ -36,30 +36,42 @@
           <h5> <%= t("navigation.description") %>: </h4>
           <p> <%= @request.description %> </p>
         </div>
-        <% if policy(@request).edit? %>
-          <%= link_to t("buttons.edit_request"), edit_request_path(@request), class: "btn btn-outline-secondary" %>
-        <% end %>
-        <% if policy(@request).destroy? %>
-          <button type="button"
+        <div class="d-flex gap-3">
+          <% if policy(@request).edit? %>
+            <%= link_to t("buttons.edit_request"), edit_request_path(@request), class: "btn btn-outline-secondary" %>
+          <% end %>
+          <% if policy(@request).destroy? %>
+            <button type="button"
               class="btn btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#deleteModal"
-              data-delete-url="<%= request_path(@request) %>"
-              data-delete-title="<%= t("modals.delete_request.title") %>" >
-            <%= t("buttons.delete") %>
-          </button>
-        <% end %>
-        <% if policy(@request).archive? %>
-          <%= button_to t("buttons.archive_request"), archive_request_path(@request), method: :patch,
-              class: "btn btn-outline-secondary",
-              form: { data: { turbo_confirm: t("messages.request_archived_confirm") } } %>
-        <% end %>
+              data-action-url="<%= request_path(@request) %>"
+              data-action-method="delete"
+              data-action-title="<%= t("modals.delete_request.title") %>" >
+              <%= t("buttons.delete") %>
+            </button>
+          <% end %>
+        </div>
+        <div class="mt-3">
+          <% if policy(@request).archive? %>
+            <button type="button"
+              class="btn btn-outline-secondary"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-action-url="<%= archive_request_path(@request) %>"
+              data-action-method="patch"
+              data-action-title="<%= t("modals.archive_request.title") %>"
+              data-action-label="<%= t("buttons.archive") %>" >
+              <%= t("buttons.archive_request") %>
+            </button>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class="col-lg-6 mx-3">
       <% if current_user.charity? && current_user.charity == @request.charity %>
         <%= render "currentcharityrequest", request: @request %>
-      <% elsif @editing_offer == @my_offer %>
+      <% elsif @editing_offer.present? && @editing_offer == @my_offer %>
         <%= render "offers/form", request: @request, offer: @my_offer %>
       <% elsif @my_offer.present? %>
         <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
@@ -75,35 +87,49 @@
               class="btn btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#deleteModal"
-              data-delete-url="<%= offer_path(@my_offer) %>"
-              data-delete-title="<%= t("modals.delete_offer.title") %>" >
+              data-action-url="<%= offer_path(@my_offer) %>"
+              data-action-title="<%= t("modals.delete_offer.title") %>" >
               <%= t("buttons.delete") %>
             </button>
           <% end %>
         </div>
       <% elsif policy(Offer.new(request: @request)).new?%>
+        <% if @offer.errors.any? %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>There were problems creating the offer:</strong>
+            <ul class="mb-0">
+              <% @offer.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
         <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
       <% end %>
     </div>
   </div>
 </div>
 <%= render "shared/reject_offer_modal" %>
+
+
 <%# Delete modal %>
 <div class="modal fade"
       id="deleteModal"
       tabindex="-1"
       aria-hidden="true"
-      data-controller="delete">
+      data-controller="action-modal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" data-delete-target="title"></h5>
+        <h5 class="modal-title" data-action-modal-target="title"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <%= form_tag "#", method: :delete, data: { delete_target: "form" } do %>
+      <%= form_tag "#", method: :post, data: { action_modal_target: "form" } do %>
+        <input type="hidden" name="_method" value="delete" data-action-modal-target="method">
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
-          <%= submit_tag t("buttons.delete"), class: "btn btn-danger" %>
+          <%= submit_tag t("buttons.delete"), class: "btn btn-danger", data: { action_modal_target: "submit", default_label: t("buttons.delete")} %>
         </div>
       <% end %>
     </div>
