@@ -122,10 +122,14 @@
         <% elsif @offer.status == "rejected" %>
           <p class="mb-0"> <%= t("statuses.charity.rejected_message") %> </p>
         <% elsif @offer.status == "received" %>
-          <p class="mb-0"> <%= t("statuses.charity.received_message") %> </p>
-          <%= link_to t("buttons.give_feedback", default: "Give Feedback"),
+          <% if current_user.charity? %>
+            <p class="mb-0"> <%= t("statuses.charity.received_message") %> </p>
+            <%= link_to t("buttons.give_feedback", default: "Give Feedback"),
                   new_request_feedback_path(@request, offer_id: @offer.id),
                   class: "btn btn-primary mt-2" %>
+            <% else %>
+              <p class="mb-0"> <%= t("statuses.donor.received_message") %> </p>
+          <% end %>
         <% end %>
       </div>
     </div>

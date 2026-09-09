@@ -23,6 +23,7 @@ ja:
     filter: "フィルター"
     reset: "リセット"
     settings: "設定"
+    view: "表示"
   messages:
     welcome_back: "おかえりなさい"
     your_requests: "現在進行中のリクエスト"
@@ -64,6 +65,7 @@ ja:
     postage_modal_title: "送料について"
     postage_modal_body: "寄付者として、この商品を団体へ発送する送料をご負担いただく必要があります。オファーを送信する前にご確認ください。"
     postage_modal_confirm: "理解しました"
+    details: "詳細"
   statuses:
     requests:
       active: "アクティブ"
@@ -102,6 +104,7 @@ ja:
     give_feedback: "フィードバックを送る"
     reset_categories: "カテゴリーをリセット"
   requests:
+    request: "リクエスト"
     tell_us: "ご要望について、もう少し詳しく教えてください"
     edit_request: "リクエストを編集"
     title: "タイトル"

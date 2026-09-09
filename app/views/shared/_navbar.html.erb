@@ -27,6 +27,12 @@
           <i class="fa-solid fa-bars"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
+          <% if current_user&.donor? %>
+            <li>
+              <%= link_to t("offers.offers"), offers_path, class: "dropdown-item" %>
+            </li>
+          <% end %>
+          <li><hr class="dropdown-divider"></li>
           <li>
             <%= link_to t("navigation.settings"), settings_path, class: "dropdown-item" %>
           </li>
