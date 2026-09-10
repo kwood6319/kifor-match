@@ -1,44 +1,43 @@
 <div class="container mt-5 mb-1 py-1 sticky-back">
   <div class="mb-3">
-    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary mt-3" %>
+    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "km--btn km--btn-outline mt-3" %>
   </div>
 </div>
 <div class="container mt-1 mb-4">
-  <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%="様" if I18n.locale == :ja %>!</h3>
+  <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%= "様" if I18n.locale == :ja %>!</h3>
 </div>
-
 <div class="container mb-4">
-  <div class="card shadow-sm p-2">
-    <h5 class="mb-3"><i class="fa-solid fa-filter me-2"></i><%= t("navigation.filter_requests") %></h5>
+  <div class="km--form-card">
+    <h5 class="km--form-card-title"><i class="fa-solid fa-filter me-2"></i><%= t("navigation.filter_requests") %></h5>
     <%= form_with url: requests_path, method: :get, data: { controller: "form-submission", turbo_frame: "requests_list" }, class: "row g-3" do |f| %>
       <%# Top row: Search, Prefecture, No Offers %>
       <div class="row g-3 mt-0">
         <%# Search Bar %>
         <div class="col-md-6 col-lg-5">
-          <%= f.label :query, t("navigation.search"), class: "form-label fw-bold" %>
-          <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_items"), class: "form-control" %>
+          <%= f.label :query, t("navigation.search"), class: "km--text-label" %>
+          <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_items"), class: "km--form-control form-control" %>
         </div>
         <%# Prefecture Dropdown %>
         <div class="col-md-6 col-lg-4">
-          <%= f.label :prefecture, t("navigation.location"), class: "form-label fw-bold" %>
+          <%= f.label :prefecture, t("navigation.location"), class: "km--text-label" %>
           <%= f.select :prefecture,
             Request::REGIONS_AND_PREFECTURES.transform_keys { |region| t("regions.#{region}") }
             .transform_values { |prefectures| prefectures.map { |p| [t("prefectures.#{p}"), p] } },
             { include_blank: t("prefectures.all"), selected: params[:prefecture] },
-            class: "form-select" %>
+            class: "km--form-control form-select" %>
         </div>
         <%# No Offers Checkbox %>
         <div class="col-md-12 col-lg-3 d-flex align-items-end mb-2">
           <div class="form-check">
             <%= f.check_box :no_offers, { checked: params[:no_offers] == "1", class: "form-check-input", data: { action: "change->form-submission#search" } }, "1", "0" %>
-            <%= f.label :no_offers, t("navigation.no_offers_yet"), class: "form-check-label fw-bold text-nowrap" %>
+            <%= f.label :no_offers, t("navigation.no_offers_yet"), class: "form-check-label km--text-label text-nowrap" %>
           </div>
         </div>
       </div>
-      <%# Row 2: Categories%>
+      <%# Row 2: Categories %>
       <div class="row g-3 mt-0">
         <div class="col-12 mt-0">
-          <label class="form-label fw-bold"><%= t("navigation.category") %></label>
+          <label class="km--text-label"><%= t("navigation.category") %></label>
           <div class="border rounded p-3" data-form-submission-target="categoryGroup">
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
               <div class="col">
@@ -61,58 +60,54 @@
       </div>
       <%# Row 3: Submit & Reset %>
       <div class="col-md-12 d-flex justify-content-end mt-2">
-        <%= link_to t("navigation.reset"), requests_path, class: "btn btn-outline-secondary me-3", data: { turbo_frame: "requests_list" } %>
-        <%= f.submit t("navigation.filter"), class: "btn btn-primary" %>
+        <%= link_to t("navigation.reset"), requests_path, class: "km--btn km--btn-outline me-3", data: { turbo_frame: "requests_list" } %>
+        <%= f.submit t("navigation.filter"), class: "km--btn km--btn-primary" %>
       </div>
     <% end %>
   </div>
 </div>
 <div class="container mb-5">
-  <div class="row g-4">
-    <% if @requests.empty? %>
-      <div class="col-12 text-center mt-5">
-        <h4 class="text-muted"><%= t("navigation.no_requests") %></h4>
-      </div>
-    <% else %>
+  <% if @requests.empty? %>
+    <div class="text-center mt-5">
+      <h4 class="km--text-soft"><%= t("navigation.no_requests") %></h4>
+    </div>
+  <% else %>
+    <div class="km--card-grid">
       <% @requests.each do |request| %>
-        <div class="col-sm-12 col-md-6 col-lg-4">
-          <div class="request-card card h-100">
-            <div class="request-card-infos">
-              <div class="row mb-2">
-                <div class="col-8">
-                  <h4><strong><%= request.title %></strong></h4>
-                </div>
-                <div class="col-4 text-center">
-                  <h4 class="mb-0"> x<%= request.quantity_remaining %> </h4>
-                  <div class="badge rounded-pill pill-<%= request.urgency %>"> <%= t("urgencies.#{request.urgency}") %> </div>
-                </div>
-              </div>
-              <% request.category.each do |cat| %>
-                <span class="badge text-bg-secondary mb-2"><%= t("categories.#{cat}") %></span>
-              <% end %>
-              <br>
-              <i class="fa-solid fa-box-open"></i>
-              <% request.acceptable_conditions.each do |condition| %>
-                <span class="badge text-bg-info mb-2">
-                  <%= t("conditions.#{condition}") %>
+        <%= link_to request_path(request), class: "text-decoration-none km--text-dark", data: { turbo_frame: "_top" } do %>
+          <div class="km--card h-100">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="km--text-card-title"><%= request.title %></span>
+              <div class="text-center flex-shrink-0 ms-2">
+                <div class="km--text-card-title mb-0">x<%= request.quantity_remaining %></div>
+                <span class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light">
+                  <%= t("urgencies.#{request.urgency}") %>
                 </span>
-              <% end %>
-              <br>
-              <span>
-                <i class="fa-solid fa-location-dot mb-2"></i>
-                <strong> <%= t("navigation.prefecture")%>: </strong>
-                <%= t("prefectures.#{request.charity.prefecture}") %>
-              </span>
-              <br>
+              </div>
             </div>
-            <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
+            <div class="mb-2">
+              <% request.category.each do |cat| %>
+                <span class="km--text-card-category km--text-soft me-2"><%= t("categories.#{cat}") %></span>
+              <% end %>
+            </div>
+            <div class="km--text-card-content mb-1">
+              <i class="fa-solid fa-box-open me-1"></i>
+              <% request.acceptable_conditions.each do |condition| %>
+                <span class="badge text-bg-info me-1"><%= t("conditions.#{condition}") %></span>
+              <% end %>
+            </div>
+            <div class="km--text-card-content">
+              <i class="fa-solid fa-location-dot me-1"></i>
+              <strong><%= t("navigation.prefecture") %>:</strong>
+              <%= t("prefectures.#{request.charity.prefecture}") %>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
-  <div class="mb-3">
-    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary mt-3" %>
+    </div>
+  <% end %>
+  <div class="mb-3 mt-4">
+    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "km--btn km--btn-outline mt-3" %>
   </div>
 </div>
 <% if policy(Request).new? %>
