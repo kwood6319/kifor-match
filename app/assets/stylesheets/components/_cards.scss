@@ -132,7 +132,6 @@
   flex-direction: column;
   overflow: hidden;
 
-  // Modern SCSS syntax for sub-elements
   &-list {
     height: 100%;
 
@@ -147,7 +146,6 @@
         padding-bottom: 0;
       }
 
-      // Simplified border divider replacing pseudo-elements
       &:not(:last-child) {
         border-bottom: 1px solid var(--km-divider-color);
       }
@@ -155,12 +153,12 @@
   }
   &-horizontal {
     flex-direction: row;
-    padding: 0; // Padding handled by internal body element
+    padding: 0;
 
     &__media {
       width: 40%;
       flex-shrink: 0;
-      object-fit: cover; // Ensures images scale without distorting
+      object-fit: cover;
     }
 
     &__body {

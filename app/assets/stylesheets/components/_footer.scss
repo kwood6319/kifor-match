@@ -1,26 +1,6 @@
 
 // -----------Post-migration values------------
 
-// Note to self for implementation:
-
-// .km--footer-thin must be sticky WITHIN the scrollable content
-// wrapper, positioned immediately before .km--footer:
-//
-//   <div class="content-wrapper">   <-- scroll container
-//     ...page content...
-//     <div class="km--footer-thin"></div>
-//   </div>
-//   <footer class="km--footer">...</footer>
-
-// ============================================================
-// Footer — single combined bar (logo, copyright, links, social,
-// tagline, contact icon all in one row for now).
-// ============================================================
-// ============================================================
-// Footer — logo/copyright/tagline block + link grid on top row,
-// full-width divider, social icons on bottom row.
-// ============================================================
-
 .km--footer {
   display: flex;
   flex-direction: column;
@@ -51,8 +31,6 @@
     margin-bottom: 6px;
   }
 
-  // Link grid: two rows of three columns, each row item separated
-  // by a vertical divider (border-left).
   &-links {
     display: grid;
     grid-template-columns: repeat(3, auto);
@@ -94,12 +72,8 @@
   &-social-icon {
     font-size: 18px;
     line-height: 1;
-    // text-decoration: none;
   }
 
-  // -----------------------------------------------------------
-  // Mobile: stack brand and links, single-column link list
-  // -----------------------------------------------------------
   @media (max-width: 768px) {
     &-top {
       flex-direction: column;

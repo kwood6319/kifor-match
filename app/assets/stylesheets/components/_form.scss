@@ -59,7 +59,7 @@
 // -----------Post-migration values------------
 
 :root {
-  --km-form-focus-color: #{$km--primary-pink}; // was $dark-pink — undefined, see note below
+  --km-form-focus-color: #{$km--primary-pink};
 }
 
 .km--form-card {
@@ -72,7 +72,6 @@
 
   .km--form-card-title {
     margin-bottom: 0.5rem;
-    // Should be used with km--text-card-title
   }
 
   .km--form-card-intro {
