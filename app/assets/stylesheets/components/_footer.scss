@@ -1,34 +1,3 @@
-footer {
-  background-color: #E84393;
-  color: white;
-  font-size: 1rem;
-  height: 10vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-}
-
-footer a.footer-link,
-footer a.footer-link:link,
-footer a.footer-link:visited {
-  color: white;
-  text-decoration: none;
-}
-
-footer a.footer-link:hover,
-footer a.footer-link:focus {
-  color: white;
-  text-decoration: underline;
-}
-
-@media (max-width: 575px) {
-  footer {
-    padding: 0 1rem;
-    font-size: 0.875rem;
-  }
-}
 
 // -----------Post-migration values------------
 
@@ -43,42 +12,112 @@ footer a.footer-link:focus {
 //   </div>
 //   <footer class="km--footer">...</footer>
 
-:root {
-  --km-footer-bg: #{$km--primary-pink};
-}
-
-.km--footer-thin {
-  position: sticky;
-  bottom: 0;
-  z-index: 900; // below navbar's 1000, above page content
-  height: 3rem;
-  width: 100%;
-  background-color: var(--km-footer-bg);
-}
+// ============================================================
+// Footer — single combined bar (logo, copyright, links, social,
+// tagline, contact icon all in one row for now).
+// ============================================================
+// ============================================================
+// Footer — logo/copyright/tagline block + link grid on top row,
+// full-width divider, social icons on bottom row.
+// ============================================================
 
 .km--footer {
-  background-color: var(--km-footer-bg);
-  height: 10vh;
-  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-  font-size: 1rem;
-}
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background-color: $km--primary-pink;
+  padding: 20px 32px;
+  gap: 16px;
 
-.km--footer-link {
-  text-decoration: none;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
+  &-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
   }
-}
 
-@media (max-width: 575px) {
-  .km--footer {
-    padding: 0 1rem;
-    font-size: 0.875rem;
+  &-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &-logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 6px;
+  }
+
+  // Link grid: two rows of three columns, each row item separated
+  // by a vertical divider (border-left).
+  &-links {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-auto-flow: row;
+    column-gap: 48px;
+    row-gap: 8px;
+    flex: 1;
+    justify-content: flex-end;
+    text-decoration: none;
+      &:hover{
+      color: $km--dark;
+    }
+  }
+
+  &-link-item {
+    padding-left: 16px;
+    border-left: 1px solid $km--dark;
+  }
+
+  &-divider {
+    width: 100%;
+    border: none;
+    border-top: 1px solid $km--dark;
+    margin: 0;
+  }
+
+  &-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  &-social {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &-social-icon {
+    font-size: 18px;
+    line-height: 1;
+    // text-decoration: none;
+  }
+
+  // -----------------------------------------------------------
+  // Mobile: stack brand and links, single-column link list
+  // -----------------------------------------------------------
+  @media (max-width: 768px) {
+    &-top {
+      flex-direction: column;
+    }
+
+    &-links {
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    &-link-item {
+      border-left: none;
+      border-top: 1px solid $km--dark;
+      padding: 8px 0 0;
+    }
+
+    &-bottom {
+      justify-content: flex-start;
+    }
   }
 }

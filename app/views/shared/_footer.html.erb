@@ -1,4 +1,42 @@
-<footer>
-  <span>Copyright © <%= Date.today.year %>, KiFor</span>
-  <span class="contact_form_link"><%= link_to t("contact.link_text"), contact_path, class: "footer-link" %></span>
+<footer class="km--footer">
+  <div class="km--footer-top">
+    <div class="km--footer-brand">
+      <%= image_tag "kifor logo.png", class: "km--footer-logo", alt: "KiFor" %>
+      <span class="km--text-light km--text-footer"> <%= t("footer.copyright") %> <%= Date.current.year %> </span>
+    </div>
+    <div class="km--footer-links">
+      <div class="km--footer-link-item">
+        <%= link_to t("footer.faqs"), "", class: "km--footer-link km--text-light km--text-footer" %>
+      </div>
+      <div class="km--footer-link-item">
+        <%= link_to t("footer.our_mission"), "", class: "km--footer-link km--text-light km--text-footer" %>
+      </div>
+      <div class="km--footer-link-item">
+        <%= link_to t("footer.contact_us"), "", class: "km--footer-link km--text-light km--text-footer" %>
+      </div>
+      <div class="km--footer-link-item">
+        <%= link_to t("footer.privacy_policy"), "", class: "km--footer-link km--text-light km--text-footer" %>
+      </div>
+      <div class="km--footer-link-item">
+        <%= link_to t("footer.about_kifor"), "", class: "km--footer-link km--text-light km--text-footer" %>
+      </div>
+    </div>
+  </div>
+  <hr class="km--footer-divider">
+  <div class="km--footer-bottom">
+    <div class="km--footer-social">
+      <a class="km--footer-social-icon" target="_blank" href="#">
+        <i class="fa-brands fa-twitter km--text-light"></i>
+      </a>
+      <a class="km--footer-social-icon" target="_blank" href="#">
+        <i class="fa-brands fa-instagram km--text-light"></i>
+      </a>
+      <a class="km--footer-social-icon" target="_blank" href="#">
+        <i class="fa-brands fa-facebook km--text-light"></i>
+      </a>
+      <a class="km--footer-social-icon" target="_blank" href="#">
+        <i class="fa-brands fa-linkedin km--text-light"></i>
+      </a>
+    </div>
+  </div>
 </footer>

@@ -11,13 +11,18 @@
 @import "components/index";
 @import "pages/index";
 
-@import "components/request_card";
-@import "components/cards";
+@import "components/alert";
 @import "components/buttons";
-@import "components/pills";
+@import "components/cards";
+@import "components/footer";
+@import "components/form";
 @import "components/images";
+@import "components/navbar";
+@import "components/pills";
 @import "components/tabs";
 @import "components/typography";
+// KT To do: Delete ↓
+@import "components/request_card";
 
 body {
   font-size: 1rem;
