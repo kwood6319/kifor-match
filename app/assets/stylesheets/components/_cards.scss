@@ -101,3 +101,69 @@
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
+
+
+// -----------Post-migration values------------
+
+:root {
+  --km-card-bg: #{$km--tan};
+  --km-divider-color: #D8D2C4;
+  --km-radius: 8px;
+  --km-gap: 1rem;
+  --km-card-padding: 1rem;
+}
+
+.km--card-grid {
+  display: grid;
+  gap: var(--km-gap);
+  // Responsive by default: 1 column on mobile, 3 on desktop
+  grid-template-columns: 1fr;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.km--card {
+  background-color: var(--km-card-bg);
+  border-radius: var(--km-radius);
+  padding: var(--km-card-padding);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &-list {
+    height: 100%;
+
+    &-item {
+      padding-block: 0.75rem;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--km-divider-color);
+      }
+    }
+  }
+  &-horizontal {
+    flex-direction: row;
+    padding: 0;
+
+    &__media {
+      width: 40%;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    &__body {
+      flex: 1;
+      padding: var(--km-card-padding);
+    }
+  }
+}

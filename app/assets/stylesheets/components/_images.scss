@@ -38,3 +38,42 @@
   opacity: 1;
   border-color: #E84393
 }
+
+// -----------Post-migration values------------
+
+:root {
+  --km-placeholder-bg: #{rgba($km--gray, 0.15)};
+  --km-placeholder-border: #{$km--gray};
+  --km-placeholder-text: #{$km--gray};
+  --km-thumb-active-border: #{$km--primary-pink};
+}
+
+.km--offer-image {
+  width: 200px;
+  height:  200px;
+  background-color: var(--km-placeholder-bg);
+  border: 2px solid var(--km-placeholder-border);
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--km-placeholder-text);
+  font-size: 0.875rem;
+}
+
+.km--offer-image-placeholder {
+  border-style: dashed;
+}
+
+.km--photo-gallery-thumb {
+  opacity: 0.6;
+  border: 2px solid transparent;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.km--photo-gallery-thumb-active {
+  opacity: 1;
+  border-color: var(--km-thumb-active-border);
+}

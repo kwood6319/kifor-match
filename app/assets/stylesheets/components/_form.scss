@@ -55,3 +55,51 @@
     padding: 1.25rem;
   }
 }
+
+// -----------Post-migration values------------
+
+:root {
+  --km-form-focus-color: #{$km--primary-pink};
+}
+
+.km--form-card {
+  max-width: 32rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: $km--light;
+  // KT To do: Tokenize the shadow colour?
+  box-shadow: 4px 4px 4px #bfbfbf;
+
+  .km--form-card-title {
+    margin-bottom: 0.5rem;
+  }
+
+  .km--form-card-intro {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .km--form-control {
+    margin-bottom: 1.25rem;
+
+    &:focus {
+      border-color: var(--km-form-focus-color);
+      box-shadow: 0 0 0 0.2rem rgba($km--primary-pink, 0.2);
+    }
+  }
+
+  textarea.km--form-control {
+    min-height: 8rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .km--form-card {
+    margin: 1rem;
+    padding: 1.25rem;
+  }
+}
