@@ -48,7 +48,7 @@ en:
     requests: "Requests"
     archived_requests: "Archived Requests"
     no_archived_requests: "No archived requests"
-    back: "← Back"
+    back: "Back"
     filter_requests: "Filter Requests"
     reset: "Reset"
     settings: "Settings"
