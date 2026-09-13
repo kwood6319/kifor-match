@@ -1,0 +1,28 @@
+<div data-controller="photo-gallery">
+  <div class="mb-2">
+    <% if offer.photos.attached? %>
+      <%= image_tag offer.photos.first,
+            class: "img-fluid rounded w-100 photo-gallery-main",
+            style: "max-height: 320px; object-fit: cover;",
+            data: { "photo-gallery-target": "mainImage" } %>
+    <% else %>
+      <div class="km--offer-image km--offer-image-placeholder" data-photo-gallery-target="mainImage">
+        📷 <%= t("offers.no_image") %>
+      </div>
+    <% end %>
+  </div>
+  <% if offer.photos.attached? && offer.photos.count > 1 %>
+    <div class="d-flex gap-2 flex-wrap">
+      <% offer.photos.each_with_index do |photo, index| %>
+        <%= image_tag photo,
+              class: "rounded photo-gallery-thumb #{'photo-gallery-thumb-active' if index.zero?}",
+              style: "width: 70px; height: 70px; object-fit: cover; cursor: pointer;",
+              data: {
+                "photo-gallery-target": "thumb",
+                action: "click->photo-gallery#select",
+                "photo-gallery-full-src-param": url_for(photo)
+              } %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
