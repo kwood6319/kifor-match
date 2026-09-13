@@ -1,7 +1,4 @@
 <div class="container mt-5 mb-4">
-  <div class="mb-3">
-    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "km--btn km--btn-outline" %>
-  </div>
   <div class="row align-items-stretch g-4">
     <%# Left column: request background + similar requests %>
     <div class="col-lg-5 d-flex flex-column gap-4">
@@ -27,11 +24,10 @@
             <% end %>
           </div>
         </div>
-        <% quantity_fulfilled = @request.quantity_needed - @request.quantity_remaining %>
         <div class="progress my-3 km--progress" style="height: 8px;">
           <div class="progress-bar km--progress-bar" role="progressbar"
-               style="width: <%= (quantity_fulfilled.to_f / @request.quantity_needed * 100).round rescue 0 %>%;"
-               aria-valuenow="<%= quantity_fulfilled %>" aria-valuemin="0" aria-valuemax="<%= @request.quantity_needed %>">
+               style="width: <%= @request.fulfillment_percent %>%;"
+               aria-valuenow="<%= @request.quantity_fulfilled %>" aria-valuemin="0" aria-valuemax="<%= @request.quantity_needed %>">
           </div>
         </div>
         <div class="mb-3">

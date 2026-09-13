@@ -1,52 +1,101 @@
 <div data-controller="postage-acknowledgment" data-postage-acknowledgment-first-offer-value="<%= @first_offer %>">
-  <div class="card shadow-sm p-4">
-    <h4 class="mb-4 text-center"><%= t("offers.make_an_offer")%></h4>
+  <div class="km--card">
+    <h4 class="km--text-card-title text-center mb-4"><%= t("offers.make_an_offer") %></h4>
     <% offer ||= Offer.new %>
     <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(request)) do |form| %>
-      <div class="mb-3">
-        <%= form.label t("offers.quantity_offered"), class: "form-label fw-bold" %>
-        <%= form.number_field :quantity_offered, min: 1, class: "form-control" %>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <%= form.label :quantity_offered, t("offers.quantity_offered"), class: "km--text-label" %>
+          <%= form.number_field :quantity_offered, min: 1, value: offer.quantity_offered || 1, required: true, class: "km--form-control form-control" %>
+        </div>
+        <div class="col-md-6">
+          <%= form.label :condition, t("navigation.condition"), class: "km--text-label" %>
+          <%= form.select :condition,
+            Request::CONDITIONS.map { |condition| [t("conditions.#{condition}"), condition] },
+            { prompt: t("conditions.select") },
+            class: "km--form-control form-select" %>
+          <%# TO DO: wire up modal with condition definitions/examples %>
+          <button type="button" class="km--text-card-content km--text-soft border-0 bg-transparent p-0 mt-1" style="text-decoration: underline;">
+            <%= t("offers.condition_learn_more") %>
+          </button>
+        </div>
       </div>
-      <div class="mb-3">
-        <%= form.label t("navigation.condition"), class: "form-label fw-bold" %>
-        <%= form.select :condition,
-      Request::CONDITIONS.map { |condition|
-        [t("conditions.#{condition}"), condition]
-      },
-      { prompt: t("conditions.select") },
-      class: "form-select" %>
-      </div>
-      <div class="mb-3">
-        <%= form.label t("offers.message"), class: "form-label fw-bold" %>
-        <%= form.text_area :message, rows: 4, class: "form-control", placeholder: t("offers.message_prompt") %>
-      </div>
-      <div class="mb-4">
-        <%= form.label t("offers.can_ship_by"), class: "form-label fw-bold" %>
-        <%= form.date_field :can_ship_by, class: "form-control" %>
-      </div>
-      <div class="mb-4 p-3 bg-light border rounded">
-        <% if offer.photos.attached? %>
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            <% offer.photos.each do |photo| %>
-              <%= image_tag photo, class: "img-fluid rounded", style: "max-width: 150px; max-height: 150px; object-fit: cover"; %>
-            <% end %>
+      <div class="row g-3 mt-0">
+        <%# TO DO: confirm virtual attributes ship_by_day / ship_by_month_year get combined into can_ship_by on the model %>
+        <div class="col-md-6" data-controller="ship-date">
+          <%= form.label :can_ship_by, t("offers.can_ship_by"), class: "km--text-label" %>
+          <div class="d-flex gap-2">
+            <%= form.select :ship_by_day,
+              (Date.current.day..31).to_a,
+              { selected: Date.current.day },
+              class: "km--form-control form-select",
+              data: { "ship-date-target": "day" } %>
+            <%
+              month_year_options = (0..11).map do |offset|
+                date = Date.current.next_month(offset)
+                [date.strftime("%b/%y"), date.strftime("%Y-%m")]
+              end
+            %>
+            <%= form.select :ship_by_month_year,
+              month_year_options,
+              { selected: Date.current.strftime("%Y-%m") },
+              class: "km--form-control form-select",
+              data: { "ship-date-target": "monthYear", action: "change->ship-date#monthYearChanged" } %>
           </div>
-        <% end %>
-        <%= form.label :photos, t("offers.photos_of_item"), class: "form-label fw-bold" %>
-        <%= form.file_field :photos, multiple: true, accept: "image/*", class: "form-control" %>
-        <div class="form-text mt-2"><%= t("offers.photo_expl") %></div>
+        </div>
+        <%# TO DO: confirm attribute names for drop-off / delivery booleans on Offer %>
+        <div class="col-md-6 d-flex align-items-end mb-2">
+          <div class="d-flex gap-4">
+            <div class="form-check">
+              <%= form.check_box :can_drop_off, class: "form-check-input" %>
+              <%= form.label :can_drop_off, t("offers.drop_off"), class: "form-check-label km--text-label" %>
+            </div>
+            <div class="form-check">
+              <%= form.check_box :can_deliver, class: "form-check-input" %>
+              <%= form.label :can_deliver, t("offers.delivery"), class: "form-check-label km--text-label" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3">
+        <%= form.label :message, t("offers.message"), class: "km--text-label" %>
+        <%= form.text_area :message, rows: 4, class: "km--form-control form-control", placeholder: t("offers.message_prompt") %>
+      </div>
+      <%# Photo upload: drag-and-drop dropzone + thumbnail previews with remove buttons %>
+      <div class="mt-4" data-controller="photo-upload">
+        <%= form.label :photos, t("offers.photos_of_item"), class: "km--text-label" %>
+        <%= form.file_field :photos, multiple: true, accept: "image/*",
+          class: "d-none",
+          data: { "photo-upload-target": "input", action: "change->photo-upload#inputChanged" } %>
+        <div class="km--photo-upload-dropzone"
+             data-photo-upload-target="dropzone"
+             data-action="click->photo-upload#browse dragover->photo-upload#dragOver dragleave->photo-upload#dragLeave drop->photo-upload#drop">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+        <p class="km--text-card-content km--text-soft text-center mt-2 mb-2"><%= t("offers.uploading_pictures") %></p>
+        <div class="km--photo-upload-preview-list" data-photo-upload-target="previewList">
+          <% if offer.photos.attached? %>
+            <% offer.photos.each do |photo| %>
+              <div class="km--photo-upload-thumb">
+                <%= image_tag photo %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="km--text-card-content km--text-soft mt-2"><%= t("offers.photo_expl") %></div>
       </div>
       <%# Postage acknowledgment checkbox %>
-      <div class="mb-4">
+      <div class="mt-4">
         <div class="form-check">
           <%= check_box_tag "postage_acknowledged", "1", false,
             id: "postage_acknowledged", class: "form-check-input",
             disabled: @first_offer,
             data: {
               "postage-acknowledgment-target": "checkbox",
-              action: "change->postage-acknowledgment#toggle"} %>
-          <%= label_tag "postage_acknowledged", t("offers.postage_acknowledgment"), class: "form-check-label" %>
-          <button type="button" class="btn btn-link p-0 ms-1 align-baseline"
+              action: "change->postage-acknowledgment#toggle" } %>
+          <%= label_tag "postage_acknowledged", t("offers.postage_acknowledgment"), class: "form-check-label km--text-label" %>
+          <button type="button" class="km--btn km--btn-outline p-0 border-0 ms-1 align-baseline"
+            style="background: none;"
             data-bs-toggle="modal" data-bs-target="#postageModal">
             (<%= t("offers.read_more") %>)
           </button>
@@ -55,10 +104,8 @@
       <%= form.hidden_field :request_id, value: @request.id %>
       <%= form.hidden_field :donor_id, value: @donor&.id %>
       <div class="d-grid mt-4">
-        <%# Using an inline style to pull in your KiFor Pink from the previous FAB button! %>
         <%= form.submit offer.persisted? ? t("offers.save_changes") : t("offers.send_offer"),
-          class: "btn text-white fs-5",
-          style: "background-color: #E84393;",
+          class: "km--btn km--btn-primary km--btn-wide",
           disabled: true,
           data: { "postage-acknowledgment-target": "submitButton" } %>
       </div>
@@ -66,7 +113,7 @@
   </div>
   <%# Postage modal %>
   <div class="modal fade" id="postageModal" tabindex="-1"
-  aria-labelledby="postageModalLabel" aria-hidden="true">
+       aria-labelledby="postageModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -77,7 +124,7 @@
           <p><%= t("offers.postage_modal_body") %></p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-action="click->postage-acknowledgment#acknowledge">
+          <button type="button" class="km--btn km--btn-primary" data-bs-dismiss="modal" data-action="click->postage-acknowledgment#acknowledge">
             <%= t("offers.postage_modal_confirm") %>
           </button>
         </div>

@@ -95,6 +95,18 @@ class Request < ApplicationRecord
     quantity_remaining.to_i <= 0
   end
 
+  # DELETE after other PR is merged
+  def quantity_fulfilled
+    quantity_needed - quantity_remaining
+  end
+
+  def fulfillment_percent
+    return 100 if quantity_needed.to_i.zero?
+
+    (quantity_fulfilled.to_f / quantity_needed * 100).round
+  end
+  # UNTIL HERE
+
   def archived?
     status == "archived"
   end

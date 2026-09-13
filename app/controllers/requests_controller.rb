@@ -49,6 +49,8 @@ class RequestsController < ApplicationController
     @first_offer = @donor.nil? || @donor.offers.none?
     @my_offer = (@offers.find_by(donor: @donor) if @donor)
     @editing_offer = @offers.find_by(id: params[:edit_offer])
+
+    # KT TO DO: Add "similar requests logic (2 random requests with same name / category)"
   end
 
   def new
