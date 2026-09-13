@@ -1,0 +1,9 @@
+.km--progress {
+  background-color: rgba($km--gray, 0.2);
+  border-radius: var(--km-radius);
+  overflow: hidden;
+}
+
+.km--progress-bar {
+  background-color: $km--primary-pink;
+}
