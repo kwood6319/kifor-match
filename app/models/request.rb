@@ -81,18 +81,28 @@ class Request < ApplicationRecord
     self.status ||= "active"
   end
 
-  def sync_quantity_remaining
-    # Setting qty remaining = qty needed for now
-    self.quantity_remaining = quantity_needed
-  end
-
   def acceptable_conditions
     index = CONDITIONS.index(condition)
     CONDITIONS[0..index]
   end
 
+  def sync_quantity_remaining
+    # Setting qty remaining = qty needed for now
+    self.quantity_remaining = quantity_needed
+  end
+
   def fully_fulfilled?
     quantity_remaining.to_i <= 0
+  end
+
+  def quantity_fulfilled
+    quantity_needed - quantity_remaining
+  end
+
+  def fulfillment_percent
+    return 100 if quantity_needed.to_i.zero?
+
+    (quantity_fulfilled.to_f / quantity_needed * 100).round
   end
 
   def archived?

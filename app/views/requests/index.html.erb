@@ -70,11 +70,15 @@
           <div class="km--card h-100">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <span class="km--text-card-title"><%= request.title %></span>
-              <div class="text-center flex-shrink-0 ms-2">
+              <div class="text-center flex-shrink-0 ms-2" style="width: 70px;">
                 <div class="km--text-card-title mb-0">x<%= request.quantity_remaining %></div>
                 <span class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light">
                   <%= t("urgencies.#{request.urgency}") %>
                 </span>
+                <div class="progress km--progress km--progress-sm mt-2" role="progressbar"
+                     aria-valuenow="<%= request.quantity_fulfilled %>" aria-valuemin="0" aria-valuemax="<%= request.quantity_needed %>">
+                  <div class="progress-bar km--progress-bar" style="width: <%= request.fulfillment_percent %>%;"></div>
+                </div>
               </div>
             </div>
             <div class="mb-2">
