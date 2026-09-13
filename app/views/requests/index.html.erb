@@ -1,13 +1,5 @@
-<div class="container mt-5 mb-1 py-1 sticky-back">
-  <div class="mb-3">
-    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "km--btn km--btn-outline mt-3" %>
-  </div>
-</div>
-<div class="container mt-1 mb-4">
-  <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%= "様" if I18n.locale == :ja %>!</h3>
-</div>
-<div class="container mb-4">
-  <div class="km--form-card">
+<div class="container mt-3 mb-4">
+  <div class="km--card km--form-card">
     <h5 class="km--form-card-title"><i class="fa-solid fa-filter me-2"></i><%= t("navigation.filter_requests") %></h5>
     <%= form_with url: requests_path, method: :get, data: { controller: "form-submission", turbo_frame: "requests_list" }, class: "row g-3" do |f| %>
       <%# Top row: Search, Prefecture, No Offers %>
@@ -106,9 +98,6 @@
       <% end %>
     </div>
   <% end %>
-  <div class="mb-3 mt-4">
-    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "km--btn km--btn-outline mt-3" %>
-  </div>
 </div>
 <% if policy(Request).new? %>
   <%= link_to new_request_path, class: "btn-kifor-fab", data: { controller: "fab" } do %>
