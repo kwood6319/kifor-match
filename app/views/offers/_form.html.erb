@@ -72,7 +72,7 @@
              data-action="click->photo-upload#browse dragover->photo-upload#dragOver dragleave->photo-upload#dragLeave drop->photo-upload#drop">
           <i class="fa-solid fa-plus"></i>
         </div>
-        <p class="km--text-card-content km--text-soft text-center mt-2 mb-2"><%= t("offers.uploading_pictures") %></p>
+        <p class="km--text-card-content km--text-soft text-center mt-2 mb-2"><%= t("offers.photo_expl") %></p>
         <div class="km--photo-upload-preview-list" data-photo-upload-target="previewList">
           <% if offer.photos.attached? %>
             <% offer.photos.each do |photo| %>
@@ -82,7 +82,6 @@
             <% end %>
           <% end %>
         </div>
-        <div class="km--text-card-content km--text-soft mt-2"><%= t("offers.photo_expl") %></div>
       </div>
       <%# Postage acknowledgment checkbox %>
       <div class="mt-4">
