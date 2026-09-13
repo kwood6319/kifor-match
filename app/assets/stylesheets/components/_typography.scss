@@ -1,0 +1,65 @@
+:root {
+  --km-font-display: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+  --km-font-body: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+}
+
+.km--text-dark       { color: #{$km--dark}; }
+.km--text-light      { color: #{$km--light}; }
+.km--text-soft       { color: #{$km--soft}; }
+.km--text-soft-light { color: #{$km--soft-light}; }
+
+.km--text-nav {
+  font-family: var(--km-font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  &:hover{
+    color: $km--dark;
+  }
+}
+
+.km--text-card-title {
+  font-family: var(--km-font-display);
+  font-size: 1.125rem; // 18px
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.km--text-card-subtitle {
+  font-family: var(--km-font-body);
+  font-size: 0.8125rem; // 13px
+  font-weight: 500;
+}
+
+.km--text-card-category {
+  font-family: var(--km-font-body);
+  font-size: 0.6875rem; // 11px
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.km--text-card-content {
+  font-family: var(--km-font-body);
+  font-size: 0.875rem; // 14px
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.km--text-pill {
+  font-family: var(--km-font-body);
+  font-size: 0.6875rem; // 11px
+  font-weight: 600;
+}
+
+.km--text-label {
+  font-family: var(--km-font-body);
+  font-size: 0.8125rem; // 13px
+  font-weight: 700;
+}
+
+.km--text-footer {
+  font-family: var(--km-font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}

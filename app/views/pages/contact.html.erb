@@ -10,12 +10,12 @@
                 },
                 method: :post, id: "my-contact-form" do |form| %>
     <%= form.hidden_field :access_key, value: ENV["SPLIT_FORMS_ACCESS_KEY"] %>
-    <%= form.label :email, t("contact.email") %>
+    <%= form.label :email, t("contact.email"), class: "km--text-label km--text-dark" %>
     <%= form.email_field :email, class: "form-control", placeholder: t("contact.placeholder_email"), required: true %>
-    <%= form.label :name, t("contact.name") %>
+    <%= form.label :name, t("contact.name"), class: "km--text-label km--text-dark" %>
     <%= form.text_field :name, class: "form-control", placeholder: t("contact.placeholder_name"), required: true %>
-    <%= form.label :message, t("contact.message") %>
+    <%= form.label :message, t("contact.message"), class: "km--text-label km--text-dark" %>
     <%= form.text_area :message, class: "form-control", rows: 5, placeholder: t("contact.placeholder_message"), required: true %>
-    <%= form.submit t("contact.send") %>
+    <%= form.submit t("contact.send"), class: "km--btn km--btn-primary km--btn-wide" %>
   <% end %>
 </div>

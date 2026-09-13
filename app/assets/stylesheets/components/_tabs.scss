@@ -21,3 +21,32 @@
 .label-space-only {
   opacity: 0;
 }
+
+// -----------Post-migration values------------
+
+#settings-tabs {
+  .km--nav-link {
+    color: $km--dark;
+    border-radius: 8px;
+
+    &:hover:not(.active) {
+      background-color: lighten($km--tan, 8%);
+      color: $km--dark;
+    }
+
+    &.active {
+      background-color: $km--tan;
+      color: $km--dark;
+    }
+
+    &.text-danger.active {
+      background-color: transparent;
+      border: 1px solid $km--danger-pink;
+      color: $km--danger-pink !important;
+    }
+  }
+}
+
+.km--label-space-only {
+  opacity: 0;
+}
