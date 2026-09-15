@@ -58,3 +58,44 @@
 .km--nav-menu a {
   text-decoration: none;
 }
+
+.km--navbar-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.km--navbar-back-slot {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 110px; // reserve fixed space regardless of content
+  flex-shrink: 0;
+}
+
+.km--navbar-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--km-text-light, #{$km--light});
+  text-decoration: none;
+
+  i {
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--km-text-light, #{$km--light});
+    outline-offset: 2px;
+  }
+}
+
+.km--navbar-divider {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.5);
+}

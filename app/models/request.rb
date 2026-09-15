@@ -50,6 +50,8 @@ class Request < ApplicationRecord
 
   OPEN_OFFER_STATUSES = %w[submitted approved shipped]
 
+  FULFILLING_STATUSES = %w[received completed].freeze
+
   REGIONS_AND_PREFECTURES = {
     "Hokkaido" => %w[Hokkaido],
     "Tohoku" => %w[Aomori Iwate Miyagi Akita Yamagata Fukushima],
@@ -67,7 +69,7 @@ class Request < ApplicationRecord
 
   after_initialize :set_default_status, if: :new_record?
   # Setting qty remaining = qty needed for now
-  before_validation :sync_quantity_remaining, on: :create
+  before_validation :sync_quantity_remaining
 
   validates :title, :description, :condition, :urgency, presence: true
   validates :status, inclusion: { in: STATUSES }
@@ -81,18 +83,28 @@ class Request < ApplicationRecord
     self.status ||= "active"
   end
 
-  def sync_quantity_remaining
-    # Setting qty remaining = qty needed for now
-    self.quantity_remaining = quantity_needed
-  end
-
   def acceptable_conditions
     index = CONDITIONS.index(condition)
     CONDITIONS[0..index]
   end
 
+  def sync_quantity_remaining
+    fulfilled = offers.where(status: FULFILLING_STATUSES).sum(:quantity_offered)
+    self.quantity_remaining = [quantity_needed - fulfilled, 0].max
+  end
+
   def fully_fulfilled?
     quantity_remaining.to_i <= 0
+  end
+
+  def quantity_fulfilled
+    quantity_needed - quantity_remaining
+  end
+
+  def fulfillment_percent
+    return 100 if quantity_remaining.to_i.zero?
+
+    (quantity_fulfilled.to_f / quantity_needed * 100).round
   end
 
   def archived?
