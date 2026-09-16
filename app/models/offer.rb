@@ -44,6 +44,7 @@ class Offer < ApplicationRecord
   validate :quantity_offered_does_not_exceed_remaining
 
   before_save :set_active_from_status
+  after_save :resync_request_quantity, if: :saved_change_to_status?
   after_update :create_terminal_notification, if: :saved_change_to_status?
 
   def alert_message
@@ -60,12 +61,6 @@ class Offer < ApplicationRecord
 
   def resubmit_if_amended
     self.status = "submitted"
-  end
-
-  def update_request_quantity
-    return unless saved_change_to_status == ["submitted", "approved"]
-
-    request.update!(quantity_remaining: request.quantity_needed - quantity_offered)
   end
 
   def set_active_from_status
@@ -89,5 +84,12 @@ class Offer < ApplicationRecord
     return if quantity_offered <= allowed
 
     errors.add(:quantity_offered, :exceeds_remaining, max: allowed)
+  end
+
+  def resync_request_quantity
+    return if request.blank?
+
+    request.sync_quantity_remaining
+    request.save!(validate: false)
   end
 end

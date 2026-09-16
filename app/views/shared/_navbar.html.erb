@@ -1,5 +1,14 @@
 <nav class="km--navbar">
-  <div class="navbar-brand-wrap">
+  <div class="km--navbar-brand-wrap">
+    <div class="km--navbar-back-slot">
+      <% if @show_back_button %>
+        <%= link_to "#", data: { controller: "history", action: "click->history#back" }, class: "km--navbar-back km--text-light", "aria-label": t("navigation.back") do %>
+          <i class="fa-solid fa-arrow-left"></i>
+          <span class="km--text-nav"><%= t("navigation.back") %></span>
+        <% end %>
+        <span class="km--navbar-divider"></span>
+      <% end %>
+    </div>
     <%= link_to "https://www.kifor.jp/", class: "navbar-brand" do %>
       <%= image_tag "kifor match.png", class: "km--logo", style: "background-color: white;" %>
     <% end %>

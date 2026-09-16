@@ -1,5 +1,6 @@
 class RequestsController < ApplicationController
   before_action :set_request, only: %i[show edit update archive destroy]
+  before_action :show_back_button, only: %i[index]
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries

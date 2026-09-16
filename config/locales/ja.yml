@@ -19,7 +19,7 @@ ja:
     requests: "リクエスト"
     archived_requests: "アーカイブ済みのリクエスト"
     no_archived_requests: "アーカイブ済みのリクエストはありません"
-    back: "← 戻る"
+    back: "戻る"
     filter: "フィルター"
     reset: "リセット"
     settings: "設定"
