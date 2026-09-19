@@ -2,8 +2,7 @@ module Charities
   class DashboardsController < ApplicationController
     before_action :authenticate_user!
 
-    # An offer only needs attention once it's sat waiting on the charity for a while -
-    # a fresh submission or delivery isn't a reminder yet.
+    # We want to let charities know when an offer has been left too long.
     ATTENTION_STATUSES = %w[submitted received].freeze
     ATTENTION_AGE = 1.day
 
