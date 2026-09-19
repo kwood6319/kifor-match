@@ -1,5 +1,5 @@
-<h3 class="km--text-card-title"><%= t("offers.existing_offer") %>:</h3>
 <div class="km--card mb-3<%= ' km--card-rejected' if offer.status == 'rejected' %>">
+  <h3 class="km--text-card-title text-center"><%= t("offers.existing_offer") %>:</h3>
   <div class="mb-3">
     <%= render "shared/photo_gallery", offer: offer %>
   </div>

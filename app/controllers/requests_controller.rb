@@ -1,10 +1,6 @@
 class RequestsController < ApplicationController
   before_action :set_request, only: %i[show edit update archive destroy]
-<<<<<<< HEAD
-  # add show to back button
-=======
-  before_action :show_back_button, only: %i[index]
->>>>>>> master
+  before_action :show_back_button, only: %i[index show]
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries
