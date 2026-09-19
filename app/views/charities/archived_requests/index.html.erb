@@ -1,0 +1,41 @@
+<div class="container mt-3 mb-4">
+  <h3><%= t("navigation.archived_requests") %></h3>
+</div>
+<div class="container-fluid mb-5">
+  <% if @requests_by_year.empty? %>
+    <p class="km--text-soft"><%= t("navigation.no_archived_requests") %></p>
+  <% else %>
+    <% years = @requests_by_year.keys %>
+    <ul class="nav nav-tabs km--nav-tabs km--nav-tabs-page mb-4" id="archived-year-tabs" role="tablist">
+      <% years.each_with_index do |year, index| %>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link km--nav-link<%= ' active' if index.zero? %>" data-bs-toggle="pill" data-bs-target="#year-<%= year %>" type="button">
+            <%= year %>
+          </button>
+        </li>
+      <% end %>
+    </ul>
+    <div class="tab-content">
+      <% years.each_with_index do |year, index| %>
+        <div class="tab-pane fade<%= ' show active' if index.zero? %>" id="year-<%= year %>">
+          <% @requests_by_year[year].each do |month, requests| %>
+            <div class="d-flex align-items-center my-3">
+              <span class="km--text-card-subtitle km--text-soft text-nowrap me-3"><%= l(month, format: "%B") %></span>
+              <hr class="km--divider flex-grow-1">
+            </div>
+            <div class="km--card-grid">
+              <% requests.each do |request| %>
+                <%= render "charities/dashboards/request_card", request: request, archived: true %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<% if policy(Request).new? %>
+  <%= link_to new_request_path, class: "btn-kifor-fab", data: { controller: "fab" } do %>
+    <i class="fa-solid fa-plus"></i>
+  <% end %>
+<% end %>
