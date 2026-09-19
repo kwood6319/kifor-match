@@ -1,12 +1,9 @@
 ja:
   dashboard:
     my_requests: "自分のリクエスト"
-    incoming_offers: "届いているオファー"
-    needs_your_attention: "対応が必要です"
-    no_incoming_offers: "現在届いているオファーはありません。"
+    needs_your_attention: "要対応"
+    offers_submitted: "提出済み"
+    offers_on_their_way: "発送中"
+    offers_needing_feedback: "フィードバック待ち"
+    pending_actions: "件、対応が必要です"
     status: "状態"
-    sort_by: "並び替え"
-    sort_urgency: "緊急度"
-    sort_newest: "新しい順"
-    sort_oldest: "古い順"
-    sort_title: "タイトル（A–Z）"
