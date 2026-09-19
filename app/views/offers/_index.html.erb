@@ -1,0 +1,89 @@
+<h2 class="km--text-card-title"><%= t("offers.offers") %></h2>
+<% if @offers.empty? %>
+  <p class="km--text-soft"><%= t("offers.no_offers") %></p>
+<% else %>
+  <% @offers.each do |offer| %>
+    <div class="km--card mb-3<%= ' km--card-rejected' if offer.status == 'rejected' %>">
+      <%= link_to "", offer_path(offer), class: "stretched-link", aria: { label: t("offers.view_details") } %>
+      <div class="row">
+        <div class="col-5">
+          <% if offer.photos.attached? %>
+            <div class="position-relative d-inline-block">
+              <%= image_tag offer.photos.first, class: "img-fluid rounded" %>
+              <% remaining = offer.photos.count - 1 %>
+              <% if remaining > 0 %>
+                <span class="badge bg-dark bg-opacity-75 position-absolute bottom-0 end-0 m-2 km--text-pill">
+                  +<%= remaining %>
+                </span>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="km--offer-image km--offer-image-placeholder">
+              📷 <%= t("offers.no_image") %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-7">
+          <div class="row">
+            <div class="col-9">
+              <h3 class="km--text-card-title"><%= offer.donor.display_name %></h3>
+            </div>
+            <div class="col-3">
+              <h3 class="km--text-card-title"><%= offer.quantity_offered %></h3>
+            </div>
+          </div>
+          <p class="km--text-card-content mb-0">
+            <i class="fa-solid fa-location-dot"></i> <%= t("prefectures.#{offer.donor.prefecture}") if offer.donor.prefecture %>
+          </p>
+          <p class="km--text-card-content mb-0">
+            <strong><%= t("navigation.condition") %>:</strong> <%= t("conditions.#{offer.condition}") %>
+          </p>
+          <p class="km--text-card-content mb-0">
+            <strong><%= t("offers.can_ship_by") %></strong> <%= offer.can_ship_by ? offer.can_ship_by.strftime("%b %e") : "N/A" %>
+          </p>
+          <p class="km--text-card-content mb-0">
+            <strong><%= t("offers.message") %>:</strong> <%= offer.message %>
+          </p>
+          <h5 class="km--text-card-title mt-2"><%= t("offers.status") %>:</h5>
+          <% if offer.status == "submitted" %>
+            <div class="row">
+              <div class="col-lg-6">
+                <% if policy(offer).approve? %>
+                  <%= button_to t("buttons.approve_offer"), approve_offer_path(offer), method: :patch, class: "km--btn km--btn-primary" %>
+                <% end %>
+              </div>
+              <div class="col-lg-6">
+                <% if policy(offer).reject? %>
+                  <button type="button"
+                    class="km--btn km--btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#rejectOfferModal"
+                    data-reject-url="<%= reject_offer_path(offer) %>">
+                    <%= t("buttons.reject_offer") %>
+                  </button>
+                <% end %>
+              </div>
+            </div>
+          <% elsif offer.status == "approved" %>
+            <p class="km--text-card-content mb-0"><%= t("statuses.charity.approved_message") %></p>
+          <% elsif offer.status == "shipped" %>
+            <p class="km--text-card-content mb-0">
+              <strong><%= t("statuses.donor.arriving") %>:</strong> <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %>
+            </p>
+            <p class="km--text-card-content mb-0">
+              <strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= offer.tracking_number != "" ? offer.tracking_number : "?" %>
+            </p>
+            <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "km--btn km--btn-danger" %>
+          <% elsif offer.status == "rejected" %>
+            <p class="km--text-card-content mb-0"><%= t("statuses.charity.rejected_message") %></p>
+          <% elsif offer.status == "received" %>
+            <p class="km--text-card-content mb-0"><%= t("statuses.charity.received_message") %></p>
+            <%= link_to t("buttons.give_feedback"),
+                  new_request_feedback_path(@request, offer_id: offer.id),
+                  class: "km--btn km--btn-primary mt-2" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

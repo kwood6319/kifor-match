@@ -80,4 +80,8 @@ class ApplicationController < ActionController::Base
   def current_charity
     @current_charity ||= current_user&.charity
   end
+
+  def show_back_button
+    @show_back_button = true
+  end
 end
