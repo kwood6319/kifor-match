@@ -96,6 +96,7 @@ ja:
     edit_offer: "オファーを編集"
     edit_request: "リクエストを編集"
     view_request: "リクエストを表示"
+    approve: "承認"
     approve_offer: "承認する"
     reject_offer: "拒否する"
     close: "閉じる"

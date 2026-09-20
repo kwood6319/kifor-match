@@ -7,3 +7,7 @@ en:
     offers_needing_feedback: "Feedback"
     pending_actions: "need your attention"
     status: "Status"
+    flagged: "Flagged"
+    no_unapproved_charities: "No charities awaiting approval"
+    no_unapproved_donors: "No donors awaiting approval"
+    flagged_placeholder: "Flagged donors and charities will appear here"

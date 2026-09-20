@@ -125,6 +125,7 @@ en:
     edit_offer: "Edit Offer"
     edit_request: "Edit Request"
     view_request: "View Request"
+    approve: "Approve"
     approve_offer: "Approve Offer"
     reject_offer: "Reject Offer"
     close: "Close"
