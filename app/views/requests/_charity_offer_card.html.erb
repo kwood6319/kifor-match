@@ -1,3 +1,4 @@
+<% read_only = local_assigns.fetch(:read_only, false) %>
 <div class="km--card mb-3<%= ' km--card-rejected' if offer.status == 'rejected' %>">
   <%= link_to "", offer_path(offer), class: "stretched-link", aria: { label: t("offers.view_details") } %>
   <div class="row g-3">
@@ -41,20 +42,24 @@
       <h5 class="km--text-card-title mt-2"><%= t("offers.status") %>:</h5>
       <% case offer.status
          when "submitted" %>
-        <div class="d-flex gap-2">
-          <% if policy(offer).approve? %>
-            <%= button_to t("buttons.approve_offer"), approve_offer_path(offer), method: :patch, class: "km--btn km--btn-primary" %>
-          <% end %>
-          <% if policy(offer).reject? %>
-            <button type="button"
-              class="km--btn km--btn-danger"
-              data-bs-toggle="modal"
-              data-bs-target="#rejectOfferModal"
-              data-reject-url="<%= reject_offer_path(offer) %>">
-              <%= t("buttons.reject_offer") %>
-            </button>
-          <% end %>
-        </div>
+        <% if read_only %>
+          <p class="km--text-card-content mb-0"><%= t("statuses.charity.submitted_message") %></p>
+        <% else %>
+          <div class="d-flex gap-2">
+            <% if policy(offer).approve? %>
+              <%= button_to t("buttons.approve_offer"), approve_offer_path(offer), method: :patch, class: "km--btn km--btn-primary" %>
+            <% end %>
+            <% if policy(offer).reject? %>
+              <button type="button"
+                class="km--btn km--btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#rejectOfferModal"
+                data-reject-url="<%= reject_offer_path(offer) %>">
+                <%= t("buttons.reject_offer") %>
+              </button>
+            <% end %>
+          </div>
+        <% end %>
       <% when "approved" %>
         <p class="km--text-card-content mb-0"><%= t("statuses.charity.approved_message") %></p>
       <% when "shipped" %>
@@ -64,14 +69,18 @@
         <p class="km--text-card-content mb-0">
           <strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= offer.tracking_number.presence || "?" %>
         </p>
-        <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "km--btn km--btn-danger mt-2" %>
+        <% unless read_only %>
+          <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "km--btn km--btn-danger mt-2" %>
+        <% end %>
       <% when "rejected" %>
         <p class="km--text-card-content mb-0"><%= t("statuses.charity.rejected_message") %></p>
       <% when "received" %>
         <p class="km--text-card-content mb-0"><%= t("statuses.charity.received_message") %></p>
-        <%= link_to t("buttons.give_feedback"),
-              new_request_feedback_path(parent_request, offer_id: offer.id),
-              class: "km--btn km--btn-primary mt-2" %>
+        <% unless read_only %>
+          <%= link_to t("buttons.give_feedback"),
+                new_request_feedback_path(parent_request, offer_id: offer.id),
+                class: "km--btn km--btn-primary mt-2" %>
+        <% end %>
       <% else %>
         <p class="km--text-card-content mb-0 text-capitalize"><%= t("statuses.charity.#{offer.status}_message", default: offer.status) %></p>
       <% end %>

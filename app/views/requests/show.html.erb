@@ -86,8 +86,8 @@
           <% end %>
         </div>
       </div>
-      <%# Similar requests — donor-only, a charity has nothing to donate %>
-      <% unless current_user.charity? %>
+      <%# Similar requests — donor-only, a charity or admin has nothing to donate %>
+      <% unless current_user.charity? || current_user.admin? %>
         <h4 class="km--text-card-title mb-0"><%= t("navigation.similar_requests") %>:</h4>
         <% if @similar_requests.present? %>
           <% @similar_requests.each do |similar_request| %>
@@ -121,9 +121,11 @@
         <% end %>
       <% end %>
     </div>
-    <%# Right column: offer form / existing offer / charity view %>
+    <%# Right column: offer form / existing offer / charity view / admin view %>
     <div class="col-lg-6 mx-3">
-      <% if current_user.charity? && current_user.charity == @request.charity %>
+      <% if current_user.admin? %>
+        <%= render "currentcharityrequest", request: @request, read_only: true %>
+      <% elsif current_user.charity? && current_user.charity == @request.charity %>
         <%= render "currentcharityrequest", request: @request %>
       <% elsif @editing_offer.present? && @editing_offer == @my_offer %>
         <%= render "offers/form", request: @request, offer: @my_offer %>

@@ -105,6 +105,7 @@ ja:
       received_message: "ご寄付いただいた品物は、慈善団体により「受領済み」として登録されました。心より感謝申し上げます。♡"
       charity_shipping_info: "情報は以下の住所までお送りください："
     charity:
+      submitted_message: "チャリティーの確認待ちです。"
       approved_message: "寄付者にはすでに連絡を済ませており、発送情報の連絡を待っているところです。"
       rejected_message: "このオファーをお断りになりました。"
       received_message: "このオファーを「受領済み」としてマークしました。"
