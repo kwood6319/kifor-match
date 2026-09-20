@@ -1,5 +1,6 @@
 class OffersController < ApplicationController
   before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped]
+  before_action :show_back_button, only: %i[show]
 
   # TODO: index , list all offers
   def index
