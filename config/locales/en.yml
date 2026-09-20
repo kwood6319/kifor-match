@@ -95,6 +95,12 @@ en:
     postage_modal_body: "As the donor, you are responsible for covering the cost of shipping this item to the charity. Please factor this into your decision before submitting your offer."
     postage_modal_confirm: "I understand"
     details: "Details"
+    view_details: "View offer details"
+    tabs:
+      all: "All"
+      submitted: "Submitted"
+      shipped: "Shipped"
+      awaiting_feedback: "Awaiting Feedback"
   statuses:
     requests:
       active: "Active"
