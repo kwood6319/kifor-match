@@ -51,9 +51,6 @@
   opacity: 0;
 }
 
-// Underlined tabs. Distinct from the #settings-tabs tan-pill treatment
-// above, which is reserved for that sidebar. Works equally against a
-// .km--card's tan background or the page's own background.
 .km--nav-tabs {
   border-bottom: 1px solid var(--km-divider-color);
   flex-wrap: nowrap;
@@ -92,8 +89,6 @@
     }
   }
 
-  // A page-level tab bar (not nested in a narrow card) doesn't need to
-  // cram every label into equal-width slots.
   &.km--nav-tabs-page {
     flex-wrap: wrap;
 
