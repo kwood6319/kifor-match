@@ -16,7 +16,7 @@ class DonorsController < ApplicationController
     authorize @donor
     @donor.update(approved: true)
 
-    redirect_to donors_path, status: :see_other, notice: "Donor approved!"
+    redirect_back fallback_location: donors_path, status: :see_other, notice: "Donor approved!"
   end
 
   private

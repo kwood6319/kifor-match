@@ -20,7 +20,7 @@ class CharitiesController < ApplicationController
     authorize @charity
     @charity.update(approved: true)
 
-    redirect_to charity_path, status: :see_other, notice: "Charity approved!"
+    redirect_back fallback_location: charities_path, status: :see_other, notice: "Charity approved!"
   end
 
   private
