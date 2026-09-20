@@ -46,6 +46,7 @@ ja:
     no_condition: "状態未指定"
   offers:
     offers: "オファー"
+    offer_details: "オファーの詳細"
     no_offers: "まだオファーはありません"
     make_an_offer: "オファーを出す"
     quantity_offered: "提供数量"
