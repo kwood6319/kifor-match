@@ -144,7 +144,8 @@
 
   // Same stretched-link problem as .offer-card .btn above, but for cards
   // migrated to the km-- design system.
-  .km--btn {
+  .km--btn,
+  .photo-gallery-thumb {
     position: relative;
     z-index: 2;
   }
@@ -183,4 +184,9 @@
       padding: var(--km-card-padding);
     }
   }
+}
+
+.km--card-rejected {
+  opacity: 0.6;
+  filter: grayscale(0.3);
 }

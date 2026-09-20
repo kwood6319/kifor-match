@@ -1,48 +1,67 @@
-<div class="container mt-5 mb-4">
-  <div class="mb-3">
-    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary" %>
-  </div>
+<div class="container mt-3 mb-4">
   <div class="row align-items-stretch g-4">
-    <div class="col-lg-5">
-      <div class="tall-card p-3 h-100">
+    <%# Left column: request background + similar requests %>
+    <div class="col-lg-5 d-flex flex-column gap-4">
+      <%# Request background card %>
+      <div class="km--card">
         <div class="row pt-2">
           <div class="col-8">
-            <h2> <%=@request.title %> </h2>
+            <h2 class="km--text-card-title"><%= @request.title %></h2>
+            <p class="km--text-card-subtitle km--text-soft mb-0">
+              <%= t("prefectures.#{@request.charity.prefecture}") %>
+            </p>
           </div>
           <div class="col-4 text-center">
-            <h3> x<%= @request.quantity_remaining %> </h3>
+            <h3 class="km--text-card-title mb-1">x<%= @request.quantity_remaining %></h3>
             <% if @request.archived? %>
-              <div class="badge rounded-pill text-bg-secondary">
+              <div class="badge rounded-pill text-bg-secondary km--text-pill">
                 <%= t("statuses.requests.archived") %>
               </div>
             <% else %>
-              <div class="badge rounded-pill pill-<%=@request.urgency%>">
+              <div class="badge rounded-pill pill-<%= @request.urgency %> km--text-pill km--text-light">
                 <%= t("urgencies.#{@request.urgency}") %>
               </div>
             <% end %>
           </div>
         </div>
-        <div>
-          <p> <i class="fa-solid fa-location-dot"></i> <%= t("regions.#{@request.charity.region}") %> - <%= t("prefectures.#{@request.charity.prefecture}") %> </p>
+        <div class="progress my-3 km--progress" style="height: 8px;">
+          <div class="progress-bar km--progress-bar" role="progressbar"
+               style="width: <%= @request.fulfillment_percent %>%;"
+               aria-valuenow="<%= @request.quantity_fulfilled %>" aria-valuemin="0" aria-valuemax="<%= @request.quantity_needed %>">
+          </div>
         </div>
-        <div>
-          <h5> <%= t("navigation.condition") %>: </h4>
-          <% @request.acceptable_conditions.each do |cond| %>
-            <p class="mb-0"> <%= t("conditions.#{cond}") %> </p>
-          <% end %>
-          <br>
+        <div class="mb-3">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+          <div class="d-flex flex-wrap gap-2">
+            <% @request.acceptable_conditions.each do |cond| %>
+              <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
+            <% end %>
+          </div>
         </div>
-        <div>
-          <h5> <%= t("navigation.description") %>: </h4>
-          <p> <%= @request.description %> </p>
+        <div class="mb-3">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.description") %></p>
+          <p class="km--text-card-content mb-0"><%= @request.description %></p>
+        </div>
+        <div class="mb-3">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.shipping") %></p>
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="km--text-card-content mb-0">
+              <%# TO DO: Add conditional when drop off is working %>
+              <%= t("shipping.accepts_drop_off") %>
+            </p>
+            <p class="km--text-card-content km--text-soft mb-0">
+              <%# TO DO: Add charity hours when drop off is possible %>
+              Mon - FRI 9AM - 5PM
+            </p>
+          </div>
         </div>
         <div class="d-flex gap-3">
           <% if policy(@request).edit? %>
-            <%= link_to t("buttons.edit_request"), edit_request_path(@request), class: "btn btn-outline-secondary" %>
+            <%= link_to t("buttons.edit_request"), edit_request_path(@request), class: "km--btn km--btn-outline" %>
           <% end %>
           <% if policy(@request).destroy? %>
             <button type="button"
-              class="btn btn-danger"
+              class="km--btn km--btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#deleteModal"
               data-action-url="<%= request_path(@request) %>"
@@ -55,7 +74,7 @@
         <div class="mt-3">
           <% if policy(@request).archive? %>
             <button type="button"
-              class="btn btn-outline-secondary"
+              class="km--btn km--btn-outline"
               data-bs-toggle="modal"
               data-bs-target="#deleteModal"
               data-action-url="<%= archive_request_path(@request) %>"
@@ -67,7 +86,42 @@
           <% end %>
         </div>
       </div>
+      <%# Similar requests — donor-only, a charity has nothing to donate %>
+      <% unless current_user.charity? %>
+        <h4 class="km--text-card-title mb-0"><%= t("navigation.similar_requests") %>:</h4>
+        <% if @similar_requests.present? %>
+          <% @similar_requests.each do |similar_request| %>
+            <%= link_to request_path(similar_request), class: "text-decoration-none km--text-dark" do %>
+              <div class="km--card">
+                <div class="row">
+                  <div class="col-8">
+                    <p class="km--text-card-title mb-0"><%= similar_request.title %></p>
+                    <p class="km--text-card-subtitle km--text-soft mb-2">
+                      <%= t("prefectures.#{similar_request.charity.prefecture}") %>
+                    </p>
+                  </div>
+                  <div class="col-4 text-center">
+                    <p class="km--text-card-title mb-1">x<%= similar_request.quantity_remaining %></p>
+                    <span class="badge rounded-pill pill-<%= similar_request.urgency %> km--text-pill km--text-light">
+                      <%= t("urgencies.#{similar_request.urgency}") %>
+                    </span>
+                  </div>
+                </div>
+                <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+                <div class="d-flex flex-wrap gap-2">
+                  <% similar_request.acceptable_conditions.each do |cond| %>
+                    <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% else %>
+          <p class="km--text-soft mb-0"><%= t("navigation.no_similar_requests") %></p>
+        <% end %>
+      <% end %>
     </div>
+    <%# Right column: offer form / existing offer / charity view %>
     <div class="col-lg-6 mx-3">
       <% if current_user.charity? && current_user.charity == @request.charity %>
         <%= render "currentcharityrequest", request: @request %>
@@ -78,13 +132,13 @@
         <div class="d-flex gap-2 mt-2">
           <% if %w[submitted approved rejected].include?(@my_offer.status.to_s) %>
             <%= link_to t("buttons.edit_offer"),
-          request_path(@request, edit_offer: @my_offer.id),
-          class: "btn btn-secondary" %>
+              request_path(@request, edit_offer: @my_offer.id),
+              class: "km--btn km--btn-primary" %>
           <% end %>
           <% if %w[submitted rejected].include?(@my_offer.status.to_s) %>
             <button
               type="button"
-              class="btn btn-danger"
+              class="km--btn km--btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#deleteModal"
               data-action-url="<%= offer_path(@my_offer) %>"
@@ -93,7 +147,7 @@
             </button>
           <% end %>
         </div>
-      <% elsif policy(Offer.new(request: @request)).new?%>
+      <% elsif policy(Offer.new(request: @request)).new? %>
         <% if @offer.errors.any? %>
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>There were problems creating the offer:</strong>
@@ -111,8 +165,6 @@
   </div>
 </div>
 <%= render "shared/reject_offer_modal" %>
-
-
 <%# Delete modal %>
 <div class="modal fade"
       id="deleteModal"
@@ -128,8 +180,8 @@
       <%= form_tag "#", method: :post, data: { action_modal_target: "form" } do %>
         <input type="hidden" name="_method" value="delete" data-action-modal-target="method">
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
-          <%= submit_tag t("buttons.delete"), class: "btn btn-danger", data: { action_modal_target: "submit", default_label: t("buttons.delete")} %>
+          <button type="button" class="km--btn km--btn-outline" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
+          <%= submit_tag t("buttons.delete"), class: "km--btn km--btn-danger", data: { action_modal_target: "submit", default_label: t("buttons.delete")} %>
         </div>
       <% end %>
     </div>
