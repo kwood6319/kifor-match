@@ -24,10 +24,13 @@ ja:
     filter: "フィルター"
     filter_charities: "チャリティーのフィルタリング"
     search_charities_placeholder: "表示名またはメールアドレスで検索..."
+    filter_donors: "ドナーのフィルタリング"
+    search_donors_placeholder: "表示名またはメールアドレスで検索..."
     region: "地域"
     approved_only: "承認済みのみ"
     unapproved_only: "未承認のみ"
     no_charities: "指定した条件に一致するチャリティーはありません"
+    no_donors: "指定した条件に一致するドナーはいません"
     reset: "リセット"
     settings: "設定"
     view: "表示"
@@ -40,6 +43,8 @@ ja:
     request_fulfilled_rejection: "このリクエストはすでに満たされているため、今回のオファーはお受けできません。ご厚意に心より感謝いたします。"
     delete_charity_confirm: "このチャリティーを削除しますか？"
     approve_charity_confirm: "このチャリティーを承認しますか？"
+    delete_donor_confirm: "このドナーを削除しますか？"
+    approve_donor_confirm: "このドナーを承認しますか？"
   urgencies:
     select_urgency: "緊急度を選択"
     low: "低い"
@@ -88,6 +93,8 @@ ja:
       fulfilled: "完了"
       archived: "アーカイブ済み"
     charities:
+      unapproved: "保留中"
+    donors:
       unapproved: "保留中"
     donor:
       submitted: "確認待ち"
@@ -146,6 +153,17 @@ ja:
     not_approved: "未承認"
     total_requests: "リクエスト総数"
     completed_requests: "完了したリクエスト数"
+  donors:
+    details: "ドナー詳細"
+    stats: "ドナー統計"
+    current_offers: "現在のオファー"
+    no_current_offers: "このドナーには現在のオファーがありません"
+    created_at: "作成日"
+    approved_at: "承認日"
+    not_approved: "未承認"
+    total_offers: "オファー総数"
+    completed_offers: "完了したオファー数"
+    donor_type: "タイプ"
   shipping:
     address: "発送先住所"
   units:

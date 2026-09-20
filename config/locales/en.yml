@@ -53,10 +53,13 @@ en:
     filter_requests: "Filter Requests"
     filter_charities: "Filter Charities"
     search_charities_placeholder: "Search by display name or email..."
+    filter_donors: "Filter Donors"
+    search_donors_placeholder: "Search by display name or email..."
     region: "Region"
     approved_only: "Approved only"
     unapproved_only: "Unapproved only"
     no_charities: "No charities match your filters"
+    no_donors: "No donors match your filters"
     reset: "Reset"
     settings: "Settings"
     view: "View"
@@ -69,6 +72,8 @@ en:
     request_fulfilled_rejection: "This request has already been fulfilled, so we're unable to accept your offer. Thank you so much for your generosity!"
     delete_charity_confirm: "Delete this charity?"
     approve_charity_confirm: "Approve this charity?"
+    delete_donor_confirm: "Delete this donor?"
+    approve_donor_confirm: "Approve this donor?"
   urgencies:
     select_urgency: "Select Urgency"
     low: "low"
@@ -117,6 +122,8 @@ en:
       fulfilled: "Fulfilled"
       archived: "Archived"
     charities:
+      unapproved: "Pending"
+    donors:
       unapproved: "Pending"
     donor:
       submitted: "Submitted"
@@ -176,6 +183,17 @@ en:
     not_approved: "Not yet approved"
     total_requests: "Total requests made"
     completed_requests: "Requests successfully completed"
+  donors:
+    details: "Donor Details"
+    stats: "Donor Stats"
+    current_offers: "Current Offers"
+    no_current_offers: "This donor has no current offers"
+    created_at: "Created"
+    approved_at: "Approved"
+    not_approved: "Not yet approved"
+    total_offers: "Total offers made"
+    completed_offers: "Offers successfully completed"
+    donor_type: "Type"
   shipping:
     address: "Shipping Address"
   units:

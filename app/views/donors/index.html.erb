@@ -1,24 +1,89 @@
-<h1>Donors</h1>
-<div class="grid-tall-cards mt-3">
-  <% @donors.each do |donor| %>
-    <div class="small-card p-3">
-      <h4>
-        <%= donor.display_name %>
-        <% if donor.approved? %>
-          <i class="fas fa-circle-check" style="color: green;"></i>
-        <% end %>
-      </h4>
-      <ul>
-        <li> <strong> Type: </strong> <%= donor.donor_type %> </li>
-        <li> <strong> Region: </strong> <%= donor.region %> </li>
-        <li> <strong> Prefecture: </strong> <%= donor.prefecture %> </li>
-      </ul>
-      <div class="btn-section pt-2">
-        <%= link_to "Delete", donor_path(donor), class: "btn btn-neg", data: {turbo_method: :delete, turbo_confirm: "Delete donor?"}%>
-        <% unless donor.approved? %>
-          <%= button_to "Approve", approve_donor_path(donor), class: "btn btn-pos", method: :patch, data: { confirm: "Approve donor?" } %>
-        <% end %>
+<div class="container mt-3 mb-4">
+  <div class="km--card km--form-card">
+    <h5 class="km--form-card-title"><i class="fa-solid fa-filter me-2"></i><%= t("navigation.filter_donors") %></h5>
+    <%= form_with url: donors_path, method: :get, class: "row g-3" do |f| %>
+      <div class="row g-3 mt-0">
+        <div class="col-md-6 col-lg-6">
+          <%= f.label :query, t("navigation.search"), class: "km--text-label" %>
+          <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_donors_placeholder"), class: "km--form-control form-control" %>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <%= f.label :region, t("navigation.region"), class: "km--text-label" %>
+          <%= f.select :region,
+            Request::REGIONS.map { |region| [t("regions.#{region}"), region] },
+            { include_blank: t("regions.all"), selected: params[:region] },
+            class: "km--form-control form-select" %>
+        </div>
       </div>
+      <div class="row g-3 mt-0">
+        <div class="col-md-4 col-lg-3 d-flex align-items-end mb-2">
+          <div class="form-check">
+            <%= f.check_box :approved_only, { checked: params[:approved_only] == "1", class: "form-check-input" }, "1", "0" %>
+            <%= f.label :approved_only, t("navigation.approved_only"), class: "form-check-label km--text-label text-nowrap" %>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3 d-flex align-items-end mb-2">
+          <div class="form-check">
+            <%= f.check_box :unapproved_only, { checked: params[:unapproved_only] == "1", class: "form-check-input" }, "1", "0" %>
+            <%= f.label :unapproved_only, t("navigation.unapproved_only"), class: "form-check-label km--text-label text-nowrap" %>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-6 d-flex justify-content-end align-items-end gap-2 mb-2">
+          <%= link_to t("navigation.reset"), donors_path, class: "km--btn km--btn-outline" %>
+          <%= f.submit t("navigation.filter"), class: "km--btn km--btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="container mb-5">
+  <% if @donors.empty? %>
+    <div class="text-center mt-5">
+      <h4 class="km--text-soft"><%= t("navigation.no_donors") %></h4>
+    </div>
+  <% else %>
+    <div class="km--card-grid">
+      <% @donors.each do |donor| %>
+        <div class="km--card h-100" style="min-height: 260px;">
+          <%= link_to "", donor_path(donor), class: "stretched-link", aria: { label: t("navigation.view") } %>
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <span class="km--text-card-title">
+              <%= donor.display_name %>
+              <% if donor.approved? %>
+                <i class="fa-solid fa-circle-check text-success ms-1"></i>
+              <% end %>
+            </span>
+            <% unless donor.approved? %>
+              <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap">
+                <%= t("statuses.donors.unapproved") %>
+              </span>
+            <% end %>
+          </div>
+          <p class="km--text-card-content mb-1">
+            <i class="fa-solid fa-envelope me-1"></i> <%= donor.user.email %>
+          </p>
+          <% if donor.region.present? %>
+            <p class="km--text-card-content mb-1">
+              <i class="fa-solid fa-location-dot me-1"></i> <%= t("regions.#{donor.region}") %>
+            </p>
+          <% end %>
+          <% if donor.donor_type.present? %>
+            <p class="km--text-card-content km--text-soft mb-2">
+              <i class="fa-solid fa-tag me-1"></i> <%= donor.donor_type %>
+            </p>
+          <% end %>
+          <div class="d-flex gap-2 mt-auto">
+            <% unless donor.approved? %>
+              <%= button_to t("buttons.approve"), approve_donor_path(donor), method: :patch,
+                class: "km--btn km--btn-primary",
+                data: { turbo_confirm: t("messages.approve_donor_confirm") } %>
+            <% end %>
+            <%= button_to t("buttons.delete"), donor_path(donor), method: :delete,
+                class: "km--btn km--btn-danger",
+                data: { turbo_confirm: t("messages.delete_donor_confirm") } %>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>
