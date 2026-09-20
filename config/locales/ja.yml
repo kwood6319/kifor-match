@@ -22,6 +22,12 @@ ja:
     no_archived_requests: "アーカイブ済みのリクエストはありません"
     back: "戻る"
     filter: "フィルター"
+    filter_charities: "チャリティーのフィルタリング"
+    search_charities_placeholder: "表示名またはメールアドレスで検索..."
+    region: "地域"
+    approved_only: "承認済みのみ"
+    unapproved_only: "未承認のみ"
+    no_charities: "指定した条件に一致するチャリティーはありません"
     reset: "リセット"
     settings: "設定"
     view: "表示"
@@ -32,6 +38,8 @@ ja:
     request_archived: "リクエストをアーカイブしました。"
     request_archived_confirm: "このリクエストをアーカイブしますか？寄付者には表示されなくなり、他の保留中のオファーは自動的に却下されます。"
     request_fulfilled_rejection: "このリクエストはすでに満たされているため、今回のオファーはお受けできません。ご厚意に心より感謝いたします。"
+    delete_charity_confirm: "このチャリティーを削除しますか？"
+    approve_charity_confirm: "このチャリティーを承認しますか？"
   urgencies:
     select_urgency: "緊急度を選択"
     low: "低い"
@@ -72,6 +80,8 @@ ja:
       active: "アクティブ"
       fulfilled: "完了"
       archived: "アーカイブ済み"
+    charities:
+      unapproved: "保留中"
     donor:
       submitted: "確認待ち"
       submitted_message: "現在、当該慈善団体からの返答を待っているところです。返答があり次第、お知らせします！"
@@ -118,6 +128,18 @@ ja:
     condition_message: "『中古 - 良好』 を選択すると、それ以上の状態のアイテムも受け入れることになります。"
     description: "詳細"
     description_message: "必要な品目についてご記入ください"
+  charities:
+    details: "チャリティー詳細"
+    stats: "チャリティー統計"
+    current_requests: "現在のリクエスト"
+    no_current_requests: "このチャリティーには現在のリクエストがありません"
+    created_at: "作成日"
+    approved_at: "承認日"
+    not_approved: "未承認"
+    total_requests: "リクエスト総数"
+    completed_requests: "完了したリクエスト数"
+  shipping:
+    address: "発送先住所"
   units:
     select: "単位を選択"
     item: "個"
