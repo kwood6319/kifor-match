@@ -75,6 +75,7 @@ en:
     no_condition: "No condition provided"
   offers:
     offers: "Offers"
+    offer_details: "Offer Details"
     no_offers: "No offers yet"
     make_an_offer: "Make an Offer"
     quantity_offered: "Quantity offered"
