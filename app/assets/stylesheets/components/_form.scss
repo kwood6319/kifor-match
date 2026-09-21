@@ -92,7 +92,15 @@
 
   textarea.km--form-control {
     min-height: 8rem;
+    resize: none;
   }
+}
+
+// Modifier for a standalone form-in-a-card (contact, etc.) that should stay
+// narrow and centered, unlike .km--form-card on its own (e.g. the requests
+// filter bar, which needs to span its row).
+.km--form-card-narrow {
+  max-width: 32rem;
 }
 
 @media (max-width: 575px) {
