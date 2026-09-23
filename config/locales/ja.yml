@@ -47,6 +47,7 @@ ja:
     no_condition: "状態未指定"
   offers:
     offers: "オファー"
+    offer_details: "オファーの詳細"
     no_offers: "まだオファーはありません"
     make_an_offer: "オファーを出す"
     quantity_offered: "提供数量"
@@ -67,6 +68,12 @@ ja:
     postage_modal_body: "寄付者として、この商品を団体へ発送する送料をご負担いただく必要があります。オファーを送信する前にご確認ください。"
     postage_modal_confirm: "理解しました"
     details: "詳細"
+    view_details: "オファーの詳細を見る"
+    tabs:
+      all: "すべて"
+      submitted: "提出済み"
+      shipped: "発送中"
+      awaiting_feedback: "フィードバック待ち"
   statuses:
     requests:
       active: "アクティブ"

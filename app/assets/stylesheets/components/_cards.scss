@@ -130,6 +130,7 @@
 }
 
 .km--card {
+  position: relative;
   background-color: var(--km-card-bg);
   border-radius: var(--km-radius);
   padding: var(--km-card-padding);
@@ -176,4 +177,12 @@
 .km--card-rejected {
   opacity: 0.6;
   filter: grayscale(0.3);
+}
+
+.km--card {
+  .km--btn,
+  .photo-gallery-thumb {
+    position: relative;
+    z-index: 2;
+  }
 }

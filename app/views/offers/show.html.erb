@@ -1,134 +1,100 @@
 <% content_for :title, t("offers.offer_details") %>
-<div class="container mt-5 mb-4">
-  <div class="mb-3">
-    <%= link_to t("navigation.back"), "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary" %>
-  </div>
-  <div class="row align-items-stretch g-4">
+<div class="container mt-3 mb-4">
+  <div class="row align-items-start g-4">
     <%# Left: Request info — mirrors requests/show.html.erb %>
     <div class="col-lg-5">
-      <div class="tall-card p-3 h-100">
+      <div class="km--card">
         <div class="row pt-2">
           <div class="col-8">
-            <h2><%= @request.title %></h2>
+            <h2 class="km--text-card-title"><%= @request.title %></h2>
           </div>
           <div class="col-4 text-center">
-            <h3>x<%= @request.quantity_remaining %></h3>
-            <div class="badge rounded-pill pill-<%= @request.urgency %>">
+            <h3 class="km--text-card-title mb-1">x<%= @request.quantity_remaining %></h3>
+            <div class="badge rounded-pill pill-<%= @request.urgency %> km--text-pill km--text-light">
               <%= t("urgencies.#{@request.urgency}") %>
             </div>
           </div>
         </div>
-        <div>
-          <p><i class="fa-solid fa-location-dot"></i> <%= t("regions.#{@charity.region}") %> - <%= t("prefectures.#{@charity.prefecture}") %></p>
+        <p class="km--text-card-content mb-3">
+          <i class="fa-solid fa-location-dot"></i>
+          <%= t("regions.#{@charity.region}") %> - <%= t("prefectures.#{@charity.prefecture}") %>
+        </p>
+        <div class="mb-3">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+          <div class="d-flex flex-wrap gap-2">
+            <% @request.acceptable_conditions.each do |cond| %>
+              <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
+            <% end %>
+          </div>
         </div>
-        <div>
-          <h5><%= t("navigation.condition") %>:</h5>
-          <% @request.acceptable_conditions.each do |cond| %>
-            <p class="mb-0"><%= t("conditions.#{cond}") %></p>
-          <% end %>
-          <br>
-        </div>
-        <div>
-          <h5><%= t("navigation.description") %>:</h5>
-          <p><%= @request.description %></p>
+        <div class="mb-3">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.description") %></p>
+          <p class="km--text-card-content mb-0"><%= @request.description %></p>
         </div>
       </div>
     </div>
     <%# Right: Offer detail %>
     <div class="col-lg-6 mx-3">
-      <div class="tall-card p-3 h-100" data-controller="photo-gallery">
-        <%# Photos %>
+      <div class="km--card">
         <div class="mb-3">
-          <div class="mb-2">
-            <% if @offer.photos.attached? %>
-              <%= image_tag @offer.photos.first,
-                    class: "img-fluid rounded w-100 photo-gallery-main",
-                    style: "max-height: 320px; object-fit: cover;",
-                    data: { "photo-gallery-target": "mainImage" } %>
-            <% else %>
-              <div class="offer-image-placeholder" data-photo-gallery-target="mainImage">
-                📷 <%= t("offers.no_image") %>
-              </div>
-            <% end %>
-          </div>
-          <% if @offer.photos.attached? && @offer.photos.count > 1 %>
-            <div class="d-flex gap-2 flex-wrap">
-              <% @offer.photos.each_with_index do |photo, index| %>
-                <%= image_tag photo,
-                      class: "rounded photo-gallery-thumb #{'photo-gallery-thumb-active' if index.zero?}",
-                      style: "width: 70px; height: 70px; object-fit: cover; cursor: pointer;",
-                      data: {
-                        "photo-gallery-target": "thumb",
-                        action: "click->photo-gallery#select",
-                        "photo-gallery-full-src-param": url_for(photo)
-                      } %>
-              <% end %>
-            </div>
-          <% end %>
+          <%= render "shared/photo_gallery", offer: @offer %>
         </div>
-        <hr>
-        <%# Offer info %>
-        <div class="row">
-          <div class="col-8">
-            <h4><%= @donor.display_name %></h4>
-          </div>
-          <div class="col-4 text-center">
-            <h3>x<%= @offer.quantity_offered %></h3>
-          </div>
+        <hr class="km--divider">
+        <div class="d-flex justify-content-between align-items-start mb-1">
+          <strong class="km--text-card-title"><%= @donor.display_name %></strong>
+          <span class="km--text-card-title mb-0">x<%= @offer.quantity_offered %></span>
         </div>
-        <p class="mb-1"><i class="fa-solid fa-location-dot"></i> <%= t("prefectures.#{@donor.prefecture}") if @donor.prefecture %></p>
-        <p class="mb-1"><strong><%= t("navigation.condition") %>:</strong> <%= t("conditions.#{@offer.condition}") %></p>
+        <p class="km--text-card-content mb-0">
+          <i class="fa-solid fa-location-dot"></i>
+          <%= t("prefectures.#{@donor.prefecture}") if @donor.prefecture %>
+        </p>
+        <p class="km--text-card-content mb-0">
+          <strong><%= t("navigation.condition") %>:</strong> <%= t("conditions.#{@offer.condition}") %>
+        </p>
         <% if @offer.message.present? %>
-          <p class="mb-1"><strong><%= t("offers.message") %>:</strong> <%= @offer.message %></p>
+          <p class="km--text-card-content mb-0"><strong><%= t("offers.message") %>:</strong> <%= @offer.message %></p>
         <% end %>
         <% if @offer.can_ship_by.present? %>
-          <p class="mb-1"><strong><%= t("offers.can_ship_by") %>:</strong> <%= @offer.can_ship_by.strftime("%b %-d") %></p>
+          <p class="km--text-card-content mb-0">
+            <strong><%= t("offers.can_ship_by") %>:</strong> <%= @offer.can_ship_by.strftime("%b %-d") %>
+          </p>
         <% end %>
         <% if @offer.estimated_arrival.present? %>
-          <p class="mb-1"><strong><%= t("statuses.arriving") %>:</strong> <%= @offer.estimated_arrival %></p>
+          <p class="km--text-card-content mb-0"><strong><%= t("statuses.donor.arriving") %>:</strong> <%= @offer.estimated_arrival %></p>
         <% end %>
         <% if @offer.tracking_number.present? %>
-          <p class="mb-1"><strong><%= t("statuses.tracking_info") %>:</strong> <%= @offer.tracking_number %></p>
+          <p class="km--text-card-content mb-0"><strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= @offer.tracking_number %></p>
         <% end %>
+        <h5 class="km--text-card-title mt-2"><%= t("offers.status") %>:</h5>
         <% if @offer.status == "submitted" %>
-          <div class="row">
-            <div class="col-lg-6">
-              <% if policy(@offer).approve? %>
-                <%= button_to t("buttons.approve_offer"), approve_offer_path(@offer), method: :patch, class: "btn btn-success" %>
-              <% end %>
-            </div>
-            <div class="col-lg-6">
-              <% if policy(@offer).reject? %>
-                <button type="button"
-                    class="btn btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#rejectOfferModal"
-                    data-reject-url="<%= reject_offer_path(@offer) %>">
-                  <%= t("buttons.reject_offer") %>
-                </button>
-              <% end %>
-            </div>
+          <div class="d-flex gap-2">
+            <% if policy(@offer).approve? %>
+              <%= button_to t("buttons.approve_offer"), approve_offer_path(@offer), method: :patch, class: "km--btn km--btn-primary" %>
+            <% end %>
+            <% if policy(@offer).reject? %>
+              <button type="button"
+                class="km--btn km--btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#rejectOfferModal"
+                data-reject-url="<%= reject_offer_path(@offer) %>">
+                <%= t("buttons.reject_offer") %>
+              </button>
+            <% end %>
           </div>
-        <% elsif @offer.status == "approved"%>
-          <p class="mb-0"> <%= t("statuses.charity.approved_message") %> </p>
+        <% elsif @offer.status == "approved" %>
+          <p class="km--text-card-content mb-0"><%= t("statuses.charity.approved_message") %></p>
         <% elsif @offer.status == "shipped" %>
-          <p class="mb-0">
-            <strong> <%= t("statuses.arriving") %>: </strong> <%= @offer.estimated_arrival ? @offer.estimated_arrival : "?" %>
-          </p>
-          <p class="mb-0">
-            <strong> <%= t("statuses.tracking_info") %>: </strong> <%= @offer.tracking_number != "" ? @offer.tracking_number : "?" %>
-          </p>
-          <%= button_to t("statuses.donor.received"), mark_received_offer_path(@offer), method: :patch, class: "btn btn-danger" %>
+          <%= button_to t("statuses.donor.received"), mark_received_offer_path(@offer), method: :patch, class: "km--btn km--btn-danger" %>
         <% elsif @offer.status == "rejected" %>
-          <p class="mb-0"> <%= t("statuses.charity.rejected_message") %> </p>
+          <p class="km--text-card-content mb-0"><%= t("statuses.charity.rejected_message") %></p>
         <% elsif @offer.status == "received" %>
           <% if current_user.charity? %>
-            <p class="mb-0"> <%= t("statuses.charity.received_message") %> </p>
-            <%= link_to t("buttons.give_feedback", default: "Give Feedback"),
+            <p class="km--text-card-content mb-0"><%= t("statuses.charity.received_message") %></p>
+            <%= link_to t("buttons.give_feedback"),
                   new_request_feedback_path(@request, offer_id: @offer.id),
-                  class: "btn btn-primary mt-2" %>
+                  class: "km--btn km--btn-primary mt-2" %>
           <% else %>
-            <p class="mb-0"> <%= t("statuses.donor.received_message") %> </p>
+            <p class="km--text-card-content mb-0"><%= t("statuses.donor.received_message") %></p>
           <% end %>
         <% end %>
       </div>

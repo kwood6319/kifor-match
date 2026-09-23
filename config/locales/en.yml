@@ -76,6 +76,7 @@ en:
     no_condition: "No condition provided"
   offers:
     offers: "Offers"
+    offer_details: "Offer Details"
     no_offers: "No offers yet"
     make_an_offer: "Make an Offer"
     quantity_offered: "Quantity offered"
@@ -96,6 +97,12 @@ en:
     postage_modal_body: "As the donor, you are responsible for covering the cost of shipping this item to the charity. Please factor this into your decision before submitting your offer."
     postage_modal_confirm: "I understand"
     details: "Details"
+    view_details: "View offer details"
+    tabs:
+      all: "All"
+      submitted: "Submitted"
+      shipped: "Shipped"
+      awaiting_feedback: "Awaiting Feedback"
   statuses:
     requests:
       active: "Active"

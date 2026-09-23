@@ -86,37 +86,39 @@
           <% end %>
         </div>
       </div>
-      <%# Similar requests %>
-      <h4 class="km--text-card-title mb-0"><%= t("navigation.similar_requests") %>:</h4>
-      <% if @similar_requests.present? %>
-        <% @similar_requests.each do |similar_request| %>
-          <%= link_to request_path(similar_request), class: "text-decoration-none km--text-dark" do %>
-            <div class="km--card">
-              <div class="row">
-                <div class="col-8">
-                  <p class="km--text-card-title mb-0"><%= similar_request.title %></p>
-                  <p class="km--text-card-subtitle km--text-soft mb-2">
-                    <%= t("prefectures.#{similar_request.charity.prefecture}") %>
-                  </p>
+      <%# Similar requests — donor-only, a charity has nothing to donate %>
+      <% unless current_user.charity? %>
+        <h4 class="km--text-card-title mb-0"><%= t("navigation.similar_requests") %>:</h4>
+        <% if @similar_requests.present? %>
+          <% @similar_requests.each do |similar_request| %>
+            <%= link_to request_path(similar_request), class: "text-decoration-none km--text-dark" do %>
+              <div class="km--card">
+                <div class="row">
+                  <div class="col-8">
+                    <p class="km--text-card-title mb-0"><%= similar_request.title %></p>
+                    <p class="km--text-card-subtitle km--text-soft mb-2">
+                      <%= t("prefectures.#{similar_request.charity.prefecture}") %>
+                    </p>
+                  </div>
+                  <div class="col-4 text-center">
+                    <p class="km--text-card-title mb-1">x<%= similar_request.quantity_remaining %></p>
+                    <span class="badge rounded-pill pill-<%= similar_request.urgency %> km--text-pill km--text-light">
+                      <%= t("urgencies.#{similar_request.urgency}") %>
+                    </span>
+                  </div>
                 </div>
-                <div class="col-4 text-center">
-                  <p class="km--text-card-title mb-1">x<%= similar_request.quantity_remaining %></p>
-                  <span class="badge rounded-pill pill-<%= similar_request.urgency %> km--text-pill km--text-light">
-                    <%= t("urgencies.#{similar_request.urgency}") %>
-                  </span>
+                <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+                <div class="d-flex flex-wrap gap-2">
+                  <% similar_request.acceptable_conditions.each do |cond| %>
+                    <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
+                  <% end %>
                 </div>
               </div>
-              <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
-              <div class="d-flex flex-wrap gap-2">
-                <% similar_request.acceptable_conditions.each do |cond| %>
-                  <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
-                <% end %>
-              </div>
-            </div>
+            <% end %>
           <% end %>
+        <% else %>
+          <p class="km--text-soft mb-0"><%= t("navigation.no_similar_requests") %></p>
         <% end %>
-      <% else %>
-        <p class="km--text-soft mb-0"><%= t("navigation.no_similar_requests") %></p>
       <% end %>
     </div>
     <%# Right column: offer form / existing offer / charity view %>
