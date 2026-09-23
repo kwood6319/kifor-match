@@ -187,6 +187,11 @@
   filter: grayscale(0.3);
 }
 
+.km--card-danger {
+  background-color: #FBEAEA;
+  border: 1px solid $km--danger-pink;
+}
+
 .km--card {
   .km--btn,
   .photo-gallery-thumb {
