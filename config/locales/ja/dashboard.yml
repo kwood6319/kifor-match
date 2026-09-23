@@ -7,3 +7,7 @@ ja:
     offers_needing_feedback: "フィードバック待ち"
     pending_actions: "件、対応が必要です"
     status: "状態"
+    flagged: "フラグ付き"
+    no_unapproved_charities: "承認待ちのチャリティーはありません"
+    no_unapproved_donors: "承認待ちのドナーはいません"
+    flagged_placeholder: "フラグが付いたドナーやチャリティーがここに表示されます"
