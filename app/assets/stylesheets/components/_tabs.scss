@@ -50,3 +50,56 @@
 .km--label-space-only {
   opacity: 0;
 }
+
+.km--nav-tabs {
+  border-bottom: 1px solid var(--km-divider-color);
+  flex-wrap: nowrap;
+
+  .nav-item {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .km--nav-link {
+    width: 100%;
+    color: $km--soft;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+
+    i {
+      margin-right: 0.25rem;
+    }
+
+    &:hover:not(.active) {
+      color: $km--dark;
+    }
+
+    &.active {
+      color: $km--primary-pink;
+      font-weight: 600;
+      border-bottom-color: $km--primary-pink;
+    }
+  }
+
+  &.km--nav-tabs-page {
+    flex-wrap: wrap;
+
+    .nav-item {
+      flex: 0 0 auto;
+    }
+
+    .km--nav-link {
+      width: auto;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+}

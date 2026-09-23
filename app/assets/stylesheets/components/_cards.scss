@@ -113,6 +113,11 @@
   --km-card-padding: 1rem;
 }
 
+.km--divider {
+  border: none;
+  border-top: 1px solid var(--km-divider-color);
+}
+
 .km--card-grid {
   display: grid;
   gap: var(--km-gap);

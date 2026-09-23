@@ -1,38 +1,44 @@
 <%# app/views/charities/dashboards/_request_card.html.erb %>
-<div class="request-card card h-100">
-  <div class="request-card-infos">
-    <div class="row mb-2">
-      <div class="col-8">
-        <h4><strong><%= request.title %></strong></h4>
-      </div>
-      <div class="col-4 text-center">
-        <% fulfilled = request.quantity_needed - request.quantity_remaining %>
-        <h4 class="mb-0"><%= fulfilled %> / <%= request.quantity_needed %></h4>
+<%= link_to request_path(request), class: "text-decoration-none km--text-dark", data: { turbo_frame: "_top" } do %>
+  <div class="km--card h-100">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <span class="km--text-card-title"><%= request.title %></span>
+      <div class="text-center flex-shrink-0 ms-2" style="width: 70px;">
+        <div class="km--text-card-title mb-0">x<%= request.quantity_remaining %></div>
         <% if local_assigns[:archived] %>
-          <div class="badge rounded-pill text-bg-secondary"><%= t("statuses.requests.archived") %></div>
+          <span class="badge rounded-pill text-bg-secondary km--text-pill">
+            <%= t("statuses.requests.archived") %>
+          </span>
         <% else %>
-          <div class="badge rounded-pill pill-<%= request.urgency %>"><%= t("urgencies.#{request.urgency}") %></div>
+          <span class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light">
+            <%= t("urgencies.#{request.urgency}") %>
+          </span>
         <% end %>
+        <div class="progress km--progress km--progress-sm mt-2" role="progressbar"
+             aria-valuenow="<%= request.quantity_fulfilled %>" aria-valuemin="0" aria-valuemax="<%= request.quantity_needed %>">
+          <div class="progress-bar km--progress-bar" style="width: <%= request.fulfillment_percent %>%;"></div>
+        </div>
       </div>
     </div>
-    <% request.category.each do |cat| %>
-      <span class="badge text-bg-secondary mb-2"><%= t("categories.#{cat}") %></span>
+    <div class="mb-2">
+      <% request.category.each do |cat| %>
+        <span class="km--text-card-category km--text-soft me-2"><%= t("categories.#{cat}") %></span>
+      <% end %>
+    </div>
+    <div class="km--text-card-content mb-1">
+      <i class="fa-solid fa-box-open me-1"></i>
+      <% request.acceptable_conditions.each do |condition| %>
+        <span class="badge text-bg-info me-1"><%= t("conditions.#{condition}") %></span>
+      <% end %>
+    </div>
+    <% unless local_assigns[:archived] %>
+      <% pending_actions = request.offers.where(status: %w[submitted shipped]).count %>
+      <% if pending_actions.positive? %>
+        <div class="km--text-card-content">
+          <i class="fa-solid fa-bell me-1"></i>
+          <strong><%= pending_actions %></strong> <%= t("dashboard.pending_actions") %>
+        </div>
+      <% end %>
     <% end %>
-    <br>
-    <i class="fa-solid fa-box-open"></i>
-    <% request.acceptable_conditions.each do |condition| %>
-      <span class="badge text-bg-info mb-2"><%= t("conditions.#{condition}") %></span>
-    <% end %>
-    <br>
   </div>
-  <%= link_to t("buttons.view_request"), request_path(request), class: "btn btn-secondary mt-auto", data: { turbo_frame: "_top" } %>
-  <% unless local_assigns[:archived] %>
-    <% pending_actions = request.offers.where(status: %w[submitted shipped]).count %>
-    <% if pending_actions.positive? %>
-      <div class="request-card-notification">
-        <i class="fa-solid fa-bell"></i>
-        <span><%= pending_actions %></span>
-      </div>
-    <% end %>
-  <% end %>
-</div>
+<% end %>

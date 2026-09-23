@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
     namespace :charities do
       resource :dashboard, only: [:show]
+      resources :archived_requests, only: [:index]
     end
 
     namespace :donors do
