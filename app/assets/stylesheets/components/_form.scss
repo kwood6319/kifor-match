@@ -92,7 +92,34 @@
 
   textarea.km--form-control {
     min-height: 8rem;
+    resize: none;
   }
+
+  // Devise's shared links partial (Sign up, Forgot your password?, etc.)
+  // renders each link in its own <p> with no styling of its own, which
+  // left them cramped together in the default browser blue.
+  p {
+    margin-bottom: 0.75rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    color: $km--primary-pink;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      color: $km--danger-pink;
+      text-decoration: underline;
+    }
+  }
+}
+
+.km--form-card-narrow {
+  max-width: 32rem;
 }
 
 @media (max-width: 575px) {
