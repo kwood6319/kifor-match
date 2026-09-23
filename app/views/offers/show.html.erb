@@ -127,8 +127,8 @@
             <%= link_to t("buttons.give_feedback", default: "Give Feedback"),
                   new_request_feedback_path(@request, offer_id: @offer.id),
                   class: "btn btn-primary mt-2" %>
-            <% else %>
-              <p class="mb-0"> <%= t("statuses.donor.received_message") %> </p>
+          <% else %>
+            <p class="mb-0"> <%= t("statuses.donor.received_message") %> </p>
           <% end %>
         <% end %>
       </div>

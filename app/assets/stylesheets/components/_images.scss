@@ -77,3 +77,60 @@
   opacity: 1;
   border-color: var(--km-thumb-active-border);
 }
+.km--photo-upload-dropzone {
+  border: 2px dashed var(--km-placeholder-border, #{$km--gray});
+  border-radius: var(--km-radius);
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--km-placeholder-text, #{$km--gray});
+  font-size: 1.5rem;
+  background-color: $km--light;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+
+  &.is-dragover {
+    border-color: var(--km-thumb-active-border, #{$km--primary-pink});
+    background-color: rgba($km--primary-pink, 0.05);
+  }
+}
+
+.km--photo-upload-preview-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.km--photo-upload-thumb {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: var(--km-radius);
+  overflow: hidden;
+  background-color: $km--light;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.km--photo-upload-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 0.65rem;
+  cursor: pointer;
+  padding: 0;
+}
