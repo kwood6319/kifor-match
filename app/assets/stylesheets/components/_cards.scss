@@ -130,10 +130,6 @@
 }
 
 .km--card {
-  // Without this, a .stretched-link inside the card (e.g. a whole-card
-  // link) has no positioned ancestor to size against, so its
-  // absolutely-positioned overlay escapes the card and covers whatever
-  // sits above it on the page.
   position: relative;
   background-color: var(--km-card-bg);
   border-radius: var(--km-radius);
@@ -189,4 +185,12 @@
 .km--card-rejected {
   opacity: 0.6;
   filter: grayscale(0.3);
+}
+
+.km--card {
+  .km--btn,
+  .photo-gallery-thumb {
+    position: relative;
+    z-index: 2;
+  }
 }
