@@ -159,14 +159,31 @@
     pointer-events: none;
   }
 
+  // The explicit :hover background-color repeats here (rather than
+  // just relying on cascade order) because simple_form always adds a
+  // plain Bootstrap .btn class alongside ours. Bootstrap's own
+  // `.btn:hover` sets background-color from a --bs-btn-hover-bg custom
+  // property that's only ever defined by a real .btn-* variant we don't
+  // use - so it resolves to nothing, and an unresolved var() with no
+  // fallback makes background-color reset to transparent. `:hover` gives
+  // that rule higher specificity than our plain class, so it wins unless
+  // we match it here.
   &-primary {
     background-color: var(--km-btn-primary-bg);
     color: var(--km-text-light);
+
+    &:hover {
+      background-color: var(--km-btn-primary-bg);
+    }
   }
 
   &-danger {
     background-color: var(--km-btn-danger-bg);
     color: var(--km-text-light);
+
+    &:hover {
+      background-color: var(--km-btn-danger-bg);
+    }
   }
 
   &-outline {
