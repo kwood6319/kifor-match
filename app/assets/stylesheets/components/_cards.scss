@@ -138,6 +138,14 @@
   flex-direction: column;
   overflow: hidden;
 
+  // Same stretched-link problem as .offer-card .btn above, but for cards
+  // migrated to the km-- design system.
+  .km--btn,
+  .photo-gallery-thumb {
+    position: relative;
+    z-index: 2;
+  }
+
   &-list {
     height: 100%;
 

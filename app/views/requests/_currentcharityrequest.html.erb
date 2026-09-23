@@ -1,3 +1,4 @@
+<% read_only = local_assigns.fetch(:read_only, false) %>
 <h2 class="km--text-card-title mb-3"><%= t("offers.offers") %></h2>
 <% if @offers.empty? %>
   <p class="km--text-soft"><%= t("offers.no_offers") %></p>
@@ -31,7 +32,7 @@
   <div class="tab-content">
     <div class="tab-pane fade show active" id="charity-offers-all">
       <% @offers.each do |offer| %>
-        <%= render "requests/charity_offer_card", offer: offer, parent_request: @request %>
+        <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
       <% end %>
     </div>
     <div class="tab-pane fade" id="charity-offers-submitted">
@@ -39,7 +40,7 @@
         <p class="km--text-soft"><%= t("offers.no_offers") %></p>
       <% else %>
         <% submitted_offers.each do |offer| %>
-          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request %>
+          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
         <% end %>
       <% end %>
     </div>
@@ -48,7 +49,7 @@
         <p class="km--text-soft"><%= t("offers.no_offers") %></p>
       <% else %>
         <% shipped_offers.each do |offer| %>
-          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request %>
+          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
         <% end %>
       <% end %>
     </div>
@@ -57,7 +58,7 @@
         <p class="km--text-soft"><%= t("offers.no_offers") %></p>
       <% else %>
         <% awaiting_feedback_offers.each do |offer| %>
-          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request %>
+          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
         <% end %>
       <% end %>
     </div>

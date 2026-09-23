@@ -1,0 +1,101 @@
+<div class="container mt-3 mb-4">
+  <div class="row align-items-stretch g-4">
+    <%# Left column: charity details + stats %>
+    <div class="col-lg-5 d-flex flex-column gap-4">
+      <%# Charity details card %>
+      <div class="km--card">
+        <div class="row pt-2">
+          <div class="col-8">
+            <h2 class="km--text-card-title"><%= @charity.org_name %></h2>
+            <p class="km--text-card-subtitle km--text-soft mb-0">
+              <%= t("regions.#{@charity.region}") %>
+            </p>
+          </div>
+          <div class="col-4 text-center">
+            <% if @charity.approved? %>
+              <i class="fa-solid fa-circle-check text-success fa-lg"></i>
+            <% else %>
+              <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap">
+                <%= t("statuses.charities.unapproved") %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+        <div class="mb-3 mt-3">
+          <p class="km--text-card-category km--text-soft mb-2">
+            <i class="fa-solid fa-envelope me-1"></i> <%= @charity.user.email %>
+          </p>
+        </div>
+        <% if @charity.description.present? %>
+          <div class="mb-3">
+            <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.description") %></p>
+            <p class="km--text-card-content mb-0"><%= @charity.description %></p>
+          </div>
+        <% end %>
+        <% if @charity.shipping_address.present? %>
+          <div class="mb-3">
+            <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.address") %></p>
+            <p class="km--text-card-content mb-0"><%= @charity.shipping_address %></p>
+          </div>
+        <% end %>
+      </div>
+      <%# Charity stats card %>
+      <div class="km--card">
+        <h4 class="km--text-card-title mb-3"><%= t("charities.stats") %></h4>
+        <div class="d-flex justify-content-between mb-2">
+          <span class="km--text-card-content km--text-soft"><%= t("charities.created_at") %></span>
+          <span class="km--text-card-content"><%= @charity.created_at.strftime("%b %-d, %Y") %></span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span class="km--text-card-content km--text-soft"><%= t("charities.approved_at") %></span>
+          <span class="km--text-card-content">
+            <%# No dedicated approved_at column, so updated_at is our best proxy for when approval happened. %>
+            <%= @charity.approved? ? @charity.updated_at.strftime("%b %-d, %Y") : t("charities.not_approved") %>
+          </span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span class="km--text-card-content km--text-soft"><%= t("charities.total_requests") %></span>
+          <span class="km--text-card-content"><%= @total_requests_count %></span>
+        </div>
+        <div class="d-flex justify-content-between mb-0">
+          <span class="km--text-card-content km--text-soft"><%= t("charities.completed_requests") %></span>
+          <span class="km--text-card-content"><%= @completed_requests_count %></span>
+        </div>
+      </div>
+    </div>
+    <%# Right column: charity's current requests %>
+    <div class="col-lg-6 mx-3">
+      <h4 class="km--text-card-title mb-3"><%= t("charities.current_requests") %></h4>
+      <% if @requests.present? %>
+        <% @requests.each do |request| %>
+          <%= link_to request_path(request), class: "text-decoration-none km--text-dark" do %>
+            <div class="km--card mb-3">
+              <div class="row">
+                <div class="col-8">
+                  <p class="km--text-card-title mb-0"><%= request.title %></p>
+                  <p class="km--text-card-subtitle km--text-soft mb-2">
+                    <%= t("prefectures.#{@charity.prefecture}") %>
+                  </p>
+                </div>
+                <div class="col-4 text-center">
+                  <p class="km--text-card-title mb-1">x<%= request.quantity_remaining %></p>
+                  <span class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light">
+                    <%= t("urgencies.#{request.urgency}") %>
+                  </span>
+                </div>
+              </div>
+              <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+              <div class="d-flex flex-wrap gap-2">
+                <% request.acceptable_conditions.each do |cond| %>
+                  <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <p class="km--text-soft mb-0"><%= t("charities.no_current_requests") %></p>
+      <% end %>
+    </div>
+  </div>
+</div>
