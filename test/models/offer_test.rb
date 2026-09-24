@@ -16,6 +16,15 @@ class OfferTest < ActiveSupport::TestCase
     assert_includes offer.errors[:quantity_offered], "Cannot exceed the remaining quantity needed (3)"
   end
 
+  test "editing an approved offer resubmits it for review" do
+    request = create_request(quantity_needed: 10)
+    offer = create_offer(request, status: "approved")
+
+    offer.update!(quantity_offered: 2)
+
+    assert_equal "submitted", offer.status
+  end
+
   private
 
   def create_charity
