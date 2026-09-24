@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
     namespace :charities do
       resource :dashboard, only: [:show]
+      resources :archived_requests, only: [:index]
     end
 
     namespace :donors do
@@ -54,7 +55,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :charities, only: [:index, :destroy] do
+    resources :charities, only: [:index, :show, :destroy] do
       member do
         patch :approve
         patch :activate
@@ -62,7 +63,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :donors, only: [:index, :destroy] do
+    resources :donors, only: [:index, :show, :destroy] do
       member do
         patch :approve
         patch :activate

@@ -9,6 +9,7 @@ ja:
     Shikoku: "四国"
     Kyushu: "九州"
     Okinawa: "沖縄"
+    all: "すべての地域"
   prefectures:
     Aomori: "青森"
     Iwate: "岩手"

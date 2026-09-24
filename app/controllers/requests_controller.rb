@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   before_action :set_request, only: %i[show edit update archive destroy]
-  before_action :show_back_button, only: %i[index]
+  before_action :show_back_button, only: %i[index show]
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries
@@ -49,6 +49,8 @@ class RequestsController < ApplicationController
     @first_offer = @donor.nil? || @donor.offers.none?
     @my_offer = (@offers.find_by(donor: @donor) if @donor)
     @editing_offer = @offers.find_by(id: params[:edit_offer])
+
+    # KT TO DO: Add "similar requests logic (2 random requests with same name / category)"
   end
 
   def new

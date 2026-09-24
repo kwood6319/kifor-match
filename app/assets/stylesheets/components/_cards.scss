@@ -113,6 +113,11 @@
   --km-card-padding: 1rem;
 }
 
+.km--divider {
+  border: none;
+  border-top: 1px solid var(--km-divider-color);
+}
+
 .km--card-grid {
   display: grid;
   gap: var(--km-gap);
@@ -125,12 +130,21 @@
 }
 
 .km--card {
+  position: relative;
   background-color: var(--km-card-bg);
   border-radius: var(--km-radius);
   padding: var(--km-card-padding);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  // Same stretched-link problem as .offer-card .btn above, but for cards
+  // migrated to the km-- design system.
+  .km--btn,
+  .photo-gallery-thumb {
+    position: relative;
+    z-index: 2;
+  }
 
   &-list {
     height: 100%;
@@ -165,5 +179,23 @@
       flex: 1;
       padding: var(--km-card-padding);
     }
+  }
+}
+
+.km--card-rejected {
+  opacity: 0.6;
+  filter: grayscale(0.3);
+}
+
+.km--card-danger {
+  background-color: #FBEAEA;
+  border: 1px solid $km--danger-pink;
+}
+
+.km--card {
+  .km--btn,
+  .photo-gallery-thumb {
+    position: relative;
+    z-index: 2;
   }
 }

@@ -6,6 +6,10 @@ class Offer < ApplicationRecord
 
   before_update :resubmit_if_amended, if: :donor_amendment?
 
+  attr_accessor :ship_by_day, :ship_by_month_year
+
+  before_validation :assemble_can_ship_by
+
   STATUSES = %w[
     submitted
     approved
@@ -84,6 +88,28 @@ class Offer < ApplicationRecord
     return if quantity_offered <= allowed
 
     errors.add(:quantity_offered, :exceeds_remaining, max: allowed)
+  end
+
+  def assemble_can_ship_by
+    return if ship_by_day.blank? || ship_by_month_year.blank?
+
+    year, month = ship_by_month_year.split("-").map(&:to_i)
+
+    begin
+      date = Date.new(year, month, ship_by_day.to_i)
+    rescue ArgumentError
+      # Date::Error is a subclass of ArgumentError, so rescuing
+      # ArgumentError alone covers both without shadowing.
+      errors.add(:can_ship_by, :invalid_date, message: I18n.t("offers.errors.invalid_ship_date"))
+      return
+    end
+
+    if date < Date.current
+      errors.add(:can_ship_by, :in_the_past, message: I18n.t("offers.errors.ship_date_in_past"))
+      return
+    end
+
+    self.can_ship_by = date
   end
 
   def resync_request_quantity

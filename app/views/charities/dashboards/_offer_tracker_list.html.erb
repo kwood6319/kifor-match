@@ -1,0 +1,29 @@
+<% if offers.any? %>
+  <div class="km--card-list">
+    <% offers.each do |offer| %>
+      <%= link_to offer_path(offer), class: "text-decoration-none km--text-dark km--card-list-item d-block" do %>
+        <div class="d-flex justify-content-between align-items-start">
+          <strong class="km--text-card-subtitle"><%= offer.request.title %></strong>
+          <div class="text-nowrap">
+            <span class="badge rounded-pill pill-urgent km--text-pill km--text-light"><%= time_ago_badge(offer.updated_at) %></span>
+            <span class="ms-1 km--text-soft km--text-card-content">x<%= offer.quantity_offered %></span>
+          </div>
+        </div>
+        <p class="km--text-card-content mb-1"><%= offer.donor.display_name %></p>
+        <p class="km--text-card-content mb-1">
+          <strong><%= t("dashboard.condition") %>:</strong> <%= t("conditions.#{offer.condition}") %>
+        </p>
+        <% if offer.can_ship_by.present? %>
+          <p class="km--text-card-content mb-1">
+            <strong><%= t("dashboard.can_ship_by") %>:</strong> <%= offer.can_ship_by.strftime("%b %-d") %>
+          </p>
+        <% end %>
+        <p class="km--text-card-content mb-0">
+          <strong><%= t("dashboard.status") %>:</strong> <%= t("statuses.#{offer.status}", default: offer.status) %>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <p class="km--text-soft mb-0"><%= t("dashboard.no_pending_offers") %></p>
+<% end %>

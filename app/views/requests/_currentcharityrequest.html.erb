@@ -1,82 +1,66 @@
-<h2> <%= t("offers.offers") %> </h2>
+<% read_only = local_assigns.fetch(:read_only, false) %>
+<h2 class="km--text-card-title mb-3"><%= t("offers.offers") %></h2>
 <% if @offers.empty? %>
-  <%= t("offers.no_offers") %>
+  <p class="km--text-soft"><%= t("offers.no_offers") %></p>
 <% else %>
-  <% @offers.each do |offer| %>
-    <div class="small-card offer-card p-2 mb-3
-              <%= 'rejected-offer' if offer.status == 'rejected' %>">
-      <%= link_to "", offer_path(offer), class: "stretched-link", aria: { label: t("offers.view_details") } %>
-      <div class="row">
-        <div class="col-5">
-          <% if offer.photos.attached? %>
-            <div class="position-relative d-inline-block">
-              <%= image_tag offer.photos.first, class: "img-fluid rounded" %>
-              <% remaining = offer.photos.count - 1 %>
-              <% if remaining > 0 %>
-                <span class="badge bg-dark bg-opacity-75 position-absolute bottom-0 end-0 m-2 fs-6">
-                  +<%= remaining %>
-                </span>
-              <% end %>
-            </div>
-          <% else %>
-            <div class="offer-image-placeholder">
-              📷 <%= t("offers.no_image") %>
-            </div>
-          <% end %>
-        </div>
-        <div class="col-7">
-          <div class="row">
-            <div class="col-9">
-              <h3> <%= offer.donor.display_name %> </h3>
-            </div>
-            <div class="col-3">
-              <h3> <%= offer.quantity_offered %> </h3>
-            </div>
-          </div>
-          <p class="mb-0"> <i class="fa-solid fa-location-dot"></i> <%= t("prefectures.#{offer.donor.prefecture}") if offer.donor.prefecture %> </p>
-          <p class="mb-0"> <strong> <%= t("navigation.condition") %>: </strong> <%= t("conditions.#{offer.condition}") %> </p>
-          <p class="mb-0"> <strong> <%= t("offers.can_ship_by") %></strong> <%= offer.can_ship_by ? offer.can_ship_by.strftime("%b %e") : "N/A" %> </p>
-          <p class="mb-0"> <strong> <%= t("offers.message") %>: </strong> <%= offer.message %> </p>
-          <h5 class="mt-2"> <%= t("offers.status") %>: </h5>
-          <% if offer.status == "submitted" %>
-            <div class="row">
-              <div class="col-lg-6">
-                <% if policy(offer).approve? %>
-                  <%= button_to t("buttons.approve_offer"), approve_offer_path(offer), method: :patch, class: "btn btn-success" %>
-                <% end %>
-              </div>
-              <div class="col-lg-6">
-                <% if policy(offer).reject? %>
-                  <button type="button"
-                    class="btn btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#rejectOfferModal"
-                    data-reject-url="<%= reject_offer_path(offer) %>">
-                    <%= t("buttons.reject_offer") %>
-                  </button>
-                <% end %>
-              </div>
-            </div>
-          <% elsif offer.status == "approved"%>
-            <p class="mb-0"> <%= t("statuses.charity.approved_message") %> </p>
-          <% elsif offer.status == "shipped" %>
-            <p class="mb-0">
-              <strong> <%= t("statuses.donor.arriving") %>: </strong> <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %>
-            </p>
-            <p class="mb-0">
-              <strong> <%= t("statuses.donor.tracking_info") %>: </strong> <%= offer.tracking_number != "" ? offer.tracking_number : "?" %>
-            </p>
-            <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "btn btn-danger" %>
-          <% elsif offer.status == "rejected" %>
-            <p class="mb-0"> <%= t("statuses.charity.rejected_message") %> </p>
-          <% elsif offer.status == "received" %>
-            <p class="mb-0"> <%= t("statuses.charity.received_message") %> </p>
-            <%= link_to t("buttons.give_feedback"),
-                  new_request_feedback_path(@request, offer_id: offer.id),
-                  class: "btn btn-primary mt-2" %>
-          <% end %>
-        </div>
-      </div>
+  <% submitted_offers = @offers.select { |offer| offer.status == "submitted" } %>
+  <% shipped_offers = @offers.select { |offer| offer.status == "shipped" } %>
+  <% awaiting_feedback_offers = @offers.select { |offer| offer.status == "received" } %>
+
+  <ul class="nav nav-tabs km--nav-tabs km--nav-tabs-page mb-3" id="charity-offers-tabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link km--nav-link active" data-bs-toggle="pill" data-bs-target="#charity-offers-all" type="button">
+        <%= t("offers.tabs.all") %>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#charity-offers-submitted" type="button">
+        <%= t("offers.tabs.submitted") %>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#charity-offers-shipped" type="button">
+        <%= t("offers.tabs.shipped") %>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#charity-offers-feedback" type="button">
+        <%= t("offers.tabs.awaiting_feedback") %>
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="charity-offers-all">
+      <% @offers.each do |offer| %>
+        <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
+      <% end %>
     </div>
-  <% end %>
+    <div class="tab-pane fade" id="charity-offers-submitted">
+      <% if submitted_offers.empty? %>
+        <p class="km--text-soft"><%= t("offers.no_offers") %></p>
+      <% else %>
+        <% submitted_offers.each do |offer| %>
+          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="tab-pane fade" id="charity-offers-shipped">
+      <% if shipped_offers.empty? %>
+        <p class="km--text-soft"><%= t("offers.no_offers") %></p>
+      <% else %>
+        <% shipped_offers.each do |offer| %>
+          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="tab-pane fade" id="charity-offers-feedback">
+      <% if awaiting_feedback_offers.empty? %>
+        <p class="km--text-soft"><%= t("offers.no_offers") %></p>
+      <% else %>
+        <% awaiting_feedback_offers.each do |offer| %>
+          <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 <% end %>
