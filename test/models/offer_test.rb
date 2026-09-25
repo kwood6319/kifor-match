@@ -38,6 +38,18 @@ class OfferTest < ActiveSupport::TestCase
     assert_equal offer, notification.offer
   end
 
+  test "active is false only for terminal statuses" do
+    request = create_request(quantity_needed: 5)
+
+    submitted_offer = create_offer(request, status: "submitted")
+    rejected_offer = create_offer(request, status: "rejected")
+    completed_offer = create_offer(request, status: "completed")
+
+    assert submitted_offer.active
+    assert_not rejected_offer.active
+    assert_not completed_offer.active
+  end
+
   private
 
   def create_charity
