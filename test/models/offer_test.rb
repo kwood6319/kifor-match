@@ -25,6 +25,19 @@ class OfferTest < ActiveSupport::TestCase
     assert_equal "submitted", offer.status
   end
 
+  test "completing an offer creates a completion notification for the donor" do
+    request = create_request(quantity_needed: 5)
+    offer = create_offer(request, status: "approved")
+
+    assert_difference "OfferCompletedNotification.count", 1 do
+      offer.update!(status: "completed")
+    end
+
+    notification = OfferCompletedNotification.last
+    assert_equal offer.donor, notification.recipient
+    assert_equal offer, notification.offer
+  end
+
   private
 
   def create_charity
