@@ -11,7 +11,7 @@ class SettingsController < ApplicationController
   def update
     if current_user.donor?
       if current_user.donor.update(donor_params)
-        redirect_to settings_path, notice: t("settings.profile_updated")
+        redirect_to settings_path(tab: params[:tab].presence), notice: t("settings.profile_updated")
       else
         @donor = current_user.donor
         @has_shipped_offers = charity_has_shipped_offers?
@@ -19,7 +19,7 @@ class SettingsController < ApplicationController
       end
     elsif current_user.charity?
       if current_user.charity.update(charity_params)
-        redirect_to settings_path, notice: t("settings.profile_updated")
+        redirect_to settings_path(tab: params[:tab].presence), notice: t("settings.profile_updated")
       else
         @charity = current_user.charity
         @has_shipped_offers = charity_has_shipped_offers?
