@@ -17,8 +17,8 @@ puts "----------------------------------------------"
 puts "Creating users..."
 
 USERS = [
-  { key: :user1, role: 1, email: "tokyo-shelter@demo.org" },
-  { key: :user2, role: 1, email: "osaka-food@demo.org" },
+  { key: :user1, role: 1, email: "tokyo-shelter@demo.org", locale: "en" },
+  { key: :user2, role: 1, email: "osaka-food@demo.org", locale: "ja" },
   { key: :user3, role: 1, email: "kanazawa-community@demo.org" },
   { key: :user4, role: 0, email: "sam@donor.com", locale: "en" },
   { key: :user5, role: 0, email: "hana@donor.com", locale: "ja" },
@@ -176,7 +176,7 @@ REQUESTS = [
     title: "School backpacks", condition: "used_good", description: "Reusable backpacks for school-age children",
     quantity_needed: 14, urgency: "medium" },
   { key: :request22, charity: :charity1, category: ["hygiene"], subcategory: [],
-    title: "Soap and toiletries", condition: "new", description: "Fully fulfilled by a single donor, then archived",
+    title: "Soap and toiletries", condition: "new", description: "Bar soap, shampoo and toothpaste for residents",
     quantity_needed: 10, urgency: "medium", status: "archived" },
   # Long titles, to check how cards and headings wrap
   { key: :request23, charity: :charity5, category: ["clothes"], subcategory: ["childrens"],
