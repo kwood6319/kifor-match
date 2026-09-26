@@ -3,10 +3,11 @@
   <div class="km--card h-100">
     <div class="d-flex justify-content-between align-items-start mb-2">
       <span class="km--text-card-title"><%= request.title %></span>
-      <div class="text-center flex-shrink-0 ms-2" style="width: 70px;">
-        <div class="km--text-card-title mb-0"><%= quantity_label(request.quantity_remaining) %></div>
+      <div class="text-center flex-shrink-0 ms-2" style="min-width: 70px;">
+        <%# Archived requests show what was asked for, active ones what is still needed %>
+        <div class="km--text-card-title mb-0"><%= quantity_label(local_assigns[:archived] ? request.quantity_needed : request.quantity_remaining) %></div>
         <% if local_assigns[:archived] %>
-          <span class="badge rounded-pill text-bg-secondary km--text-pill">
+          <span class="badge rounded-pill text-bg-secondary km--text-pill text-nowrap">
             <%= t("statuses.requests.archived") %>
           </span>
         <% else %>
@@ -36,7 +37,7 @@
       <% if pending_actions.positive? %>
         <div class="km--text-card-content">
           <i class="fa-solid fa-bell me-1"></i>
-          <strong><%= pending_actions %></strong> <%= t("dashboard.pending_actions") %>
+          <%= t("dashboard.pending_actions", count: pending_actions) %>
         </div>
       <% end %>
     <% end %>

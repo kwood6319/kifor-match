@@ -55,6 +55,12 @@ class Offer < ApplicationRecord
     I18n.t("dashboard.alert_messages.#{key}")
   end
 
+  # What the charity needs to do next, shown on the charity dashboard tracker
+  def charity_alert_message
+    key = ALERT_STATUS_ALIASES.fetch(status, status)
+    I18n.t("dashboard.charity_alert_messages.#{key}")
+  end
+
   private
 
   def donor_amendment?

@@ -1,12 +1,12 @@
 en:
   dashboard:
-    my_requests: "My Requests"
+    my_requests: "Your requests"
     needs_your_attention: "Attention"
     offers_submitted: "Submitted"
     offers_on_their_way: "Shipping"
-    offers_needing_feedback: "Feedback"
+    offers_needing_feedback: "Review"
     offers_received: "Received"
-    pending_actions: "need your attention"
+    pending_actions: "%{count} need your attention"
     status: "Status"
     flagged: "Flagged"
     no_unapproved_charities: "No charities awaiting approval"

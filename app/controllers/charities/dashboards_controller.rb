@@ -4,7 +4,7 @@ module Charities
 
     # We want to let charities know when an offer has been left too long.
     ATTENTION_STATUSES = %w[submitted received].freeze
-    ATTENTION_AGE = 1.day
+    ATTENTION_AGE = 10.minutes
 
     def show
       authorize :charity_dashboard, :show?
