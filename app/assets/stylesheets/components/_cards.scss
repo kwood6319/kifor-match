@@ -209,6 +209,29 @@
   }
 }
 
+.km--sticky-column {
+  @media (min-width: 992px) {
+    position: sticky;
+    top: 3.5rem;
+  }
+}
+
+// Tab panes share one grid cell, so the content keeps the tallest pane's
+// height and switching tabs doesn't shrink the page (and jump the scroll)
+.km--tabs-stable {
+  display: grid;
+
+  > .tab-pane {
+    display: block;
+    grid-area: 1 / 1;
+    visibility: hidden;
+
+    &.active {
+      visibility: visible;
+    }
+  }
+}
+
 .km--card-hover {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
