@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :set_locale
+  before_action :redirect_to_resolved_locale
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, if: :devise_controller?
   include Pundit::Authorization
@@ -55,11 +56,23 @@ class ApplicationController < ActionController::Base
     I18n.locale = resolved_locale
   end
 
+  # Keep the /en or /ja in the URL in step with the language the page is
+  # actually shown in (saved preference or navbar switch).
+  def redirect_to_resolved_locale
+    return if devise_controller? || !request.get? || !request.format.html?
+    return if params[:locale].blank? || params[:locale] == I18n.locale.to_s
+
+    redirect_to request.fullpath.sub(%r{\A/#{params[:locale]}(?=/|\?|\z)}, "/#{I18n.locale}")
+  end
+
   def resolved_locale
     if session[:locale].present? && valid_locale?(session[:locale])
       session[:locale]
     elsif current_user&.locale.present?
       current_user.locale
+    elsif valid_locale?(params[:locale])
+      # Guests have no saved preference, so follow the URL
+      params[:locale]
     else
       I18n.default_locale
     end
