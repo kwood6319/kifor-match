@@ -48,11 +48,16 @@ class OffersController < ApplicationController
     @offer = Offer.find(params[:id])
     authorize @offer
 
-    if @offer.update(offer_params)
+    @offer.assign_attributes(offer_params.except(:photos, :remove_photo_ids))
+    assign_updated_photos
+
+    if @offer.save
       redirect_to request_path(@offer.request),
                   notice: "Offer updated."
     else
       @request = @offer.request
+      @donor = @offer.donor
+      @my_offer = @editing_offer = @offer
       render "requests/show", status: :unprocessable_entity
     end
   end
@@ -117,15 +122,25 @@ class OffersController < ApplicationController
 
   private
 
-  # TODO: strong params, whitelist params
   def offer_params
-    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :estimated_arrival,
-                                  :tracking_number, :rejection_reason, photos: [])
+    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :ship_by_day,
+                                  :ship_by_month_year, :estimated_arrival, :tracking_number, :rejection_reason,
+                                  photos: [], remove_photo_ids: [])
+  end
+
+  # Assigning to has_many_attached replaces the whole set, so rebuild it from
+  # the photos being kept plus any new uploads. Nothing is persisted until
+  # save, so a failed validation (e.g. removing every photo) keeps the old set.
+  def assign_updated_photos
+    new_photos = Array(offer_params[:photos]).compact_blank
+    remove_ids = Array(offer_params[:remove_photo_ids]).compact_blank.map(&:to_i)
+    return if new_photos.empty? && remove_ids.empty?
+
+    kept = @offer.photos.attachments.reject { |attachment| remove_ids.include?(attachment.id) }.map(&:blob)
+    @offer.photos = kept + new_photos
   end
 
   def set_offer
     @offer = Offer.find(params[:id])
   end
 end
-
-# Nice to have : Search functionality for offers, filter by category, condition, prefecture, region, etc.

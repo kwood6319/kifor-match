@@ -2,3 +2,17 @@ ja:
   errors:
     messages:
       exceeds_remaining: "残りの必要数量（%{max}）を超えることはできません"
+      photos_missing: "商品の写真を1枚以上追加してください"
+      blank: "を入力してください"
+      inclusion: "は一覧にありません"
+      not_a_number: "は数値で入力してください"
+      not_an_integer: "は整数で入力してください"
+      greater_than: "は%{count}より大きい値にしてください"
+    format: "%{attribute}%{message}"
+  activerecord:
+    attributes:
+      offer:
+        quantity_offered: "提供数量"
+        condition: "状態"
+        can_ship_by: "発送可能日"
+        message: "メッセージ"

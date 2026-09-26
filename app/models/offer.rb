@@ -31,19 +31,18 @@ class Offer < ApplicationRecord
     "flagged" => "received"
   }.freeze
 
-  validates :status, inclusion: { in: STATUSES }
-  validates :condition, inclusion: { in: Request::CONDITIONS }
-
   scope :active, -> { where(active: true) }
 
   SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
   IGNORED_AMENDMENT_FIELDS = %w[status updated_at rejection_reason active].freeze
 
   validates :quantity_offered, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :condition, presence: true, inclusion: { in: Request::CONDITIONS }
+  # allow_blank so a missing condition only reports "can't be blank"
+  validates :condition, presence: true, inclusion: { in: Request::CONDITIONS, allow_blank: true }
   validates :can_ship_by, presence: true
-  validates :photos, presence: true
   validates :status, inclusion: { in: STATUSES }
+
+  validate :photos_attached
 
   validate :quantity_offered_does_not_exceed_remaining
 
@@ -65,6 +64,10 @@ class Offer < ApplicationRecord
 
   def resubmit_if_amended
     self.status = "submitted"
+  end
+
+  def photos_attached
+    errors.add(:base, :photos_missing) unless photos.attached?
   end
 
   def set_active_from_status

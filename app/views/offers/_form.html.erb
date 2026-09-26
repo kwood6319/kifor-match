@@ -1,69 +1,86 @@
+<% offer ||= Offer.new %>
 <div data-controller="postage-acknowledgment" data-postage-acknowledgment-first-offer-value="<%= @first_offer %>">
-  <div class="km--card">
-    <h4 class="km--text-card-title text-center mb-4"><%= t("offers.make_an_offer") %></h4>
-    <% offer ||= Offer.new %>
-    <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(request)) do |form| %>
+  <div class="km--card km--form-compact">
+    <h4 class="km--text-card-title text-center mb-1"><%= offer.persisted? ? t("offers.edit_offer") : t("offers.make_an_offer") %></h4>
+    <p class="km--text-card-content km--text-soft text-center mb-4"><span class="km--required"></span> <%= t("offers.required_note") %></p>
+    <% if offer.errors.any? %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong><%= t("offers.errors_heading") %></strong>
+        <ul class="mb-0">
+          <% offer.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<%= t("buttons.close") %>"></button>
+      </div>
+    <% end %>
+    <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(@request)) do |form| %>
       <div class="row g-3">
         <div class="col-md-6">
-          <%= form.label :quantity_offered, t("offers.quantity_offered"), class: "km--text-label" %>
+          <%= form.label :quantity_offered, t("offers.quantity_offered"), class: "km--text-card-category km--text-soft d-block mb-2 km--required" %>
           <%= form.number_field :quantity_offered, min: 1, value: offer.quantity_offered || 1, required: true, class: "km--form-control form-control" %>
         </div>
         <div class="col-md-6">
-          <%= form.label :condition, t("navigation.condition"), class: "km--text-label" %>
+          <div class="km--text-card-category km--text-soft mb-2">
+            <%= form.label :condition, t("navigation.condition"), class: "d-inline km--required" %>
+            <%# TO DO: wire up modal with condition definitions/examples %>
+            <button type="button" class="km--btn-link">(<%= t("offers.read_more") %>)</button>
+          </div>
           <%= form.select :condition,
             Request::CONDITIONS.map { |condition| [t("conditions.#{condition}"), condition] },
             { prompt: t("conditions.select") },
             class: "km--form-control form-select" %>
-          <%# TO DO: wire up modal with condition definitions/examples %>
-          <button type="button" class="km--text-card-content km--text-soft border-0 bg-transparent p-0 mt-1" style="text-decoration: underline;">
-            <%= t("offers.condition_learn_more") %>
-          </button>
         </div>
       </div>
       <div class="row g-3 mt-0">
-        <%# TO DO: confirm virtual attributes ship_by_day / ship_by_month_year get combined into can_ship_by on the model %>
+        <%
+          ship_by = offer.can_ship_by || Date.current
+          month_year_options = (0..11).map do |offset|
+            date = Date.current.next_month(offset)
+            [l(date, format: :month_year), date.strftime("%Y-%m")]
+          end
+        %>
         <div class="col-md-6" data-controller="ship-date">
-          <%= form.label :can_ship_by, t("offers.can_ship_by"), class: "km--text-label" %>
+          <%= form.label :ship_by_day, t("offers.can_ship_by"), class: "km--text-card-category km--text-soft d-block mb-2 km--required" %>
           <div class="d-flex gap-2">
             <%= form.select :ship_by_day,
-              (Date.current.day..31).to_a,
-              { selected: Date.current.day },
+              (1..31).to_a,
+              { selected: ship_by.day },
               class: "km--form-control form-select",
               data: { "ship-date-target": "day" } %>
-            <%
-              month_year_options = (0..11).map do |offset|
-                date = Date.current.next_month(offset)
-                [date.strftime("%b/%y"), date.strftime("%Y-%m")]
-              end
-            %>
             <%= form.select :ship_by_month_year,
               month_year_options,
-              { selected: Date.current.strftime("%Y-%m") },
+              { selected: ship_by.strftime("%Y-%m") },
               class: "km--form-control form-select",
               data: { "ship-date-target": "monthYear", action: "change->ship-date#monthYearChanged" } %>
           </div>
         </div>
-        <%# TO DO: confirm attribute names for drop-off / delivery booleans on Offer %>
-        <div class="col-md-6 d-flex align-items-end mb-2">
-          <div class="d-flex gap-4">
-            <div class="form-check">
-              <%= form.check_box :can_drop_off, class: "form-check-input" %>
-              <%= form.label :can_drop_off, t("offers.drop_off"), class: "form-check-label km--text-label" %>
-            </div>
-            <div class="form-check">
-              <%= form.check_box :can_deliver, class: "form-check-input" %>
-              <%= form.label :can_deliver, t("offers.delivery"), class: "form-check-label km--text-label" %>
-            </div>
+        <%# TO DO: UI only for now. Persist these on Offer (e.g. will_ship / will_drop_off booleans) and permit them. %>
+        <div class="col-md-6">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.delivery_method") %></p>
+          <div class="d-flex gap-4 km--form-check-row">
+            <% if @request.charity.accepts_shipping? %>
+              <div class="form-check">
+                <%= check_box_tag "offer_will_ship", "1", false, class: "form-check-input" %>
+                <%= label_tag "offer_will_ship", t("shipping.shipping"), class: "form-check-label" %>
+              </div>
+            <% end %>
+            <% if @request.charity.accepts_drop_off? %>
+              <div class="form-check">
+                <%= check_box_tag "offer_will_drop_off", "1", false, class: "form-check-input" %>
+                <%= label_tag "offer_will_drop_off", t("shipping.drop_off"), class: "form-check-label" %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
       <div class="mt-3">
-        <%= form.label :message, t("offers.message"), class: "km--text-label" %>
+        <%= form.label :message, t("offers.message"), class: "km--text-card-category km--text-soft d-block mb-2" %>
         <%= form.text_area :message, rows: 4, class: "km--form-control form-control", placeholder: t("offers.message_prompt") %>
       </div>
       <%# Photo upload: drag-and-drop dropzone + thumbnail previews with remove buttons %>
       <div class="mt-4" data-controller="photo-upload">
-        <%= form.label :photos, t("offers.photos_of_item"), class: "km--text-label" %>
+        <%= form.label :photos, t("offers.photos_of_item"), class: "km--text-card-category km--text-soft d-block mb-2 km--required" %>
         <%= form.file_field :photos, multiple: true, accept: "image/*",
           class: "d-none",
           data: { "photo-upload-target": "input", action: "change->photo-upload#inputChanged" } %>
@@ -73,39 +90,44 @@
           <i class="fa-solid fa-plus"></i>
         </div>
         <p class="km--text-card-content km--text-soft text-center mt-2 mb-2"><%= t("offers.photo_expl") %></p>
-        <div class="km--photo-upload-preview-list" data-photo-upload-target="previewList">
-          <% if offer.photos.attached? %>
-            <% offer.photos.each do |photo| %>
-              <div class="km--photo-upload-thumb">
-                <%= image_tag photo %>
-              </div>
-            <% end %>
+        <div class="km--photo-upload-preview-list">
+          <%# Photos already saved on the offer. Removing one queues its id for removal on save. %>
+          <% offer.photos.select(&:persisted?).each do |photo| %>
+            <div class="km--photo-upload-thumb">
+              <%= image_tag photo %>
+              <button type="button" class="km--photo-upload-remove" aria-label="<%= t("offers.remove_photo") %>"
+                data-action="click->photo-upload#removeExisting" data-photo-upload-id-param="<%= photo.id %>">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
           <% end %>
+          <div style="display: contents;" data-photo-upload-target="previewList"></div>
         </div>
+        <div data-photo-upload-target="removedInputs"></div>
       </div>
       <%# Postage acknowledgment checkbox %>
       <div class="mt-4">
         <div class="form-check">
-          <%= check_box_tag "postage_acknowledged", "1", false,
+          <%# Already acknowledged when the offer was first sent %>
+          <%= check_box_tag "postage_acknowledged", "1", offer.persisted?,
             id: "postage_acknowledged", class: "form-check-input",
             disabled: @first_offer,
             data: {
               "postage-acknowledgment-target": "checkbox",
               action: "change->postage-acknowledgment#toggle" } %>
-          <%= label_tag "postage_acknowledged", t("offers.postage_acknowledgment"), class: "form-check-label km--text-label" %>
-          <button type="button" class="km--btn km--btn-outline p-0 border-0 ms-1 align-baseline"
-            style="background: none;"
-            data-bs-toggle="modal" data-bs-target="#postageModal">
-            (<%= t("offers.read_more") %>)
-          </button>
+          <%= label_tag "postage_acknowledged", class: "form-check-label km--text-label km--required" do %>
+            <%= t("offers.postage_acknowledgment") %>
+            <button type="button" class="km--btn-link"
+              data-bs-toggle="modal" data-bs-target="#postageModal">(<%= t("offers.read_more") %>)</button>
+          <% end %>
         </div>
       </div>
       <%= form.hidden_field :request_id, value: @request.id %>
       <%= form.hidden_field :donor_id, value: @donor&.id %>
-      <div class="d-grid mt-4">
-        <%= form.submit offer.persisted? ? t("offers.save_changes") : t("offers.send_offer"),
-          class: "km--btn km--btn-primary km--btn-wide",
-          disabled: true,
+      <div class="d-flex justify-content-end mt-4">
+        <%= form.submit offer.persisted? ? t("buttons.save") : t("offers.send_offer"),
+          class: "km--btn km--btn-primary",
+          disabled: !offer.persisted?,
           data: { "postage-acknowledgment-target": "submitButton" } %>
       </div>
     <% end %>
@@ -117,7 +139,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="postageModalLabel"><%= t("offers.postage_modal_title") %></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("buttons.close") %>"></button>
         </div>
         <div class="modal-body">
           <p><%= t("offers.postage_modal_body") %></p>
