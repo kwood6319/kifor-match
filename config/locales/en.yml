@@ -29,6 +29,7 @@
 
 en:
   navigation:
+    charity: "Charity"
     similar_requests: "Similar requests"
     similar_requests_coming_soon: "Similar requests is a feature coming soon."
     dashboard: "Dashboard"
@@ -59,7 +60,7 @@ en:
     search_donors_placeholder: "Search by display name or email..."
     region: "Region"
     approved_only: "Approved only"
-    unapproved_only: "Unapproved only"
+    unapproved_only: "Pending approval only"
     no_charities: "No charities match your filters"
     no_donors: "No donors match your filters"
     reset: "Reset"
@@ -127,6 +128,7 @@ en:
       active: "Active"
       fulfilled: "Fulfilled"
       archived: "Archived"
+      flagged: "Flagged"
     charities:
       unapproved: "Pending"
     donors:
@@ -144,6 +146,8 @@ en:
       tracking_prompt: "Enter tracking number"
       arriving: "Estimated arrival"
       received: "Received"
+      completed: "Completed"
+      flagged: "Flagged"
       received_message: "Your item has been marked as received by the charity. Thank you, from the bottom of our hearts. ♡"
       charity_shipping_info: "Please ship the information to the following address:"
     charity:
@@ -195,12 +199,16 @@ en:
     stats: "Donor Stats"
     current_offers: "Current Offers"
     no_current_offers: "This donor has no current offers"
+    no_past_offers: "This donor has no past offers"
     created_at: "Created"
     approved_at: "Approved"
     not_approved: "Not yet approved"
     total_offers: "Total offers made"
     completed_offers: "Offers successfully completed"
     donor_type: "Type"
+    types:
+      individual: "Individual"
+      company: "Company"
   shipping:
     address: "Shipping Address"
     shipping: "Shipping"

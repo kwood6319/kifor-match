@@ -1,5 +1,6 @@
 ja:
   navigation:
+    charity: "チャリティー"
     similar_requests: "類似のリクエスト"
     similar_requests_coming_soon: "類似リクエスト機能は近日公開予定です。"
     dashboard: "ダッシュボード"
@@ -30,7 +31,7 @@ ja:
     search_donors_placeholder: "表示名またはメールアドレスで検索..."
     region: "地域"
     approved_only: "承認済みのみ"
-    unapproved_only: "未承認のみ"
+    unapproved_only: "承認待ちのみ"
     no_charities: "指定した条件に一致するチャリティーはありません"
     no_donors: "指定した条件に一致するドナーはいません"
     reset: "リセット"
@@ -98,6 +99,7 @@ ja:
       active: "アクティブ"
       fulfilled: "完了"
       archived: "アーカイブ済み"
+      flagged: "フラグ付き"
     charities:
       unapproved: "保留中"
     donors:
@@ -115,6 +117,8 @@ ja:
       tracking_prompt: "追跡番号を入力してください"
       arriving: "到着予定"
       received: "受信"
+      completed: "完了"
+      flagged: "フラグ付き"
       received_message: "ご寄付いただいた品物は、慈善団体により「受領済み」として登録されました。心より感謝申し上げます。♡"
       charity_shipping_info: "情報は以下の住所までお送りください："
     charity:
@@ -166,12 +170,16 @@ ja:
     stats: "ドナー統計"
     current_offers: "現在のオファー"
     no_current_offers: "このドナーには現在のオファーがありません"
+    no_past_offers: "このドナーには過去のオファーがありません"
     created_at: "作成日"
     approved_at: "承認日"
     not_approved: "未承認"
     total_offers: "オファー総数"
     completed_offers: "完了したオファー数"
     donor_type: "タイプ"
+    types:
+      individual: "個人"
+      company: "企業"
   shipping:
     address: "発送先住所"
     shipping: "配送"
