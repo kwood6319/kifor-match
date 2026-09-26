@@ -9,6 +9,8 @@ en:
       language: "Language"
       danger_zone: "Danger Zone"
     profile_description: "Update your profile information."
+    no_profile_settings: "There are no profile settings for admin accounts."
+    admin_identifiers_coming_soon: "Feature coming soon: admin identifiers."
     location_description: "Where you are based."
     delivery_preferences_coming_soon: "Feature coming soon: delivery and drop-off preferences."
     account_description: "Update your email and password."

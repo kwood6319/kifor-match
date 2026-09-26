@@ -9,6 +9,8 @@ ja:
       language: "言語"
       danger_zone: "危険な操作"
     profile_description: "プロフィール情報を更新します。"
+    no_profile_settings: "管理者アカウントにはプロフィール設定がありません。"
+    admin_identifiers_coming_soon: "近日公開予定：管理者の識別情報"
     location_description: "拠点となる場所を設定します。"
     delivery_preferences_coming_soon: "近日公開予定：配送・持ち込みの設定"
     account_description: "メールアドレスとパスワードを更新します。"
