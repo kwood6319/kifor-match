@@ -1,6 +1,6 @@
 class CharitiesController < ApplicationController
   before_action :set_charity, only: %i[show approve destroy]
-  before_action :show_back_button, only: %i[index show]
+  before_action :show_back_button, only: %i[show]
 
   def index
     authorize Charity
@@ -21,6 +21,7 @@ class CharitiesController < ApplicationController
     authorize @charity
 
     @requests = @charity.requests.where.not(status: "archived").order(created_at: :desc)
+    @archived_requests = @charity.requests.where(status: "archived").order(updated_at: :desc)
     @total_requests_count = @charity.requests.count
     @completed_requests_count = @charity.requests.where(status: "fulfilled").count
   end
