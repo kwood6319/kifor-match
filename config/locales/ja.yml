@@ -166,6 +166,13 @@ ja:
     donor_type: "タイプ"
   shipping:
     address: "発送先住所"
+    shipping: "配送"
+    drop_off: "持ち込み"
+    accepts_shipping: "配送可"
+    accepts_drop_off: "持ち込み可"
+    no_drop_off: "持ち込み不可"
+    shipping_and_drop_off: "配送・持ち込み"
+    delivery_method: "受け渡し方法"
   units:
     select: "単位を選択"
     item: "個"

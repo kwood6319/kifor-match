@@ -196,6 +196,13 @@ en:
     donor_type: "Type"
   shipping:
     address: "Shipping Address"
+    shipping: "Shipping"
+    drop_off: "Drop-off"
+    accepts_shipping: "Accepts shipping"
+    accepts_drop_off: "Accepts drop-off"
+    no_drop_off: "No drop-off"
+    shipping_and_drop_off: "Shipping & drop-off"
+    delivery_method: "Delivery method"
   units:
     select: "Select units"
     item: "item"

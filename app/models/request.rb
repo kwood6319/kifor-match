@@ -71,6 +71,7 @@ class Request < ApplicationRecord
   # Setting qty remaining = qty needed for now
   before_validation :sync_quantity_remaining
 
+  # KT TO DO: Add a character limit to title (length validation + maxlength on the request form)
   validates :title, :description, :condition, :urgency, presence: true
   validates :status, inclusion: { in: STATUSES }
   validates :quantity_needed, numericality: { greater_than_or_equal_to: 0 }
