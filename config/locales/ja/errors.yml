@@ -16,3 +16,11 @@ ja:
         condition: "状態"
         can_ship_by: "発送可能日"
         message: "メッセージ"
+      request:
+        title: "タイトル"
+        description: "詳細"
+        condition: "最低限の条件"
+        urgency: "緊急度"
+        quantity_needed: "必要数量"
+        category: "カテゴリ"
+        subcategory: "サブカテゴリー"
