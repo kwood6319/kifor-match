@@ -1,0 +1,33 @@
+<%= link_to request_path(offer.request), class: "text-decoration-none km--text-dark" do %>
+  <div class="km--card km--card-hover mb-3<%= ' km--card-rejected' if offer.status == 'rejected' %>">
+    <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+      <div>
+        <p class="km--text-card-title mb-1"><%= title_with_quantity(offer.request.title, offer.quantity_offered) %></p>
+        <p class="km--text-card-content mb-0">
+          <%= charity_icon %><%= offer.request.charity.org_name %>
+        </p>
+      </div>
+      <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap flex-shrink-0">
+        <%= t("statuses.donor.#{offer.status}", default: offer.status.capitalize) %>
+      </span>
+    </div>
+    <p class="km--text-card-content mb-1" title="<%= t("navigation.condition") %>">
+      <i class="fa-solid fa-box-open fa-fw me-1"></i><span class="badge text-bg-info"><%= t("conditions.#{offer.condition}") %></span>
+    </p>
+    <% if offer.can_ship_by.present? %>
+      <p class="km--text-card-content mb-1" title="<%= t("offers.can_ship_by") %>">
+        <i class="fa-solid fa-truck fa-fw me-1"></i><%= l(offer.can_ship_by, format: :short) %>
+      </p>
+    <% end %>
+    <% if offer.message.present? %>
+      <p class="km--text-card-content mb-1" title="<%= t("offers.message") %>">
+        <i class="fa-solid fa-message fa-fw me-1"></i><%= offer.message %>
+      </p>
+    <% end %>
+    <% if offer.tracking_number.present? %>
+      <p class="km--text-card-content mb-0" title="<%= t("statuses.donor.tracking_info") %>">
+        <i class="fa-solid fa-barcode fa-fw me-1"></i><%= offer.tracking_number %>
+      </p>
+    <% end %>
+  </div>
+<% end %>

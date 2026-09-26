@@ -1,15 +1,17 @@
 <div class="container mt-3 mb-4">
   <div class="row align-items-stretch g-4">
     <%# Left column: donor details + stats %>
-    <div class="col-lg-5 d-flex flex-column gap-4">
+    <div class="col-lg-5">
+      <%# Sticky so the details stay in view beside a long offer list %>
+      <div class="d-flex flex-column gap-4 km--sticky-column">
       <%# Donor details card %>
       <div class="km--card">
         <div class="row pt-2">
           <div class="col-8">
-            <h2 class="km--text-card-title"><%= @donor.display_name %></h2>
-            <% if @donor.region.present? %>
-              <p class="km--text-card-subtitle km--text-soft mb-0">
-                <%= t("regions.#{@donor.region}") %>
+            <h2 class="km--text-card-title"><%= donor_icon(@donor) %><%= @donor.display_name %></h2>
+            <% if @donor.region.present? || @donor.prefecture.present? %>
+              <p class="km--text-card-subtitle mb-0">
+                <i class="fa-solid fa-location-dot me-1"></i><%= location_label(@donor) %>
               </p>
             <% end %>
           </div>
@@ -24,98 +26,81 @@
           </div>
         </div>
         <div class="mb-3 mt-3">
-          <p class="km--text-card-category km--text-soft mb-2">
+          <p class="km--text-card-content mb-0">
             <i class="fa-solid fa-envelope me-1"></i> <%= @donor.user.email %>
           </p>
         </div>
-        <% if @donor.prefecture.present? %>
-          <div class="mb-3">
-            <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.prefecture") %></p>
-            <p class="km--text-card-content mb-0"><%= t("prefectures.#{@donor.prefecture}") %></p>
-          </div>
-        <% end %>
-        <% if @donor.donor_type.present? %>
-          <div class="mb-3">
-            <p class="km--text-card-category km--text-soft mb-2"><%= t("donors.donor_type") %></p>
-            <p class="km--text-card-content mb-0"><%= @donor.donor_type %></p>
-          </div>
-        <% end %>
+        <div class="d-flex justify-content-end gap-3">
+          <%# TO DO: Add a Flag button once flagging exists %>
+          <%= button_to t("buttons.delete"), donor_path(@donor), method: :delete,
+                class: "km--btn km--btn-danger",
+                data: { turbo_confirm: t("messages.delete_donor_confirm") } %>
+          <% unless @donor.approved? %>
+            <%= button_to t("buttons.approve"), approve_donor_path(@donor), method: :patch,
+                  class: "km--btn km--btn-primary",
+                  data: { turbo_confirm: t("messages.approve_donor_confirm") } %>
+          <% end %>
+        </div>
       </div>
       <%# Donor stats card %>
       <div class="km--card">
         <h4 class="km--text-card-title mb-3"><%= t("donors.stats") %></h4>
         <div class="d-flex justify-content-between mb-2">
-          <span class="km--text-card-content km--text-soft"><%= t("donors.created_at") %></span>
+          <span class="km--text-card-category km--text-soft"><%= t("donors.created_at") %></span>
           <span class="km--text-card-content"><%= @donor.created_at.strftime("%b %-d, %Y") %></span>
         </div>
         <div class="d-flex justify-content-between mb-2">
-          <span class="km--text-card-content km--text-soft"><%= t("donors.approved_at") %></span>
+          <span class="km--text-card-category km--text-soft"><%= t("donors.approved_at") %></span>
           <span class="km--text-card-content">
             <%# No dedicated approved_at column, so updated_at is our best proxy for when approval happened. %>
             <%= @donor.approved? ? @donor.updated_at.strftime("%b %-d, %Y") : t("donors.not_approved") %>
           </span>
         </div>
         <div class="d-flex justify-content-between mb-2">
-          <span class="km--text-card-content km--text-soft"><%= t("donors.total_offers") %></span>
+          <span class="km--text-card-category km--text-soft"><%= t("donors.total_offers") %></span>
           <span class="km--text-card-content"><%= @total_offers_count %></span>
         </div>
         <div class="d-flex justify-content-between mb-0">
-          <span class="km--text-card-content km--text-soft"><%= t("donors.completed_offers") %></span>
+          <span class="km--text-card-category km--text-soft"><%= t("donors.completed_offers") %></span>
           <span class="km--text-card-content"><%= @completed_offers_count %></span>
         </div>
       </div>
+      </div>
     </div>
-    <%# Right column: donor's current offers %>
+    <%# Right column: donor's offers, current and past %>
     <div class="col-lg-6 mx-3">
-      <h4 class="km--text-card-title mb-3"><%= t("donors.current_offers") %></h4>
-      <% if @offers.present? %>
-        <% @offers.each do |offer| %>
-          <%= link_to request_path(offer.request), class: "text-decoration-none km--text-dark" do %>
-            <div class="km--card mb-3">
-              <div class="row">
-                <div class="col-8">
-                  <p class="km--text-card-title mb-0"><%= offer.request.title %></p>
-                  <p class="km--text-card-subtitle km--text-soft mb-2">
-                    <%= offer.request.charity.org_name %>
-                  </p>
-                </div>
-                <div class="col-4 text-center">
-                  <p class="km--text-card-title mb-1"><%= quantity_label(offer.quantity_offered) %></p>
-                  <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap">
-                    <%= t("statuses.#{offer.status}", default: offer.status.capitalize) %>
-                  </span>
-                </div>
-              </div>
-              <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
-              <div class="d-flex flex-wrap gap-2 mb-2">
-                <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{offer.condition}") %></span>
-              </div>
-              <% if offer.message.present? %>
-                <p class="km--text-card-content mb-1">
-                  <strong><%= t("offers.message") %>:</strong> <%= offer.message %>
-                </p>
-              <% end %>
-              <% if offer.can_ship_by.present? %>
-                <p class="km--text-card-content mb-1">
-                  <strong><%= t("offers.can_ship_by") %>:</strong> <%= offer.can_ship_by.strftime("%b %-d, %Y") %>
-                </p>
-              <% end %>
-              <% if offer.estimated_arrival.present? %>
-                <p class="km--text-card-content mb-1">
-                  <strong><%= t("statuses.donor.arriving") %>:</strong> <%= offer.estimated_arrival.strftime("%b %-d, %Y") %>
-                </p>
-              <% end %>
-              <% if offer.tracking_number.present? %>
-                <p class="km--text-card-content mb-0">
-                  <strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= offer.tracking_number %>
-                </p>
-              <% end %>
-            </div>
+      <ul class="nav nav-tabs km--nav-tabs km--nav-tabs-page mb-3" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link km--nav-link active" data-bs-toggle="pill" data-bs-target="#donor-offers-current" type="button">
+            <i class="fa-solid fa-box-open"></i><%= t("donors.current_offers") %>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#donor-offers-history" type="button">
+            <i class="fa-solid fa-clock-rotate-left"></i><%= t("navigation.history") %>
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content km--tabs-stable">
+        <div class="tab-pane fade show active" id="donor-offers-current">
+          <% if @offers.present? %>
+            <% @offers.each do |offer| %>
+              <%= render "donors/offer_list_card", offer: offer %>
+            <% end %>
+          <% else %>
+            <p class="km--text-soft mb-0"><%= t("donors.no_current_offers") %></p>
           <% end %>
-        <% end %>
-      <% else %>
-        <p class="km--text-soft mb-0"><%= t("donors.no_current_offers") %></p>
-      <% end %>
+        </div>
+        <div class="tab-pane fade" id="donor-offers-history">
+          <% if @past_offers.present? %>
+            <% @past_offers.each do |offer| %>
+              <%= render "donors/offer_list_card", offer: offer %>
+            <% end %>
+          <% else %>
+            <p class="km--text-soft mb-0"><%= t("donors.no_past_offers") %></p>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
