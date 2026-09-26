@@ -13,7 +13,7 @@
         </div>
         <h4 class="km--text-card-title mb-1"><%= title_with_quantity(@request.title, @offer.quantity_offered) %></h4>
         <p class="km--text-card-content mb-0">
-          <i class="fa-solid fa-user fa-fw me-1"></i><%= @donor.display_name %>
+          <%= donor_icon(@donor) %><%= @donor.display_name %>
         </p>
         <% if @donor.prefecture %>
           <p class="km--text-card-content mb-0">
@@ -50,7 +50,9 @@
           </div>
         <% end %>
         <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.status") %></p>
-        <% if @offer.status == "submitted" %>
+        <% if current_user.admin? %>
+          <%= offer_status_badge(@offer) %>
+        <% elsif @offer.status == "submitted" %>
           <% if policy(@offer).approve? || policy(@offer).reject? %>
             <p class="km--text-card-content mb-3"><%= @offer.charity_alert_message %></p>
             <div class="d-flex justify-content-end gap-3">

@@ -3,6 +3,9 @@
   <div class="row pt-2">
     <div class="col-8">
       <h2 class="km--text-card-title"><%= request.title %></h2>
+      <p class="km--text-card-subtitle mb-1">
+        <%= charity_icon %><%= request.charity.org_name %>
+      </p>
       <p class="km--text-card-subtitle mb-0">
         <i class="fa-solid fa-location-dot me-1"></i><%= charity_location(request.charity) %>
       </p>
@@ -26,6 +29,12 @@
          aria-valuenow="<%= request.quantity_fulfilled %>" aria-valuemin="0" aria-valuemax="<%= request.quantity_needed %>">
     </div>
   </div>
+  <% if current_user.admin? %>
+    <div class="mb-3">
+      <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.status") %></p>
+      <%= request_status_badge(request) %>
+    </div>
+  <% end %>
   <div class="mb-3">
     <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.category") %></p>
     <p class="km--text-card-content mb-0">

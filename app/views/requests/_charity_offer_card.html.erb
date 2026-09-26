@@ -22,7 +22,7 @@
     <div class="col-7 d-flex flex-column align-items-start gap-1">
       <strong class="km--text-card-title"><%= title_with_quantity(parent_request.title, offer.quantity_offered) %></strong>
       <p class="km--text-card-content mb-0">
-        <i class="fa-solid fa-user fa-fw me-1"></i><%= offer.donor.display_name %>
+        <%= donor_icon(offer.donor) %><%= offer.donor.display_name %>
       </p>
       <% if offer.donor.prefecture %>
         <p class="km--text-card-content mb-0">
@@ -43,6 +43,9 @@
         </p>
       <% end %>
       <p class="km--text-card-category km--text-soft mt-2 mb-1"><%= t("offers.status") %></p>
+      <% if read_only %>
+        <div class="mb-1"><%= offer_status_badge(offer) %></div>
+      <% end %>
       <% case offer.status
          when "submitted" %>
         <% if read_only %>

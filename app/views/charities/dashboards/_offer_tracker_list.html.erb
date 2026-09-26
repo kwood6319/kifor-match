@@ -7,7 +7,7 @@
           <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap flex-shrink-0"><%= time_ago_badge(offer.updated_at) %></span>
         </div>
         <p class="km--text-card-content mb-0">
-          <i class="fa-solid fa-user fa-fw me-1"></i><%= offer.donor.display_name %>
+          <%= donor_icon(offer.donor) %><%= offer.donor.display_name %>
         </p>
         <p class="km--text-card-content mb-0" title="<%= t("dashboard.condition") %>">
           <i class="fa-solid fa-box-open fa-fw me-1"></i><span class="badge text-bg-info"><%= t("conditions.#{offer.condition}") %></span>
