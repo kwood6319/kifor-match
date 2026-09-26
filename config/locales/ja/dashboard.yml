@@ -5,6 +5,7 @@ ja:
     offers_submitted: "提出済み"
     offers_on_their_way: "発送中"
     offers_needing_feedback: "フィードバック待ち"
+    offers_received: "受領済み"
     pending_actions: "件、対応が必要です"
     status: "状態"
     flagged: "フラグ付き"

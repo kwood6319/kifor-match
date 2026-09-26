@@ -1,19 +1,20 @@
+<% content_for :main_class, "d-flex flex-column" %>
 <div class="container mt-3 mb-4">
   <h3>
     <%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%= "様" if I18n.locale == :ja %>!
     <%= t("messages.top_categories") %>:
   </h3>
 </div>
-<div class="container-fluid mt-4">
-  <div class="row mb-4">
+<div class="container-fluid mt-4 km--fill-page">
+  <div class="row mb-4 flex-grow-1">
     <!-- Left grid: category cards -->
     <div class="col-md-8">
-      <div class="km--card-grid">
+      <div class="km--card-grid km--card-grid-fill">
         <% @top_categories.each do |key| %>
           <% category_data = CategoryList::CATEGORIES[key] %>
           <% next unless category_data %>
           <%= link_to requests_path(category: [key]), class: "text-decoration-none km--text-dark" do %>
-            <div class="km--card text-center">
+            <div class="km--card text-center h-100">
               <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 py-4">
                 <% icon = category_data[:icons].first %>
                 <% if icon %>
@@ -25,7 +26,7 @@
           <% end %>
         <% end %>
         <%= link_to requests_path, class: "text-decoration-none km--text-dark" do %>
-          <div class="km--card text-center">
+          <div class="km--card text-center h-100">
             <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 py-4">
               <i class="fa-solid fa-ellipsis fa-3x mb-2"></i>
               <p class="km--text-card-title mb-0"><%= t("categories.all") %></p>
@@ -34,45 +35,45 @@
         <% end %>
       </div>
     </div>
-    <!-- Right column: pending offers -->
-    <div class="col-md-4 d-flex">
-      <div class="km--card w-100" style="max-height: 80vh; overflow-y: auto;">
-        <h5 class="km--text-card-title mb-3"><%= t("dashboard.pending") %>:</h5>
-        <% if @pending_offers.any? %>
-          <div class="km--card-list">
-            <% @pending_offers.each do |offer| %>
-              <%= link_to request_path(offer.request), class: "text-decoration-none km--text-dark" do %>
-                <div class="km--card-list-item">
-                  <div class="d-flex justify-content-between align-items-start">
-                    <strong class="km--text-card-subtitle"><%= offer.request.title %></strong>
-                    <div class="text-nowrap">
-                      <span class="badge rounded-pill pill-urgent km--text-pill km--text-light"><%= time_ago_badge(offer.updated_at) %></span>
-                      <span class="ms-1 km--text-soft km--text-card-content">x<%= offer.quantity_offered %></span>
-                    </div>
-                  </div>
-                  <p class="km--text-card-content mb-1">
-                    <i class="fa-solid fa-location-dot mb-2"></i>
-                    <%= t("regions.#{offer.request.charity.region}") %> - <%= t("prefectures.#{offer.request.charity.prefecture}") %>
-                  </p>
-                  <p class="km--text-card-content mb-1">
-                    <strong><%= t("dashboard.condition") %>:</strong> <%= t("conditions.#{offer.condition}") %>
-                  </p>
-                  <% if offer.can_ship_by.present? %>
-                    <p class="km--text-card-content mb-1">
-                      <strong><%= t("dashboard.can_ship_by") %>:</strong> <%= offer.can_ship_by.strftime("%b %-d") %>
-                    </p>
-                  <% end %>
-                  <p class="km--text-card-content mb-0">
-                    <strong><%= t("dashboard.alerts") %>:</strong> <%= offer.alert_message %>
-                  </p>
-                </div>
-                <br>
-              <% end %>
-            <% end %>
+    <!-- Right column: offer tracker, tabbed by status like the charity dashboard -->
+    <div class="col-md-4 position-relative km--fill-column">
+      <div class="km--card km--fill-column-card">
+        <ul class="nav nav-tabs km--nav-tabs mb-3" id="donor-tracker-tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link km--nav-link active" data-bs-toggle="pill" data-bs-target="#tracker-attention" type="button">
+              <i class="fa-solid fa-triangle-exclamation"></i><%= t("dashboard.needs_your_attention") %>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#tracker-submitted" type="button">
+              <i class="fa-solid fa-inbox"></i><%= t("dashboard.offers_submitted") %>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#tracker-shipped" type="button">
+              <i class="fa-solid fa-truck"></i><%= t("dashboard.offers_on_their_way") %>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#tracker-received" type="button">
+              <i class="fa-solid fa-box-open"></i><%= t("dashboard.offers_received") %>
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="tracker-attention">
+            <%= render "donors/dashboards/offer_tracker_list", offers: @attention_offers %>
           </div>
-        <% else %>
-          <p class="km--text-soft mb-0"><%= t("dashboard.no_pending_offers") %></p>
-        <% end %>
+          <div class="tab-pane fade" id="tracker-submitted">
+            <%= render "donors/dashboards/offer_tracker_list", offers: @submitted_offers %>
+          </div>
+          <div class="tab-pane fade" id="tracker-shipped">
+            <%= render "donors/dashboards/offer_tracker_list", offers: @shipped_offers %>
+          </div>
+          <div class="tab-pane fade" id="tracker-received">
+            <%= render "donors/dashboards/offer_tracker_list", offers: @received_offers %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

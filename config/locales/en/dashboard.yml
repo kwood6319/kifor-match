@@ -5,6 +5,7 @@ en:
     offers_submitted: "Submitted"
     offers_on_their_way: "Shipping"
     offers_needing_feedback: "Feedback"
+    offers_received: "Received"
     pending_actions: "need your attention"
     status: "Status"
     flagged: "Flagged"

@@ -1,0 +1,28 @@
+<% if offers.any? %>
+  <div class="km--card-list">
+    <% offers.each do |offer| %>
+      <%= link_to request_path(offer.request), class: "text-decoration-none km--text-dark km--card-list-item d-flex flex-column gap-1" do %>
+        <div class="d-flex justify-content-between align-items-start gap-2">
+          <strong class="km--text-card-subtitle"><%= title_with_quantity(offer.request.title, offer.quantity_offered) %></strong>
+          <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap flex-shrink-0"><%= time_ago_badge(offer.updated_at) %></span>
+        </div>
+        <p class="km--text-card-content mb-0">
+          <i class="fa-solid fa-location-dot fa-fw me-1"></i><%= charity_location(offer.request.charity) %>
+        </p>
+        <p class="km--text-card-content mb-0" title="<%= t("dashboard.condition") %>">
+          <i class="fa-solid fa-box-open fa-fw me-1"></i><span class="badge text-bg-info"><%= t("conditions.#{offer.condition}") %></span>
+        </p>
+        <% if offer.can_ship_by.present? %>
+          <p class="km--text-card-content mb-0" title="<%= t("dashboard.can_ship_by") %>">
+            <i class="fa-solid fa-truck fa-fw me-1"></i><%= l(offer.can_ship_by, format: :short) %>
+          </p>
+        <% end %>
+        <p class="km--text-card-content mb-0" title="<%= t("dashboard.alerts") %>">
+          <i class="fa-solid fa-message fa-fw me-1"></i><%= offer.alert_message %>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <p class="km--text-soft mb-0"><%= t("dashboard.no_pending_offers") %></p>
+<% end %>

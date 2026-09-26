@@ -9,7 +9,7 @@ module Donors
 
       @top_categories = CategoryList.top_categories
 
-      @pending_offers = current_donor.offers.active.includes(request: :charity).order(updated_at: :desc)
+      assign_tracker_offers(current_donor.offers.includes(request: :charity).order(updated_at: :desc))
       @notifications = current_donor.notifications.undismissed.includes(offer: :request).order(created_at: :desc)
 
       # # Setup dynamic variables for your dropdown menus
@@ -40,6 +40,19 @@ module Donors
       # end
 
       # @requests = @requests.order(created_at: :desc)
+    end
+
+    private
+
+    # Approved offers need shipping info; rejected offers on a still-open
+    # request can be amended and resubmitted.
+    def assign_tracker_offers(offers)
+      @attention_offers = offers.where(status: "approved")
+                                .or(offers.where(status: "rejected").where.not(requests: { status: "archived" }))
+                                .references(:requests)
+      @submitted_offers = offers.where(status: "submitted")
+      @shipped_offers = offers.where(status: "shipped")
+      @received_offers = offers.where(status: %w[received flagged])
     end
   end
 end
