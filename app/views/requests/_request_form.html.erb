@@ -1,39 +1,53 @@
-<%= simple_form_for request do |f| %>
-  <div class="row">
-    <div class="col-md-4">
-      <%= f.input :title, label: t("requests.title"), placeholder: t("requests.title_placeholder") %>
-    </div>
-    <div class="col-md-4">
-      <%= f.input :quantity_needed, label: t("requests.quantity_needed"), placeholder: "1, 2, 3..." %>
-    </div>
+<% label_class = "km--text-card-category km--text-soft d-block mb-2" %>
+<% if request.errors.any? %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong><%= t("offers.errors_heading") %></strong>
+    <ul class="mb-0">
+      <% request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<%= t("buttons.close") %>"></button>
   </div>
-  <div class="row">
+<% end %>
+<%= form_with model: request, html: { novalidate: true } do |f| %>
+  <div class="row g-3">
     <div class="col-md-4">
-      <%= f.input :urgency,
-        label: t("requests.urgency"),
-        collection: Request::URGENCIES.map { |u| [t("urgencies.#{u}"), u] },
-        prompt: t("urgencies.select_urgency") %>
+      <%= f.label :quantity_needed, t("requests.quantity_needed"), class: "#{label_class} km--required" %>
+      <%= f.number_field :quantity_needed, min: 1, placeholder: "1, 2, 3...", required: true, class: "km--form-control form-control" %>
     </div>
-    <div class="col-md-4">
-      <%= f.input :condition,
-        label: t("requests.condition"),
-        collection: Request::CONDITIONS.map { |c| [t("conditions.#{c}"), c] },
-        prompt: t("conditions.select"),
-        hint: t("requests.condition_message") %>
+    <div class="col-md-8">
+      <%= f.label :title, t("requests.title"), class: "#{label_class} km--required" %>
+      <%= f.text_field :title, placeholder: t("requests.title_placeholder"), required: true, class: "km--form-control form-control" %>
     </div>
-    <div class="mb-4">
-      <label class="form-label fw-bold"><%= t("navigation.category") %></label>
-      <div class="border rounded p-3" data-controller="category-subcategory">
-        <div class="row row-cols-2 row-cols-md-3 g-2 mb-3">
+    <div class="col-md-6">
+      <%= f.label :urgency, t("requests.urgency"), class: "#{label_class} km--required" %>
+      <%= f.select :urgency,
+        Request::URGENCIES.map { |u| [t("urgencies.#{u}"), u] },
+        { prompt: t("urgencies.select_urgency") },
+        required: true, class: "km--form-control form-select" %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :condition, t("requests.condition"), class: "#{label_class} km--required" %>
+      <%= f.select :condition,
+        Request::CONDITIONS.map { |c| [t("conditions.#{c}"), c] },
+        { prompt: t("conditions.select") },
+        required: true, class: "km--form-control form-select" %>
+      <p class="km--text-card-content km--text-soft mt-1 mb-0"><%= t("requests.condition_message") %></p>
+    </div>
+    <div class="col-12">
+      <span class="<%= label_class %> km--required"><%= t("navigation.category") %></span>
+      <div class="rounded p-3" style="background-color: var(--bs-body-bg);" data-controller="category-subcategory">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2 mb-2">
           <%= f.collection_check_boxes :category, CategoryList::CATEGORIES.keys.map { |c| [c, t("categories.#{c}")] }, :first, :last do |b| %>
             <div class="col">
               <div class="form-check">
                 <%= b.check_box class: "form-check-input",
-                data: {
-                  action: "change->category-subcategory#toggle",
-                  "category-subcategory-target": "categoryCheckbox",
-                  category: b.value
-                } %>
+                  data: {
+                    action: "change->category-subcategory#toggle",
+                    "category-subcategory-target": "categoryCheckbox",
+                    category: b.value
+                  } %>
                 <%= b.label class: "form-check-label" %>
               </div>
             </div>
@@ -41,40 +55,38 @@
         </div>
         <% CategoryList::CATEGORIES.each do |key, data| %>
           <% next if data[:subcategories].blank? %>
-          <div class="subcategory-group mb-3 <%= 'd-none' unless f.object.category.include?(key) %>"
-         data-category-subcategory-target="subcategoryGroup"
-         data-category="<%= key %>">
-            <label class="form-label small text-muted mb-1"><%= CategoryList.label_for(key) %> — <%= t("navigation.subcategory") %></label>
-            <div class="row row-cols-2 row-cols-md-4 g-2">
+          <div class="mt-3 <%= 'd-none' unless f.object.category.include?(key) %>"
+            data-category-subcategory-target="subcategoryGroup"
+            data-category="<%= key %>">
+            <p class="km--text-card-category km--text-soft mb-2"><%= CategoryList.label_for(key) %> — <%= t("navigation.subcategory") %></p>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
               <% data[:subcategories].each do |sub| %>
                 <div class="col">
                   <div class="form-check">
                     <%= check_box_tag "request[subcategory][]", sub,
-                    f.object.subcategory.include?(sub),
-                    id: "subcategory_#{sub}",
-                    class: "form-check-input",
-                    multiple: true,
-                    data: { "category-subcategory-target": "subcategoryCheckbox" } %>
-                    <%= label_tag "subcategory_#{sub}", CategoryList.subcategory_label_for(key, sub), class: "form-check-label small" %>
+                      f.object.subcategory.include?(sub),
+                      id: "subcategory_#{sub}",
+                      class: "form-check-input",
+                      data: { "category-subcategory-target": "subcategoryCheckbox" } %>
+                    <%= label_tag "subcategory_#{sub}", CategoryList.subcategory_label_for(key, sub), class: "form-check-label" %>
                   </div>
                 </div>
               <% end %>
             </div>
           </div>
         <% end %>
-        <button type="button" class="btn btn-sm btn-outline-secondary" data-action="click->category-subcategory#reset">
+        <button type="button" class="km--btn km--btn-outline mt-3" data-action="click->category-subcategory#reset">
           <%= t("buttons.reset_categories") %>
         </button>
       </div>
     </div>
-  </div>
-  <div class="row">
     <div class="col-12">
-      <%= f.input :description,
-        label: t("requests.description"),
-        placeholder: t("requests.description_message") %>
+      <%= f.label :description, t("requests.description"), class: "#{label_class} km--required" %>
+      <%= f.text_area :description, rows: 4, placeholder: t("requests.description_message"), required: true,
+            class: "km--form-control form-control", style: "resize: none;" %>
     </div>
   </div>
-  <%= f.hidden_field :status, value: "active" %>
-  <%= f.submit class: "btn btn-primary mt-3" %>
+  <div class="d-flex justify-content-end mt-4">
+    <%= f.submit request.persisted? ? t("buttons.save") : t("requests.create_request"), class: "km--btn km--btn-primary" %>
+  </div>
 <% end %>

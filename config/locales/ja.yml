@@ -92,7 +92,7 @@ ja:
       all: "すべて"
       submitted: "提出済み"
       shipped: "発送中"
-      awaiting_feedback: "フィードバック待ち"
+      awaiting_feedback: "評価待ち"
   statuses:
     requests:
       active: "アクティブ"
@@ -128,16 +128,18 @@ ja:
     edit_request: "リクエストを編集"
     view_request: "リクエストを表示"
     approve: "承認"
-    approve_offer: "承認する"
-    reject_offer: "拒否する"
+    reject: "却下"
     close: "閉じる"
     cancel: "キャンセル"
     delete: "削除"
+    archive: "アーカイブ"
     archive_request: "リクエストをアーカイブ"
     give_feedback: "フィードバックを送る"
     reset_categories: "カテゴリーをリセット"
   requests:
     request: "リクエスト"
+    new_request: "新しいリクエスト"
+    create_request: "リクエストを作成"
     tell_us: "ご要望について、もう少し詳しく教えてください"
     edit_request: "リクエストを編集"
     title: "タイトル"
@@ -197,6 +199,8 @@ ja:
       title: "オファーを削除"
     delete_request:
       title: "リクエストを消す"
+    archive_request:
+      title: "リクエストをアーカイブ"
   activerecord:
     attributes:
       offer:
@@ -217,6 +221,12 @@ ja:
       rejected: "団体が辞退を決定しました"
       shipped: "団体が荷物を受け取ったことの確認をお待ちください"
       received: "団体が荷物を受け取りました"
+    charity_alert_messages:
+      submitted: "このオファーを承認または却下してください"
+      approved: "寄付者の発送をお待ちください"
+      rejected: "このオファーは却下済みです"
+      shipped: "届いたら「受領済み」にしてください"
+      received: "寄付者へのフィードバックをお願いします"
   date:
     formats:
       short: "%-m月%-d日"

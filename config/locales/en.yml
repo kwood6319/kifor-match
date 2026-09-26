@@ -120,8 +120,8 @@ en:
     tabs:
       all: "All"
       submitted: "Submitted"
-      shipped: "Shipped"
-      awaiting_feedback: "Awaiting Feedback"
+      shipped: "Shipping"
+      awaiting_feedback: "Review"
   statuses:
     requests:
       active: "Active"
@@ -157,8 +157,7 @@ en:
     edit_request: "Edit Request"
     view_request: "View Request"
     approve: "Approve"
-    approve_offer: "Approve Offer"
-    reject_offer: "Reject Offer"
+    reject: "Reject"
     close: "Close"
     cancel: "Cancel"
     delete: "Delete"
@@ -168,6 +167,8 @@ en:
     reset_categories: "Reset categories"
   requests:
     request: "Requests"
+    new_request: "New request"
+    create_request: "Create request"
     tell_us: "Tell us a little more about your request"
     edit_request: "Edit Request"
     title: "Title"
@@ -255,6 +256,12 @@ en:
       rejected: "The charity has decided to decline"
       shipped: "Awaiting confirmation the charity has received the package"
       received: "The charity has received the package"
+    charity_alert_messages:
+      submitted: "Approve or reject this offer"
+      approved: "Waiting for the donor to ship"
+      rejected: "You declined this offer"
+      shipped: "Mark as received when it arrives"
+      received: "Leave feedback for the donor"
   date:
     formats:
       short: "%b %-d"

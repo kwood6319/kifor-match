@@ -1,9 +1,7 @@
-<div class="container mb-2">
-  <!-- this is an error check. Make it visible if you need it. -->
-  <%# @request.errors.full_messages.inspect %>
-  <h1> <%= t("requests.edit_request") %> </h1>
-  <div class="mb-3">
-    <%= link_to "← Back", "#", data: { controller: "history", action: "click->history#back" }, class: "btn btn-outline-secondary" %>
+<div class="container mt-4 mb-5">
+  <div class="km--card km--form-compact p-4">
+    <h4 class="km--text-card-title mb-1"><%= t("requests.edit_request") %></h4>
+    <p class="km--text-card-content km--text-soft mb-4"><span class="km--required"></span> <%= t("offers.required_note") %></p>
+    <%= render "request_form", request: @request %>
   </div>
-  <%= render "request_form", request: @request %>
 </div>
