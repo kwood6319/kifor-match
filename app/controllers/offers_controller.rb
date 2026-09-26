@@ -2,24 +2,6 @@ class OffersController < ApplicationController
   before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped]
   before_action :show_back_button, only: %i[show]
 
-  # TODO: index , list all offers
-  def index
-    @donor = Donor.find_by(user_id: current_user.id)
-    @charity = Charity.find_by(user_id: current_user.id)
-
-    @viewer_role = if current_user.respond_to?(:role) && current_user.role == "admin"
-                     :admin
-                   elsif @donor
-                     :donor
-                   elsif @charity
-                     :charity
-                   end
-
-    @offers = policy_scope(Offer).includes(:donor, request: :charity)
-    @offers = @offers.where(request_id: params[:request_id]) if params[:request_id]
-  end
-
-  # TODO: show , show one offer details
   def show
     @request = @offer.request
     @charity = @request.charity
@@ -51,7 +33,7 @@ class OffersController < ApplicationController
     @offer.donor ||= @donor
     authorize @offer
     if @offer.save
-      redirect_to offers_path
+      redirect_to request_path(@request)
     else
       render "requests/show", status: :unprocessable_entity
     end
@@ -79,7 +61,7 @@ class OffersController < ApplicationController
   def destroy
     authorize @offer
     @offer.destroy
-    redirect_to offers_path
+    redirect_to donors_dashboard_path, status: :see_other
   end
 
   # TODO: approve , approve offer (only Charities can approve offers)

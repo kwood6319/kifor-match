@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     end
 
     resources :requests do
-      resources :offers, only: [ :index, :new, :create ]
+      resources :offers, only: [ :new, :create ]
       resource :feedback, only: [ :new, :create ]
       member do
         patch :activate
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :offers, only: [ :index, :show, :edit, :update, :destroy ] do
+    resources :offers, only: [ :show, :edit, :update, :destroy ] do
       collection do
         get :search
       end

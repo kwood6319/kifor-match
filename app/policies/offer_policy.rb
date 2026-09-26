@@ -22,10 +22,6 @@ class OfferPolicy < ApplicationPolicy
     end
   end
 
-  def index?
-    true
-  end
-
   def search?
     true
   end
