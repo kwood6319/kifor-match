@@ -175,6 +175,14 @@
     &:hover {
       background-color: var(--km-btn-primary-bg);
     }
+
+    &:disabled,
+    &.is-disabled {
+      background-color: var(--km-text-light);
+      border-color: var(--km-btn-outline-border);
+      color: var(--km-text-dark);
+      opacity: 1;
+    }
   }
 
   &-danger {
@@ -199,5 +207,22 @@
 
   &-wide {
     width: 100%;
+  }
+}
+
+.km--btn-link {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $km--soft;
+  font: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+  text-decoration: underline;
+  vertical-align: baseline;
+
+  &:hover {
+    color: $km--dark;
   }
 }

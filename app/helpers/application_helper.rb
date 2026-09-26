@@ -14,4 +14,19 @@ module ApplicationHelper
       root_path
     end
   end
+
+  # Standard way to show a quantity, e.g. "19x"
+  def quantity_label(quantity)
+    "#{quantity}x"
+  end
+
+  # Standard way to show where a charity is, e.g. "Kanto - Tokyo"
+  def charity_location(charity)
+    "#{t("regions.#{charity.region}")} - #{t("prefectures.#{charity.prefecture}")}"
+  end
+
+  # Standard way to show an item with its quantity, e.g. "19x Rice"
+  def title_with_quantity(title, quantity)
+    "#{quantity_label(quantity)} #{title}"
+  end
 end

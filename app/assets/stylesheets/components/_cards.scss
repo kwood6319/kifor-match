@@ -107,7 +107,7 @@
 
 :root {
   --km-card-bg: #{$km--tan};
-  --km-divider-color: #D8D2C4;
+  --km-divider-color: #BDB5A5;
   --km-radius: 8px;
   --km-gap: 1rem;
   --km-card-padding: 1rem;
@@ -126,6 +126,33 @@
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.km--fill-page {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.km--card-grid-wide {
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.km--card-grid-fill {
+  height: 100%;
+  grid-auto-rows: minmax(clamp(9rem, 22vh, 16rem), 1fr);
+}
+
+.km--fill-column {
+  @media (min-width: 768px) {
+    .km--fill-column-card {
+      position: absolute;
+      inset: 0 calc(var(--bs-gutter-x) * 0.5);
+      overflow-y: auto;
+    }
   }
 }
 
@@ -179,6 +206,15 @@
       flex: 1;
       padding: var(--km-card-padding);
     }
+  }
+}
+
+.km--card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba($km--dark, 0.12);
   }
 }
 

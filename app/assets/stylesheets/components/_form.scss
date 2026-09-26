@@ -106,7 +106,7 @@
     }
   }
 
-  a {
+  a:not(.km--btn) {
     color: $km--primary-pink;
     font-weight: 600;
     text-decoration: none;
@@ -116,6 +116,32 @@
       text-decoration: underline;
     }
   }
+}
+
+.km--form-compact {
+  .km--form-control,
+  .km--form-control::placeholder,
+  .form-check-label {
+    font-size: 0.9375rem;
+  }
+
+  .km--text-card-category {
+    font-size: 0.875rem;
+  }
+}
+
+.km--form-check-row {
+  align-items: center;
+  min-height: calc(1.5em + 0.75rem + 2px);
+
+  .form-check {
+    margin-bottom: 0;
+  }
+}
+
+.km--required::after {
+  content: " *";
+  color: $km--danger-pink;
 }
 
 .km--form-card-narrow {

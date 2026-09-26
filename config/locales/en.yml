@@ -242,3 +242,7 @@ en:
       rejected: "The charity has decided to decline"
       shipped: "Awaiting confirmation the charity has received the package"
       received: "The charity has received the package"
+  date:
+    formats:
+      short: "%b %-d"
+      month_year: "%b/%y"
