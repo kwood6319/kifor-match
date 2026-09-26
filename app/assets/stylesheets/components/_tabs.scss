@@ -103,3 +103,70 @@
     }
   }
 }
+
+.km--settings-section {
+  border-top: 1px solid var(--km-divider-color);
+  padding-block: 0.75rem;
+}
+
+.km--settings-section-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  color: $km--dark;
+  font-weight: 600;
+  text-align: left;
+
+  .km--settings-section-chevron {
+    transition: transform 0.2s ease;
+  }
+
+  &.collapsed .km--settings-section-chevron {
+    transform: rotate(-90deg);
+  }
+}
+
+.km--settings-page {
+  .tab-content > .tab-pane > .km--card {
+    padding: 1.5rem 2rem;
+
+    @media (max-width: 575px) {
+      padding: 1.25rem;
+    }
+  }
+
+  form {
+    max-width: 36rem;
+  }
+}
+
+.km--settings-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.5rem;
+}
+
+.km--settings-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  background-color: var(--bs-body-bg);
+  border: 1px solid transparent;
+  border-radius: var(--bs-border-radius);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--km-divider-color);
+  }
+
+  &:has(input:checked) {
+    border-color: $km--primary-pink;
+    background-color: $km--light;
+  }
+}
