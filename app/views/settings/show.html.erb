@@ -1,15 +1,22 @@
 <% content_for :title, t("navigation.settings") %>
-<% account_tab_active = @open_account_section.present? %>
+<% active_tab = @open_account_section.present? ? "account" : (params[:tab].presence_in(%w[location]) || "profile") %>
+<% profile_record = @donor || @charity %>
+<% profile_scope = @donor ? :donor : :charity %>
 <div class="container mt-4 mb-5 km--settings-page">
   <div class="row">
     <%# Sidebar %>
     <div class="col-lg-3 mb-4">
       <h4 class="mb-4"><%= t("settings.page_title") %></h4>
       <div class="nav flex-column nav-pills" id="settings-tabs" role="tablist" aria-orientation="vertical">
-        <button class="nav-link km--nav-link<%= ' active' unless account_tab_active %> text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-profile" type="button">
+        <button class="nav-link km--nav-link<%= ' active' if active_tab == "profile" %> text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-profile" type="button">
           <i class="fa-solid fa-user"></i> <%= t("settings.tabs.profile") %>
         </button>
-        <button class="nav-link km--nav-link<%= ' active' if account_tab_active %> text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-account" type="button">
+        <% if profile_record %>
+          <button class="nav-link km--nav-link<%= ' active' if active_tab == "location" %> text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-location" type="button">
+            <i class="fa-solid fa-location-dot"></i> <%= t("settings.tabs.location") %>
+          </button>
+        <% end %>
+        <button class="nav-link km--nav-link<%= ' active' if active_tab == "account" %> text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-account" type="button">
           <i class="fa-solid fa-shield-halved"></i> <%= t("settings.tabs.account") %>
         </button>
         <button class="nav-link km--nav-link text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-notifications" type="button">
@@ -27,7 +34,7 @@
     <div class="col-lg-9">
       <div class="tab-content">
         <%# Profile tab %>
-        <div class="tab-pane fade<%= ' show active' unless account_tab_active %>" id="tab-profile">
+        <div class="tab-pane fade<%= ' show active' if active_tab == "profile" %>" id="tab-profile">
           <div class="km--card">
             <h5 class="km--text-card-title mb-1"><%= t("settings.tabs.profile") %></h5>
             <p class="km--text-card-content km--text-soft mb-4"><%= t("settings.profile_description") %></p>
@@ -45,21 +52,6 @@
                 <div class="mb-3">
                   <%= f.label :display_name, t("settings.display_name"), class: "km--text-card-category km--text-soft d-block mb-2" %>
                   <%= f.text_field :display_name, class: "km--form-control form-control" %>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <%= f.label :region, t("navigation.location"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-                    <%= f.select :region,
-                      Request::REGIONS_AND_PREFECTURES.keys.map { |r| [t("regions.#{r}"), r] },
-                      { include_blank: false }, class: "km--form-control form-select" %>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <%= f.label :prefecture, t("prefectures.select"), class: "km--text-card-category km--label-space-only d-block mb-2" %>
-                    <%= f.select :prefecture,
-                      Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
-                        .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
-                      { prompt: t("prefectures.select") }, class: "km--form-control form-select" %>
-                  </div>
                 </div>
                 <button type="submit" class="km--btn km--btn-primary">
                   <%= t("buttons.save") %>
@@ -82,32 +74,7 @@
                 </div>
                 <div class="mb-3">
                   <%= f.label :description, t("settings.description"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-                  <%= f.text_area :description, rows: 3, class: "km--form-control form-control" %>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <%= f.label :region, t("navigation.location"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-                    <%= f.select :region,
-                          Request::REGIONS_AND_PREFECTURES.keys.map { |r| [t("regions.#{r}"), r] },
-                          { include_blank: false }, class: "km--form-control form-select" %>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <%= f.label :prefecture, t("prefectures.select"), class: "km--text-card-category km--label-space-only d-block mb-2" %>
-                    <%= f.select :prefecture,
-                          Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
-                            .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
-                          { prompt: t("prefectures.select") }, class: "km--form-control form-select" %>
-                  </div>
-                </div>
-                <% if @has_shipped_offers %>
-                  <div class="alert alert-warning d-flex align-items-start gap-2">
-                    <i class="fa-solid fa-triangle-exclamation mt-1"></i>
-                    <div><%= t("settings.shipping_address_warning") %></div>
-                  </div>
-                <% end %>
-                <div class="mb-3">
-                  <%= f.label :shipping_address, t("settings.shipping_address"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-                  <%= f.text_area :shipping_address, rows: 3, class: "km--form-control form-control" %>
+                  <%= f.text_area :description, rows: 3, class: "km--form-control form-control", style: "resize: none;" %>
                 </div>
                 <button type="submit" class="km--btn km--btn-primary">
                   <%= t("buttons.save") %>
@@ -118,8 +85,55 @@
             <% end %>
           </div>
         </div>
+        <%# Location tab: region/prefecture for everyone, plus the shipping address for charities %>
+        <% if profile_record %>
+          <div class="tab-pane fade<%= ' show active' if active_tab == "location" %>" id="tab-location">
+            <div class="km--card">
+              <h5 class="km--text-card-title mb-1"><%= t("settings.tabs.location") %></h5>
+              <p class="km--text-card-content km--text-soft mb-4"><%= t("settings.location_description") %></p>
+              <%= form_with model: profile_record, url: settings_path, method: :patch, scope: profile_scope do |f| %>
+                <%= hidden_field_tag :tab, "location" %>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :region, t("navigation.region"), class: "km--text-card-category km--text-soft d-block mb-2" %>
+                    <%= f.select :region,
+                      Request::REGIONS_AND_PREFECTURES.keys.map { |r| [t("regions.#{r}"), r] },
+                      { include_blank: false }, class: "km--form-control form-select" %>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :prefecture, t("navigation.prefecture"), class: "km--text-card-category km--text-soft d-block mb-2" %>
+                    <%= f.select :prefecture,
+                      Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
+                        .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
+                      { prompt: t("prefectures.select") }, class: "km--form-control form-select" %>
+                  </div>
+                </div>
+                <% if @charity %>
+                  <% if @has_shipped_offers %>
+                    <div class="alert alert-warning d-flex align-items-start gap-2">
+                      <i class="fa-solid fa-triangle-exclamation mt-1"></i>
+                      <div><%= t("settings.shipping_address_warning") %></div>
+                    </div>
+                  <% end %>
+                  <div class="mb-3">
+                    <%= f.label :shipping_address, t("settings.shipping_address"), class: "km--text-card-category km--text-soft d-block mb-2" %>
+                    <%= f.text_area :shipping_address, rows: 3, class: "km--form-control form-control", style: "resize: none;" %>
+                  </div>
+                <% end %>
+                <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+              <% end %>
+              <% if @charity %>
+                <div class="km--settings-section mt-4">
+                  <p class="km--text-card-content km--text-soft mb-0">
+                    <i class="fa-solid fa-hourglass-half me-1"></i><%= t("settings.delivery_preferences_coming_soon") %>
+                  </p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
         <%# Account tab: email and password save separately; only the password needs the current password %>
-        <div class="tab-pane fade<%= ' show active' if account_tab_active %>" id="tab-account">
+        <div class="tab-pane fade<%= ' show active' if active_tab == "account" %>" id="tab-account">
           <div class="km--card">
             <h5 class="km--text-card-title mb-1"><%= t("settings.tabs.account") %></h5>
             <p class="km--text-card-content km--text-soft mb-4"><%= t("settings.account_description") %></p>
@@ -161,16 +175,16 @@
               <div class="collapse<%= ' show' if @open_account_section == :password %>" id="settings-password">
                 <%= form_with model: current_user, url: settings_password_path, method: :patch, scope: :user, class: "pt-3" do |f| %>
                   <div class="mb-3">
+                    <%= f.label :current_password, t("settings.current_password"), class: "km--text-card-category km--text-soft d-block mb-2" %>
+                    <%= f.password_field :current_password, class: "km--form-control form-control", autocomplete: "current-password", required: true %>
+                  </div>
+                  <div class="mb-3">
                     <%= f.label :password, t("settings.new_password"), class: "km--text-card-category km--text-soft d-block mb-2" %>
                     <%= f.password_field :password, class: "km--form-control form-control", autocomplete: "new-password", minlength: 6, required: true %>
                   </div>
                   <div class="mb-3">
                     <%= f.label :password_confirmation, t("settings.confirm_password"), class: "km--text-card-category km--text-soft d-block mb-2" %>
                     <%= f.password_field :password_confirmation, class: "km--form-control form-control", autocomplete: "new-password", minlength: 6, required: true %>
-                  </div>
-                  <div class="mb-3">
-                    <%= f.label :current_password, t("settings.current_password"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-                    <%= f.password_field :current_password, class: "km--form-control form-control", autocomplete: "current-password", required: true %>
                   </div>
                   <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
                 <% end %>
