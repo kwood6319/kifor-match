@@ -7,12 +7,12 @@
         <div class="row pt-2">
           <div class="col-8">
             <h2 class="km--text-card-title"><%= @request.title %></h2>
-            <p class="km--text-card-subtitle km--text-soft mb-0">
-              <%= t("prefectures.#{@request.charity.prefecture}") %>
+            <p class="km--text-card-subtitle mb-0">
+              <i class="fa-solid fa-location-dot me-1"></i><%= charity_location(@request.charity) %>
             </p>
           </div>
           <div class="col-4 text-center">
-            <h3 class="km--text-card-title mb-1">x<%= @request.quantity_remaining %></h3>
+            <h3 class="km--text-card-title mb-1"><%= quantity_label(@request.quantity_remaining) %></h3>
             <% if @request.archived? %>
               <div class="badge rounded-pill text-bg-secondary km--text-pill">
                 <%= t("statuses.requests.archived") %>
@@ -31,6 +31,12 @@
           </div>
         </div>
         <div class="mb-3">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.category") %></p>
+          <p class="km--text-card-content mb-0">
+            <%= @request.category.map { |cat| t("categories.#{cat}") }.join(", ") %>
+          </p>
+        </div>
+        <div class="mb-3">
           <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
           <div class="d-flex flex-wrap gap-2">
             <% @request.acceptable_conditions.each do |cond| %>
@@ -43,16 +49,23 @@
           <p class="km--text-card-content mb-0"><%= @request.description %></p>
         </div>
         <div class="mb-3">
-          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.shipping") %></p>
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.shipping_and_drop_off") %></p>
+          <% if @request.charity.accepts_shipping? %>
+            <p class="km--text-card-content mb-1">
+              <i class="fa-solid fa-truck me-1"></i><%= t("shipping.accepts_shipping") %>
+            </p>
+          <% end %>
           <div class="d-flex justify-content-between align-items-center">
-            <p class="km--text-card-content mb-0">
-              <%# TO DO: Add conditional when drop off is working %>
-              <%= t("shipping.accepts_drop_off") %>
+            <p class="km--text-card-content mb-0<%= ' km--text-soft' unless @request.charity.accepts_drop_off? %>">
+              <i class="fa-solid fa-box me-1"></i>
+              <%= @request.charity.accepts_drop_off? ? t("shipping.accepts_drop_off") : t("shipping.no_drop_off") %>
             </p>
-            <p class="km--text-card-content km--text-soft mb-0">
-              <%# TO DO: Add charity hours when drop off is possible %>
-              Mon - FRI 9AM - 5PM
-            </p>
+            <% if @request.charity.accepts_drop_off? %>
+              <p class="km--text-card-content km--text-soft mb-0">
+                <%# TO DO: Replace with the charity's real drop-off hours %>
+                Mon - Fri 9AM - 5PM
+              </p>
+            <% end %>
           </div>
         </div>
         <div class="d-flex gap-3">
@@ -96,12 +109,12 @@
                 <div class="row">
                   <div class="col-8">
                     <p class="km--text-card-title mb-0"><%= similar_request.title %></p>
-                    <p class="km--text-card-subtitle km--text-soft mb-2">
-                      <%= t("prefectures.#{similar_request.charity.prefecture}") %>
+                    <p class="km--text-card-subtitle mb-2">
+                      <i class="fa-solid fa-location-dot me-1"></i><%= charity_location(similar_request.charity) %>
                     </p>
                   </div>
                   <div class="col-4 text-center">
-                    <p class="km--text-card-title mb-1">x<%= similar_request.quantity_remaining %></p>
+                    <p class="km--text-card-title mb-1"><%= quantity_label(similar_request.quantity_remaining) %></p>
                     <span class="badge rounded-pill pill-<%= similar_request.urgency %> km--text-pill km--text-light">
                       <%= t("urgencies.#{similar_request.urgency}") %>
                     </span>
@@ -117,7 +130,11 @@
             <% end %>
           <% end %>
         <% else %>
-          <p class="km--text-soft mb-0"><%= t("navigation.no_similar_requests") %></p>
+          <div class="km--card">
+            <p class="km--text-card-content mb-0">
+              <i class="fa-solid fa-hourglass-half me-1"></i><%= t("navigation.similar_requests_coming_soon") %>
+            </p>
+          </div>
         <% end %>
       <% end %>
     </div>
@@ -131,37 +148,8 @@
         <%= render "offers/form", request: @request, offer: @my_offer %>
       <% elsif @my_offer.present? %>
         <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
-        <div class="d-flex gap-2 mt-2">
-          <% if %w[submitted approved rejected].include?(@my_offer.status.to_s) %>
-            <%= link_to t("buttons.edit_offer"),
-              request_path(@request, edit_offer: @my_offer.id),
-              class: "km--btn km--btn-primary" %>
-          <% end %>
-          <% if %w[submitted rejected].include?(@my_offer.status.to_s) %>
-            <button
-              type="button"
-              class="km--btn km--btn-danger"
-              data-bs-toggle="modal"
-              data-bs-target="#deleteModal"
-              data-action-url="<%= offer_path(@my_offer) %>"
-              data-action-title="<%= t("modals.delete_offer.title") %>" >
-              <%= t("buttons.delete") %>
-            </button>
-          <% end %>
-        </div>
       <% elsif policy(Offer.new(request: @request)).new? %>
-        <% if @offer.errors.any? %>
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>There were problems creating the offer:</strong>
-            <ul class="mb-0">
-              <% @offer.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <% end %>
-        <%= render 'offers/form', request: @request, offer: @offer, locals: { custom_class: "new-offer" } %>
+        <%= render 'offers/form', request: @request, offer: @offer %>
       <% end %>
     </div>
   </div>

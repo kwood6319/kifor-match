@@ -4,27 +4,35 @@
     <%= render "shared/photo_gallery", offer: offer %>
   </div>
   <div class="row">
-    <h4 class="km--text-card-title"><%= offer.quantity_offered %> <%= request.title %></h4>
+    <h4 class="km--text-card-title"><%= title_with_quantity(request.title, offer.quantity_offered) %></h4>
   </div>
+  <%# TO DO: Show the donor's region too ("Kanto - Tokyo") to match charity locations. %>
   <p class="km--text-card-content mb-0">
     <i class="fa-solid fa-location-dot"></i>
     <%= t("prefectures.#{offer.donor.prefecture}") if offer.donor.prefecture %>
   </p>
-  <p class="km--text-card-content mb-0">
-    <strong><%= t("navigation.condition") %>:</strong>
-    <%= offer.condition.present? ? t("conditions.#{offer.condition}") : t("conditions.no_condition") %>
-  </p>
+  <%# Section labels match the request card on the left %>
+  <div class="mt-3 mb-3">
+    <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+    <% if offer.condition.present? %>
+      <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{offer.condition}") %></span>
+    <% else %>
+      <p class="km--text-card-content mb-0"><%= t("conditions.no_condition") %></p>
+    <% end %>
+  </div>
   <% if offer.can_ship_by %>
-    <p class="km--text-card-content mb-0">
-      <strong><%= t("offers.can_ship_by") %>:</strong> <%= offer.can_ship_by.strftime("%b %e") %>
-    </p>
+    <div class="mb-3">
+      <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.can_ship_by") %></p>
+      <p class="km--text-card-content mb-0"><%= l(offer.can_ship_by, format: :short) %></p>
+    </div>
   <% end %>
-  <% if offer.message != "" %>
-    <p class="km--text-card-content mb-0">
-      <strong><%= t("offers.message") %>:</strong> <%= offer.message %>
-    </p>
+  <% if offer.message.present? %>
+    <div class="mb-3">
+      <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.your_message") %></p>
+      <p class="km--text-card-content mb-0"><%= offer.message %></p>
+    </div>
   <% end %>
-  <h5 class="km--text-card-title mt-2"><%= t("offers.status") %>:</h5>
+  <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.status") %></p>
   <% if offer.status == "submitted" %>
     <p class="km--text-card-content"><%= t("statuses.donor.submitted_message") %></p>
   <% elsif offer.status == "approved" %>
@@ -48,7 +56,7 @@
     <% end %>
   <% elsif offer.status == "rejected" %>
     <p class="km--text-card-content"><%= t("statuses.donor.rejected_message") %></p>
-    <h5 class="km--text-card-title mt-2"><%= t("activerecord.attributes.offer.rejection_reason") %>:</h5>
+    <p class="km--text-card-category km--text-soft mt-3 mb-2"><%= t("activerecord.attributes.offer.rejection_reason") %></p>
     <p class="km--text-card-content"><%= offer.rejection_reason %></p>
   <% elsif offer.status == "shipped" %>
     <p class="km--text-card-content"><%= t("statuses.donor.shipped_message") %>:</p>
@@ -56,5 +64,27 @@
     <p class="km--text-card-content"><%= t("statuses.donor.tracking_info") %>: <%= offer.tracking_number != "" ? offer.tracking_number : "?" %></p>
   <% elsif offer.status == "received" %>
     <p class="km--text-card-content"><%= t("statuses.donor.received_message") %></p>
+  <% end %>
+  <% can_edit = %w[submitted approved rejected].include?(offer.status.to_s) %>
+  <% can_delete = %w[submitted rejected].include?(offer.status.to_s) %>
+  <% if can_edit || can_delete %>
+    <div class="d-flex justify-content-end gap-3 mt-3">
+      <% if can_delete %>
+        <button
+          type="button"
+          class="km--btn km--btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteModal"
+          data-action-url="<%= offer_path(offer) %>"
+          data-action-title="<%= t("modals.delete_offer.title") %>" >
+          <%= t("buttons.delete") %>
+        </button>
+      <% end %>
+      <% if can_edit %>
+        <%= link_to t("buttons.edit"),
+          request_path(request, edit_offer: offer.id),
+          class: "km--btn km--btn-primary" %>
+      <% end %>
+    </div>
   <% end %>
 </div>

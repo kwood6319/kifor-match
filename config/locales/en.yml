@@ -29,6 +29,8 @@
 
 en:
   navigation:
+    similar_requests: "Similar requests"
+    similar_requests_coming_soon: "Similar requests is a feature coming soon."
     dashboard: "Dashboard"
     sign_out: "Sign Out"
     log_in: "Log in"
@@ -89,6 +91,11 @@ en:
     no_condition: "No condition provided"
   offers:
     offers: "Offers"
+    edit_offer: "Edit offer"
+    your_message: "Your message"
+    required_note: "Required fields"
+    errors_heading: "Please fix the following:"
+    remove_photo: "Remove photo"
     offer_details: "Offer Details"
     no_offers: "No offers yet"
     make_an_offer: "Make an Offer"
@@ -99,8 +106,7 @@ en:
     can_ship_by: "Can ship by"
     photos_of_item: "Photos of item"
     photo_expl: "Uploading a photo helps charities verify the condition of the item."
-    save_changes: "Save changes"
-    send_offer: "Send offer"
+    send_offer: "Send"
     existing_offer: "Your offer has been submitted"
     no_image: "No image"
     status: "Status"
@@ -147,7 +153,7 @@ en:
       received_message: "You have marked this offer as received."
   buttons:
     save: "Save"
-    edit_offer: "Edit Offer"
+    edit: "Edit"
     edit_request: "Edit Request"
     view_request: "View Request"
     approve: "Approve"
