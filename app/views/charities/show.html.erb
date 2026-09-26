@@ -78,7 +78,7 @@
                   </p>
                 </div>
                 <div class="col-4 text-center">
-                  <p class="km--text-card-title mb-1">x<%= request.quantity_remaining %></p>
+                  <p class="km--text-card-title mb-1"><%= quantity_label(request.quantity_remaining) %></p>
                   <span class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light">
                     <%= t("urgencies.#{request.urgency}") %>
                   </span>

@@ -9,7 +9,7 @@
             <h2 class="km--text-card-title"><%= @request.title %></h2>
           </div>
           <div class="col-4 text-center">
-            <h3 class="km--text-card-title mb-1">x<%= @request.quantity_remaining %></h3>
+            <h3 class="km--text-card-title mb-1"><%= quantity_label(@request.quantity_remaining) %></h3>
             <div class="badge rounded-pill pill-<%= @request.urgency %> km--text-pill km--text-light">
               <%= t("urgencies.#{@request.urgency}") %>
             </div>
@@ -42,7 +42,7 @@
         <hr class="km--divider">
         <div class="d-flex justify-content-between align-items-start mb-1">
           <strong class="km--text-card-title"><%= @donor.display_name %></strong>
-          <span class="km--text-card-title mb-0">x<%= @offer.quantity_offered %></span>
+          <span class="km--text-card-title mb-0"><%= quantity_label(@offer.quantity_offered) %></span>
         </div>
         <p class="km--text-card-content mb-0">
           <i class="fa-solid fa-location-dot"></i>

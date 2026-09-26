@@ -80,7 +80,7 @@
                   </p>
                 </div>
                 <div class="col-4 text-center">
-                  <p class="km--text-card-title mb-1">x<%= offer.quantity_offered %></p>
+                  <p class="km--text-card-title mb-1"><%= quantity_label(offer.quantity_offered) %></p>
                   <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap">
                     <%= t("statuses.#{offer.status}", default: offer.status.capitalize) %>
                   </span>

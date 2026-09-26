@@ -22,7 +22,7 @@
     <div class="col-7">
       <div class="d-flex justify-content-between align-items-start mb-1">
         <strong class="km--text-card-title"><%= offer.donor.display_name %></strong>
-        <span class="km--text-card-title mb-0">x<%= offer.quantity_offered %></span>
+        <span class="km--text-card-title mb-0"><%= quantity_label(offer.quantity_offered) %></span>
       </div>
       <p class="km--text-card-content mb-0">
         <i class="fa-solid fa-location-dot"></i>
