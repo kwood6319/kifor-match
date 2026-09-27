@@ -5,6 +5,8 @@ class Charity < ApplicationRecord
   has_many :requests, dependent: :restrict_with_error
   has_many :notifications, as: :recipient
 
+  validates :org_name, :region, :shipping_address, presence: true
+
   # TO DO: Replace with an accepts_drop_off boolean column on charities (and a
   # settings toggle). Hardcoded demo placeholder until then.
   NO_DROP_OFF_ORG_NAMES = [

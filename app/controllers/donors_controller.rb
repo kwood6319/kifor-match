@@ -33,9 +33,12 @@ class DonorsController < ApplicationController
 
   def approve
     authorize @donor
-    @donor.update(approved: true)
-
-    redirect_back fallback_location: donors_path, status: :see_other, notice: "Donor approved!"
+    if @donor.update(approved: true)
+      redirect_back fallback_location: donors_path, status: :see_other, notice: t("donors.approved")
+    else
+      redirect_back fallback_location: donors_path, status: :see_other,
+                    alert: t("donors.approve_failed", errors: @donor.errors.full_messages.to_sentence)
+    end
   end
 
   private

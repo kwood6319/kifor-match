@@ -155,9 +155,13 @@ ja:
     not_approved: "未承認"
     total_requests: "リクエスト総数"
     completed_requests: "完了したリクエスト数"
+    approved: "チャリティーを承認しました"
+    approve_failed: "チャリティーを承認できませんでした：%{errors}"
   donors:
     stats: "ドナー統計"
     current_offers: "現在のオファー"
+    approved: "ドナーを承認しました"
+    approve_failed: "ドナーを承認できませんでした：%{errors}"
     no_current_offers: "このドナーには現在のオファーがありません"
     no_past_offers: "このドナーには過去のオファーがありません"
     created_at: "作成日"

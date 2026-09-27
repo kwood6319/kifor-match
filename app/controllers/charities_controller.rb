@@ -36,9 +36,12 @@ class CharitiesController < ApplicationController
 
   def approve
     authorize @charity
-    @charity.update(approved: true)
-
-    redirect_back fallback_location: charities_path, status: :see_other, notice: "Charity approved!"
+    if @charity.update(approved: true)
+      redirect_back fallback_location: charities_path, status: :see_other, notice: t("charities.approved")
+    else
+      redirect_back fallback_location: charities_path, status: :see_other,
+                    alert: t("charities.approve_failed", errors: @charity.errors.full_messages.to_sentence)
+    end
   end
 
   private

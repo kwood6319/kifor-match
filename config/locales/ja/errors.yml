@@ -24,3 +24,14 @@ ja:
         quantity_needed: "必要数量"
         category: "カテゴリ"
         subcategory: "サブカテゴリー"
+      charity:
+        org_name: "団体名"
+        description: "説明"
+        region: "地域"
+        prefecture: "都道府県"
+        shipping_address: "配送先住所"
+      donor:
+        display_name: "表示名"
+        donor_type: "寄付者の種類"
+        region: "地域"
+        prefecture: "都道府県"
