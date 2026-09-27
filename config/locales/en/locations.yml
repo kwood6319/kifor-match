@@ -56,5 +56,7 @@ en:
     Oita: "Oita"
     Miyazaki: "Miyazaki"
     Kagoshima: "Kagoshima"
-    Hokkaido: "Okinawa"
+    Hokkaido: "Hokkaido"
+    Okinawa: "Okinawa"
     all: "All"
+    select: "Select prefecture"

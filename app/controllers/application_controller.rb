@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
   before_action :redirect_to_resolved_locale
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, if: :devise_controller?
+  before_action :require_profile, unless: :devise_controller?
+  before_action :require_approval, unless: :devise_controller?
+  before_action :configure_permitted_parameters, if: :devise_controller?
   include Pundit::Authorization
 
   # Pundit: allow-list
@@ -86,6 +89,33 @@ class ApplicationController < ActionController::Base
 
   def default_url_options
     { locale: I18n.locale }
+  end
+
+  # New users keep the language they signed up in; otherwise the "en" column
+  # default would switch them to English straight after sign-up.
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:locale])
+  end
+
+  # Sign-up only creates the User, so donors and charities finish onboarding
+  # before they can use the rest of the app.
+  def require_profile
+    return if !user_signed_in? || current_user.admin? || current_profile
+
+    redirect_to onboarding_path
+  end
+
+  # Only charities need admin approval; until then they can still reach
+  # settings and the contact page.
+  def require_approval
+    return if !user_signed_in? || current_charity.nil? || current_charity.approved?
+    return if controller_name.in?(%w[settings pages])
+
+    redirect_to pending_approval_path
+  end
+
+  def current_profile
+    current_donor || current_charity
   end
 
   def current_donor

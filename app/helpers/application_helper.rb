@@ -32,6 +32,12 @@ module ApplicationHelper
     location_label(charity)
   end
 
+  def prefecture_options_by_region
+    Request::REGIONS_AND_PREFECTURES.transform_values do |prefectures|
+      prefectures.map { |p| [t("prefectures.#{p}"), p] }
+    end
+  end
+
   # Icon shown before a charity's name
   def charity_icon
     tag.i(class: "fa-solid fa-hand-holding-heart fa-fw me-1", title: t("navigation.charity"))

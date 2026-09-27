@@ -108,19 +108,20 @@
               <p class="km--text-card-content km--text-soft mb-4"><%= t("settings.location_description") %></p>
               <%= form_with model: profile_record, url: settings_path, method: :patch, scope: profile_scope do |f| %>
                 <%= hidden_field_tag :tab, "location" %>
-                <div class="row">
+                <% prefecture_options = prefecture_options_by_region %>
+                <div class="row" data-controller="prefecture-filter" data-prefecture-filter-prefectures-value="<%= prefecture_options.to_json %>">
                   <div class="col-md-6 mb-3">
                     <%= f.label :region, t("navigation.region"), class: "km--text-card-category km--text-soft d-block mb-2" %>
                     <%= f.select :region,
                       Request::REGIONS_AND_PREFECTURES.keys.map { |r| [t("regions.#{r}"), r] },
-                      { include_blank: false }, class: "km--form-control form-select" %>
+                      { include_blank: false }, class: "km--form-control form-select",
+                      data: { prefecture_filter_target: "region", action: "prefecture-filter#filter" } %>
                   </div>
                   <div class="col-md-6 mb-3">
                     <%= f.label :prefecture, t("navigation.prefecture"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-                    <%= f.select :prefecture,
-                      Request::REGIONS_AND_PREFECTURES.transform_keys { |r| t("regions.#{r}") }
-                        .transform_values { |prefs| prefs.map { |p| [t("prefectures.#{p}"), p] } },
-                      { prompt: t("prefectures.select") }, class: "km--form-control form-select" %>
+                    <%= f.select :prefecture, prefecture_options.fetch(profile_record.region, []),
+                      { prompt: t("prefectures.select") }, class: "km--form-control form-select",
+                      data: { prefecture_filter_target: "prefecture" } %>
                   </div>
                 </div>
                 <% if @charity %>
