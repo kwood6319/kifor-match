@@ -1,3 +1,5 @@
 en:
   auth:
     send_reset_link: "Send reset link"
+    enter_email: "Please enter your email address"
+    not_a_member: "Not a member yet?"

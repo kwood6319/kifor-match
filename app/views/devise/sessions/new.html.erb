@@ -14,7 +14,10 @@
               label_html: label %>
       <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
     </div>
-    <div class="form-actions d-flex justify-content-end">
+    <div class="form-actions d-flex justify-content-between align-items-center">
+      <% if devise_mapping.recoverable? %>
+        <%= link_to t("devise.shared.links.forgot_your_password", default: "Forgot your password?"), new_password_path(resource_name) %>
+      <% end %>
       <%= f.button :submit, t("navigation.log_in"), class: "km--btn km--btn-primary" %>
     </div>
   <% end %>
