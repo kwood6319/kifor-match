@@ -1,64 +1,5 @@
 @import "config/colors";
 
-.btn-section {
-  display: flex;
-  justify-content: space-between;
-}
-
-.btn-neg {
-  text-decoration: none;
-  color: #852221;
-  background-color: white;
-  border: 2px solid #852221;
-  border-radius: 8px;
-  width: 100px;
-}
-
-.sticky-back {
-  position: sticky;
-  top: 64px;
-  z-index: 999;
-  background: $light-pink-gray;
-}
-
-.btn-delete{
-  background-color: #FF7DB4;
-}
-
-.btn-neg:hover {
-  color: white;
-  background-color: #852221;
-}
-
-.btn-pos {
-  color: #FE0181;
-  background-color: white;
-  border: 2px solid #FE0181;
-  border-radius: 8px;
-  width: 100px;
-}
-
-.btn-pos:hover {
-  color: white;
-  background-color: #FE0181;
-
-}
-
-.btn-kifor-login {
-  background-color: #E84393;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 32px;
-  font-size: 1rem;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.btn-kifor-login:hover {
-  background-color: #d63384;
-  color: white;
-}
-
 /* Floating Action Button (FAB) */
 .btn-kifor-fab {
   position: fixed;
@@ -68,7 +9,7 @@
   right: 40px;
   width: 65px;
   height: 65px;
-  background-color: #E84393; /* The KiFor Pink */
+  background-color: $km--primary-pink;
   color: white;
   border-radius: 50%;
   display: flex;
@@ -83,24 +24,10 @@
 
 /* Hover effect to make it feel interactive */
 .btn-kifor-fab:hover {
-  background-color: #d63384; /* Slightly darker pink for hover state */
+  background-color: darken($km--primary-pink, 8%);
   color: white;
   transform: scale(1.1); /* Slightly enlarges the button */
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-}
-
-.btn-kifor-soft {
-  background-color: #FFA9C6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 24px;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.btn-kifor-soft:hover {
-  background-color: #FF7DB4; /* steps up to your existing pill-medium shade on hover */
-  color: white;
 }
 
 /* Makes it slightly smaller on mobile devices so it doesn't take up too much screen space */
@@ -113,7 +40,6 @@
     font-size: 24px;
   }
 }
-
 
 // -----------Post-migration values------------
 
@@ -152,8 +78,7 @@
     outline-offset: 2px;
   }
 
-  &:disabled,
-  &.is-disabled {
+  &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     pointer-events: none;
@@ -176,8 +101,7 @@
       background-color: var(--km-btn-primary-bg);
     }
 
-    &:disabled,
-    &.is-disabled {
+    &:disabled {
       background-color: var(--km-text-light);
       border-color: var(--km-btn-outline-border);
       color: var(--km-text-dark);
@@ -203,10 +127,6 @@
       background-color: rgba(0, 0, 0, 0.04);
       filter: none;
     }
-  }
-
-  &-wide {
-    width: 100%;
   }
 }
 

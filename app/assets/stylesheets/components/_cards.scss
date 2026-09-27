@@ -1,113 +1,8 @@
-.grid-tall-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 16px;
-}
-
-.category-card{
-  overflow: hidden;
-  height: 16rem;
-  background: white;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-}
-
-.small-card {
-  position: relative;
-  background-color: #EDE9E1;
-  box-shadow: 4px 4px 4px #bfbfbf;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  .h4 {
-    font-size:1.2rem;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-}
-
-.tall-card {
-  background-color: #EDE9E1;
-  box-shadow: 4px 4px 4px #bfbfbf;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.small-card:hover {
-  transform: translateY(-1px) scale(1.01);
-}
-
-// The stretched-link overlay (z-index: 1) otherwise swallows clicks meant
-// for action buttons layered on top of it, forcing users through the
-// offer's detail page instead.
-.offer-card .btn {
-  position: relative;
-  z-index: 2;
-}
-
-.new-offer {
-  background-color: #EDE9E1;
-  box-shadow: 4px 4px 4px #bfbfbf;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
-  height: 100%;
-}
-
-// .approved-offer {
-
-// }
-
-.rejected-offer {
-  background-color: #bfbfbf !important;
-}
-
-// Smallest device
-@media (min-width: 100px) and (max-width: 575px) {
-  .grid-tall-cards {
-    grid-template-columns: 1fr;
-  }
-}
-
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) {
-  .grid-tall-cards {
-    grid-template-columns: 1fr;
-  }
-}
-
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
-  .grid-tall-cards {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
-  .grid-tall-cards {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
-  .grid-tall-cards {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
-
 // -----------Post-migration values------------
 
 :root {
   --km-card-bg: #{$km--tan};
-  --km-divider-color: #BDB5A5;
+  --km-divider-color: #{$km--divider};
   --km-radius: 8px;
   --km-gap: 1rem;
   --km-card-padding: 1rem;
@@ -151,6 +46,11 @@
     .km--fill-column-card {
       position: absolute;
       inset: 0 calc(var(--bs-gutter-x) * 0.5);
+    }
+
+    .km--fill-column-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
       overflow-y: auto;
     }
   }
@@ -165,8 +65,7 @@
   flex-direction: column;
   overflow: hidden;
 
-  // Same stretched-link problem as .offer-card .btn above, but for cards
-  // migrated to the km-- design system.
+  // Keep buttons and gallery thumbs clickable above a card's stretched link
   .km--btn,
   .photo-gallery-thumb {
     position: relative;
@@ -190,21 +89,6 @@
       &:not(:last-child) {
         border-bottom: 1px solid var(--km-divider-color);
       }
-    }
-  }
-  &-horizontal {
-    flex-direction: row;
-    padding: 0;
-
-    &__media {
-      width: 40%;
-      flex-shrink: 0;
-      object-fit: cover;
-    }
-
-    &__body {
-      flex: 1;
-      padding: var(--km-card-padding);
     }
   }
 }
@@ -247,14 +131,16 @@
 }
 
 .km--card-danger {
-  background-color: #FBEAEA;
+  background-color: $km--danger-tint;
   border: 1px solid $km--danger-pink;
 }
 
-.km--card {
-  .km--btn,
-  .photo-gallery-thumb {
-    position: relative;
-    z-index: 2;
-  }
+.km--scroll-card {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+// Right-hand quantity / urgency column on request cards
+.km--qty-col {
+  min-width: 70px;
 }
