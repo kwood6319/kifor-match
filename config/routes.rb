@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /en|ja|/ do
-    devise_for :users
+    # Sign-up only: account editing and deactivation live in Settings, so
+    # Devise's edit/update/cancel/destroy registration routes are not exposed.
+    devise_for :users, skip: :registrations
+    devise_scope :user do
+      get "users/sign_up", to: "devise/registrations#new", as: :new_user_registration
+      post "users", to: "devise/registrations#create", as: :user_registration
+    end
     root to: "dashboard#show"
     # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -29,7 +35,7 @@ Rails.application.routes.draw do
     end
 
     resources :requests do
-      resources :offers, only: [ :new, :create ]
+      resources :offers, only: [ :create ]
       resource :feedback, only: [ :new, :create ]
       member do
         patch :activate
@@ -38,10 +44,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :offers, only: [ :show, :edit, :update, :destroy ] do
-      collection do
-        get :search
-      end
+    resources :offers, only: [ :show, :update, :destroy ] do
       member do
         patch :approve
         patch :reject

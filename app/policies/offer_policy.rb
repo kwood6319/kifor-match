@@ -22,10 +22,6 @@ class OfferPolicy < ApplicationPolicy
     end
   end
 
-  def search?
-    true
-  end
-
   def show?
     admin? || owning_donor? || owning_charity?
   end

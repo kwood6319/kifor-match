@@ -16,15 +16,6 @@ class OffersController < ApplicationController
     authorize @offer
   end
 
-  def new
-    @request = Request.find(params[:request_id])
-    @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
-    @offer = Offer.new(request: @request, donor: @donor)
-    @first_offer = @donor.nil? || @donor.offers.none?
-    Rails.logger.debug "DEBUG first_offer={@first_offer.inspect} donor=#{@donor&.id} offers_count=#{@donor&.offers&.count}"
-    authorize @offer
-  end
-
   def create
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
@@ -37,11 +28,6 @@ class OffersController < ApplicationController
     else
       render "requests/show", status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @offer = Offer.find(params[:id])
-    authorize @offer
   end
 
   def update
@@ -84,12 +70,6 @@ class OffersController < ApplicationController
     redirect_to request_path(@offer.request), status: :see_other
   end
 
-  # TODO: search , implement search scope on Offer model when ready
-  def search
-    @offers = policy_scope(Offer)
-    authorize Offer
-  end
-
   # TODO: update request.quantity_remaining when offer is received
   def update_received
     @request = Request.find(@offer.request_id)
@@ -116,7 +96,8 @@ class OffersController < ApplicationController
       redirect_to request_path(@offer.request),
                   notice: "Shipping info saved."
     else
-      render :edit, status: :unprocessable_entity
+      # Offers are edited on the request page, so send the errors back there
+      redirect_to request_path(@offer.request), alert: @offer.errors.full_messages.to_sentence
     end
   end
 

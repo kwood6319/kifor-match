@@ -35,7 +35,6 @@ class CharitiesController < ApplicationController
   end
 
   def approve
-    # TO DO make so only admin can do this
     authorize @charity
     @charity.update(approved: true)
 
