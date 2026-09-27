@@ -79,7 +79,7 @@
                   <i class="fa-solid fa-location-dot me-1"></i><%= charity_location(request.charity) %>
                 </p>
               </div>
-              <div class="text-center flex-shrink-0 ms-2" style="width: 70px;">
+              <div class="text-center flex-shrink-0 ms-2 km--qty-col">
                 <div class="km--text-card-title mb-0"><%= quantity_label(request.quantity_remaining) %></div>
                 <span class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light">
                   <%= t("urgencies.#{request.urgency}") %>

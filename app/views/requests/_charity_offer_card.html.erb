@@ -80,16 +80,21 @@
           <strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= offer.tracking_number.presence || "?" %>
         </p>
         <% unless read_only %>
-          <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "km--btn km--btn-danger mt-2" %>
+          <div class="d-flex justify-content-end w-100 mt-2">
+            <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "km--btn km--btn-danger" %>
+          </div>
         <% end %>
       <% when "rejected" %>
         <p class="km--text-card-content mb-0"><%= read_only ? t("statuses.charity.rejected_message") : offer.charity_alert_message %></p>
       <% when "received" %>
         <p class="km--text-card-content mb-0"><%= read_only ? t("statuses.charity.received_message") : offer.charity_alert_message %></p>
+        <%# TO DO: Once feedback is saved, show a "Feedback left" check and an Edit feedback link here (see FeedbacksController#create) %>
         <% unless read_only %>
-          <%= link_to t("buttons.give_feedback"),
-                new_request_feedback_path(parent_request, offer_id: offer.id),
-                class: "km--btn km--btn-primary mt-2" %>
+          <div class="d-flex justify-content-end w-100 mt-2">
+            <%= link_to t("buttons.give_feedback"),
+                  new_request_feedback_path(parent_request, offer_id: offer.id),
+                  class: "km--btn km--btn-primary" %>
+          </div>
         <% end %>
       <% else %>
         <p class="km--text-card-content mb-0 text-capitalize"><%= t("statuses.charity.#{offer.status}_message", default: offer.status) %></p>

@@ -48,7 +48,7 @@
         <%= render "currentcharityrequest", request: @request, read_only: true %>
       <% elsif current_user.charity? && current_user.charity == @request.charity %>
         <%= render "currentcharityrequest", request: @request %>
-      <% elsif @editing_offer.present? && @editing_offer == @my_offer %>
+      <% elsif @editing_offer.present? && @editing_offer == @my_offer && policy(@my_offer).edit? %>
         <%= render "offers/form", request: @request, offer: @my_offer %>
       <% elsif @my_offer.present? %>
         <%= render 'currentdonorexistingoffer', request: @request, offer: @my_offer %>
@@ -68,7 +68,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" data-action-modal-target="title"></h5>
+        <h5 class="modal-title km--text-card-title" data-action-modal-target="title"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <%= form_tag "#", method: :post, data: { action_modal_target: "form" } do %>

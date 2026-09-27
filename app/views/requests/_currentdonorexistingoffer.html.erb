@@ -52,7 +52,9 @@
             input_html: { class: "km--form-control form-control" }, label_html: { class: "km--text-label" } %>
         </div>
       </div>
-      <%= f.submit t("buttons.save"), class: "km--btn km--btn-danger" %>
+      <div class="d-flex justify-content-end">
+        <%= f.submit t("buttons.save"), class: "km--btn km--btn-primary" %>
+      </div>
     <% end %>
   <% elsif offer.status == "rejected" %>
     <p class="km--text-card-content"><%= t("statuses.donor.rejected_message") %></p>
@@ -65,8 +67,8 @@
   <% elsif offer.status == "received" %>
     <p class="km--text-card-content"><%= t("statuses.donor.received_message") %></p>
   <% end %>
-  <% can_edit = %w[submitted approved rejected].include?(offer.status.to_s) %>
-  <% can_delete = %w[submitted rejected].include?(offer.status.to_s) %>
+  <% can_edit = %w[submitted approved].include?(offer.status.to_s) %>
+  <% can_delete = offer.status.to_s == "submitted" %>
   <% if can_edit || can_delete %>
     <div class="d-flex justify-content-end gap-3 mt-3">
       <% if can_delete %>

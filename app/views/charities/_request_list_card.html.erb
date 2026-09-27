@@ -2,7 +2,7 @@
   <div class="km--card km--card-hover mb-3">
     <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
       <p class="km--text-card-title mb-0"><%= request.title %></p>
-      <div class="text-center flex-shrink-0" style="min-width: 70px;">
+      <div class="text-center flex-shrink-0 km--qty-col">
         <p class="km--text-card-title mb-1"><%= quantity_label(request.archived? ? request.quantity_needed : request.quantity_remaining) %></p>
         <% if request.archived? %>
           <span class="badge rounded-pill text-bg-secondary km--text-pill text-nowrap"><%= t("statuses.requests.archived") %></span>

@@ -1,6 +1,6 @@
 <% label_class = "km--text-card-category km--text-soft d-block mb-2" %>
 <% if request.errors.any? %>
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <div class="alert alert-danger alert-dismissible fade show km--toast" role="alert">
     <strong><%= t("offers.errors_heading") %></strong>
     <ul class="mb-0">
       <% request.errors.full_messages.each do |message| %>
@@ -37,7 +37,7 @@
     </div>
     <div class="col-12">
       <span class="<%= label_class %> km--required"><%= t("navigation.category") %></span>
-      <div class="rounded p-3" style="background-color: var(--bs-body-bg);" data-controller="category-subcategory">
+      <div class="rounded p-3 km--field-box" data-controller="category-subcategory">
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2 mb-2">
           <%= f.collection_check_boxes :category, CategoryList::CATEGORIES.keys.map { |c| [c, t("categories.#{c}")] }, :first, :last do |b| %>
             <div class="col">
@@ -75,15 +75,17 @@
             </div>
           </div>
         <% end %>
-        <button type="button" class="km--btn km--btn-outline mt-3" data-action="click->category-subcategory#reset">
-          <%= t("buttons.reset_categories") %>
-        </button>
+        <div class="d-flex justify-content-end mt-3">
+          <button type="button" class="km--btn km--btn-outline" data-action="click->category-subcategory#reset">
+            <%= t("buttons.reset_categories") %>
+          </button>
+        </div>
       </div>
     </div>
     <div class="col-12">
       <%= f.label :description, t("requests.description"), class: "#{label_class} km--required" %>
       <%= f.text_area :description, rows: 4, placeholder: t("requests.description_message"), required: true,
-            class: "km--form-control form-control", style: "resize: none;" %>
+            class: "km--form-control form-control km--no-resize" %>
     </div>
   </div>
   <div class="d-flex justify-content-end mt-4">

@@ -6,7 +6,7 @@
   <div class="row">
     <%# Sidebar %>
     <div class="col-lg-3 mb-4">
-      <h4 class="mb-4"><%= t("settings.page_title") %></h4>
+      <h4 class="km--text-page-title mb-4"><%= t("settings.page_title") %></h4>
       <div class="nav flex-column nav-pills" id="settings-tabs" role="tablist" aria-orientation="vertical">
         <button class="nav-link km--nav-link<%= ' active' if active_tab == "profile" %> text-start d-flex align-items-center gap-2" data-bs-toggle="pill" data-bs-target="#tab-profile" type="button">
           <i class="fa-solid fa-user"></i> <%= t("settings.tabs.profile") %>
@@ -43,7 +43,7 @@
             <% if current_user.donor? && @donor %>
               <%= form_with model: @donor, url: settings_path, method: :patch, scope: :donor do |f| %>
                 <% if @donor.errors.any? %>
-                  <div class="alert alert-danger">
+                  <div class="alert alert-danger km--toast">
                     <ul class="mb-0">
                       <% @donor.errors.full_messages.each { |msg| %>
                       <li><%= msg %></li>
@@ -55,14 +55,16 @@
                   <%= f.label :display_name, t("settings.display_name"), class: "km--text-card-category km--text-soft d-block mb-2" %>
                   <%= f.text_field :display_name, class: "km--form-control form-control" %>
                 </div>
-                <button type="submit" class="km--btn km--btn-primary">
-                  <%= t("buttons.save") %>
-                </button>
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="km--btn km--btn-primary">
+                    <%= t("buttons.save") %>
+                  </button>
+                </div>
               <% end %>
             <% elsif current_user.charity? && @charity %>
               <%= form_with model: @charity, url: settings_path, method: :patch, scope: :charity do |f| %>
                 <% if @charity.errors.any? %>
-                  <div class="alert alert-danger">
+                  <div class="alert alert-danger km--toast">
                     <ul class="mb-0">
                       <% @charity.errors.full_messages.each { |msg| %>
                       <li><%= msg %></li>
@@ -76,11 +78,13 @@
                 </div>
                 <div class="mb-3">
                   <%= f.label :description, t("settings.description"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-                  <%= f.text_area :description, rows: 3, class: "km--form-control form-control", style: "resize: none;" %>
+                  <%= f.text_area :description, rows: 3, class: "km--form-control form-control km--no-resize" %>
                 </div>
-                <button type="submit" class="km--btn km--btn-primary">
-                  <%= t("buttons.save") %>
-                </button>
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="km--btn km--btn-primary">
+                    <%= t("buttons.save") %>
+                  </button>
+                </div>
               <% end %>
             <% else %>
               <%# KT TO DO: Add settings here %>
@@ -128,10 +132,12 @@
                   <% end %>
                   <div class="mb-3">
                     <%= f.label :shipping_address, t("settings.shipping_address"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-                    <%= f.text_area :shipping_address, rows: 3, class: "km--form-control form-control", style: "resize: none;" %>
+                    <%= f.text_area :shipping_address, rows: 3, class: "km--form-control form-control km--no-resize" %>
                   </div>
                 <% end %>
-                <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                </div>
               <% end %>
               <% if @charity %>
                 <div class="km--settings-section mt-4">
@@ -149,7 +155,7 @@
             <h5 class="km--text-card-title mb-1"><%= t("settings.tabs.account") %></h5>
             <p class="km--text-card-content km--text-soft mb-4"><%= t("settings.account_description") %></p>
             <% if @account_errors&.any? %>
-              <div class="alert alert-danger">
+              <div class="alert alert-danger km--toast">
                 <ul class="mb-0">
                   <% @account_errors.full_messages.each { |msg| %>
                   <li><%= msg %></li>
@@ -168,10 +174,16 @@
               <div class="collapse<%= ' show' if @open_account_section == :email %>" id="settings-email">
                 <%= form_with model: current_user, url: settings_email_path, method: :patch, scope: :user, class: "pt-3" do |f| %>
                   <div class="mb-3">
+                    <%= f.label :current_password, t("settings.current_password"), class: "km--text-card-category km--text-soft d-block mb-2", for: "email_current_password" %>
+                    <%= f.password_field :current_password, id: "email_current_password", class: "km--form-control form-control", autocomplete: "current-password", required: true %>
+                  </div>
+                  <div class="mb-3">
                     <%= f.label :email, t("settings.email"), class: "km--text-card-category km--text-soft d-block mb-2" %>
                     <%= f.email_field :email, class: "km--form-control form-control", autocomplete: "email", required: true %>
                   </div>
-                  <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                  </div>
                 <% end %>
               </div>
             </div>
@@ -197,7 +209,9 @@
                     <%= f.label :password_confirmation, t("settings.confirm_password"), class: "km--text-card-category km--text-soft d-block mb-2" %>
                     <%= f.password_field :password_confirmation, class: "km--form-control form-control", autocomplete: "new-password", minlength: 6, required: true %>
                   </div>
-                  <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                  </div>
                 <% end %>
               </div>
             </div>
@@ -225,9 +239,11 @@
                   </label>
                 <% end %>
               </div>
-              <button type="submit" class="km--btn km--btn-primary">
-                <%= t("buttons.save") %>
-              </button>
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="km--btn km--btn-primary">
+                  <%= t("buttons.save") %>
+                </button>
+              </div>
             <% end %>
           </div>
         </div>
@@ -238,9 +254,11 @@
               <i class="fa-solid fa-triangle-exclamation me-1"></i><%= t("settings.tabs.danger_zone") %>
             </h5>
             <p class="km--text-card-content km--text-soft mb-4"><%= t("settings.danger_zone_description") %></p>
-            <button type="button" class="km--btn km--btn-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal">
-              <%= t("settings.deactivate_account") %>
-            </button>
+            <div class="d-flex justify-content-end">
+              <button type="button" class="km--btn km--btn-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal">
+                <%= t("settings.deactivate_account") %>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -252,7 +270,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><%= t("settings.deactivate_modal_title") %></h5>
+        <h5 class="modal-title km--text-card-title"><%= t("settings.deactivate_modal_title") %></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
