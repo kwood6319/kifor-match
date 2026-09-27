@@ -87,7 +87,8 @@
           <% if current_user.charity? %>
             <p class="km--text-card-content mb-3"><%= @offer.charity_alert_message %></p>
             <div class="d-flex justify-content-end">
-              <%= link_to t("buttons.give_feedback"),
+              <%# TO DO: Once feedback is saved, show a "Feedback left" check and an Edit feedback link here (see FeedbacksController#create) %>
+            <%= link_to t("buttons.give_feedback"),
                     new_request_feedback_path(@request, offer_id: @offer.id),
                     class: "km--btn km--btn-primary" %>
             </div>

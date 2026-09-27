@@ -30,15 +30,16 @@ class SettingsController < ApplicationController
     end
   end
 
+  # Like the password, changing the sign-in email needs the current password.
   def update_email
-    if current_user.update(email_params)
+    if current_user.update_with_password(email_params)
       redirect_to settings_path, notice: t("settings.email_updated")
     else
       render_account_errors(:email)
     end
   end
 
-  # Unlike the other sections, a password change needs the current password.
+  # Changing the password also needs the current password.
   def update_password
     if current_user.update_with_password(password_params)
       bypass_sign_in(current_user)
@@ -82,7 +83,7 @@ class SettingsController < ApplicationController
   end
 
   def email_params
-    params.require(:user).permit(:email)
+    params.require(:user).permit(:email, :current_password)
   end
 
   def donor_params
