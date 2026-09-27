@@ -1,7 +1,7 @@
 <% content_for :main_class, "d-flex flex-column" %>
 <div class="container mt-3 mb-4">
   <h3 class="km--text-page-title mb-0">
-    <%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%= "様" if I18n.locale == :ja %>!
+    <%= t("messages.welcome_back") %>, <%= current_donor.display_name %><%= "様" if I18n.locale == :ja %>!
     <%= t("messages.top_categories") %>:
   </h3>
 </div>
