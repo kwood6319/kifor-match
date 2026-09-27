@@ -32,9 +32,9 @@
       <p class="km--text-card-content mb-0" title="<%= t("navigation.condition") %>">
         <i class="fa-solid fa-box-open fa-fw me-1"></i><span class="badge text-bg-info"><%= t("conditions.#{offer.condition}") %></span>
       </p>
-      <% if offer.can_ship_by %>
-        <p class="km--text-card-content mb-0" title="<%= t("offers.can_ship_by") %>">
-          <i class="fa-solid fa-truck fa-fw me-1"></i><%= l(offer.can_ship_by, format: :short) %>
+      <% if (ship_date = offer_ship_date(offer)) %>
+        <p class="km--text-card-content mb-0" title="<%= ship_date[:label] %>">
+          <i class="fa-solid fa-truck fa-fw me-1"></i><%= l(ship_date[:date], format: :short) %>
         </p>
       <% end %>
       <% if offer.message.present? %>

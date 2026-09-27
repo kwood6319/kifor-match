@@ -21,6 +21,7 @@ class Offer < ApplicationRecord
   ].freeze
 
   TERMINAL_STATUSES = %w[rejected completed]
+  SHIPPED_STATUSES = %w[shipped received flagged completed].freeze
 
   NOTIFICATION_CLASSES = {
     "completed" => OfferCompletedNotification,
@@ -52,6 +53,10 @@ class Offer < ApplicationRecord
 
   def rejected?
     status == "rejected"
+  end
+
+  def shipped_or_later?
+    SHIPPED_STATUSES.include?(status)
   end
 
   def alert_message

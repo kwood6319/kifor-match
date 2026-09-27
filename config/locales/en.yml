@@ -227,7 +227,6 @@ en:
   dashboard:
     no_pending_offers: "No pending offers"
     condition: "Condition"
-    can_ship_by: "Can ship by"
     alerts: "Alerts"
     minutes_ago:
       one: "%{count}m ago"

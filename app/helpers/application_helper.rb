@@ -38,6 +38,14 @@ module ApplicationHelper
     end
   end
 
+  def offer_ship_date(offer)
+    if offer.shipped_or_later?
+      { label: t("statuses.donor.arriving"), date: offer.estimated_arrival } if offer.estimated_arrival
+    elsif offer.can_ship_by
+      { label: t("offers.can_ship_by"), date: offer.can_ship_by }
+    end
+  end
+
   # Icon shown before a charity's name
   def charity_icon
     tag.i(class: "fa-solid fa-hand-holding-heart fa-fw me-1", title: t("navigation.charity"))

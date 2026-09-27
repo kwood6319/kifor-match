@@ -20,10 +20,10 @@
       <p class="km--text-card-content mb-0"><%= t("conditions.no_condition") %></p>
     <% end %>
   </div>
-  <% if offer.can_ship_by %>
+  <% if (ship_date = offer_ship_date(offer)) %>
     <div class="mb-3">
-      <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.can_ship_by") %></p>
-      <p class="km--text-card-content mb-0"><%= l(offer.can_ship_by, format: :short) %></p>
+      <p class="km--text-card-category km--text-soft mb-2"><%= ship_date[:label] %></p>
+      <p class="km--text-card-content mb-0"><%= l(ship_date[:date], format: :short) %></p>
     </div>
   <% end %>
   <% if offer.message.present? %>

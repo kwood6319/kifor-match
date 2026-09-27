@@ -198,7 +198,6 @@ ja:
   dashboard:
     no_pending_offers: "保留中のオファーはありません"
     condition: "状態"
-    can_ship_by: "発送可能日"
     alerts: "アラート"
     minutes_ago: "%{count}分前"
     hours_ago: "%{count}時間前"
