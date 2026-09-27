@@ -7,7 +7,6 @@ en:
     placeholder_email: "Enter your email"
     placeholder_name: "Enter your name"
     placeholder_message: "How can we help?"
-    send: "Send Message"
+    send: "Send message"
     error: "Oops! There was a problem sending your message."
     network_error: "A network error occurred. Please try again."
-    link_text: "Need to Contact Us?"

@@ -39,10 +39,8 @@ ja:
     view: "表示"
   messages:
     welcome_back: "おかえりなさい"
-    your_requests: "現在進行中のリクエスト"
     top_categories: "今月、日本で最も必要とされているものは以下の通りです"
     request_archived: "リクエストをアーカイブしました。"
-    request_archived_confirm: "このリクエストをアーカイブしますか？寄付者には表示されなくなり、他の保留中のオファーは自動的に却下されます。"
     request_fulfilled_rejection: "このリクエストはすでに満たされているため、今回のオファーはお受けできません。ご厚意に心より感謝いたします。"
     delete_charity_confirm: "このチャリティーを削除しますか？"
     approve_charity_confirm: "このチャリティーを承認しますか？"
@@ -72,7 +70,6 @@ ja:
     no_offers: "まだオファーはありません"
     make_an_offer: "オファーを出す"
     quantity_offered: "提供数量"
-    offer_from: "%{name}様からのオファー"
     message: "メッセージ"
     message_prompt: "この慈善団体に伝えたいことはありますか？例えば、破損箇所や由来など。"
     can_ship_by: "発送可能日"
@@ -87,7 +84,6 @@ ja:
     postage_modal_title: "送料について"
     postage_modal_body: "寄付者として、この商品を団体へ発送する送料をご負担いただく必要があります。オファーを送信する前にご確認ください。"
     postage_modal_confirm: "理解しました"
-    details: "詳細"
     view_details: "オファーの詳細を見る"
     tabs:
       all: "すべて"
@@ -129,19 +125,15 @@ ja:
   buttons:
     save: "保存"
     edit: "編集"
-    edit_request: "リクエストを編集"
-    view_request: "リクエストを表示"
     approve: "承認"
     reject: "却下"
     close: "閉じる"
     cancel: "キャンセル"
     delete: "削除"
     archive: "アーカイブ"
-    archive_request: "リクエストをアーカイブ"
     give_feedback: "フィードバックを送る"
     reset_categories: "カテゴリーをリセット"
   requests:
-    request: "リクエスト"
     new_request: "新しいリクエスト"
     create_request: "リクエストを作成"
     tell_us: "ご要望について、もう少し詳しく教えてください"
@@ -149,14 +141,12 @@ ja:
     title: "タイトル"
     title_placeholder: "電卓、インスタント食品など"
     quantity_needed: "必要数量"
-    units: "単位"
     urgency: "緊急度"
     condition: "最低限の条件"
     condition_message: "『中古 - 良好』 を選択すると、それ以上の状態のアイテムも受け入れることになります。"
     description: "詳細"
     description_message: "必要な品目についてご記入ください"
   charities:
-    details: "チャリティー詳細"
     stats: "チャリティー統計"
     current_requests: "現在のリクエスト"
     no_current_requests: "このチャリティーには現在のリクエストがありません"
@@ -166,7 +156,6 @@ ja:
     total_requests: "リクエスト総数"
     completed_requests: "完了したリクエスト数"
   donors:
-    details: "ドナー詳細"
     stats: "ドナー統計"
     current_offers: "現在のオファー"
     no_current_offers: "このドナーには現在のオファーがありません"
@@ -176,7 +165,6 @@ ja:
     not_approved: "未承認"
     total_offers: "オファー総数"
     completed_offers: "完了したオファー数"
-    donor_type: "タイプ"
     types:
       individual: "個人"
       company: "企業"
@@ -189,19 +177,9 @@ ja:
     no_drop_off: "持ち込み不可"
     shipping_and_drop_off: "配送・持ち込み"
     delivery_method: "受け渡し方法"
-  units:
-    select: "単位を選択"
-    item: "個"
-    box: "箱"
-    pack: "パック"
-    kg: "kg"
-    liter: "リットル"
-    pair: "ペア"
-    set: "セット"
   modals:
     reject_offer:
       title: "オファーを拒否する"
-      description: "この申し出を辞退する理由をご記入ください。この内容は寄付者に伝えられます。"
       placeholder: "例：品質が当社のニーズに合わない、この商品はもう必要ない、など。"
     delete_offer:
       title: "オファーを削除"
@@ -214,7 +192,6 @@ ja:
       offer:
         rejection_reason: "却下の理由"
   dashboard:
-    pending: "Pending"
     no_pending_offers: "保留中のオファーはありません"
     condition: "状態"
     can_ship_by: "発送可能日"

@@ -31,7 +31,6 @@ ja:
     confirm_password: "新しいパスワード（確認）"
     current_password: "現在のパスワード"
     change_password: "パスワードを変更"
-    language: "言語"
     english: "English"
     japanese: "日本語"
     notifications_coming_soon: "通知設定は近日公開予定です"

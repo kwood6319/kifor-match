@@ -68,10 +68,8 @@ en:
     view: "View"
   messages:
     welcome_back: "Welcome back"
-    your_requests: "Your active requests"
     top_categories: "Here's what's most needed in Japan this month"
     request_archived: "Request archived."
-    request_archived_confirm: "Archive this request? It will no longer be shown to donors, and any other pending offers will be automatically declined."
     request_fulfilled_rejection: "This request has already been fulfilled, so we're unable to accept your offer. Thank you so much for your generosity!"
     delete_charity_confirm: "Delete this charity?"
     approve_charity_confirm: "Approve this charity?"
@@ -101,7 +99,6 @@ en:
     no_offers: "No offers yet"
     make_an_offer: "Make an Offer"
     quantity_offered: "Quantity offered"
-    offer_from: "Offer from %{name}"
     message: "Message"
     message_prompt: "Any details you'd like to share with the charity? E.g., broken pieces, history, etc."
     can_ship_by: "Can ship by"
@@ -116,7 +113,6 @@ en:
     postage_modal_title: "Postage Costs"
     postage_modal_body: "As the donor, you are responsible for covering the cost of shipping this item to the charity. Please factor this into your decision before submitting your offer."
     postage_modal_confirm: "I understand"
-    details: "Details"
     view_details: "View offer details"
     tabs:
       all: "All"
@@ -158,19 +154,15 @@ en:
   buttons:
     save: "Save"
     edit: "Edit"
-    edit_request: "Edit Request"
-    view_request: "View Request"
     approve: "Approve"
     reject: "Reject"
     close: "Close"
     cancel: "Cancel"
     delete: "Delete"
     archive: "Archive"
-    archive_request: "Archive Request"
-    give_feedback: "Give Feedback"
+    give_feedback: "Give feedback"
     reset_categories: "Reset categories"
   requests:
-    request: "Requests"
     new_request: "New request"
     create_request: "Create request"
     tell_us: "Tell us a little more about your request"
@@ -178,14 +170,12 @@ en:
     title: "Title"
     title_placeholder: "Calculators, Instant Food, etc"
     quantity_needed: "Quantity needed"
-    units: "Units"
     urgency: "Urgency"
     condition: "Minimum Acceptable"
     condition_message: "Selecting 'Used - Good' means you will also accept items in better condition."
     description: "Description"
     description_message: "Please describe the item"
   charities:
-    details: "Charity Details"
     stats: "Charity Stats"
     current_requests: "Current Requests"
     no_current_requests: "This charity has no current requests"
@@ -195,7 +185,6 @@ en:
     total_requests: "Total requests made"
     completed_requests: "Requests successfully completed"
   donors:
-    details: "Donor Details"
     stats: "Donor Stats"
     current_offers: "Current Offers"
     no_current_offers: "This donor has no current offers"
@@ -205,7 +194,6 @@ en:
     not_approved: "Not yet approved"
     total_offers: "Total offers made"
     completed_offers: "Offers successfully completed"
-    donor_type: "Type"
     types:
       individual: "Individual"
       company: "Company"
@@ -218,19 +206,9 @@ en:
     no_drop_off: "No drop-off"
     shipping_and_drop_off: "Shipping & drop-off"
     delivery_method: "Delivery method"
-  units:
-    select: "Select units"
-    item: "item"
-    box: "box"
-    pack: "pack"
-    kg: "kg"
-    liter: "liter"
-    pair: "pair"
-    set: "set"
   modals:
     reject_offer:
       title: "Reject Offer"
-      description: "Please provide a reason for rejecting this offer. This will be shared with the donor."
       placeholder: "E.g., The quality doesn't match our needs, we no longer need this item, etc."
     delete_offer:
       title: "Delete Offer"
@@ -243,7 +221,6 @@ en:
       offer:
         rejection_reason: "Reason for rejection"
   dashboard:
-    pending: "Pending"
     no_pending_offers: "No pending offers"
     condition: "Condition"
     can_ship_by: "Can ship by"

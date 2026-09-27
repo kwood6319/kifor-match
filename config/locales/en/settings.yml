@@ -31,7 +31,6 @@ en:
     confirm_password: "Confirm new password"
     current_password: "Current password"
     change_password: "Change password"
-    language: "Language"
     english: "English"
     japanese: "日本語"
     notifications_coming_soon: "Notification preferences are coming soon"

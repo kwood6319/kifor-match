@@ -4,7 +4,7 @@
     <h4 class="km--text-card-title text-center mb-1"><%= offer.persisted? ? t("offers.edit_offer") : t("offers.make_an_offer") %></h4>
     <p class="km--text-card-content km--text-soft text-center mb-4"><span class="km--required"></span> <%= t("offers.required_note") %></p>
     <% if offer.errors.any? %>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <div class="alert alert-danger alert-dismissible fade show km--toast" role="alert">
         <strong><%= t("offers.errors_heading") %></strong>
         <ul class="mb-0">
           <% offer.errors.full_messages.each do |message| %>
@@ -101,7 +101,7 @@
               </button>
             </div>
           <% end %>
-          <div style="display: contents;" data-photo-upload-target="previewList"></div>
+          <div class="km--display-contents" data-photo-upload-target="previewList"></div>
         </div>
         <div data-photo-upload-target="removedInputs"></div>
       </div>
@@ -138,7 +138,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="postageModalLabel"><%= t("offers.postage_modal_title") %></h5>
+          <h5 class="modal-title km--text-card-title" id="postageModalLabel"><%= t("offers.postage_modal_title") %></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("buttons.close") %>"></button>
         </div>
         <div class="modal-body">
