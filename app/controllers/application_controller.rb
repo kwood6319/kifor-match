@@ -49,7 +49,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    return if devise_controller?
+    # Devise pages follow the URL only: touching current_user here would run
+    # Warden before the CSRF check on sign-in and invalidate the token.
+    return I18n.locale = (valid_locale?(params[:locale]) ? params[:locale] : I18n.default_locale) if devise_controller?
 
     session[:locale] = params[:switch_locale] if params[:switch_locale].present? && valid_locale?(params[:locale])
 
