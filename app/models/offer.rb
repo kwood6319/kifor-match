@@ -50,6 +50,10 @@ class Offer < ApplicationRecord
   after_save :resync_request_quantity, if: :saved_change_to_status?
   after_update :create_terminal_notification, if: :saved_change_to_status?
 
+  def rejected?
+    status == "rejected"
+  end
+
   def alert_message
     key = ALERT_STATUS_ALIASES.fetch(status, status)
     I18n.t("dashboard.alert_messages.#{key}")

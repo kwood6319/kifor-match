@@ -30,16 +30,17 @@ class OfferPolicy < ApplicationPolicy
     admin? || donor.present?
   end
 
+  # Rejected offers are closed: donors can no longer edit or delete them
   def destroy?
-    admin? || owning_donor?
+    admin? || (owning_donor? && !record.rejected?)
   end
 
   def edit?
-    owning_donor?
+    owning_donor? && !record.rejected?
   end
 
   def update?
-    owning_donor?
+    owning_donor? && !record.rejected?
   end
 
   def approve?
