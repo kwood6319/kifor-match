@@ -66,7 +66,7 @@ CHARITIES = [
   { key: :charity5, user: :user10, prefecture: "Tokyo", region: "Kanto",
     org_name: "Refugee Children",
     description: "A charity supporting refugee children",
-    shipping_address: "456 Tokyo" }
+    shipping_address: "456 Tokyo", approved: false }
 ].freeze
 
 charities = CHARITIES.each_with_object({}) do |attrs, hash|
@@ -76,7 +76,8 @@ charities = CHARITIES.each_with_object({}) do |attrs, hash|
     region: attrs[:region],
     org_name: attrs[:org_name],
     description: attrs[:description],
-    shipping_address: attrs[:shipping_address]
+    shipping_address: attrs[:shipping_address],
+    approved: attrs.fetch(:approved, true)
   )
   puts "Charity #{attrs[:org_name]} created."
 end

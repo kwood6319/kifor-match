@@ -8,6 +8,11 @@ Rails.application.routes.draw do
       post "users", to: "devise/registrations#create", as: :user_registration
     end
     root to: "dashboard#show"
+
+    # New users pick donor or charity and fill in that profile, then wait for
+    # an admin to approve it.
+    resource :onboarding, only: [:show, :create]
+    get "pending_approval", to: "onboardings#pending", as: :pending_approval
     # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
     # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
