@@ -11,8 +11,8 @@ class OffersControllerTest < ActionDispatch::IntegrationTest
     @owner_donor = Donor.create!(user: @owner_user, display_name: "Offer Owner")
     @other_donor = Donor.create!(user: @other_user, display_name: "Other Donor")
 
-    charity_user = User.create!(email: "offer_charity@example.com", password: "password123", role: :charity)
-    @charity = Charity.create!(user: charity_user, org_name: "Test Charity", region: "Kanto")
+    @charity_user = User.create!(email: "offer_charity@example.com", password: "password123", role: :charity)
+    @charity = Charity.create!(user: @charity_user, org_name: "Test Charity", region: "Kanto")
 
     @other_charity_user = User.create!(email: "other_charity@example.com", password: "password123", role: :charity)
     @other_charity = Charity.create!(user: @other_charity_user, org_name: "OtherCharity", region: "Kanto")
@@ -32,7 +32,7 @@ class OffersControllerTest < ActionDispatch::IntegrationTest
   end
 
 
-  #Check cross-owner donor security
+  #CHECK CROSS-OWNER DONOR-SECURITY
   test "another donor cannot view the offer" do
     sign_in @other_user
     get offer_path(id: @offer.id, locale: :en)
@@ -63,7 +63,7 @@ class OffersControllerTest < ActionDispatch::IntegrationTest
     assert_nil @offer.tracking_number
   end
 
-  # Check cross-owner charity security
+  # CHECK CROSS-OWNER CHARITY SECURITY
   test "another charity cannot approve the offer" do
     sign_in @other_charity_user
     patch approve_offer_path(id: @offer.id, locale: :en)
@@ -85,5 +85,26 @@ class OffersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert_equal "submitted", @offer.reload.status
     assert_equal 3, Request.find(@offer.request_id).quantity_remaining
+  end
+
+  # CHECK OFFER RECEIVING/SHIPPING FLOW
+  test "charity cannot receive an unshipped offer" do
+    sign_in @charity_user
+    patch mark_received_offer_path(id:@offer.id, locale: :en)
+    assert_equal "submitted", @offer.reload.status
+    assert_equal 3, Request.find(@offer.request_id).quantity_remaining
+  end
+
+  test "donor cannot ship unapproved offer" do
+    sign_in @owner_user
+    patch mark_as_shipped_offer_path(id: @offer.id, locale: :en), params: { offer: { tracking_number: "TRACK123" } }
+    assert_equal "submitted", @offer.reload.status
+  end
+
+  test "donor cannot delete a shipped offer" do
+    @offer.update!(status: "shipped")
+    sign_in @owner_user
+    delete offer_path(id: @offer.id, locale: :en)
+    assert Offer.exists?(@offer.id)
   end
 end
