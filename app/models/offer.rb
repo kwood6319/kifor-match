@@ -33,9 +33,10 @@ class Offer < ApplicationRecord
   }.freeze
 
   scope :active, -> { where(active: true) }
+  scope :unarchived, -> { where(archived_at: nil) }
 
   SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
-  IGNORED_AMENDMENT_FIELDS = %w[status updated_at rejection_reason active].freeze
+  IGNORED_AMENDMENT_FIELDS = %w[status updated_at rejection_reason active archived_at].freeze
 
   validates :quantity_offered, presence: true, numericality: { only_integer: true, greater_than: 0 }
   # allow_blank so a missing condition only reports "can't be blank"
@@ -53,6 +54,16 @@ class Offer < ApplicationRecord
 
   def rejected?
     status == "rejected"
+  end
+
+  def archived?
+    archived_at.present?
+  end
+
+  # Donor dismissed a rejected offer. Status stays "rejected" so it can still be shown in history.
+  # update_column skips validations/callbacks, so archiving never trips content checks or resubmits the offer.
+  def archive!
+    update_column(:archived_at, Time.current)
   end
 
   def shipped_or_later?

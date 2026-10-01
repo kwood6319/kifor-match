@@ -1,5 +1,5 @@
 class OffersController < ApplicationController
-  before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped]
+  before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped archive]
   before_action :show_back_button, only: %i[show]
 
   def show
@@ -65,6 +65,12 @@ class OffersController < ApplicationController
     authorize @offer
     @offer.update(rejection_reason: params[:rejection_reason], status: :rejected)
     redirect_to request_path(@offer.request), status: :see_other
+  end
+
+  def archive
+    authorize @offer
+    @offer.archive!
+    redirect_to donors_dashboard_path, notice: t("messages.offer_archived"), status: :see_other
   end
 
   def update_received

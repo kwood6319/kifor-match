@@ -45,13 +45,12 @@ module Donors
     private
 
     # Approved offers need shipping info. Rejected offers on a still-open
-    # request are listed too so the donor sees the rejection.
-    # TO DO: For now donors can't edit or delete rejected offers, but whether
-    # they should be able to is still to be decided as a team. Once decided,
-    # check whether rejected offers still belong in the Attention tab.
+    # request stay listed until the donor dismisses (archives) them.
+    # TO DO: Decide whether archived rejected offers should appear in a History tab.
     def assign_tracker_offers(offers)
       @attention_offers = offers.where(status: "approved")
-                                .or(offers.where(status: "rejected").where.not(requests: { status: "archived" }))
+                                .or(offers.where(status: "rejected", archived_at: nil)
+                                          .where.not(requests: { status: "archived" }))
                                 .references(:requests)
       @submitted_offers = offers.where(status: "submitted")
       @shipped_offers = offers.where(status: "shipped")

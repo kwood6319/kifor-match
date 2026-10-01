@@ -38,6 +38,7 @@ ja:
     settings: "設定"
     view: "表示"
   messages:
+    offer_archived: "オファーを非表示にしました。"
     welcome_back: "おかえりなさい"
     top_categories: "今月、日本で最も必要とされているものは以下の通りです"
     request_archived: "リクエストをアーカイブしました。"
@@ -127,6 +128,7 @@ ja:
       rejected_message: "このオファーをお断りになりました。"
       received_message: "このオファーを「受領済み」としてマークしました。"
   buttons:
+    dismiss: "非表示にする"
     save: "保存"
     edit: "編集"
     approve: "承認"

@@ -55,6 +55,7 @@ Rails.application.routes.draw do
         patch :reject
         patch :mark_received
         patch :mark_as_shipped
+        patch :archive
         patch :accept
         patch :mark_sent
 

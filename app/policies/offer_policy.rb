@@ -30,8 +30,7 @@ class OfferPolicy < ApplicationPolicy
     admin? || donor.present?
   end
 
-  # Donors can't edit or delete rejected offers for now.
-  # TO DO: Still to be decided as a team (see Donors::DashboardsController).
+  # Donors can't edit or delete rejected offers, only archive (dismiss) them.
   def destroy?
     admin? || (owning_donor? && !record.rejected?)
   end
@@ -42,6 +41,10 @@ class OfferPolicy < ApplicationPolicy
 
   def update?
     owning_donor? && !record.rejected?
+  end
+
+  def archive?
+    owning_donor? && record.rejected? && !record.archived?
   end
 
   def approve?
