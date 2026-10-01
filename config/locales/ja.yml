@@ -80,6 +80,10 @@ ja:
     postage_modal_title: "送料について"
     postage_modal_body: "寄付者として、この商品を団体へ発送する送料をご負担いただく必要があります。オファーを送信する前にご確認ください。"
     postage_modal_confirm: "理解しました"
+    donation_rules_title: "寄付のガイドライン"
+    donation_rules_body: "オファーを送信する前に、お品物がこのガイドラインを満たしていることをご確認ください。"
+    donation_rules_acknowledgment: "理解しました"
+    donation_rules_confirm: "確認"
     details: "詳細"
     view_details: "オファーの詳細を見る"
     tabs:
