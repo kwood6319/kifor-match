@@ -113,6 +113,10 @@ en:
     postage_modal_title: "Postage Costs"
     postage_modal_body: "As the donor, you are responsible for covering the cost of shipping this item to the charity. Please factor this into your decision before submitting your offer."
     postage_modal_confirm: "I understand"
+    donation_rules_title: "Donation Guidelines"
+    donation_rules_body: "Please make sure your item meets these guidelines before sending your offer."
+    donation_rules_acknowledgment: "I understand"
+    donation_rules_confirm: "Confirm"
     view_details: "View offer details"
     tabs:
       all: "All"

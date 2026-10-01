@@ -97,8 +97,8 @@ class OffersController < ApplicationController
   private
 
   def offer_params
-    params.require(:offer).permit(:quantity_offered, :condition, :message, :can_ship_by, :ship_by_day,
-                                  :ship_by_month_year, :estimated_arrival, :tracking_number, :rejection_reason,
+    params.require(:offer).permit(:quantity_offered, :condition, :message, :ship_by_day, :ship_by_month_year,
+                                  :estimated_arrival, :tracking_number, :rejection_reason,
                                   photos: [], remove_photo_ids: [])
   end
 

@@ -1,5 +1,5 @@
 <% offer ||= Offer.new %>
-<div data-controller="postage-acknowledgment" data-postage-acknowledgment-first-offer-value="<%= @first_offer %>">
+<div data-controller="postage-acknowledgment donation-rules" data-postage-acknowledgment-first-offer-value="<%= @first_offer %>">
   <div class="km--card km--form-compact">
     <h4 class="km--text-card-title text-center mb-1"><%= offer.persisted? ? t("offers.edit_offer") : t("offers.make_an_offer") %></h4>
     <p class="km--text-card-content km--text-soft text-center mb-4"><span class="km--required"></span> <%= t("offers.required_note") %></p>
@@ -14,7 +14,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<%= t("buttons.close") %>"></button>
       </div>
     <% end %>
-    <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(@request)) do |form| %>
+    <%= form_with(model: offer, url: offer.persisted? ? offer_path(offer) : request_offers_path(@request),
+      data: offer.new_record? ? { "donation-rules-target": "form", action: "submit->donation-rules#intercept" } : {}) do |form| %>
       <div class="row g-3">
         <div class="col-md-6">
           <%= form.label :quantity_offered, t("offers.quantity_offered"), class: "km--text-card-category km--text-soft d-block mb-2 km--required" %>
@@ -152,4 +153,38 @@
       </div>
     </div>
   </div>
+  <%# Donation rules modal: shown on submit of a new offer, must be acknowledged before the form submits %>
+  <% if offer.new_record? %>
+    <div class="modal fade" id="donationRulesModal" tabindex="-1"
+         data-bs-backdrop="static" data-bs-keyboard="false"
+         data-donation-rules-target="modal"
+         aria-labelledby="donationRulesModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="donationRulesModalLabel"><%= t("offers.donation_rules_title") %></h5>
+          </div>
+          <div class="modal-body">
+            <% if (rules_image = donation_rules_image(@request)) %>
+              <%= image_tag rules_image, alt: t("offers.donation_rules_title"), class: "img-fluid mb-3" %>
+            <% end %>
+            <p><%= t("offers.donation_rules_body") %></p>
+            <div class="form-check">
+              <input type="checkbox" id="donation_rules_acknowledged" class="form-check-input"
+                     data-donation-rules-target="checkbox" data-action="change->donation-rules#toggle">
+              <label for="donation_rules_acknowledged" class="form-check-label km--text-label">
+                <%= t("offers.donation_rules_acknowledgment") %>
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="km--btn km--btn-primary" disabled
+                    data-donation-rules-target="confirmButton" data-action="click->donation-rules#confirm">
+              <%= t("offers.donation_rules_confirm") %>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
