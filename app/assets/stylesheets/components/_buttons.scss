@@ -22,7 +22,6 @@
   transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-/* Hover effect to make it feel interactive */
 .btn-kifor-fab:hover {
   background-color: darken($km--primary-pink, 8%);
   color: white;

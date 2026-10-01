@@ -3,9 +3,9 @@ class ApplicationController < ActionController::Base
   before_action :redirect_to_resolved_locale
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, if: :devise_controller?
-  before_action :require_profile, unless: :devise_controller?
-  before_action :require_approval, unless: :devise_controller?
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :require_profile, unless: :devise_controller? # Onboarding
+  before_action :require_approval, unless: :devise_controller? # Charities
+  before_action :configure_permitted_parameters, if: :devise_controller? # Locale
   include Pundit::Authorization
 
   # Pundit: allow-list

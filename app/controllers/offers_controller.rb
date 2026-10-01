@@ -48,14 +48,12 @@ class OffersController < ApplicationController
     end
   end
 
-  # TODO: destroy , delete offer
   def destroy
     authorize @offer
     @offer.destroy
     redirect_to donors_dashboard_path, status: :see_other
   end
 
-  # TODO: approve , approve offer (only Charities can approve offers)
   def approve
     authorize @offer
     @offer.status = "approved"
@@ -63,21 +61,18 @@ class OffersController < ApplicationController
     redirect_to request_path(@offer.request)
   end
 
-  # TODO: reject , reject offer (only Charities can reject offers)
   def reject
     authorize @offer
     @offer.update(rejection_reason: params[:rejection_reason], status: :rejected)
     redirect_to request_path(@offer.request), status: :see_other
   end
 
-  # TODO: update request.quantity_remaining when offer is received
   def update_received
     @request = Request.find(@offer.request_id)
     @request.quantity_remaining -= @offer.quantity_offered
     @request.save
   end
 
-  # TODO: mark_received, change status to received (charity only)
   def mark_received
     authorize @offer
     @offer.status = "received"
@@ -86,7 +81,6 @@ class OffersController < ApplicationController
     redirect_to request_path(@offer.request)
   end
 
-  # TODO: mark_as_shipped, change status to shipped (donor only)
   def mark_as_shipped
     authorize @offer
 
@@ -96,7 +90,6 @@ class OffersController < ApplicationController
       redirect_to request_path(@offer.request),
                   notice: "Shipping info saved."
     else
-      # Offers are edited on the request page, so send the errors back there
       redirect_to request_path(@offer.request), alert: @offer.errors.full_messages.to_sentence
     end
   end
@@ -109,9 +102,6 @@ class OffersController < ApplicationController
                                   photos: [], remove_photo_ids: [])
   end
 
-  # Assigning to has_many_attached replaces the whole set, so rebuild it from
-  # the photos being kept plus any new uploads. Nothing is persisted until
-  # save, so a failed validation (e.g. removing every photo) keeps the old set.
   def assign_updated_photos
     new_photos = Array(offer_params[:photos]).compact_blank
     remove_ids = Array(offer_params[:remove_photo_ids]).compact_blank.map(&:to_i)

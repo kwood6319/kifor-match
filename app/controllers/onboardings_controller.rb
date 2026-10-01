@@ -7,8 +7,6 @@ class OnboardingsController < ApplicationController
 
   before_action :redirect_if_onboarded, only: %i[show create]
 
-  # Without a role param, show the donor/charity choice; with one, show that
-  # profile's form.
   def show
     @role = params[:role].presence_in(ROLES)
     @profile = build_profile(@role) if @role
@@ -35,6 +33,7 @@ class OnboardingsController < ApplicationController
 
   def pending
     return redirect_to onboarding_path unless current_profile
+
     redirect_to helpers.dynamic_dashboard_path(current_user) unless current_charity && !current_charity.approved?
   end
 

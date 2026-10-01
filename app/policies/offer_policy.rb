@@ -30,7 +30,8 @@ class OfferPolicy < ApplicationPolicy
     admin? || donor.present?
   end
 
-  # Rejected offers are closed: donors can no longer edit or delete them
+  # Donors can't edit or delete rejected offers for now.
+  # TO DO: Still to be decided as a team (see Donors::DashboardsController).
   def destroy?
     admin? || (owning_donor? && !record.rejected?)
   end

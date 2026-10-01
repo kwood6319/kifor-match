@@ -32,7 +32,6 @@
     </div>
     <%# Content %>
     <div class="col-lg-9">
-      <%# Profile and location errors share one toast, whichever tab was saved %>
       <% if profile_record&.errors&.any? %>
         <div class="alert alert-danger km--toast">
           <ul class="mb-0">
@@ -44,8 +43,7 @@
       <% end %>
       <div class="tab-content">
         <%# Profile tab %>
-        <%# KT TO DO: Let users set a preferred name for greetings (e.g. a charity contact's own name rather than the org name).
-             Also decide whether display names need to be unique. %>
+        <%# KT TO DO: Let users set a preferred name for greetings (e.g. a charity contact's own name rather than the org name). Also decide whether display names need to be unique. %>
         <div class="tab-pane fade<%= ' show active' if active_tab == "profile" %>" id="tab-profile">
           <div class="km--card">
             <h5 class="km--text-card-title mb-1"><%= t("settings.tabs.profile") %></h5>

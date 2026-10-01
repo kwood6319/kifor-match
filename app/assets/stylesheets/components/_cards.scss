@@ -65,7 +65,6 @@
   flex-direction: column;
   overflow: hidden;
 
-  // Keep buttons and gallery thumbs clickable above a card's stretched link
   .km--btn,
   .photo-gallery-thumb {
     position: relative;
@@ -100,8 +99,6 @@
   }
 }
 
-// Tab panes share one grid cell, so the content keeps the tallest pane's
-// height and switching tabs doesn't shrink the page (and jump the scroll)
 .km--tabs-stable {
   display: grid;
 
@@ -140,7 +137,6 @@
   overflow-y: auto;
 }
 
-// Right-hand quantity / urgency column on request cards
 .km--qty-col {
   min-width: 70px;
 }

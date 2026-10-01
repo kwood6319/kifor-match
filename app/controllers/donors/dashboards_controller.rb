@@ -44,10 +44,11 @@ module Donors
 
     private
 
-    # Approved offers need shipping info; rejected offers on a still-open
-    # request can be amended and resubmitted.
-    # TO DO: Rejected offers can no longer be edited or deleted, so they need
-    # no action. Decide whether to drop them from the Attention tab.
+    # Approved offers need shipping info. Rejected offers on a still-open
+    # request are listed too so the donor sees the rejection.
+    # TO DO: For now donors can't edit or delete rejected offers, but whether
+    # they should be able to is still to be decided as a team. Once decided,
+    # check whether rejected offers still belong in the Attention tab.
     def assign_tracker_offers(offers)
       @attention_offers = offers.where(status: "approved")
                                 .or(offers.where(status: "rejected").where.not(requests: { status: "archived" }))
