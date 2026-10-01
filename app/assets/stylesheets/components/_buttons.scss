@@ -122,8 +122,9 @@
     border-color: var(--km-btn-outline-border);
     color: var(--km-text-dark);
 
+    // Solid tint, not translucent, so the button doesn't take on the colour of the card behind it
     &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
+      background-color: mix(black, $km--light, 4%);
       filter: none;
     }
   }

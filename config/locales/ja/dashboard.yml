@@ -1,12 +1,12 @@
 ja:
   dashboard:
-    my_requests: "あなたのリクエスト"
+    my_requests: "あなたの募集"
     needs_your_attention: "要対応"
     offers_submitted: "提出済み"
     offers_on_their_way: "発送中"
     offers_needing_feedback: "評価待ち"
     offers_received: "受領済み"
-    pending_actions: "対応が必要なオファー：%{count}件"
+    pending_actions: "対応が必要な寄付：%{count}件"
     flagged: "フラグ付き"
     no_unapproved_charities: "承認待ちのチャリティーはありません"
     no_unapproved_donors: "承認待ちのドナーはいません"

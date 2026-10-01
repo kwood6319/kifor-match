@@ -39,7 +39,7 @@ class OffersController < ApplicationController
 
     if @offer.save
       redirect_to request_path(@offer.request),
-                  notice: "Offer updated."
+                  notice: t("messages.offer_updated")
     else
       @request = @offer.request
       @donor = @offer.donor

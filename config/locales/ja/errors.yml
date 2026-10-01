@@ -12,7 +12,7 @@ ja:
   activerecord:
     attributes:
       offer:
-        quantity_offered: "提供数量"
+        quantity_offered: "寄付する数量"
         condition: "状態"
         can_ship_by: "発送可能日"
         message: "メッセージ"

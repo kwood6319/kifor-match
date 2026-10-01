@@ -105,7 +105,7 @@ class RequestsController < ApplicationController
   def destroy
     authorize @request
     @request.destroy
-    redirect_to charities_dashboard_path, notice: "Request deleted"
+    redirect_to charities_dashboard_path, notice: t("messages.request_deleted")
   end
 
   private

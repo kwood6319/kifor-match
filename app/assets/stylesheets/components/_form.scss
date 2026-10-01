@@ -109,3 +109,38 @@
 .km--form-card-wide {
   max-width: 48rem;
 }
+
+// Collapsible filter card on the requests index
+.km--filter-card {
+  margin: 1rem auto;
+  padding: 1rem 1.5rem;
+
+  // Shared text classes are bold elsewhere; keep the filter light
+  .km--text-card-subtitle,
+  .km--text-card-category,
+  .km--text-label,
+  .form-check-label {
+    font-weight: 400;
+  }
+}
+
+.km--filter-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+
+  .km--filter-chevron {
+    transition: transform 0.2s ease;
+  }
+
+  &:not(.collapsed) .km--filter-chevron {
+    transform: rotate(180deg);
+  }
+}

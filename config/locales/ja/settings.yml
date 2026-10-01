@@ -25,7 +25,7 @@ ja:
     org_name: "団体名"
     description: "説明"
     shipping_address: "配送先住所"
-    shipping_address_warning: "現在「発送済み」のオファーがあります。今この住所を変更すると、すでに旧住所を把握している寄付者が輸送中の荷物について混乱する可能性があります。"
+    shipping_address_warning: "現在「発送済み」の寄付があります。今この住所を変更すると、すでに旧住所を把握している寄付者が輸送中の荷物について混乱する可能性があります。"
     email: "メールアドレス"
     new_password: "新しいパスワード"
     confirm_password: "新しいパスワード（確認）"
