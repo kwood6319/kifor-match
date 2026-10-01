@@ -10,7 +10,7 @@
       <% end %>
     </div>
     <%= link_to "https://www.kifor.jp/", class: "navbar-brand" do %>
-      <%= image_tag "kifor match.png", class: "km--logo", style: "background-color: white;" %>
+      <%= image_tag "kifor match.png", class: "km--logo" %>
     <% end %>
   </div>
   <ul class="km--nav-menu">
@@ -24,12 +24,6 @@
           <i class="fa-solid fa-bars"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
-          <% if current_user&.donor? %>
-            <li>
-              <%= link_to t("offers.offers"), offers_path, class: "dropdown-item" %>
-            </li>
-          <% end %>
-          <li><hr class="dropdown-divider"></li>
           <li>
             <%= link_to t("navigation.settings"), settings_path, class: "dropdown-item" %>
           </li>

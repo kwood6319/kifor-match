@@ -1,0 +1,13 @@
+ja:
+  onboarding:
+    title: "プロフィール設定"
+    choose_role: "Kifor Matchをどのように利用しますか？"
+    donor: "物品を寄付したい"
+    charity: "団体の代表者です"
+    donor_intro: "寄付者について団体に簡単にお知らせください。"
+    charity_intro: "団体の紹介と、物品の送付先を入力してください。"
+    donor_type: "寄付者の種類"
+    back: "戻る"
+    submit: "次へ"
+    pending_title: "承認待ち"
+    pending_body: "ご登録ありがとうございます。管理者がプロフィールを確認します。承認されると、すべての機能をご利用いただけます。"

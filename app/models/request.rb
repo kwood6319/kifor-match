@@ -67,14 +67,19 @@ class Request < ApplicationRecord
   REGIONS = REGIONS_AND_PREFECTURES.keys
   PREFECTURES = REGIONS_AND_PREFECTURES.values.flatten
 
+  # collection_check_boxes submits a hidden "" so an empty selection still posts
+  normalizes :category, :subcategory, with: ->(values) { values.compact_blank }
+
   after_initialize :set_default_status, if: :new_record?
   # Setting qty remaining = qty needed for now
   before_validation :sync_quantity_remaining
 
+  # KT TO DO: Add a character limit to title (length validation + maxlength on the request form)
   validates :title, :description, :condition, :urgency, presence: true
+  validates :category, presence: true
   validates :status, inclusion: { in: STATUSES }
   validates :quantity_needed, numericality: { greater_than_or_equal_to: 0 }
-  validates :quantity_remaining, numericality: { greater_than_or_equal_to: 0 }
+  validates :quantity_remaining, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
   validate :categories_are_valid
   validate :subcategories_are_valid
@@ -89,6 +94,8 @@ class Request < ApplicationRecord
   end
 
   def sync_quantity_remaining
+    return if quantity_needed.nil?
+
     fulfilled = offers.where(status: FULFILLING_STATUSES).sum(:quantity_offered)
     self.quantity_remaining = [quantity_needed - fulfilled, 0].max
   end

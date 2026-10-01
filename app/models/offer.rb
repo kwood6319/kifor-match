@@ -21,6 +21,7 @@ class Offer < ApplicationRecord
   ].freeze
 
   TERMINAL_STATUSES = %w[rejected completed]
+  SHIPPED_STATUSES = %w[shipped received flagged completed].freeze
 
   NOTIFICATION_CLASSES = {
     "completed" => OfferCompletedNotification,
@@ -31,19 +32,19 @@ class Offer < ApplicationRecord
     "flagged" => "received"
   }.freeze
 
-  validates :status, inclusion: { in: STATUSES }
-  validates :condition, inclusion: { in: Request::CONDITIONS }
-
   scope :active, -> { where(active: true) }
+  scope :unarchived, -> { where(archived_at: nil) }
 
   SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
-  IGNORED_AMENDMENT_FIELDS = %w[status updated_at rejection_reason active].freeze
+  IGNORED_AMENDMENT_FIELDS = %w[status updated_at rejection_reason active archived_at].freeze
 
   validates :quantity_offered, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :condition, presence: true, inclusion: { in: Request::CONDITIONS }
+  # allow_blank so a missing condition only reports "can't be blank"
+  validates :condition, presence: true, inclusion: { in: Request::CONDITIONS, allow_blank: true }
   validates :can_ship_by, presence: true
-  validates :photos, presence: true
   validates :status, inclusion: { in: STATUSES }
+
+  validate :photos_attached
 
   validate :quantity_offered_does_not_exceed_remaining
 
@@ -51,9 +52,33 @@ class Offer < ApplicationRecord
   after_save :resync_request_quantity, if: :saved_change_to_status?
   after_update :create_terminal_notification, if: :saved_change_to_status?
 
+  def rejected?
+    status == "rejected"
+  end
+
+  def archived?
+    archived_at.present?
+  end
+
+  # Donor dismissed a rejected offer. Status stays "rejected" so it can still be shown in history.
+  # update_column skips validations/callbacks, so archiving never trips content checks or resubmits the offer.
+  def archive!
+    update_column(:archived_at, Time.current)
+  end
+
+  def shipped_or_later?
+    SHIPPED_STATUSES.include?(status)
+  end
+
   def alert_message
     key = ALERT_STATUS_ALIASES.fetch(status, status)
     I18n.t("dashboard.alert_messages.#{key}")
+  end
+
+  # What the charity needs to do next, shown on the charity dashboard tracker
+  def charity_alert_message
+    key = ALERT_STATUS_ALIASES.fetch(status, status)
+    I18n.t("dashboard.charity_alert_messages.#{key}")
   end
 
   private
@@ -65,6 +90,10 @@ class Offer < ApplicationRecord
 
   def resubmit_if_amended
     self.status = "submitted"
+  end
+
+  def photos_attached
+    errors.add(:base, :photos_missing) unless photos.attached?
   end
 
   def set_active_from_status

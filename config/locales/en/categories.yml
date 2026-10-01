@@ -14,10 +14,12 @@ en:
     seasonal: "Seasonal"
     necessities: "Necessities"
     other: "Other"
+    other_items: "Other Items"
     all: "All Categories"
     select: "Select Category"
   subcategories:
     other: "Other"
+    other_items: "Other Items"
     laptops: "Laptops"
     phones: "Phones"
     headphones: "Headphones"

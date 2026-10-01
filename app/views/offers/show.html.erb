@@ -1,37 +1,9 @@
 <% content_for :title, t("offers.offer_details") %>
 <div class="container mt-3 mb-4">
   <div class="row align-items-start g-4">
-    <%# Left: Request info — mirrors requests/show.html.erb %>
+    <%# Left: same request card as requests/show %>
     <div class="col-lg-5">
-      <div class="km--card">
-        <div class="row pt-2">
-          <div class="col-8">
-            <h2 class="km--text-card-title"><%= @request.title %></h2>
-          </div>
-          <div class="col-4 text-center">
-            <h3 class="km--text-card-title mb-1">x<%= @request.quantity_remaining %></h3>
-            <div class="badge rounded-pill pill-<%= @request.urgency %> km--text-pill km--text-light">
-              <%= t("urgencies.#{@request.urgency}") %>
-            </div>
-          </div>
-        </div>
-        <p class="km--text-card-content mb-3">
-          <i class="fa-solid fa-location-dot"></i>
-          <%= t("regions.#{@charity.region}") %> - <%= t("prefectures.#{@charity.prefecture}") %>
-        </p>
-        <div class="mb-3">
-          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
-          <div class="d-flex flex-wrap gap-2">
-            <% @request.acceptable_conditions.each do |cond| %>
-              <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
-            <% end %>
-          </div>
-        </div>
-        <div class="mb-3">
-          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.description") %></p>
-          <p class="km--text-card-content mb-0"><%= @request.description %></p>
-        </div>
-      </div>
+      <%= render "requests/request_summary", request: @request %>
     </div>
     <%# Right: Offer detail %>
     <div class="col-lg-6 mx-3">
@@ -39,60 +11,87 @@
         <div class="mb-3">
           <%= render "shared/photo_gallery", offer: @offer %>
         </div>
-        <hr class="km--divider">
-        <div class="d-flex justify-content-between align-items-start mb-1">
-          <strong class="km--text-card-title"><%= @donor.display_name %></strong>
-          <span class="km--text-card-title mb-0">x<%= @offer.quantity_offered %></span>
-        </div>
+        <h4 class="km--text-card-title mb-1"><%= title_with_quantity(@request.title, @offer.quantity_offered) %></h4>
         <p class="km--text-card-content mb-0">
-          <i class="fa-solid fa-location-dot"></i>
-          <%= t("prefectures.#{@donor.prefecture}") if @donor.prefecture %>
+          <%= donor_icon(@donor) %><%= @donor.display_name %>
         </p>
-        <p class="km--text-card-content mb-0">
-          <strong><%= t("navigation.condition") %>:</strong> <%= t("conditions.#{@offer.condition}") %>
-        </p>
-        <% if @offer.message.present? %>
-          <p class="km--text-card-content mb-0"><strong><%= t("offers.message") %>:</strong> <%= @offer.message %></p>
-        <% end %>
-        <% if @offer.can_ship_by.present? %>
+        <% if @donor.prefecture %>
           <p class="km--text-card-content mb-0">
-            <strong><%= t("offers.can_ship_by") %>:</strong> <%= @offer.can_ship_by.strftime("%b %-d") %>
+            <i class="fa-solid fa-location-dot fa-fw me-1"></i><%= t("prefectures.#{@donor.prefecture}") %>
           </p>
         <% end %>
+        <%# Section labels match the request card on the left %>
+        <div class="mt-3 mb-3">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+          <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{@offer.condition}") %></span>
+        </div>
+        <% if (ship_date = offer_ship_date(@offer)) %>
+          <div class="mb-3">
+            <p class="km--text-card-category km--text-soft mb-2"><%= ship_date[:label] %></p>
+            <p class="km--text-card-content mb-0"><%= l(ship_date[:date], format: :short) %></p>
+          </div>
+        <% end %>
+        <% if @offer.message.present? %>
+          <div class="mb-3">
+            <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.message") %></p>
+            <p class="km--text-card-content mb-0"><%= @offer.message %></p>
+          </div>
+        <% end %>
         <% if @offer.estimated_arrival.present? %>
-          <p class="km--text-card-content mb-0"><strong><%= t("statuses.donor.arriving") %>:</strong> <%= @offer.estimated_arrival %></p>
+          <div class="mb-3">
+            <p class="km--text-card-category km--text-soft mb-2"><%= t("statuses.donor.arriving") %></p>
+            <p class="km--text-card-content mb-0"><%= l(@offer.estimated_arrival, format: :short) %></p>
+          </div>
         <% end %>
         <% if @offer.tracking_number.present? %>
-          <p class="km--text-card-content mb-0"><strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= @offer.tracking_number %></p>
-        <% end %>
-        <h5 class="km--text-card-title mt-2"><%= t("offers.status") %>:</h5>
-        <% if @offer.status == "submitted" %>
-          <div class="d-flex gap-2">
-            <% if policy(@offer).approve? %>
-              <%= button_to t("buttons.approve_offer"), approve_offer_path(@offer), method: :patch, class: "km--btn km--btn-primary" %>
-            <% end %>
-            <% if policy(@offer).reject? %>
-              <button type="button"
-                class="km--btn km--btn-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#rejectOfferModal"
-                data-reject-url="<%= reject_offer_path(@offer) %>">
-                <%= t("buttons.reject_offer") %>
-              </button>
-            <% end %>
+          <div class="mb-3">
+            <p class="km--text-card-category km--text-soft mb-2"><%= t("statuses.donor.tracking_info") %></p>
+            <p class="km--text-card-content mb-0"><%= @offer.tracking_number %></p>
           </div>
+        <% end %>
+        <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.status") %></p>
+        <% if current_user.admin? %>
+          <%= offer_status_badge(@offer) %>
+        <% elsif @offer.status == "submitted" %>
+          <% if policy(@offer).approve? || policy(@offer).reject? %>
+            <p class="km--text-card-content mb-3"><%= @offer.charity_alert_message %></p>
+            <div class="d-flex justify-content-end gap-3">
+              <% if policy(@offer).reject? %>
+                <button type="button"
+                  class="km--btn km--btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#rejectOfferModal"
+                  data-reject-url="<%= reject_offer_path(@offer) %>">
+                  <%= t("buttons.reject") %>
+                </button>
+              <% end %>
+              <% if policy(@offer).approve? %>
+                <%= button_to t("buttons.approve"), approve_offer_path(@offer), method: :patch, class: "km--btn km--btn-primary" %>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="km--text-card-content mb-0"><%= t("statuses.charity.submitted_message") %></p>
+          <% end %>
         <% elsif @offer.status == "approved" %>
-          <p class="km--text-card-content mb-0"><%= t("statuses.charity.approved_message") %></p>
+          <p class="km--text-card-content mb-0"><%= current_user.charity? ? @offer.charity_alert_message : t("statuses.charity.approved_message") %></p>
         <% elsif @offer.status == "shipped" %>
-          <%= button_to t("statuses.donor.received"), mark_received_offer_path(@offer), method: :patch, class: "km--btn km--btn-danger" %>
+          <p class="km--text-card-content mb-3"><%= current_user.charity? ? @offer.charity_alert_message : t("statuses.donor.shipped") %></p>
+          <% if policy(@offer).mark_received? %>
+            <div class="d-flex justify-content-end">
+              <%= button_to t("statuses.donor.received"), mark_received_offer_path(@offer), method: :patch, class: "km--btn km--btn-danger" %>
+            </div>
+          <% end %>
         <% elsif @offer.status == "rejected" %>
-          <p class="km--text-card-content mb-0"><%= t("statuses.charity.rejected_message") %></p>
+          <p class="km--text-card-content mb-0"><%= current_user.charity? ? @offer.charity_alert_message : t("statuses.charity.rejected_message") %></p>
         <% elsif @offer.status == "received" %>
           <% if current_user.charity? %>
-            <p class="km--text-card-content mb-0"><%= t("statuses.charity.received_message") %></p>
+            <p class="km--text-card-content mb-3"><%= @offer.charity_alert_message %></p>
+            <div class="d-flex justify-content-end">
+              <%# TO DO: Once feedback is saved, show a "Feedback left" check and an Edit feedback link here (see FeedbacksController#create) %>
             <%= link_to t("buttons.give_feedback"),
-                  new_request_feedback_path(@request, offer_id: @offer.id),
-                  class: "km--btn km--btn-primary mt-2" %>
+                    new_request_feedback_path(@request, offer_id: @offer.id),
+                    class: "km--btn km--btn-primary" %>
+            </div>
           <% else %>
             <p class="km--text-card-content mb-0"><%= t("statuses.donor.received_message") %></p>
           <% end %>

@@ -19,50 +19,60 @@
         </div>
       <% end %>
     </div>
-    <div class="col-7">
-      <div class="d-flex justify-content-between align-items-start mb-1">
-        <strong class="km--text-card-title"><%= offer.donor.display_name %></strong>
-        <span class="km--text-card-title mb-0">x<%= offer.quantity_offered %></span>
-      </div>
+    <div class="col-7 d-flex flex-column align-items-start gap-1">
+      <strong class="km--text-card-title"><%= title_with_quantity(parent_request.title, offer.quantity_offered) %></strong>
       <p class="km--text-card-content mb-0">
-        <i class="fa-solid fa-location-dot"></i>
-        <%= t("prefectures.#{offer.donor.prefecture}") if offer.donor.prefecture %>
+        <%= donor_icon(offer.donor) %><%= offer.donor.display_name %>
       </p>
-      <p class="km--text-card-content mb-0">
-        <strong><%= t("navigation.condition") %>:</strong> <%= t("conditions.#{offer.condition}") %>
-      </p>
-      <p class="km--text-card-content mb-0">
-        <strong><%= t("offers.can_ship_by") %>:</strong> <%= offer.can_ship_by ? offer.can_ship_by.strftime("%b %-d") : "N/A" %>
-      </p>
-      <% if offer.message.present? %>
+      <% if offer.donor.prefecture %>
         <p class="km--text-card-content mb-0">
-          <strong><%= t("offers.message") %>:</strong> <%= offer.message %>
+          <i class="fa-solid fa-location-dot fa-fw me-1"></i><%= t("prefectures.#{offer.donor.prefecture}") %>
         </p>
       <% end %>
-      <h5 class="km--text-card-title mt-2"><%= t("offers.status") %>:</h5>
+      <p class="km--text-card-content mb-0" title="<%= t("navigation.condition") %>">
+        <i class="fa-solid fa-box-open fa-fw me-1"></i><span class="badge text-bg-info"><%= t("conditions.#{offer.condition}") %></span>
+      </p>
+      <% if (ship_date = offer_ship_date(offer)) %>
+        <p class="km--text-card-content mb-0" title="<%= ship_date[:label] %>">
+          <i class="fa-solid fa-truck fa-fw me-1"></i><%= l(ship_date[:date], format: :short) %>
+        </p>
+      <% end %>
+      <% if offer.message.present? %>
+        <p class="km--text-card-content mb-0" title="<%= t("offers.message") %>">
+          <i class="fa-solid fa-message fa-fw me-1"></i><%= offer.message %>
+        </p>
+      <% end %>
+      <p class="km--text-card-category km--text-soft mt-2 mb-1"><%= t("offers.status") %></p>
+      <% if read_only %>
+        <div class="mb-1"><%= offer_status_badge(offer) %></div>
+      <% end %>
       <% case offer.status
          when "submitted" %>
         <% if read_only %>
           <p class="km--text-card-content mb-0"><%= t("statuses.charity.submitted_message") %></p>
         <% else %>
-          <div class="d-flex gap-2">
-            <% if policy(offer).approve? %>
-              <%= button_to t("buttons.approve_offer"), approve_offer_path(offer), method: :patch, class: "km--btn km--btn-primary" %>
-            <% end %>
+          <p class="km--text-card-content mb-2"><%= offer.charity_alert_message %></p>
+          <div class="d-flex justify-content-end gap-3 w-100">
             <% if policy(offer).reject? %>
               <button type="button"
                 class="km--btn km--btn-danger"
                 data-bs-toggle="modal"
                 data-bs-target="#rejectOfferModal"
                 data-reject-url="<%= reject_offer_path(offer) %>">
-                <%= t("buttons.reject_offer") %>
+                <%= t("buttons.reject") %>
               </button>
+            <% end %>
+            <% if policy(offer).approve? %>
+              <%= button_to t("buttons.approve"), approve_offer_path(offer), method: :patch, class: "km--btn km--btn-primary" %>
             <% end %>
           </div>
         <% end %>
       <% when "approved" %>
-        <p class="km--text-card-content mb-0"><%= t("statuses.charity.approved_message") %></p>
+        <p class="km--text-card-content mb-0"><%= read_only ? t("statuses.charity.approved_message") : offer.charity_alert_message %></p>
       <% when "shipped" %>
+        <% unless read_only %>
+          <p class="km--text-card-content mb-1"><%= offer.charity_alert_message %></p>
+        <% end %>
         <p class="km--text-card-content mb-0">
           <strong><%= t("statuses.donor.arriving") %>:</strong> <%= offer.estimated_arrival || "?" %>
         </p>
@@ -70,16 +80,21 @@
           <strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= offer.tracking_number.presence || "?" %>
         </p>
         <% unless read_only %>
-          <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "km--btn km--btn-danger mt-2" %>
+          <div class="d-flex justify-content-end w-100 mt-2">
+            <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "km--btn km--btn-danger" %>
+          </div>
         <% end %>
       <% when "rejected" %>
-        <p class="km--text-card-content mb-0"><%= t("statuses.charity.rejected_message") %></p>
+        <p class="km--text-card-content mb-0"><%= read_only ? t("statuses.charity.rejected_message") : offer.charity_alert_message %></p>
       <% when "received" %>
-        <p class="km--text-card-content mb-0"><%= t("statuses.charity.received_message") %></p>
+        <p class="km--text-card-content mb-0"><%= read_only ? t("statuses.charity.received_message") : offer.charity_alert_message %></p>
+        <%# TO DO: Once feedback is saved, show a "Feedback left" check and an Edit feedback link here (see FeedbacksController#create) %>
         <% unless read_only %>
-          <%= link_to t("buttons.give_feedback"),
-                new_request_feedback_path(parent_request, offer_id: offer.id),
-                class: "km--btn km--btn-primary mt-2" %>
+          <div class="d-flex justify-content-end w-100 mt-2">
+            <%= link_to t("buttons.give_feedback"),
+                  new_request_feedback_path(parent_request, offer_id: offer.id),
+                  class: "km--btn km--btn-primary" %>
+          </div>
         <% end %>
       <% else %>
         <p class="km--text-card-content mb-0 text-capitalize"><%= t("statuses.charity.#{offer.status}_message", default: offer.status) %></p>

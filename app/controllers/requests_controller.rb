@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   before_action :set_request, only: %i[show edit update archive destroy]
-  before_action :show_back_button, only: %i[index show]
+  before_action :show_back_button, only: %i[index show new create edit update]
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries
@@ -54,7 +54,7 @@ class RequestsController < ApplicationController
   end
 
   def new
-    @request = Request.new
+    @request = Request.new(quantity_needed: 1, urgency: "medium")
     authorize @request
   end
 
@@ -105,7 +105,7 @@ class RequestsController < ApplicationController
   def destroy
     authorize @request
     @request.destroy
-    redirect_to charities_dashboard_path, notice: "Request deleted"
+    redirect_to charities_dashboard_path, notice: t("messages.request_deleted")
   end
 
   private

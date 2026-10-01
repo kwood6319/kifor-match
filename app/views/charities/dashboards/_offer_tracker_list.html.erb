@@ -1,25 +1,24 @@
 <% if offers.any? %>
   <div class="km--card-list">
     <% offers.each do |offer| %>
-      <%= link_to offer_path(offer), class: "text-decoration-none km--text-dark km--card-list-item d-block" do %>
-        <div class="d-flex justify-content-between align-items-start">
-          <strong class="km--text-card-subtitle"><%= offer.request.title %></strong>
-          <div class="text-nowrap">
-            <span class="badge rounded-pill pill-urgent km--text-pill km--text-light"><%= time_ago_badge(offer.updated_at) %></span>
-            <span class="ms-1 km--text-soft km--text-card-content">x<%= offer.quantity_offered %></span>
-          </div>
+      <%= link_to offer_path(offer), class: "text-decoration-none km--text-dark km--card-list-item d-flex flex-column gap-1" do %>
+        <div class="d-flex justify-content-between align-items-start gap-2">
+          <strong class="km--text-card-subtitle"><%= title_with_quantity(offer.request.title, offer.quantity_offered) %></strong>
+          <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap flex-shrink-0"><%= time_ago_badge(offer.updated_at) %></span>
         </div>
-        <p class="km--text-card-content mb-1"><%= offer.donor.display_name %></p>
-        <p class="km--text-card-content mb-1">
-          <strong><%= t("dashboard.condition") %>:</strong> <%= t("conditions.#{offer.condition}") %>
+        <p class="km--text-card-content mb-0">
+          <%= donor_icon(offer.donor) %><%= offer.donor.display_name %>
         </p>
-        <% if offer.can_ship_by.present? %>
-          <p class="km--text-card-content mb-1">
-            <strong><%= t("dashboard.can_ship_by") %>:</strong> <%= offer.can_ship_by.strftime("%b %-d") %>
+        <p class="km--text-card-content mb-0" title="<%= t("dashboard.condition") %>">
+          <i class="fa-solid fa-box-open fa-fw me-1"></i><span class="badge text-bg-info"><%= t("conditions.#{offer.condition}") %></span>
+        </p>
+        <% if (ship_date = offer_ship_date(offer)) %>
+          <p class="km--text-card-content mb-0" title="<%= ship_date[:label] %>">
+            <i class="fa-solid fa-truck fa-fw me-1"></i><%= l(ship_date[:date], format: :short) %>
           </p>
         <% end %>
-        <p class="km--text-card-content mb-0">
-          <strong><%= t("dashboard.status") %>:</strong> <%= t("statuses.#{offer.status}", default: offer.status) %>
+        <p class="km--text-card-content mb-0" title="<%= t("dashboard.alerts") %>">
+          <i class="fa-solid fa-message fa-fw me-1"></i><%= offer.charity_alert_message %>
         </p>
       <% end %>
     <% end %>

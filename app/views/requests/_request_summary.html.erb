@@ -1,0 +1,112 @@
+<%# Request details card, shared by requests/show and offers/show %>
+<div class="km--card">
+  <div class="row pt-2">
+    <div class="col-8">
+      <h2 class="km--text-card-title"><%= request.title %></h2>
+      <p class="km--text-card-subtitle mb-1">
+        <%= charity_icon %><%= request.charity.org_name %>
+      </p>
+      <p class="km--text-card-subtitle mb-0">
+        <i class="fa-solid fa-location-dot me-1"></i><%= charity_location(request.charity) %>
+      </p>
+    </div>
+    <div class="col-4 text-center">
+      <h3 class="km--text-card-title mb-1"><%= quantity_label(request.quantity_remaining) %></h3>
+      <% if request.archived? %>
+        <div class="badge rounded-pill text-bg-secondary km--text-pill">
+          <%= t("statuses.requests.archived") %>
+        </div>
+      <% else %>
+        <div class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light">
+          <%= t("urgencies.#{request.urgency}") %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="progress my-3 km--progress">
+    <div class="progress-bar km--progress-bar" role="progressbar"
+         style="width: <%= request.fulfillment_percent %>%;"
+         aria-valuenow="<%= request.quantity_fulfilled %>" aria-valuemin="0" aria-valuemax="<%= request.quantity_needed %>">
+    </div>
+  </div>
+  <% if current_user.admin? %>
+    <div class="mb-3">
+      <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.status") %></p>
+      <%= request_status_badge(request) %>
+    </div>
+  <% end %>
+  <div class="mb-3">
+    <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.category") %></p>
+    <p class="km--text-card-content mb-0">
+      <%= request.category.map { |cat| t("categories.#{cat}") }.join(", ") %>
+    </p>
+  </div>
+  <div class="mb-3">
+    <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+    <div class="d-flex flex-wrap gap-2">
+      <% request.acceptable_conditions.each do |cond| %>
+        <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
+      <% end %>
+    </div>
+  </div>
+  <div class="mb-3">
+    <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.description") %></p>
+    <p class="km--text-card-content mb-0"><%= request.description %></p>
+  </div>
+  <div class="mb-3">
+    <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.shipping_and_drop_off") %></p>
+    <% if request.charity.accepts_shipping? %>
+      <p class="km--text-card-content mb-1">
+        <i class="fa-solid fa-truck me-1"></i><%= t("shipping.accepts_shipping") %>
+      </p>
+    <% end %>
+    <div class="d-flex justify-content-between align-items-center">
+      <p class="km--text-card-content mb-0<%= ' km--text-soft' unless request.charity.accepts_drop_off? %>">
+        <i class="fa-solid fa-box me-1"></i>
+        <%= request.charity.accepts_drop_off? ? t("shipping.accepts_drop_off") : t("shipping.no_drop_off") %>
+      </p>
+      <% if request.charity.accepts_drop_off? %>
+        <p class="km--text-card-content km--text-soft mb-0">
+          <%# TO DO: Replace with the charity's real drop-off hours %>
+          Mon - Fri 9AM - 5PM
+        </p>
+      <% end %>
+    </div>
+  </div>
+  <%# Actions need the #deleteModal that requests/show renders %>
+  <% if local_assigns[:show_actions] %>
+    <% can_archive = policy(request).archive? %>
+    <% can_delete = policy(request).destroy? %>
+    <% can_edit = policy(request).edit? %>
+    <% if can_archive || can_delete || can_edit %>
+      <div class="d-flex justify-content-end flex-wrap gap-3">
+        <% if can_archive %>
+          <button type="button"
+            class="km--btn km--btn-outline"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModal"
+            data-action-url="<%= archive_request_path(request) %>"
+            data-action-method="patch"
+            data-action-title="<%= t("modals.archive_request.title") %>"
+            data-action-label="<%= t("buttons.archive") %>" >
+            <%= t("buttons.archive") %>
+          </button>
+        <% end %>
+        <% if can_delete %>
+          <button type="button"
+            class="km--btn km--btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModal"
+            data-action-url="<%= request_path(request) %>"
+            data-action-method="delete"
+            data-action-title="<%= t("modals.delete_request.title") %>" >
+            <%= t("buttons.delete") %>
+          </button>
+        <% end %>
+        <% if can_edit %>
+          <%= link_to t("buttons.edit"), edit_request_path(request), class: "km--btn km--btn-primary" %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

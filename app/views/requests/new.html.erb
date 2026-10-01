@@ -1,4 +1,7 @@
-<div class="container mt-5 mb-2">
-  <h1> <%= t("requests.tell_us") %> </h1>
-  <%= render "request_form", request: @request %>
+<div class="container mt-4 mb-5">
+  <div class="km--card km--form-compact p-4">
+    <h4 class="km--text-card-title mb-1"><%= t("requests.new_request") %></h4>
+    <p class="km--text-card-content km--text-soft mb-4"><%= t("requests.tell_us") %> · <span class="km--required"></span> <%= t("offers.required_note") %></p>
+    <%= render "request_form", request: @request %>
+  </div>
 </div>

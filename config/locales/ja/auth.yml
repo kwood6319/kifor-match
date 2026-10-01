@@ -1,0 +1,5 @@
+ja:
+  auth:
+    send_reset_link: "再設定リンクを送信"
+    enter_email: "メールアドレスを入力してください"
+    not_a_member: "まだ会員ではありませんか？"

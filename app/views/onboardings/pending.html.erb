@@ -1,0 +1,10 @@
+<% content_for :title, t("onboarding.pending_title") %>
+<div class="km--card km--form-card km--form-card-narrow km--form-compact text-center">
+  <i class="fa-solid fa-hourglass-half fa-2x km--text-soft mb-3"></i>
+  <h2 class="km--form-card-title"><%= t("onboarding.pending_title") %></h2>
+  <p class="km--text-card-content km--text-soft"><%= t("onboarding.pending_body") %></p>
+  <p class="km--text-card-content mb-0">
+    <%= link_to t("navigation.settings"), settings_path %> ·
+    <%= link_to t("navigation.sign_out"), destroy_user_session_path, data: { turbo_method: :delete } %>
+  </p>
+</div>

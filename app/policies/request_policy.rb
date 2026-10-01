@@ -30,13 +30,13 @@ class RequestPolicy < ApplicationPolicy
   end
 
   def update?
-    record.charity == user.charity
+    record.charity == user.charity && !record.archived?
     # record: the request passed to the `authorize` method in controller
     # user: the `current_user` signed in with Devise
   end
 
   def destroy?
-    record.charity == user.charity
+    record.charity == user.charity && !record.archived?
   end
 
   def deactivate?

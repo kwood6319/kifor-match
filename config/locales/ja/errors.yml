@@ -2,3 +2,36 @@ ja:
   errors:
     messages:
       exceeds_remaining: "残りの必要数量（%{max}）を超えることはできません"
+      photos_missing: "商品の写真を1枚以上追加してください"
+      blank: "を入力してください"
+      inclusion: "は一覧にありません"
+      not_a_number: "は数値で入力してください"
+      not_an_integer: "は整数で入力してください"
+      greater_than: "は%{count}より大きい値にしてください"
+    format: "%{attribute}%{message}"
+  activerecord:
+    attributes:
+      offer:
+        quantity_offered: "寄付する数量"
+        condition: "状態"
+        can_ship_by: "発送可能日"
+        message: "メッセージ"
+      request:
+        title: "タイトル"
+        description: "詳細"
+        condition: "最低限の条件"
+        urgency: "緊急度"
+        quantity_needed: "必要数量"
+        category: "カテゴリ"
+        subcategory: "サブカテゴリー"
+      charity:
+        org_name: "団体名"
+        description: "説明"
+        region: "地域"
+        prefecture: "都道府県"
+        shipping_address: "配送先住所"
+      donor:
+        display_name: "表示名"
+        donor_type: "寄付者の種類"
+        region: "地域"
+        prefecture: "都道府県"

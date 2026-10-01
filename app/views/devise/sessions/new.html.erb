@@ -1,4 +1,5 @@
-<div class="km--card km--form-card km--form-card-narrow">
+<% label = { class: "km--text-card-category km--text-soft" } %>
+<div class="km--card km--form-card km--form-card-narrow km--form-compact">
   <h2 class="km--form-card-title"><%= t("navigation.log_in") %></h2>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="form-inputs">
@@ -6,15 +7,18 @@
               required: false,
               autofocus: true,
               input_html: { autocomplete: "email", class: "km--form-control form-control" },
-              label_html: { class: "km--text-label" } %>
+              label_html: label %>
       <%= f.input :password,
               required: false,
               input_html: { autocomplete: "current-password", class: "km--form-control form-control" },
-              label_html: { class: "km--text-label" } %>
+              label_html: label %>
       <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
     </div>
-    <div class="form-actions d-flex justify-content-center">
-      <%= f.button :submit, t("navigation.log_in"), class: "km--btn km--btn-primary km--btn-wide" %>
+    <div class="form-actions d-flex justify-content-between align-items-center">
+      <% if devise_mapping.recoverable? %>
+        <%= link_to t("devise.shared.links.forgot_your_password", default: "Forgot your password?"), new_password_path(resource_name) %>
+      <% end %>
+      <%= f.button :submit, t("navigation.log_in"), class: "km--btn km--btn-primary" %>
     </div>
   <% end %>
   <div class="mt-3">

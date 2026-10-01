@@ -1,54 +1,66 @@
 <div class="container mt-3 mb-4">
-  <div class="km--card km--form-card">
+  <div class="km--card km--form-card km--form-compact">
     <h5 class="km--form-card-title"><i class="fa-solid fa-filter me-2"></i><%= t("navigation.filter_donors") %></h5>
     <%= form_with url: donors_path, method: :get, class: "row g-3" do |f| %>
+      <%# Top row: Search, Region %>
       <div class="row g-3 mt-0">
-        <div class="col-md-6 col-lg-6">
-          <%= f.label :query, t("navigation.search"), class: "km--text-label" %>
+        <div class="col-md-6 col-lg-7">
+          <%= f.label :query, t("navigation.search"), class: "km--text-card-category km--text-soft d-block mb-2" %>
           <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_donors_placeholder"), class: "km--form-control form-control" %>
         </div>
-        <div class="col-md-6 col-lg-6">
-          <%= f.label :region, t("navigation.region"), class: "km--text-label" %>
+        <div class="col-md-6 col-lg-5">
+          <%= f.label :region, t("navigation.region"), class: "km--text-card-category km--text-soft d-block mb-2" %>
           <%= f.select :region,
             Request::REGIONS.map { |region| [t("regions.#{region}"), region] },
             { include_blank: t("regions.all"), selected: params[:region] },
             class: "km--form-control form-select" %>
         </div>
       </div>
+      <%# Row 2: Approval status, boxed like the request index categories %>
       <div class="row g-3 mt-0">
-        <div class="col-md-4 col-lg-3 d-flex align-items-end mb-2">
-          <div class="form-check">
-            <%= f.check_box :approved_only, { checked: params[:approved_only] == "1", class: "form-check-input" }, "1", "0" %>
-            <%= f.label :approved_only, t("navigation.approved_only"), class: "form-check-label km--text-label text-nowrap" %>
+        <div class="col-12 mt-0">
+          <span class="km--text-card-category km--text-soft d-block mb-2"><%= t("offers.status") %></span>
+          <div class="border rounded p-3 bg-white">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
+              <div class="col">
+                <div class="form-check">
+                  <%= f.check_box :approved_only, { checked: params[:approved_only] == "1", class: "form-check-input" }, "1", "0" %>
+                  <%= f.label :approved_only, t("navigation.approved_only"), class: "form-check-label fw-bold" %>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <%= f.check_box :unapproved_only, { checked: params[:unapproved_only] == "1", class: "form-check-input" }, "1", "0" %>
+                  <%= f.label :unapproved_only, t("navigation.unapproved_only"), class: "form-check-label fw-bold" %>
+                </div>
+              </div>
+              <%# TO DO: Add "Flagged only" filter once flagging exists %>
+              <%# TO DO: Add "Deleted only" filter. Rename "deleted" to "blocked"? %>
+            </div>
           </div>
         </div>
-        <div class="col-md-4 col-lg-3 d-flex align-items-end mb-2">
-          <div class="form-check">
-            <%= f.check_box :unapproved_only, { checked: params[:unapproved_only] == "1", class: "form-check-input" }, "1", "0" %>
-            <%= f.label :unapproved_only, t("navigation.unapproved_only"), class: "form-check-label km--text-label text-nowrap" %>
-          </div>
-        </div>
-        <div class="col-md-4 col-lg-6 d-flex justify-content-end align-items-end gap-2 mb-2">
-          <%= link_to t("navigation.reset"), donors_path, class: "km--btn km--btn-outline" %>
-          <%= f.submit t("navigation.filter"), class: "km--btn km--btn-primary" %>
-        </div>
+      </div>
+      <%# Row 3: Reset & Filter %>
+      <div class="col-md-12 d-flex justify-content-end mt-2">
+        <%= link_to t("navigation.reset"), donors_path, class: "km--btn km--btn-outline me-3" %>
+        <%= f.submit t("navigation.filter"), class: "km--btn km--btn-primary" %>
       </div>
     <% end %>
   </div>
 </div>
-<div class="container mb-5">
+<div class="container-fluid px-4 px-xl-5 mb-5">
   <% if @donors.empty? %>
     <div class="text-center mt-5">
       <h4 class="km--text-soft"><%= t("navigation.no_donors") %></h4>
     </div>
   <% else %>
-    <div class="km--card-grid">
+    <div class="km--card-grid km--card-grid-wide">
       <% @donors.each do |donor| %>
-        <div class="km--card h-100" style="min-height: 260px;">
+        <div class="km--card km--card-hover h-100">
           <%= link_to "", donor_path(donor), class: "stretched-link", aria: { label: t("navigation.view") } %>
           <div class="d-flex justify-content-between align-items-start mb-2">
             <span class="km--text-card-title">
-              <%= donor.display_name %>
+              <%= donor_icon(donor) %><%= donor.display_name %>
               <% if donor.approved? %>
                 <i class="fa-solid fa-circle-check text-success ms-1"></i>
               <% end %>
@@ -59,28 +71,24 @@
               </span>
             <% end %>
           </div>
+          <p class="km--text-card-subtitle mb-2">
+            <i class="fa-solid fa-location-dot me-1"></i><%= location_label(donor) %>
+          </p>
           <p class="km--text-card-content mb-1">
             <i class="fa-solid fa-envelope me-1"></i> <%= donor.user.email %>
           </p>
-          <% if donor.region.present? %>
-            <p class="km--text-card-content mb-1">
-              <i class="fa-solid fa-location-dot me-1"></i> <%= t("regions.#{donor.region}") %>
-            </p>
-          <% end %>
-          <% if donor.donor_type.present? %>
-            <p class="km--text-card-content km--text-soft mb-2">
-              <i class="fa-solid fa-tag me-1"></i> <%= donor.donor_type %>
-            </p>
-          <% end %>
-          <div class="d-flex gap-2 mt-auto">
+          <%# TO DO: Show the donor's chosen delivery option (shipping / drop-off) %>
+          <%# TO DO: Show "approved by" (admin name/id) once approvals are recorded %>
+          <div class="d-flex justify-content-end gap-3 mt-auto pt-2">
+            <%# TO DO: Add a Flag button once flagging exists %>
+            <%= button_to t("buttons.delete"), donor_path(donor), method: :delete,
+                class: "km--btn km--btn-danger",
+                data: { turbo_confirm: t("messages.delete_donor_confirm") } %>
             <% unless donor.approved? %>
               <%= button_to t("buttons.approve"), approve_donor_path(donor), method: :patch,
                 class: "km--btn km--btn-primary",
                 data: { turbo_confirm: t("messages.approve_donor_confirm") } %>
             <% end %>
-            <%= button_to t("buttons.delete"), donor_path(donor), method: :delete,
-                class: "km--btn km--btn-danger",
-                data: { turbo_confirm: t("messages.delete_donor_confirm") } %>
           </div>
         </div>
       <% end %>

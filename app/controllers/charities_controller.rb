@@ -1,6 +1,6 @@
 class CharitiesController < ApplicationController
   before_action :set_charity, only: %i[show approve destroy]
-  before_action :show_back_button, only: %i[index show]
+  before_action :show_back_button, only: %i[show]
 
   def index
     authorize Charity
@@ -21,6 +21,7 @@ class CharitiesController < ApplicationController
     authorize @charity
 
     @requests = @charity.requests.where.not(status: "archived").order(created_at: :desc)
+    @archived_requests = @charity.requests.where(status: "archived").order(updated_at: :desc)
     @total_requests_count = @charity.requests.count
     @completed_requests_count = @charity.requests.where(status: "fulfilled").count
   end
@@ -34,11 +35,13 @@ class CharitiesController < ApplicationController
   end
 
   def approve
-    # TO DO make so only admin can do this
     authorize @charity
-    @charity.update(approved: true)
-
-    redirect_back fallback_location: charities_path, status: :see_other, notice: "Charity approved!"
+    if @charity.update(approved: true)
+      redirect_back fallback_location: charities_path, status: :see_other, notice: t("charities.approved")
+    else
+      redirect_back fallback_location: charities_path, status: :see_other,
+                    alert: t("charities.approve_failed", errors: @charity.errors.full_messages.to_sentence)
+    end
   end
 
   private

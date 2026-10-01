@@ -7,7 +7,7 @@ import { Controller } from "@hotwired/stimulus"
 // Keeps the input's FileList in sync via the DataTransfer API so Rails
 // still receives the correct files on submit.
 export default class extends Controller {
-  static targets = ["input", "dropzone", "previewList", "previewTemplate"]
+  static targets = ["input", "dropzone", "previewList", "previewTemplate", "removedInputs"]
 
   connect() {
     this.files = []
@@ -54,6 +54,17 @@ export default class extends Controller {
     this.files.splice(index, 1)
     this.syncInput()
     this.renderPreviews()
+  }
+
+  // Removes an already-saved photo from view and queues its attachment id
+  // so the server drops it when the form is saved.
+  removeExisting(event) {
+    const input = document.createElement("input")
+    input.type = "hidden"
+    input.name = "offer[remove_photo_ids][]"
+    input.value = event.params.id
+    this.removedInputsTarget.appendChild(input)
+    event.currentTarget.closest(".km--photo-upload-thumb").remove()
   }
 
   // Rebuilds the input's FileList from this.files so the form submits

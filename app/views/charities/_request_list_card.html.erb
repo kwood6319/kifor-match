@@ -1,0 +1,22 @@
+<%= link_to request_path(request), class: "text-decoration-none km--text-dark" do %>
+  <div class="km--card km--card-hover mb-3">
+    <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+      <p class="km--text-card-title mb-0"><%= request.title %></p>
+      <div class="text-center flex-shrink-0 km--qty-col">
+        <p class="km--text-card-title mb-1"><%= quantity_label(request.archived? ? request.quantity_needed : request.quantity_remaining) %></p>
+        <% if request.archived? %>
+          <span class="badge rounded-pill text-bg-secondary km--text-pill text-nowrap"><%= t("statuses.requests.archived") %></span>
+        <% else %>
+          <span class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light"><%= t("urgencies.#{request.urgency}") %></span>
+          <div class="mt-1"><%= request_status_badge(request) %></div>
+        <% end %>
+      </div>
+    </div>
+    <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
+    <div class="d-flex flex-wrap gap-2">
+      <% request.acceptable_conditions.each do |cond| %>
+        <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{cond}") %></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>

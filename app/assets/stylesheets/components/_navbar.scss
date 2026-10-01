@@ -1,32 +1,3 @@
-.logo {
-  width: 150px !important;
-}
-
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #ffffff;
-}
-
-.nav-menu {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-  margin: 0;
-}
-
-.nav-menu a {
-  text-decoration: none;
-  color: #333333;
-  font-weight: 500;
-}
-
-
 // -----------Post-migration values------------
 
 :root {
@@ -34,6 +5,7 @@
 }
 
 .km--logo {
+  background-color: $km--light;
   width: 150px !important;
 }
 
