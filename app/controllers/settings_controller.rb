@@ -57,7 +57,7 @@ class SettingsController < ApplicationController
   def deactivate
     current_user.update!(active: false)
     sign_out(current_user)
-    redirect_to rooth_path, notice: t("settings.account_deactivated")
+    redirect_to root_path, notice: t("settings.account_deactivated")
   end
 
   private
