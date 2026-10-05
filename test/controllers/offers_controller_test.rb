@@ -107,4 +107,12 @@ class OffersControllerTest < ActionDispatch::IntegrationTest
     delete offer_path(id: @offer.id, locale: :en)
     assert Offer.exists?(@offer.id)
   end
+
+  test "another donor's offer is absent from the offer list" do
+    @offer.update!(message: "Private offer marker")
+    sign_in other_user
+    get offers_path(locale: :en)
+    assert_response :success
+    assert_no_match "provate offer marker", response.body
+  end
 end

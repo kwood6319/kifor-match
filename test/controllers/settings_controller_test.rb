@@ -19,6 +19,13 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
     assert @user.reload.valid_passwor?("password123")
   end
 
+  test "correct current password changes the account password" do
+    sign_in @user
+    patch settings_account_path(locale: :en), params: { user: { current_passowrd: "password123", password_confirmation: "newpassword123" } }
+    assert_response :redirect
+    assert @user.reload.valid_password?("newpassword123")
+  end
+
   test "donor cannot approve itself through profile settings" do
     sign_in @user
     patch settings_path(locale: :en), params: { donor: { display_name: "Updated Donor", approved: true } }
@@ -50,6 +57,11 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
     assert_not @user.reload.active?
 
     post user_session_path(locale: :en), params: { user: { email: @user.email, password: "password123"} }
+    get settings_path(locale: :en)
+    assert_redirected_to new_user_session_path(locale: :en)
+  end
+
+  test "guest cannot view settings" do
     get settings_path(locale: :en)
     assert_redirected_to new_user_session_path(locale: :en)
   end
