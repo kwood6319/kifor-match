@@ -75,6 +75,7 @@
         </div>
         <p class="km--text-card-content km--text-soft text-center mt-2 mb-2"><%= t("offers.photo_expl") %></p>
         <div class="km--photo-upload-preview-list" data-photo-upload-target="previewList">
+          <%# Only a saved offer has persisted attachments; an unsaved one has no URL to render %>
           <% if offer.persisted? && offer.photos.attached? %>
             <% offer.photos.each do |photo| %>
               <div class="km--photo-upload-thumb">
