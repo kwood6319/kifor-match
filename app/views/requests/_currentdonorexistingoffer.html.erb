@@ -44,16 +44,36 @@
       method: :patch do |f| %>
       <div class="row mt-2">
         <div class="col-md-6">
-          <%= f.input :estimated_arrival, label: t("statuses.donor.arriving"), as: :date, html5: true,
-            input_html: { class: "km--form-control form-control" }, label_html: { class: "km--text-label" } %>
+          <%
+  arrival = offer.estimated_arrival || Date.current
+  month_year_options = (0..11).map do |offset|
+    date = Date.current.next_month(offset)
+    [l(date, format: :month_year), date.strftime("%Y-%m")]
+  end
+%>
+          <div data-controller="ship-date">
+            <%= f.label :arrival_day, t("statuses.donor.arriving"), class: "km--text-label" %>
+            <div class="d-flex gap-2">
+              <%= f.select :arrival_day, (1..31).to_a,
+      { selected: arrival.day },
+      class: "km--form-control form-select",
+      data: { "ship-date-target": "day" } %>
+              <%= f.select :arrival_month_year, month_year_options,
+      { selected: arrival.strftime("%Y-%m") },
+      class: "km--form-control form-select",
+      data: { "ship-date-target": "monthYear",
+              action: "change->ship-date#monthYearChanged" } %>
+            </div>
+          </div>
         </div>
         <div class="col-md-6">
           <%= f.input :tracking_number, label: t("statuses.donor.tracking_info"), placeholder: t("statuses.donor.tracking_prompt"),
             input_html: { class: "km--form-control form-control" }, label_html: { class: "km--text-label" } %>
         </div>
       </div>
-      <div class="d-flex justify-content-end">
+      <div class="d-flex justify-content-end gap-3 mt-3">
         <%= f.submit t("buttons.save"), class: "km--btn km--btn-primary" %>
+        <%= link_to t("buttons.edit"), request_path(request, edit_offer: offer.id), class: "km--btn km--btn-primary" %>
       </div>
     <% end %>
   <% elsif offer.status == "rejected" %>
@@ -67,7 +87,7 @@
   <% elsif offer.status == "received" %>
     <p class="km--text-card-content"><%= t("statuses.donor.received_message") %></p>
   <% end %>
-  <% can_edit = %w[submitted approved].include?(offer.status.to_s) %>
+  <% can_edit = offer.status.to_s == "submitted" %>
   <% can_delete = offer.status.to_s == "submitted" %>
   <% if can_edit || can_delete %>
     <div class="d-flex justify-content-end gap-3 mt-3">

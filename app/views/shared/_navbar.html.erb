@@ -40,9 +40,9 @@
     <% end %>
     <li>
       <% if I18n.locale == :ja %>
-        <%= link_to "English", url_for(switch_locale: :en), class: "nav-link km--text-nav km--text-light", data: { turbo_action: "replace"} %>
+        <%= link_to "English", url_for(request.query_parameters.merge("switch_locale" => "en")), class: "nav-link km--text-nav km--text-light", data: { turbo_action: "replace", turbo: false} %>
       <% else %>
-        <%= link_to "日本語", url_for(switch_locale: :ja), class: "nav-link km--text-nav km--text-light", data: {turbo_action: "replace"} %>
+        <%= link_to "日本語", url_for(request.query_parameters.merge("switch_locale" => "ja")), class: "nav-link km--text-nav km--text-light", data: {turbo_action: "replace", turbo: false} %>
       <% end %>
     </li>
   </ul>
