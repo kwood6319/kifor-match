@@ -6,9 +6,10 @@ class Offer < ApplicationRecord
 
   before_update :resubmit_if_amended, if: :donor_amendment?
 
-  attr_accessor :ship_by_day, :ship_by_month_year
+  attr_accessor :ship_by_day, :ship_by_month_year, :arrival_day, :arrival_month_year
 
   before_validation :assemble_can_ship_by
+  before_validation :assemble_estimated_arrival
 
   STATUSES = %w[
     submitted
@@ -47,6 +48,8 @@ class Offer < ApplicationRecord
   validate :photos_attached
 
   validate :quantity_offered_does_not_exceed_remaining
+
+  validate :estimated_arrival_not_in_past
 
   before_save :set_active_from_status
   after_save :resync_request_quantity, if: :saved_change_to_status?
@@ -117,6 +120,23 @@ class Offer < ApplicationRecord
     return if quantity_offered <= allowed
 
     errors.add(:quantity_offered, :exceeds_remaining, max: allowed)
+  end
+
+  def assemble_estimated_arrival
+    return if arrival_day.blank? || arrival_month_year.blank?
+
+    year, month = arrival_month_year.split("-").map(&:to_i)
+    self.estimated_arrival = Date.new(year, month, arrival_day.to_i)
+  rescue ArgumentError
+    errors.add(:estimated_arrival, :invalid)
+  end
+
+  def estimated_arrival_not_in_past
+    return if estimated_arrival.blank?
+    return unless estimated_arrival_changed?
+    return if estimated_arrival >= Date.current
+
+    errors.add(:estimated_arrival, :greater_than_or_equal_to, count: Date.current)
   end
 
   def assemble_can_ship_by
