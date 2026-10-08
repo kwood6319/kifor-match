@@ -1,23 +1,23 @@
 .pill-urgent {
-  background-color: #d4026b;
+  background-color: $km--pill-urgent;
   font-weight: 300;
-  width: 70px;
+  min-width: 70px;
 }
 
 .pill-high {
-  background-color: #FE0181;
+  background-color: $km--pill-high;
   font-weight: 300;
-  width: 70px;
+  min-width: 70px;
 }
 
 .pill-medium {
-  background-color: #FF7DB4;
+  background-color: $km--pill-medium;
   font-weight: 300;
-  width: 70px;
+  min-width: 70px;
 }
 
 .pill-low {
-  background-color: #FFA9C6;
+  background-color: $km--pill-low;
   font-weight: 300;
-  width: 70px;
+  min-width: 70px;
 }

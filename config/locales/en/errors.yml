@@ -2,3 +2,10 @@ en:
   errors:
     messages:
       exceeds_remaining: "Cannot exceed the remaining quantity needed (%{max})"
+      photos_missing: "Please add at least one photo of your item"
+  activerecord:
+    attributes:
+      charity:
+        org_name: "Organization name"
+      donor:
+        display_name: "Display name"

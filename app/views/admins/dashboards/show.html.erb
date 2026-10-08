@@ -1,21 +1,25 @@
 <div class="container mt-3 mb-4">
-  <h3><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%= "様" if I18n.locale == :ja %>!</h3>
+  <h3 class="km--text-page-title mb-0"><%= t("messages.welcome_back") %>, <%= current_user.email.gsub(/@.*$/, "").capitalize %><%= "様" if I18n.locale == :ja %>!</h3>
 </div>
 <div class="container-fluid mt-4">
   <div class="row mb-4 g-3">
     <%# Left third — charity approvals %>
     <div class="col-md-4 d-flex">
-      <div class="km--card w-100" style="max-height: 80vh; overflow-y: auto;">
+      <div class="km--card km--scroll-card w-100">
         <h5 class="km--text-card-title mb-3">
           <i class="fa-solid fa-user-check"></i> <%= t("navigation.charities") %>
         </h5>
         <% if @unapproved_charities.any? %>
           <div class="km--card-list">
             <% @unapproved_charities.each do |charity| %>
-              <div class="km--card-list-item d-flex justify-content-between align-items-center gap-2">
+              <%# Whole row links to the show page; the Approve button sits above the stretched link %>
+              <div class="km--card-list-item d-flex justify-content-between align-items-center gap-2 position-relative">
                 <div>
-                  <strong class="km--text-card-subtitle"><%= charity.org_name %></strong>
-                  <p class="km--text-card-content km--text-soft mb-0"><%= charity.user.email %></p>
+                  <%= link_to "", charity_path(charity), class: "stretched-link", aria: { label: charity.org_name } %>
+                  <strong class="km--text-card-subtitle"><%= charity_icon %><%= charity.org_name %></strong>
+                  <p class="km--text-card-content km--text-soft mb-0">
+                    <i class="fa-solid fa-envelope me-1"></i><%= charity.user.email %>
+                  </p>
                 </div>
                 <%= button_to t("buttons.approve"), approve_charity_path(charity), method: :patch, class: "km--btn km--btn-primary" %>
               </div>
@@ -28,17 +32,21 @@
     </div>
     <%# Middle third — donor approvals %>
     <div class="col-md-4 d-flex">
-      <div class="km--card w-100" style="max-height: 80vh; overflow-y: auto;">
+      <div class="km--card km--scroll-card w-100">
         <h5 class="km--text-card-title mb-3">
           <i class="fa-solid fa-user-check"></i> <%= t("navigation.donors") %>
         </h5>
         <% if @unapproved_donors.any? %>
           <div class="km--card-list">
             <% @unapproved_donors.each do |donor| %>
-              <div class="km--card-list-item d-flex justify-content-between align-items-center gap-2">
+              <%# Whole row links to the show page; the Approve button sits above the stretched link %>
+              <div class="km--card-list-item d-flex justify-content-between align-items-center gap-2 position-relative">
                 <div>
-                  <strong class="km--text-card-subtitle"><%= donor.display_name %></strong>
-                  <p class="km--text-card-content km--text-soft mb-0"><%= donor.user.email %></p>
+                  <%= link_to "", donor_path(donor), class: "stretched-link", aria: { label: donor.display_name } %>
+                  <strong class="km--text-card-subtitle"><%= donor_icon(donor) %><%= donor.display_name %></strong>
+                  <p class="km--text-card-content km--text-soft mb-0">
+                    <i class="fa-solid fa-envelope me-1"></i><%= donor.user.email %>
+                  </p>
                 </div>
                 <%= button_to t("buttons.approve"), approve_donor_path(donor), method: :patch, class: "km--btn km--btn-primary" %>
               </div>
@@ -51,11 +59,14 @@
     </div>
     <%# Right third — flagged users (placeholder) %>
     <div class="col-md-4 d-flex">
-      <div class="km--card w-100" style="max-height: 80vh; overflow-y: auto;">
+      <div class="km--card km--scroll-card w-100">
         <h5 class="km--text-card-title mb-3">
           <i class="fa-solid fa-flag"></i> <%= t("dashboard.flagged") %>
         </h5>
-        <p class="km--text-soft mb-0"><%= t("dashboard.flagged_placeholder") %></p>
+        <%# TO DO: List flagged donors and charities once flagging exists %>
+        <p class="km--text-soft mb-0">
+          <i class="fa-solid fa-hourglass-half me-1"></i><%= t("dashboard.feature_coming_soon") %>
+        </p>
       </div>
     </div>
   </div>

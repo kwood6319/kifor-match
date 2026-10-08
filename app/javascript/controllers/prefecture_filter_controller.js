@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
+// Limits the prefecture select to the chosen region.
+// prefecturesValue maps each region to [label, value] pairs so labels stay translated.
 export default class extends Controller {
   static targets = ["region", "prefecture"]
   static values = { prefectures: Object }
@@ -13,11 +15,11 @@ export default class extends Controller {
     const prefectures = region ? (this.prefecturesValue[region] || []) : []
     const previous = this.prefectureTarget.value
     const promptOption = this.prefectureTarget.querySelector("option[value='']")
-    const promptHTML = promptOption ? promptOption.outerHTML : ""
 
-    this.prefectureTarget.innerHTML = promptHTML + prefectures.map(prefecture => {
-      const selected = prefecture === previous ? " selected" : ""
-      return `<option value="${prefecture}"${selected}>${prefecture}</option>`
-    }).join("")
+    this.prefectureTarget.replaceChildren(...[
+      ...(promptOption ? [promptOption] : []),
+      ...prefectures.map(([label, value]) => new Option(label, value, false, value === previous))
+    ])
+    this.prefectureTarget.disabled = prefectures.length === 0
   }
 }

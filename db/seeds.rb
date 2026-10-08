@@ -17,13 +17,14 @@ puts "----------------------------------------------"
 puts "Creating users..."
 
 USERS = [
-  { key: :user1, role: 1, email: "tokyo-shelter@demo.org" },
-  { key: :user2, role: 1, email: "osaka-food@demo.org" },
+  { key: :user1, role: 1, email: "tokyo-shelter@demo.org", locale: "en" },
+  { key: :user2, role: 1, email: "osaka-food@demo.org", locale: "ja" },
   { key: :user3, role: 1, email: "kanazawa-community@demo.org" },
-  { key: :user4, role: 0, email: "sam@donor.com" },
-  { key: :user5, role: 0, email: "hana@donor.com" },
+  { key: :user4, role: 0, email: "sam@donor.com", locale: "en" },
+  { key: :user5, role: 0, email: "hana@donor.com", locale: "ja" },
   { key: :user6, role: 0, email: "alice@abccorp.com" },
-  { key: :user7, role: 2, email: "francis@admin.com" },
+  { key: :user7, role: 2, email: "francis@admin.com", locale: "en" },
+  { key: :user12, role: 2, email: "kenji@admin.com", locale: "ja" },
   { key: :user8, role: 0, email: "lewagon@donor.com" },
   { key: :user9, role: 1, email: "youmewe@charity.com" },
   { key: :user10, role: 1, email: "refugeechildren@charity.com" },
@@ -31,7 +32,12 @@ USERS = [
 ].freeze
 
 users = USERS.each_with_object({}) do |attrs, hash|
-  hash[attrs[:key]] = User.create!(role: attrs[:role], email: attrs[:email], password: "123456")
+  hash[attrs[:key]] = User.create!(
+    role: attrs[:role],
+    email: attrs[:email],
+    password: "123456",
+    locale: attrs[:locale] || "en"
+  )
 end
 
 puts "#{User.count} users created!"
@@ -54,13 +60,13 @@ CHARITIES = [
     description: "Community center for children who need community / food support (demo)",
     shipping_address: "7-8-9 Demo, Kanazawa, Ishikawa" },
   { key: :charity4, user: :user9, prefecture: "Tokyo", region: "Kanto",
-    org_name: "YouWeMe",
+    org_name: "YouMeWe",
     description: "Looking for laptops",
     shipping_address: "123 Tokyo" },
   { key: :charity5, user: :user10, prefecture: "Tokyo", region: "Kanto",
     org_name: "Refugee Children",
     description: "A charity supporting refugee children",
-    shipping_address: "456 Tokyo" }
+    shipping_address: "456 Tokyo", approved: false }
 ].freeze
 
 charities = CHARITIES.each_with_object({}) do |attrs, hash|
@@ -70,7 +76,8 @@ charities = CHARITIES.each_with_object({}) do |attrs, hash|
     region: attrs[:region],
     org_name: attrs[:org_name],
     description: attrs[:description],
-    shipping_address: attrs[:shipping_address]
+    shipping_address: attrs[:shipping_address],
+    approved: attrs.fetch(:approved, true)
   )
   puts "Charity #{attrs[:org_name]} created."
 end
@@ -93,7 +100,7 @@ donors = DONORS.each_with_object({}) do |attrs, hash|
   hash[attrs[:key]] = Donor.create!(
     user: users.fetch(attrs[:user]),
     prefecture: attrs[:prefecture],
-    region: attrs[:prefecture],
+    region: attrs[:region],
     display_name: attrs[:display_name],
     donor_type: attrs[:donor_type]
   )
@@ -113,16 +120,16 @@ REQUESTS = [
   { key: :request2,  charity: :charity1, category: ["clothes"], subcategory: %w[mens womens],
     title: "Winter coats (adult)", condition: "used_good", description: "Clean, good condition",
     quantity_needed: 10, urgency: "medium" },
-  { key: :request3,  charity: :charity2, category: ["clothes"], subcategory: %w[childrens shoes],
+  { key: :request3,  charity: :charity2, category: %w[clothes kids], subcategory: %w[childrens shoes clothing],
     title: "Kids shoes (sizes 18-22cm)", condition: "used_good", description: "Good condition",
     quantity_needed: 15, urgency: "medium" },
   { key: :request4,  charity: :charity3, category: ["hygiene"], subcategory: [],
     title: "Hygiene kits", condition: "new", description: "Sealed preferred",
     quantity_needed: 50, urgency: "high" },
   { key: :request5,  charity: :charity2, category: ["food"], subcategory: ["nonperishable"],
-    title: "Rice (unopened)", condition: "new", description: "Expiry 3+ months",
+    title: "1kg rice (unopened)", condition: "new", description: "Unopened 1kg bags, expiry 3+ months",
     quantity_needed: 20, urgency: "medium" },
-  { key: :request6,  charity: :charity1, category: ["home_goods"], subcategory: ["bedding"],
+  { key: :request6,  charity: :charity1, category: ["home_goods"], subcategory: ["towels"],
     title: "Towels", condition: "used_very_good", description: "Bathing towels",
     quantity_needed: 30, urgency: "medium" },
   { key: :request7,  charity: :charity3, category: ["home_goods"], subcategory: ["bedding"],
@@ -140,7 +147,7 @@ REQUESTS = [
   { key: :request11, charity: :charity4, category: ["electronics"], subcategory: ["laptops"],
     title: "Laptops", condition: "used_good", description: "Laptops needed",
     quantity_needed: 2, urgency: "high" },
-  { key: :request12, charity: :charity2, category: ["kids"], subcategory: ["other"],
+  { key: :request12, charity: :charity2, category: %w[kids hygiene], subcategory: ["other"],
     title: "Baby diapers", condition: "new", description: "Disposable diapers, mixed sizes welcome",
     quantity_needed: 25, urgency: "urgent" },
   { key: :request13, charity: :charity4, category: ["food"], subcategory: ["canned"],
@@ -149,7 +156,7 @@ REQUESTS = [
   { key: :request14, charity: :charity3, category: ["hygiene"], subcategory: [],
     title: "Dental hygiene kits", condition: "new", description: "Toothbrush + toothpaste bundles preferred",
     quantity_needed: 30, urgency: "medium" },
-  { key: :request15, charity: :charity1, category: ["stationery"], subcategory: [],
+  { key: :request15, charity: :charity1, category: %w[stationery kids], subcategory: ["school_supplies"],
     title: "School supply sets", condition: "new", description: "Pens, pencils, erasers included",
     quantity_needed: 20, urgency: "medium" },
   { key: :request16, charity: :charity2, category: ["home_goods"], subcategory: [],
@@ -158,21 +165,31 @@ REQUESTS = [
   { key: :request17, charity: :charity3, category: ["home_goods"], subcategory: ["bedding"],
     title: "Winter blankets", condition: "used_good", description: "Warm blankets for winter shelter",
     quantity_needed: 18, urgency: "urgent" },
-  { key: :request18, charity: :charity4, category: ["clothes"], subcategory: %w[childrens shoes],
+  { key: :request18, charity: :charity4, category: %w[clothes kids], subcategory: %w[childrens shoes clothing],
     title: "Kids rain boots", condition: "used_like_new", description: "Children's rain boots, sizes mixed",
     quantity_needed: 12, urgency: "medium" },
-  { key: :request19, charity: :charity1, category: ["electronics"], subcategory: ["other"],
+  { key: :request19, charity: :charity1, category: %w[electronics home_goods], subcategory: %w[other kitchenware],
     title: "Kitchen appliances", condition: "used_good", description: "Rice cookers or electric kettles welcome",
     quantity_needed: 6, urgency: "low" },
-  { key: :request20, charity: :charity2, category: ["food"], subcategory: ["other"],
+  { key: :request20, charity: :charity2, category: ["food"], subcategory: ["nonperishable"],
     title: "Milk cartons", condition: "new", description: "Shelf-stable milk cartons",
     quantity_needed: 24, urgency: "medium", status: "fulfilled" },
   { key: :request21, charity: :charity4, category: ["kids"], subcategory: ["school_supplies"],
     title: "School backpacks", condition: "used_good", description: "Reusable backpacks for school-age children",
     quantity_needed: 14, urgency: "medium" },
   { key: :request22, charity: :charity1, category: ["hygiene"], subcategory: [],
-    title: "Soap and toiletries", condition: "new", description: "Fully fulfilled by a single donor, then archived",
-    quantity_needed: 10, urgency: "medium", status: "archived" }
+    title: "Soap and toiletries", condition: "new", description: "Bar soap, shampoo and toothpaste for residents",
+    quantity_needed: 10, urgency: "medium", status: "archived" },
+  # Long titles, to check how cards and headings wrap
+  { key: :request23, charity: :charity5, category: %w[clothes kids], subcategory: %w[childrens clothing],
+    title: "Children's winter clothing sets (coats, hats and gloves, sizes 100-140cm)", condition: "used_very_good",
+    description: "Warm sets for children arriving this winter", quantity_needed: 25, urgency: "high" },
+  { key: :request24, charity: :charity3, category: %w[food kids], subcategory: %w[baby_food other],
+    title: "Unopened baby formula and feeding bottles for infants aged 0-12 months", condition: "new",
+    description: "Formula must be unopened with 3+ months until expiry", quantity_needed: 30, urgency: "urgent" },
+  { key: :request25, charity: :charity4, category: ["books"], subcategory: ["textbooks"],
+    title: "Japanese language textbooks for adult learners (beginner to intermediate)", condition: "used_good",
+    description: "Genki, Minna no Nihongo or similar", quantity_needed: 16, urgency: "low" }
 ].freeze
 
 requests = REQUESTS.each_with_object({}) do |attrs, hash|
@@ -196,6 +213,10 @@ puts "----------------------------------------------"
 
 puts "Creating offers..."
 
+# Run Active Storage's photo analysis inline. Otherwise it runs in the background
+# after seeding and touches each offer, overwriting any backdated updated_at.
+ActiveJob::Base.queue_adapter = :inline
+
 # A handful of stable placeholder images (Picsum's fixed-seed URLs return the
 # same image every time, so seeding is reproducible run to run).
 DUMMY_PHOTO_URLS = (1..10).map { |n| "https://picsum.photos/seed/kifor#{n}/600/400" }.freeze
@@ -217,12 +238,18 @@ OFFERS = [
   { key: :offer1a, request: :request1,  donor: :donor1, condition: "used_good",      quantity_offered: 2,  status: "submitted", can_ship_by: 7.days.from_now.to_date,  message: "Can ship next week", photo_count: 2 },
   { key: :offer1b, request: :request1,  donor: :donor2, condition: "used_like_new",  quantity_offered: 1,  status: "submitted", can_ship_by: 7.days.from_now.to_date,  message: "Can ship next week", photo_count: 1 },
   { key: :offer2,  request: :request4,  donor: :donor3, condition: "new",            quantity_offered: 20, status: "approved",  can_ship_by: Date.today, photo_count: 3 },
-  { key: :offer3,  request: :request2,  donor: :donor1, condition: "used_good",      quantity_offered: 5,  status: "rejected",  can_ship_by: Date.today, photo_count: 1 },
+  { key: :offer3,  request: :request2,  donor: :donor1, condition: "used_good",      quantity_offered: 5,  status: "rejected",  can_ship_by: Date.today, photo_count: 1, last_updated: 10.days.ago },
   { key: :offer4,  request: :request7,  donor: :donor3, condition: "new",            quantity_offered: 10, status: "shipped",   can_ship_by: Date.yesterday, tracking_number: "EE123456789JP", photo_count: 2 },
   { key: :offer5,  request: :request8,  donor: :donor2, condition: "new",            quantity_offered: 40, status: "received",  can_ship_by: 7.days.ago.to_date, photo_count: 1 },
   { key: :offer6,  request: :request11, donor: :donor4, condition: "used_like_new",  quantity_offered: 2,  status: "approved",  can_ship_by: 3.days.ago.to_date, tracking_number: "XXXXXX", message: "Laptops like new", photo_count: 2 },
-  { key: :offer7,  request: :request5,  donor: :donor1, condition: "new",            quantity_offered: 19, status: "received",  can_ship_by: 5.days.ago.to_date, message: "Delivered, ready for feedback", photo_count: 2 },
-  { key: :offer8,  request: :request22, donor: :donor2, condition: "new",            quantity_offered: 10, status: "received",  can_ship_by: 10.days.ago.to_date, tracking_number: "JP000111222", message: "Delivered and confirmed received", photo_count: 2 }
+  { key: :offer7,  request: :request5,  donor: :donor1, condition: "new",            quantity_offered: 19, status: "received",  can_ship_by: 5.days.ago.to_date, message: "19 unopened 1kg bags, all best before next spring.", photo_count: 2 },
+  { key: :offer8,  request: :request22, donor: :donor2, condition: "new",            quantity_offered: 10, status: "received",  can_ship_by: 10.days.ago.to_date, tracking_number: "JP000111222", message: "Delivered and confirmed received", photo_count: 2 },
+  # Received offers so some active requests show partial fulfilment
+  { key: :offer9,  request: :request2,  donor: :donor3, condition: "used_good",      quantity_offered: 4,  status: "received",  can_ship_by: 12.days.ago.to_date, message: "Adult coats, mixed sizes.", photo_count: 1 },
+  { key: :offer10, request: :request6,  donor: :donor4, condition: "used_very_good", quantity_offered: 12, status: "received",  can_ship_by: 9.days.ago.to_date,  message: "Bath towels, washed and folded.", photo_count: 1 },
+  { key: :offer11, request: :request12, donor: :donor5, condition: "new",            quantity_offered: 10, status: "received",  can_ship_by: 6.days.ago.to_date,  message: "Unopened packs, sizes S and M.", photo_count: 1 },
+  { key: :offer12, request: :request3,  donor: :donor2, condition: "used_good",      quantity_offered: 6,  status: "received",  can_ship_by: 8.days.ago.to_date,  message: "Six pairs, sizes 19-21cm.", photo_count: 1 },
+  { key: :offer13, request: :request23, donor: :donor3, condition: "used_like_new",  quantity_offered: 15, status: "received",  can_ship_by: 4.days.ago.to_date,  message: "Fifteen complete sets.", photo_count: 1 }
 ].freeze
 
 OFFERS.each_with_index do |attrs, index|
@@ -242,6 +269,8 @@ OFFERS.each_with_index do |attrs, index|
   attach_dummy_photos(offer, urls)
 
   offer.save!
+  # Backdate after saving, so the dashboard's "7+ days ago" badge has something to show
+  offer.update_column(:updated_at, attrs[:last_updated]) if attrs[:last_updated]
 
   puts "Created offer for #{offer.quantity_offered} for #{offer.request.title} by #{offer.donor.display_name} with #{offer.photos.count} photo(s)"
 end

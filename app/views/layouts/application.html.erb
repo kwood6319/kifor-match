@@ -22,10 +22,10 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <%= render "shared/navbar" %>
     <%= render "shared/flashes" %>
-    <main>
+    <main class="flex-grow-1 <%= yield(:main_class) %>">
       <%= yield %>
     </main>
     <%= render "shared/footer" %>

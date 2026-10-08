@@ -1,6 +1,6 @@
 class DonorsController < ApplicationController
   before_action :set_donor, only: %i[show approve destroy]
-  before_action :show_back_button, only: %i[index show]
+  before_action :show_back_button, only: %i[show]
 
   def index
     authorize Donor
@@ -20,6 +20,7 @@ class DonorsController < ApplicationController
     authorize @donor
 
     @offers = @donor.offers.active.includes(request: :charity).order(created_at: :desc)
+    @past_offers = @donor.offers.where(active: false).includes(request: :charity).order(updated_at: :desc)
     @total_offers_count = @donor.offers.count
     @completed_offers_count = @donor.offers.where(status: "completed").count
   end
@@ -32,9 +33,12 @@ class DonorsController < ApplicationController
 
   def approve
     authorize @donor
-    @donor.update(approved: true)
-
-    redirect_back fallback_location: donors_path, status: :see_other, notice: "Donor approved!"
+    if @donor.update(approved: true)
+      redirect_back fallback_location: donors_path, status: :see_other, notice: t("donors.approved")
+    else
+      redirect_back fallback_location: donors_path, status: :see_other,
+                    alert: t("donors.approve_failed", errors: @donor.errors.full_messages.to_sentence)
+    end
   end
 
   private

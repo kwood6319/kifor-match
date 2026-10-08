@@ -1,0 +1,13 @@
+en:
+  onboarding:
+    title: "Set up your profile"
+    choose_role: "How will you use Kifor Match?"
+    donor: "I want to donate items"
+    charity: "I represent a charity"
+    donor_intro: "Tell charities a little about who is donating."
+    charity_intro: "Tell donors about your organization and where to send items."
+    donor_type: "Donor type"
+    back: "Back"
+    submit: "Continue"
+    pending_title: "Awaiting approval"
+    pending_body: "Thanks for signing up! An admin will review your profile shortly. You'll have full access once it's approved."

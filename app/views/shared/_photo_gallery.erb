@@ -2,8 +2,7 @@
   <div class="mb-2">
     <% if offer.photos.attached? %>
       <%= image_tag offer.photos.first,
-            class: "img-fluid rounded w-100 photo-gallery-main",
-            style: "max-height: 320px; object-fit: cover;",
+            class: "img-fluid rounded w-100 photo-gallery-main km--gallery-main",
             data: { "photo-gallery-target": "mainImage" } %>
     <% else %>
       <div class="km--offer-image km--offer-image-placeholder" data-photo-gallery-target="mainImage">
@@ -15,8 +14,7 @@
     <div class="d-flex gap-2 flex-wrap">
       <% offer.photos.each_with_index do |photo, index| %>
         <%= image_tag photo,
-              class: "rounded photo-gallery-thumb #{'photo-gallery-thumb-active' if index.zero?}",
-              style: "width: 70px; height: 70px; object-fit: cover; cursor: pointer;",
+              class: "rounded photo-gallery-thumb km--gallery-thumb #{'photo-gallery-thumb-active' if index.zero?}",
               data: {
                 "photo-gallery-target": "thumb",
                 action: "click->photo-gallery#select",

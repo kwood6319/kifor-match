@@ -22,14 +22,6 @@ class OfferPolicy < ApplicationPolicy
     end
   end
 
-  def index?
-    true
-  end
-
-  def search?
-    true
-  end
-
   def show?
     admin? || owning_donor? || owning_charity?
   end
@@ -38,16 +30,21 @@ class OfferPolicy < ApplicationPolicy
     admin? || donor.present?
   end
 
+  # Donors can't edit or delete rejected offers, only archive (dismiss) them.
   def destroy?
-    admin? || owning_donor?
+    admin? || (owning_donor? && !record.rejected?)
   end
 
   def edit?
-    owning_donor?
+    owning_donor? && !record.rejected?
   end
 
   def update?
-    owning_donor?
+    owning_donor? && !record.rejected?
+  end
+
+  def archive?
+    owning_donor? && record.rejected? && !record.archived?
   end
 
   def approve?

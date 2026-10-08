@@ -6,19 +6,18 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><%= t("modals.reject_offer.title") %></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title km--text-card-title"><%= t("modals.reject_offer.title") %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("buttons.close") %>"></button>
       </div>
       <%= form_tag "#", method: :patch, id: "rejectOfferForm" do %>
         <div class="modal-body">
-          <div class="mb-3">
-            <%= label_tag :rejection_reason, t("activerecord.attributes.offer.rejection_reason"), class: "form-label" %>
-            <%= text_area_tag :rejection_reason, nil, class: "form-control", rows: 4, id: "rejection_reason" %>
-          </div>
+          <%# TO DO: Offer some default rejection reasons to pick from (e.g. condition, no longer needed) %>
+          <%= label_tag :rejection_reason, t("activerecord.attributes.offer.rejection_reason"), class: "km--text-card-category km--text-soft d-block mb-2" %>
+          <%= text_area_tag :rejection_reason, nil, class: "km--form-control form-control km--no-resize", rows: 4, id: "rejection_reason", placeholder: t("modals.reject_offer.placeholder") %>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
-          <%= submit_tag t("buttons.reject_offer"), class: "btn btn-danger" %>
+          <button type="button" class="km--btn km--btn-outline" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
+          <%= submit_tag t("buttons.reject"), class: "km--btn km--btn-danger" %>
         </div>
       <% end %>
     </div>

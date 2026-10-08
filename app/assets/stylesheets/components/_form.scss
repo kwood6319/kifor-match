@@ -1,61 +1,3 @@
-// Reusable card-style wrapper for standalone forms (contact, etc.)
-.form-card {
-  max-width: 32rem;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: white;
-  box-shadow: 4px 4px 4px #bfbfbf;
-
-  .form-card-title {
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
-  }
-
-  .form-card-intro {
-    margin-bottom: 1.5rem;
-    color: lighten($gray, 40%);
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-weight: 600;
-  }
-
-  .form-control {
-    margin-bottom: 1.25rem;
-
-    &:focus {
-      border-color: $dark-pink;
-      box-shadow: 0 0 0 0.2rem rgba($dark-pink, 0.2);
-    }
-  }
-
-  textarea.form-control {
-    min-height: 8rem;
-  }
-
-  input[type="submit"] {
-    width: 100%;
-    padding: 0.6rem 1rem;
-    border: none;
-    background-color: #E84393; /* The KiFor Pink, matching the footer */
-    color: white;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #d63384;
-    }
-  }
-}
-
-@media (max-width: 575px) {
-  .form-card {
-    margin: 1rem;
-    padding: 1.25rem;
-  }
-}
-
 // -----------Post-migration values------------
 
 :root {
@@ -65,15 +7,10 @@
 .km--form-card {
   margin: 2rem auto;
   padding: 2rem;
-  // KT To do: Tokenize the shadow colour?
-  box-shadow: 4px 4px 4px #bfbfbf;
+  box-shadow: 4px 4px 4px $km--shadow;
 
   .km--form-card-title {
     margin-bottom: 0.5rem;
-  }
-
-  .km--form-card-intro {
-    margin-bottom: 1.5rem;
   }
 
   label {
@@ -106,7 +43,7 @@
     }
   }
 
-  a {
+  a:not(.km--btn) {
     color: $km--primary-pink;
     font-weight: 600;
     text-decoration: none;
@@ -118,6 +55,38 @@
   }
 }
 
+.km--form-compact {
+  .km--form-control,
+  .km--form-control::placeholder,
+  .form-check-label {
+    font-size: 0.9375rem;
+  }
+
+  .km--text-card-category {
+    font-size: 0.875rem;
+  }
+}
+
+.km--form-check-row {
+  align-items: center;
+  min-height: calc(1.5em + 0.75rem + 2px);
+
+  .form-check {
+    margin-bottom: 0;
+  }
+}
+
+.km--form-card abbr[title] {
+  color: $km--danger-pink;
+  text-decoration: none;
+  cursor: default;
+}
+
+.km--required::after {
+  content: " *";
+  color: $km--danger-pink;
+}
+
 .km--form-card-narrow {
   max-width: 32rem;
 }
@@ -126,5 +95,52 @@
   .km--form-card {
     margin: 1rem;
     padding: 1.25rem;
+  }
+}
+
+.km--field-box {
+  background-color: var(--bs-body-bg);
+}
+
+.km--no-resize {
+  resize: none;
+}
+
+.km--form-card-wide {
+  max-width: 48rem;
+}
+
+// Collapsible filter card on the requests index
+.km--filter-card {
+  margin: 1rem auto;
+  padding: 1rem 1.5rem;
+
+  // Shared text classes are bold elsewhere; keep the filter light
+  .km--text-card-subtitle,
+  .km--text-card-category,
+  .km--text-label,
+  .form-check-label {
+    font-weight: 400;
+  }
+}
+
+.km--filter-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+
+  .km--filter-chevron {
+    transition: transform 0.2s ease;
+  }
+
+  &:not(.collapsed) .km--filter-chevron {
+    transform: rotate(180deg);
   }
 }

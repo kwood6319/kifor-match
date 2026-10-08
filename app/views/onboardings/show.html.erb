@@ -1,0 +1,76 @@
+<% content_for :title, t("onboarding.title") %>
+<% label = "km--text-card-category km--text-soft d-block mb-2" %>
+<% region_options = Request::REGIONS.map { |r| [t("regions.#{r}"), r] } %>
+<% prefecture_options = prefecture_options_by_region %>
+<div class="km--card km--form-card <%= @role == "charity" ? "km--form-card-wide" : "km--form-card-narrow" %> km--form-compact">
+  <h2 class="km--form-card-title"><%= t("onboarding.title") %></h2>
+  <% if @role.nil? %>
+    <p class="km--text-card-content km--text-soft"><%= t("onboarding.choose_role") %></p>
+    <div class="d-grid gap-3">
+      <%= link_to onboarding_path(role: "donor"), class: "km--btn km--btn-outline text-start" do %>
+        <i class="fa-solid fa-user fa-fw me-2"></i><%= t("onboarding.donor") %>
+      <% end %>
+      <%= link_to onboarding_path(role: "charity"), class: "km--btn km--btn-outline text-start" do %>
+        <i class="fa-solid fa-hand-holding-heart fa-fw me-2"></i><%= t("onboarding.charity") %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="km--text-card-content km--text-soft"><%= t("onboarding.#{@role}_intro") %></p>
+    <%= form_with model: @profile, url: onboarding_path, method: :post, scope: @role, html: { novalidate: true } do |f| %>
+      <%= hidden_field_tag :role, @role %>
+      <% if @profile.errors.any? %>
+        <div class="alert alert-danger km--toast">
+          <ul class="mb-0">
+            <% @profile.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <% if @role == "donor" %>
+        <div class="mb-3">
+          <%= f.label :display_name, t("settings.display_name"), class: label %>
+          <%= f.text_field :display_name, required: true, autofocus: true, class: "km--form-control form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :donor_type, t("onboarding.donor_type"), class: label %>
+          <%= f.select :donor_type, %w[individual company].map { |type| [t("donors.types.#{type}"), type] },
+                {}, class: "km--form-control form-select" %>
+        </div>
+      <% else %>
+        <div class="mb-3">
+          <%= f.label :org_name, t("settings.org_name"), class: label %>
+          <%= f.text_field :org_name, required: true, autofocus: true, class: "km--form-control form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :description, t("settings.description"), class: label %>
+          <%= f.text_area :description, rows: 3, class: "km--form-control form-control km--no-resize" %>
+        </div>
+      <% end %>
+      <div class="row" data-controller="prefecture-filter" data-prefecture-filter-prefectures-value="<%= prefecture_options.to_json %>">
+        <div class="col-md-6 mb-3">
+          <%= f.label :region, t("navigation.region"), class: label %>
+          <%= f.select :region, region_options, { include_blank: true },
+                required: @role == "charity", class: "km--form-control form-select",
+                data: { prefecture_filter_target: "region", action: "prefecture-filter#filter" } %>
+        </div>
+        <div class="col-md-6 mb-3">
+          <%= f.label :prefecture, t("navigation.prefecture"), class: label %>
+          <%= f.select :prefecture, prefecture_options.fetch(@profile.region, []), { include_blank: true },
+                class: "km--form-control form-select", data: { prefecture_filter_target: "prefecture" } %>
+        </div>
+      </div>
+      <% if @role == "charity" %>
+        <%# KT TO DO: Split shipping address into separate fields (postcode, prefecture, city, street, building) instead of one text box. Also in settings. %>
+        <div class="mb-3">
+          <%= f.label :shipping_address, t("settings.shipping_address"), class: label %>
+          <%= f.text_area :shipping_address, rows: 3, required: true, class: "km--form-control form-control km--no-resize" %>
+        </div>
+      <% end %>
+      <div class="form-actions d-flex justify-content-between align-items-center">
+        <%= link_to t("onboarding.back"), onboarding_path %>
+        <%= f.submit t("onboarding.submit"), class: "km--btn km--btn-primary" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

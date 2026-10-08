@@ -11,8 +11,6 @@ module NavigationHelper
     if user.admin?
       [{ label: t("navigation.charities"), path: charities_path },
        { label: t("navigation.donors"), path: donors_path }]
-    elsif user.donor?
-      [{ label: t("navigation.requests"), path: requests_path }]
     elsif user.charity?
       [{ label: t("navigation.history"), path: charities_archived_requests_path }]
     else
