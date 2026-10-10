@@ -41,7 +41,6 @@ Rails.application.routes.draw do
 
     resources :requests do
       resources :offers, only: [ :create ]
-      resource :feedback, only: [ :new, :create ]
       member do
         patch :activate
         patch :deactivate
@@ -50,6 +49,8 @@ Rails.application.routes.draw do
     end
 
     resources :offers, only: [ :show, :update, :destroy ] do
+      # One feedback per offer, given by the charity once the donation is received
+      resource :feedback, only: [ :new, :create, :edit, :update ]
       member do
         patch :approve
         patch :reject

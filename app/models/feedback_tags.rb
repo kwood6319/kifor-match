@@ -24,6 +24,10 @@ module FeedbackTags
 
   GROUPS = %i[positive negative critical].freeze
 
+  def self.slugs
+    TAGS.map { |t| t[:slug].to_s }
+  end
+
   def self.for(categories)
     categories = Array(categories)
     TAGS.select { |t| t[:categories] == :all || t[:categories].intersect?(categories) }

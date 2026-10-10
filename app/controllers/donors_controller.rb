@@ -23,6 +23,8 @@ class DonorsController < ApplicationController
     @past_offers = @donor.offers.where(active: false).includes(request: :charity).order(updated_at: :desc)
     @total_offers_count = @donor.offers.count
     @completed_offers_count = @donor.offers.where(status: "completed").count
+    @feedbacks = Feedback.joins(:offer).where(offers: { donor_id: @donor.id })
+                         .includes(offer: { request: :charity }).order(created_at: :desc)
   end
 
   def destroy

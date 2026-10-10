@@ -3,6 +3,7 @@ ja:
     messages:
       exceeds_remaining: "残りの必要数量（%{max}）を超えることはできません"
       photos_missing: "商品の写真を1枚以上追加してください"
+      tags_or_comment_required: "項目を1つ以上選択するか、コメントを入力してください"
       blank: "を入力してください"
       inclusion: "は一覧にありません"
       not_a_number: "は数値で入力してください"
@@ -11,6 +12,9 @@ ja:
     format: "%{attribute}%{message}"
   activerecord:
     attributes:
+      feedback:
+        tags: "フィードバック項目"
+        comment: "その他のフィードバック"
       offer:
         quantity_offered: "寄付する数量"
         condition: "状態"

@@ -6,6 +6,7 @@
   <% submitted_offers = @offers.select { |offer| offer.status == "submitted" } %>
   <% shipped_offers = @offers.select { |offer| offer.status == "shipped" } %>
   <% awaiting_feedback_offers = @offers.select { |offer| offer.status == "received" } %>
+  <% completed_offers = @offers.select { |offer| offer.status == "completed" } %>
 
   <ul class="nav nav-tabs km--nav-tabs km--nav-tabs-page mb-3" id="charity-offers-tabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -28,6 +29,14 @@
         <i class="fa-solid fa-comment-dots"></i><%= t("offers.tabs.awaiting_feedback") %>
       </button>
     </li>
+    <%# Admins only: completed offers, with the charity's feedback on each card %>
+    <% if read_only %>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#charity-offers-completed" type="button">
+          <i class="fa-solid fa-circle-check"></i><%= t("offers.tabs.completed") %>
+        </button>
+      </li>
+    <% end %>
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade show active" id="charity-offers-all">
@@ -62,5 +71,16 @@
         <% end %>
       <% end %>
     </div>
+    <% if read_only %>
+      <div class="tab-pane fade" id="charity-offers-completed">
+        <% if completed_offers.empty? %>
+          <p class="km--text-soft"><%= t("offers.no_offers") %></p>
+        <% else %>
+          <% completed_offers.each do |offer| %>
+            <%= render "requests/charity_offer_card", offer: offer, parent_request: @request, read_only: read_only %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 <% end %>

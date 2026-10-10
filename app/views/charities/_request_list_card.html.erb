@@ -4,11 +4,13 @@
       <p class="km--text-card-title mb-0"><%= request.title %></p>
       <div class="text-center flex-shrink-0 km--qty-col">
         <p class="km--text-card-title mb-1"><%= quantity_label(request.archived? ? request.quantity_needed : request.quantity_remaining) %></p>
-        <% if request.archived? %>
-          <span class="badge rounded-pill text-bg-secondary km--text-pill text-nowrap"><%= t("statuses.requests.archived") %></span>
-        <% else %>
+        <%# Archived needs only appear in the History tab, so they need no badge %>
+        <% unless request.archived? %>
           <span class="badge rounded-pill pill-<%= request.urgency %> km--text-pill km--text-light"><%= t("urgencies.#{request.urgency}") %></span>
-          <div class="mt-1"><%= request_status_badge(request) %></div>
+          <%# "Active" is the norm for current needs, so only flag the exceptions %>
+          <% unless request.status == "active" %>
+            <div class="mt-1"><%= request_status_badge(request) %></div>
+          <% end %>
         <% end %>
       </div>
     </div>
