@@ -43,7 +43,8 @@
     }
   }
 
-  a:not(.km--btn) {
+  // Link-styled buttons (.km--btn-link) keep their own look, with no hover underline
+  a:not(.km--btn):not(.km--btn-link) {
     color: $km--primary-pink;
     font-weight: 600;
     text-decoration: none;
@@ -122,6 +123,11 @@
   .form-check-label {
     font-weight: 400;
   }
+
+  // Bootstrap's pale default border barely shows on the grey field boxes
+  .form-check-input {
+    border-color: $km--soft;
+  }
 }
 
 .km--filter-toggle {
@@ -130,6 +136,9 @@
   justify-content: space-between;
   gap: 1rem;
   width: 100%;
+  // Shares the header row with the Reset link, so let it shrink rather than push Reset off
+  flex: 1 1 auto;
+  min-width: 0;
   padding: 0;
   border: 0;
   background: none;
@@ -142,5 +151,10 @@
 
   &:not(.collapsed) .km--filter-chevron {
     transform: rotate(180deg);
+  }
+
+  // Once expanded, the form's own Reset button takes over from the header one
+  &:not(.collapsed) ~ .km--filter-reset {
+    display: none;
   }
 }

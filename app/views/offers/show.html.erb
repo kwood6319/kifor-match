@@ -74,6 +74,9 @@
           <% end %>
         <% elsif @offer.status == "approved" %>
           <p class="km--text-card-content mb-0"><%= current_user.charity? ? @offer.charity_alert_message : t("statuses.charity.approved_message") %></p>
+          <% if current_user.donor? %>
+            <%= render "shared/charity_shipping_address", charity: @request.charity %>
+          <% end %>
         <% elsif @offer.status == "shipped" %>
           <p class="km--text-card-content mb-3"><%= current_user.charity? ? @offer.charity_alert_message : t("statuses.donor.shipped") %></p>
           <% if policy(@offer).mark_received? %>

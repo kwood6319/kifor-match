@@ -47,14 +47,15 @@
 
   &-link-item {
     padding-left: 16px;
-    border-left: 1px solid $km--dark;
+    border-left: 1px solid $km--light;
   }
 
   &-divider {
     width: 100%;
     border: none;
-    border-top: 1px solid $km--dark;
+    border-top: 1px solid $km--light;
     margin: 0;
+    opacity: 0.5; // Bootstrap fades <hr> to 25% (too faint); full white was too stark
   }
 
   &-bottom {
@@ -86,7 +87,7 @@
 
     &-link-item {
       border-left: none;
-      border-top: 1px solid $km--dark;
+      border-top: 1px solid $km--light; // same separator, above each link on narrow screens
       padding: 8px 0 0;
     }
 

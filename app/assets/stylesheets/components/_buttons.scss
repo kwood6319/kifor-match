@@ -100,11 +100,12 @@
       background-color: var(--km-btn-primary-bg);
     }
 
+    // Faded pink rather than white, so a waiting primary button doesn't look like the
+    // outline (Cancel) button beside it
     &:disabled {
-      background-color: var(--km-text-light);
-      border-color: var(--km-btn-outline-border);
-      color: var(--km-text-dark);
-      opacity: 1;
+      background-color: var(--km-btn-primary-bg);
+      color: var(--km-text-light);
+      opacity: 0.5;
     }
   }
 
