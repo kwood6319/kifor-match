@@ -148,6 +148,7 @@ en:
       tracking_info: "Tracking information"
       tracking_prompt: "Enter tracking number"
       arriving: "Estimated arrival"
+      arrival_time: "Delivery time"
       received: "Received"
       completed: "Completed"
       flagged: "Flagged"
@@ -209,6 +210,14 @@ en:
     types:
       individual: "Individual"
       company: "Company"
+  # Keys are quoted so YAML doesn't read 14_16 as the number 1416
+  arrival_time_slots:
+    not_specified: "Not specified"
+    morning: "Morning (8:00-12:00)"
+    "14_16": "14:00-16:00"
+    "16_18": "16:00-18:00"
+    "18_20": "18:00-20:00"
+    "19_21": "19:00-21:00"
   shipping:
     address: "Shipping Address"
     shipping: "Shipping"

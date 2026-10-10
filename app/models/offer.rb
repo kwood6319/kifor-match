@@ -36,7 +36,10 @@ class Offer < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :unarchived, -> { where(archived_at: nil) }
 
-  SHIPPING_FIELDS = %w[estimated_arrival tracking_number].freeze
+  SHIPPING_FIELDS = %w[estimated_arrival estimated_arrival_time tracking_number].freeze
+
+  # Standard Japanese courier delivery windows (Yamato, Sagawa, Japan Post)
+  ARRIVAL_TIME_SLOTS = %w[morning 14_16 16_18 18_20 19_21].freeze
   IGNORED_AMENDMENT_FIELDS = %w[status updated_at rejection_reason active archived_at].freeze
 
   validates :quantity_offered, presence: true, numericality: { only_integer: true, greater_than: 0 }
@@ -44,6 +47,7 @@ class Offer < ApplicationRecord
   validates :condition, presence: true, inclusion: { in: Request::CONDITIONS, allow_blank: true }
   validates :can_ship_by, presence: true
   validates :status, inclusion: { in: STATUSES }
+  validates :estimated_arrival_time, inclusion: { in: ARRIVAL_TIME_SLOTS }, allow_blank: true
 
   validate :photos_attached
 

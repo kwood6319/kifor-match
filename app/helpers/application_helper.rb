@@ -52,10 +52,24 @@ module ApplicationHelper
 
   def offer_ship_date(offer)
     if offer.shipped_or_later?
-      { label: t("statuses.donor.arriving"), date: offer.estimated_arrival } if offer.estimated_arrival
+      if offer.estimated_arrival
+        { label: t("statuses.donor.arriving"), date: offer.estimated_arrival, time: offer.estimated_arrival_time }
+      end
     elsif offer.can_ship_by
       { label: t("offers.can_ship_by"), date: offer.can_ship_by }
     end
+  end
+
+  # e.g. "Oct 26 · 14:00-16:00"; the delivery window is only set once shipped
+  def ship_date_text(ship_date)
+    text = l(ship_date[:date], format: :short)
+    return text if ship_date[:time].blank?
+
+    "#{text} · #{t("arrival_time_slots.#{ship_date[:time]}")}"
+  end
+
+  def arrival_text(offer)
+    ship_date_text(date: offer.estimated_arrival, time: offer.estimated_arrival_time)
   end
 
   # Icon shown before a charity's name

@@ -116,9 +116,10 @@ ja:
       rejected_message: "寄付のお申し出ありがとうございます。誠に恐れ入りますが、今回はお断りすることとなりました。"
       shipped: "発送済み"
       shipped_message: "当団体は、お客様からのお問い合わせ内容を受け取りました。ご参考までに"
-      tracking_info: "配送状況"
+      tracking_info: "追跡番号"
       tracking_prompt: "追跡番号を入力してください"
       arriving: "到着予定"
+      arrival_time: "配達時間帯"
       received: "受信"
       completed: "完了"
       flagged: "フラグ付き"
@@ -180,6 +181,14 @@ ja:
     types:
       individual: "個人"
       company: "企業"
+  # Keys are quoted so YAML doesn't read 14_16 as the number 1416
+  arrival_time_slots:
+    not_specified: "指定なし"
+    morning: "午前中"
+    "14_16": "14時〜16時"
+    "16_18": "16時〜18時"
+    "18_20": "18時〜20時"
+    "19_21": "19時〜21時"
   shipping:
     address: "発送先住所"
     shipping: "配送"
