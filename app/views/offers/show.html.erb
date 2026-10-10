@@ -3,7 +3,7 @@
   <div class="row align-items-start g-4">
     <%# Left: same request card as requests/show %>
     <div class="col-lg-5">
-      <%= render "requests/request_summary", request: @request %>
+      <%= render "requests/request_summary", request: @request, donor_offer: (@offer if current_user.donor?) %>
     </div>
     <%# Right: Offer detail %>
     <div class="col-lg-6 mx-3">
@@ -25,6 +25,12 @@
           <p class="km--text-card-category km--text-soft mb-2"><%= t("navigation.condition") %></p>
           <span class="badge text-bg-info km--text-pill"><%= t("conditions.#{@offer.condition}") %></span>
         </div>
+        <div class="mb-3">
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.delivery_method") %></p>
+          <p class="km--text-card-content mb-0">
+            <i class="fa-solid <%= @offer.drop_off? ? "fa-people-carry-box" : "fa-truck" %> me-1"></i><%= t("shipping.#{@offer.delivery_method}") %>
+          </p>
+        </div>
         <% if (ship_date = offer_ship_date(@offer)) %>
           <div class="mb-3">
             <p class="km--text-card-category km--text-soft mb-2"><%= ship_date[:label] %></p>
@@ -35,12 +41,6 @@
           <div class="mb-3">
             <p class="km--text-card-category km--text-soft mb-2"><%= t("offers.message") %></p>
             <p class="km--text-card-content mb-0"><%= @offer.message %></p>
-          </div>
-        <% end %>
-        <% if @offer.estimated_arrival.present? %>
-          <div class="mb-3">
-            <p class="km--text-card-category km--text-soft mb-2"><%= t("statuses.donor.arriving") %></p>
-            <p class="km--text-card-content mb-0"><%= arrival_text(@offer) %></p>
           </div>
         <% end %>
         <% if @offer.tracking_number.present? %>
@@ -75,10 +75,14 @@
         <% elsif @offer.status == "approved" %>
           <p class="km--text-card-content mb-0"><%= current_user.charity? ? @offer.charity_alert_message : t("statuses.charity.approved_message") %></p>
           <% if current_user.donor? %>
-            <%= render "shared/charity_shipping_address", charity: @request.charity %>
+            <%= render "shared/charity_shipping_address", offer: @offer %>
           <% end %>
         <% elsif @offer.status == "shipped" %>
           <p class="km--text-card-content mb-3"><%= current_user.charity? ? @offer.charity_alert_message : t("statuses.donor.shipped") %></p>
+          <%# The donor keeps seeing where it's going once it's on its way %>
+          <% if current_user.donor? %>
+            <%= render "shared/charity_shipping_address", offer: @offer, hint: false %>
+          <% end %>
           <% if policy(@offer).mark_received? %>
             <div class="d-flex justify-content-end">
               <%= button_to t("statuses.donor.received"), mark_received_offer_path(@offer), method: :patch, class: "km--btn km--btn-danger" %>

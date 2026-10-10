@@ -20,7 +20,7 @@
       <%= hidden_field_tag :role, @role %>
       <% if @profile.errors.any? %>
         <div class="alert alert-danger km--toast">
-          <ul class="mb-0">
+          <ul class="list-unstyled mb-0 d-flex flex-column gap-1">
             <% @profile.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
             <% end %>

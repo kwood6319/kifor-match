@@ -53,23 +53,32 @@ module ApplicationHelper
   def offer_ship_date(offer)
     if offer.shipped_or_later?
       if offer.estimated_arrival
-        { label: t("statuses.donor.arriving"), date: offer.estimated_arrival, time: offer.estimated_arrival_time }
+        label = offer.drop_off? ? t("drop_off.planned_date") : t("statuses.donor.arriving")
+        { label: label, date: offer.estimated_arrival, time: offer_time_label(offer), with_day: offer.drop_off? }
       end
     elsif offer.can_ship_by
       { label: t("offers.can_ship_by"), date: offer.can_ship_by }
     end
   end
 
-  # e.g. "Oct 26 · 14:00-16:00"; the delivery window is only set once shipped
+  # e.g. "Oct 26 · 14:00-16:00" when shipping, "Tue, Oct 13 · 10:00" for a planned drop-off.
+  # Drop-offs include the weekday (10月13日(火)): people remember the day better than the date.
   def ship_date_text(ship_date)
-    text = l(ship_date[:date], format: :short)
-    return text if ship_date[:time].blank?
-
-    "#{text} · #{t("arrival_time_slots.#{ship_date[:time]}")}"
+    text = l(ship_date[:date], format: ship_date[:with_day] ? :short_with_day : :short)
+    ship_date[:time].present? ? "#{text} · #{ship_date[:time]}" : text
   end
 
   def arrival_text(offer)
-    ship_date_text(date: offer.estimated_arrival, time: offer.estimated_arrival_time)
+    ship_date_text(date: offer.estimated_arrival, time: offer_time_label(offer), with_day: offer.drop_off?)
+  end
+
+  # Drop-off: the planned time ("10:00"); shipping: the courier window ("14:00-16:00"), if any
+  def offer_time_label(offer)
+    if offer.drop_off?
+      offer.drop_off_time&.strftime("%-H:%M")
+    elsif offer.estimated_arrival_time.present?
+      t("arrival_time_slots.#{offer.estimated_arrival_time}")
+    end
   end
 
   # Icon shown before a charity's name

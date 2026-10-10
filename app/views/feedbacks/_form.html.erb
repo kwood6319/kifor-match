@@ -30,6 +30,7 @@
     <%# Escalating flags the donation for an admin, so it asks for confirmation first %>
     <%= form_with model: feedback, url: offer_feedback_path(@offer), method: :post,
           data: { controller: "escalate-confirm", action: "submit->escalate-confirm#submit" } do |f| %>
+      <%# TO DO: Include drop-off timing / delivery in feedback (e.g. arrived or dropped off on time, late, outside drop-off hours) %>
       <% FeedbackTags::GROUPS.each do |group| %>
         <% tags = @grouped_tags[group] %>
         <% next if tags.blank? %>

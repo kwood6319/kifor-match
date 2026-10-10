@@ -58,20 +58,33 @@
   </div>
   <div class="mb-3">
     <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.shipping_and_drop_off") %></p>
-    <% if request.charity.accepts_shipping? %>
-      <p class="km--text-card-content mb-1">
-        <i class="fa-solid fa-truck me-1"></i><%= t("shipping.accepts_shipping") %>
+    <%# A donor whose in-progress offer uses a method the charity has since turned off sees
+        "Arranged for your donation" rather than "No …", matching their offer card %>
+    <% arranged = local_assigns[:donor_offer]&.active? ? donor_offer.delivery_method : nil %>
+    <% shipping_on = request.charity.accepts_shipping? || arranged == "shipping" %>
+    <% drop_off_on = request.drop_off_available? || arranged == "drop_off" %>
+    <p class="km--text-card-content mb-1<%= ' km--text-soft' unless shipping_on %>">
+      <i class="fa-solid fa-truck me-1"></i>
+      <% if request.charity.accepts_shipping? %>
+        <%= t("shipping.accepts_shipping") %>
+      <% else %>
+        <%= arranged == "shipping" ? t("shipping.arranged_for_your_offer") : t("shipping.no_shipping") %>
+      <% end %>
+    </p>
+    <div class="d-flex justify-content-between align-items-start gap-3">
+      <p class="km--text-card-content mb-0<%= ' km--text-soft' unless drop_off_on %>">
+        <i class="fa-solid fa-people-carry-box me-1"></i>
+        <% if request.drop_off_available? %>
+          <%= t("shipping.accepts_drop_off") %>
+        <% else %>
+          <%= arranged == "drop_off" ? t("shipping.arranged_for_your_offer") : t("shipping.no_drop_off") %>
+        <% end %>
       </p>
-    <% end %>
-    <div class="d-flex justify-content-between align-items-center">
-      <p class="km--text-card-content mb-0<%= ' km--text-soft' unless request.charity.accepts_drop_off? %>">
-        <i class="fa-solid fa-box me-1"></i>
-        <%= request.charity.accepts_drop_off? ? t("shipping.accepts_drop_off") : t("shipping.no_drop_off") %>
-      </p>
-      <% if request.charity.accepts_drop_off? %>
-        <p class="km--text-card-content km--text-soft mb-0">
-          <%# TO DO: Replace with the charity's real drop-off hours %>
-          Mon - Fri 9AM - 5PM
+      <% if request.drop_off_available? %>
+        <p class="km--text-card-content km--text-soft mb-0 text-end">
+          <% drop_off_hours_lines(request.charity.drop_off_windows).each do |line| %>
+            <%= line %><br>
+          <% end %>
         </p>
       <% end %>
     </div>

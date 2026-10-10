@@ -4,6 +4,8 @@ en:
     needs_your_attention: "Attention"
     offers_submitted: "Submitted"
     offers_on_their_way: "Shipping"
+    offers_delivery: "Delivery"
+    offers_drop_off: "Drop-off"
     offers_needing_feedback: "Review"
     offers_received: "Received"
     flagged: "Flagged"

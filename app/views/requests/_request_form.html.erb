@@ -2,7 +2,7 @@
 <% if request.errors.any? %>
   <div class="alert alert-danger alert-dismissible fade show km--toast" role="alert">
     <strong><%= t("offers.errors_heading") %></strong>
-    <ul class="mb-0">
+    <ul class="list-unstyled mb-0 d-flex flex-column gap-1">
       <% request.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
@@ -86,6 +86,24 @@
       <%= f.label :description, t("requests.description"), class: "#{label_class} km--required" %>
       <%= f.text_area :description, rows: 4, placeholder: t("requests.description_message"), required: true,
             class: "km--form-control form-control km--no-resize" %>
+    </div>
+    <%# Drop-off is opt-in per need, but only once the charity takes drop-offs at all %>
+    <div class="col-12">
+      <span class="<%= label_class %>"><%= t("drop_off.title") %></span>
+      <% if current_charity.accepts_drop_off? %>
+        <div class="form-check form-switch">
+          <%= f.check_box :allows_drop_off, class: "form-check-input", role: "switch" %>
+          <%= f.label :allows_drop_off, t("drop_off.allow_for_request"), class: "form-check-label" %>
+        </div>
+        <% unless current_charity.accepts_shipping? %>
+          <p class="km--text-card-content km--text-soft mt-1 mb-0"><%= t("drop_off.required_without_shipping") %></p>
+        <% end %>
+      <% else %>
+        <p class="km--text-card-content km--text-soft mb-0">
+          <i class="fa-solid fa-people-carry-box me-1"></i><%= t("drop_off.not_accepting") %>
+          <%= link_to t("drop_off.turn_on_in_settings"), settings_path(tab: "location") %>
+        </p>
+      <% end %>
     </div>
   </div>
   <div class="d-flex justify-content-end mt-4">

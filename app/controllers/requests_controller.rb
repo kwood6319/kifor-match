@@ -35,6 +35,14 @@ class RequestsController < ApplicationController
       @requests = @requests.left_outer_joins(:offers).where(offers: { id: nil })
     end
 
+    # 5. Shipping is a charity-wide setting
+    @requests = @requests.joins(:charity).where(charities: { accepts_shipping: true }) if params[:shipping] == "1"
+
+    # 6. Drop-off: the need allows it and its charity takes drop-offs
+    if params[:drop_off] == "1"
+      @requests = @requests.joins(:charity).where(allows_drop_off: true, charities: { accepts_drop_off: true })
+    end
+
     @requests = @requests.order(created_at: :desc)
   end
 
@@ -43,7 +51,8 @@ class RequestsController < ApplicationController
     @offers = @request.offers.includes(:feedback)
     set_donor
 
-    @offer = Offer.new(request: @request, donor: @donor)
+    # Pre-select the first way this need can be reached (drop-off if the charity doesn't ship)
+    @offer = Offer.new(request: @request, donor: @donor, delivery_method: @request.delivery_methods.first || "shipping")
     @first_offer = @donor.nil? || @donor.offers.none?
     @my_offer = (@offers.find_by(donor: @donor) if @donor)
     @editing_offer = @offers.find_by(id: params[:edit_offer])
@@ -52,7 +61,12 @@ class RequestsController < ApplicationController
   end
 
   def new
-    @request = Request.new(quantity_needed: 1, urgency: "medium")
+    # New needs follow the charity's drop-off setting; the charity can untick it per need
+    @request = Request.new(
+      quantity_needed: 1,
+      urgency: "medium",
+      allows_drop_off: current_charity&.accepts_drop_off? || false
+    )
     authorize @request
   end
 
@@ -119,7 +133,7 @@ class RequestsController < ApplicationController
   def request_params
     params.require(:request).permit(:title, :description, :quantity_needed,
                                     :quantity_remaining, :condition, :urgency,
-                                    :status, :estimated_arrival, category: [],
-                                                                 subcategory: [])
+                                    :status, :estimated_arrival, :allows_drop_off,
+                                    category: [], subcategory: [])
   end
 end

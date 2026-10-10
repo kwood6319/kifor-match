@@ -3,15 +3,38 @@ en:
     messages:
       exceeds_remaining: "Cannot exceed the remaining quantity needed (%{max})"
       photos_missing: "Please add at least one photo of your item"
+      drop_off_time_missing: "Please choose a drop-off time"
+      drop_off_time_interval: "Please choose a drop-off time on the hour or half hour"
+      drop_off_closed_day: "The charity doesn't take drop-offs on %{day}s"
+      outside_drop_off_hours: "Please choose a drop-off time between %{hours}"
+      already_offered: "You've already offered a donation to this need"
+      after_opening: "must be after the opening time"
+      no_open_days: "needs at least one day ticked to accept drop-offs"
+      unavailable: "isn't available for this need"
+      and_more:
+        one: "%{list} and 1 more"
+        other: "%{list} and %{count} more"
+      needs_without_delivery: "This would stop %{titles} from receiving new donations (donations already arranged aren't affected). Allow drop-off on those needs first, or keep shipping on"
+      no_delivery_method: "Please accept at least one of shipping or drop-off"
+      needed_without_shipping: "must be on, as you don't accept shipping"
       tags_or_comment_required: "Please select at least one item or add a comment"
   activerecord:
     attributes:
+      charity/drop_off_windows:
+        opens_at: "Drop-off opening time"
+        closes_at: "Drop-off closing time"
+        day_of_week: "Drop-off day"
       feedback:
         tags: "Feedback items"
         comment: "Additional feedback"
       charity:
         org_name: "Organization name"
         address: "Address"
+        drop_off_windows: "Drop-off"
+      offer:
+        delivery_method: "Delivery method"
+      request:
+        allows_drop_off: "Drop-off"
       address: &en_address_attributes
         postal_code: "Postal code"
         region: "Region"

@@ -19,6 +19,8 @@ module RequestsHelper
     categories = Array(params[:category]).compact_blank
     filters << categories.map { |category| t("categories.#{category}") }.join(", ") if categories.any?
     filters << t("navigation.no_offers_yet") if params[:no_offers] == "1"
+    filters << t("shipping.accepts_shipping") if params[:shipping] == "1"
+    filters << t("shipping.accepts_drop_off") if params[:drop_off] == "1"
     filters
   end
 end
