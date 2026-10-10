@@ -30,6 +30,7 @@
     <%= form_with model: feedback, url: offer_feedback_path(@offer), method: feedback.persisted? ? :patch : :post do |f| %>
       <%# Sent even with nothing ticked, so editing can clear every tag %>
       <%= hidden_field_tag "feedback[tags][]", "", id: nil %>
+      <%# TO DO: Include drop-off timing / delivery in feedback (e.g. arrived or dropped off on time, late, outside drop-off hours) %>
       <% FeedbackTags::GROUPS.each do |group| %>
         <% tags = @grouped_tags[group] %>
         <% next if tags.blank? %>

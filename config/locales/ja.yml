@@ -40,6 +40,7 @@ ja:
   messages:
     offer_archived: "寄付を非表示にしました。"
     offer_updated: "寄付の内容を更新しました。"
+    delivery_details_saved: "受け渡しの詳細を保存しました。"
     welcome_back: "おかえりなさい"
     top_categories: "今月、日本で最も必要とされているものは以下の通りです"
     request_archived: "募集をアーカイブしました。"
@@ -120,6 +121,7 @@ ja:
       tracking_info: "追跡番号"
       tracking_prompt: "追跡番号を入力してください"
       arriving: "到着予定"
+      update_shipping: "配送情報を更新"
       arrival_time: "配達時間帯"
       received: "受信"
       completed: "完了"
@@ -198,6 +200,12 @@ ja:
     accepts_shipping: "配送可"
     accepts_drop_off: "持ち込み可"
     no_drop_off: "持ち込み不可"
+    no_shipping: "配送不可"
+    no_longer_offered: "新しい寄付では選択できません"
+    arranged_for_your_offer: "あなたの寄付で手配済み"
+    none_available: "現在、この募集では受け渡し方法が設定されていません。"
+    accept_label: "配送での寄付を受け付ける"
+    accept_hint: "ドナーが住所宛てに寄付品を発送します。初期設定はオンです。持ち込みのみ受け付ける場合はオフにしてください。"
     shipping_and_drop_off: "配送・持ち込み"
     delivery_method: "受け渡し方法"
   modals:
@@ -252,4 +260,5 @@ ja:
   date:
     formats:
       short: "%-m月%-d日"
+      short_with_day: "%-m月%-d日(%a)"
       month_year: "%Y年%-m月"

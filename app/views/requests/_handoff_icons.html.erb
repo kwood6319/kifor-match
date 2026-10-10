@@ -1,13 +1,13 @@
-<%# Compact shipping / drop-off indicators for request cards %>
+<%# Compact shipping / drop-off indicators for request cards. Drop-off is per request. %>
 <div class="km--text-card-content km--text-soft d-flex flex-wrap gap-3 mt-auto pt-1">
-  <% if charity.accepts_shipping? %>
+  <% if request.charity.accepts_shipping? %>
     <span title="<%= t("shipping.accepts_shipping") %>">
       <i class="fa-solid fa-truck me-1"></i><%= t("shipping.shipping") %>
     </span>
   <% end %>
-  <% if charity.accepts_drop_off? %>
+  <% if request.drop_off_available? %>
     <span title="<%= t("shipping.accepts_drop_off") %>">
-      <i class="fa-solid fa-box me-1"></i><%= t("shipping.drop_off") %>
+      <i class="fa-solid fa-people-carry-box me-1"></i><%= t("shipping.drop_off") %>
     </span>
   <% end %>
 </div>

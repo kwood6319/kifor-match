@@ -37,66 +37,42 @@
   <% if offer.status == "submitted" %>
     <p class="km--text-card-content"><%= t("statuses.donor.submitted_message") %></p>
   <% elsif offer.status == "approved" %>
-    <p class="km--text-card-content mb-1"><%= t("statuses.donor.approved_message") %></p>
-    <p class="km--text-card-content"><%= t("statuses.donor.charity_shipping_info") %></p>
-    <%= render "shared/charity_shipping_address", charity: offer.request.charity %>
-    <%= simple_form_for offer,
-      url: mark_as_shipped_offer_path(offer),
-      method: :patch do |f| %>
-      <div class="row mt-2">
-        <div class="col-md-6">
-          <%
-  arrival = offer.estimated_arrival || Date.current
-  month_year_options = (0..11).map do |offset|
-    date = Date.current.next_month(offset)
-    [l(date, format: :month_year), date.strftime("%Y-%m")]
-  end
-%>
-          <div data-controller="ship-date">
-            <%= f.label :arrival_day, t("statuses.donor.arriving"), class: "km--text-label" %>
-            <div class="d-flex gap-2">
-              <%= f.select :arrival_day, (1..31).to_a,
-      { selected: arrival.day },
-      class: "km--form-control form-select",
-      data: { "ship-date-target": "day" } %>
-              <%= f.select :arrival_month_year, month_year_options,
-      { selected: arrival.strftime("%Y-%m") },
-      class: "km--form-control form-select",
-      data: { "ship-date-target": "monthYear",
-              action: "change->ship-date#monthYearChanged" } %>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <%= f.label :estimated_arrival_time, t("statuses.donor.arrival_time"), class: "km--text-label" %>
-          <%= f.select :estimated_arrival_time,
-                Offer::ARRIVAL_TIME_SLOTS.map { |slot| [t("arrival_time_slots.#{slot}"), slot] },
-                { include_blank: t("arrival_time_slots.not_specified") },
-                class: "km--form-control form-select" %>
-        </div>
-      </div>
-      <div class="row mt-2">
-        <%# Plain label/field (not f.input) so spacing matches the selects above %>
-        <div class="col-12">
-          <%= f.label :tracking_number, t("statuses.donor.tracking_info"), class: "km--text-label" %>
-          <%= f.text_field :tracking_number, placeholder: t("statuses.donor.tracking_prompt"),
-                class: "km--form-control form-control" %>
-        </div>
-      </div>
-      <div class="d-flex justify-content-end gap-3 mt-3">
-        <%= f.submit t("buttons.save"), class: "km--btn km--btn-primary" %>
-        <%= link_to t("buttons.edit"), request_path(request, edit_offer: offer.id), class: "km--btn km--btn-primary" %>
-      </div>
+    <%# "Please send the item…" is about shipping; drop-off has its own line below %>
+    <% unless offer.drop_off? %>
+      <p class="km--text-card-content mb-1"><%= t("statuses.donor.approved_message") %></p>
     <% end %>
+    <p class="km--text-card-content"><%= offer.drop_off? ? t("drop_off.bring_to_address") : t("statuses.donor.charity_shipping_info") %></p>
+    <%= render "shared/charity_shipping_address", offer: offer %>
+    <%= render "requests/delivery_details_form", offer: offer, edit_link: true %>
   <% elsif offer.status == "rejected" %>
     <p class="km--text-card-content"><%= t("statuses.donor.rejected_message") %></p>
     <p class="km--text-card-category km--text-soft mt-3 mb-2"><%= t("activerecord.attributes.offer.rejection_reason") %></p>
     <p class="km--text-card-content"><%= offer.rejection_reason %></p>
   <% elsif offer.status == "shipped" %>
-    <p class="km--text-card-content"><%= t("statuses.donor.shipped_message") %>:</p>
-    <p class="km--text-card-content"><%= t("statuses.donor.arriving") %>: <%= offer.estimated_arrival ? arrival_text(offer) : "?" %></p>
-    <p class="km--text-card-content"><%= t("statuses.donor.tracking_info") %>: <%= offer.tracking_number != "" ? offer.tracking_number : "?" %></p>
-  <% elsif offer.status == "received" %>
+    <% if offer.drop_off? %>
+      <p class="km--text-card-content"><%= t("drop_off.planned_message") %></p>
+      <p class="km--text-card-content"><%= t("drop_off.planned_date") %>: <%= offer.estimated_arrival ? arrival_text(offer) : "?" %></p>
+      <%= render "shared/charity_shipping_address", offer: offer %>
+    <% else %>
+      <p class="km--text-card-content"><%= t("statuses.donor.shipped_message") %>:</p>
+      <p class="km--text-card-content"><%= t("statuses.donor.arriving") %>: <%= offer.estimated_arrival ? arrival_text(offer) : "?" %></p>
+      <p class="km--text-card-content"><%= t("statuses.donor.tracking_info") %>: <%= offer.tracking_number.presence || "?" %></p>
+      <%# Still useful once sent (e.g. checking what was written on the label) %>
+      <%= render "shared/charity_shipping_address", offer: offer, hint: false %>
+    <% end %>
+    <%# Plans change: reopen the same form to update the date (and courier details when shipping) %>
+    <% change_id = "change-delivery-#{offer.id}" %>
+    <div class="d-flex justify-content-end">
+      <button type="button" class="km--btn km--btn-outline" data-bs-toggle="collapse" data-bs-target="#<%= change_id %>"
+              aria-expanded="false" aria-controls="<%= change_id %>">
+        <%= offer.drop_off? ? t("drop_off.change_date") : t("statuses.donor.update_shipping") %>
+      </button>
+    </div>
+    <div class="collapse" id="<%= change_id %>">
+      <%= render "requests/delivery_details_form", offer: offer, cancel_target: change_id %>
+    </div>
+  <%# Completed only differs by the charity's internal feedback, which donors never see %>
+  <% elsif offer.status.in?(%w[received completed]) %>
     <p class="km--text-card-content"><%= t("statuses.donor.received_message") %></p>
   <% end %>
   <% can_edit = offer.status.to_s == "submitted" %>

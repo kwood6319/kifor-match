@@ -69,6 +69,7 @@ en:
   messages:
     offer_archived: "Donation dismissed."
     offer_updated: "Donation updated."
+    delivery_details_saved: "Delivery details saved."
     welcome_back: "Welcome back"
     top_categories: "Here's what's most needed in Japan this month"
     request_archived: "Need archived."
@@ -149,6 +150,7 @@ en:
       tracking_info: "Tracking information"
       tracking_prompt: "Enter tracking number"
       arriving: "Estimated arrival"
+      update_shipping: "Update shipping details"
       arrival_time: "Delivery time"
       received: "Received"
       completed: "Completed"
@@ -227,6 +229,12 @@ en:
     accepts_shipping: "Accepts shipping"
     accepts_drop_off: "Accepts drop-off"
     no_drop_off: "No drop-off"
+    no_shipping: "No shipping"
+    no_longer_offered: "no longer offered for new donations"
+    arranged_for_your_offer: "Arranged for your donation"
+    none_available: "This charity isn't accepting deliveries for this need right now."
+    accept_label: "Accept shipped donations"
+    accept_hint: "Donors post items to your address. On by default; turn it off if you only take drop-offs."
     shipping_and_drop_off: "Shipping & drop-off"
     delivery_method: "Delivery method"
   modals:
@@ -289,4 +297,5 @@ en:
   date:
     formats:
       short: "%b %-d"
+      short_with_day: "%a, %b %-d"
       month_year: "%b/%y"

@@ -1,0 +1,57 @@
+<%# How a charity accepts donations: shipping and/or drop-off, with drop-off days and hours.
+    Inside the settings "Donation preferences" form; `f` is the charity form builder. %>
+<% label_class = "km--text-card-category km--text-soft d-block mb-2" %>
+<% if @has_open_offers %>
+  <div class="alert alert-warning d-flex align-items-start gap-2">
+    <i class="fa-solid fa-triangle-exclamation mt-1"></i>
+    <div><%= t("settings.open_offers_warning") %></div>
+  </div>
+<% end %>
+<div class="mb-3">
+  <h6 class="km--text-card-title mb-2"><%= t("shipping.shipping") %></h6>
+  <div class="form-check form-switch mb-2">
+    <%= f.check_box :accepts_shipping, class: "form-check-input", role: "switch" %>
+    <%= f.label :accepts_shipping, t("shipping.accept_label"), class: "form-check-label" %>
+  </div>
+  <p class="km--text-card-content km--text-soft mb-0"><%= t("shipping.accept_hint") %></p>
+</div>
+<div class="mb-3 border-top pt-3" data-controller="reveal">
+  <h6 class="km--text-card-title mb-2"><%= t("drop_off.title") %></h6>
+  <div class="form-check form-switch mb-2">
+    <%= f.check_box :accepts_drop_off, class: "form-check-input", role: "switch",
+          data: { reveal_target: "toggle", action: "reveal#update" } %>
+    <%= f.label :accepts_drop_off, t("drop_off.accept_label"), class: "form-check-label" %>
+  </div>
+  <%# Only relevant once drop-off is on; still submitted while hidden so saved hours are kept %>
+  <div data-reveal-target="content">
+    <p class="km--text-card-content km--text-soft mb-3"><%= t("drop_off.accept_hint") %></p>
+    <%# Offer to switch drop-off on for current needs that don't allow it yet (applied on save) %>
+    <% needs_without_drop_off = f.object.persisted? ? f.object.open_requests.where(allows_drop_off: false).count : 0 %>
+    <% if needs_without_drop_off.positive? %>
+      <div class="form-check mb-3">
+        <%= f.check_box :apply_drop_off_to_open_needs, class: "form-check-input" %>
+        <%= f.label :apply_drop_off_to_open_needs, t("drop_off.apply_to_open_needs", count: needs_without_drop_off), class: "form-check-label" %>
+      </div>
+    <% end %>
+    <span class="<%= label_class %>"><%= t("drop_off.hours") %></span>
+    <div class="d-flex flex-column gap-2">
+      <%# Ticked = open that day. The box sends _destroy, so ticked sends "0" (keep) and unticked "1" (remove). %>
+      <%= f.fields_for :drop_off_windows, drop_off_week(f.object) do |wf| %>
+        <% window = wf.object %>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <%= wf.hidden_field :day_of_week %>
+          <div class="form-check mb-0 km--drop-off-day">
+            <%= wf.check_box :_destroy, { checked: !window.placeholder && !window.marked_for_destruction?,
+                                           class: "form-check-input", id: "drop_off_day_#{window.day_of_week}" }, "0", "1" %>
+            <%= label_tag "drop_off_day_#{window.day_of_week}", day_name(window.day_of_week), class: "form-check-label" %>
+          </div>
+          <%= wf.time_field :opens_at, value: window.opens_at&.strftime("%H:%M"), step: 900,
+                class: "km--form-control form-control km--time-input", "aria-label": t("drop_off.opens_at") %>
+          <span class="km--text-soft">–</span>
+          <%= wf.time_field :closes_at, value: window.closes_at&.strftime("%H:%M"), step: 900,
+                class: "km--form-control form-control km--time-input", "aria-label": t("drop_off.closes_at") %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

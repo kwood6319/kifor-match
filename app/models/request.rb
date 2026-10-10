@@ -82,6 +82,8 @@ class Request < ApplicationRecord
   validates :quantity_remaining, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
   validate :categories_are_valid
+  # Only when it's set: archiving an old need mustn't fail because settings changed since
+  validate :reachable_by_donors, if: -> { new_record? || will_save_change_to_allows_drop_off? }
   validate :subcategories_are_valid
 
   def set_default_status
@@ -118,6 +120,19 @@ class Request < ApplicationRecord
     status == "archived"
   end
 
+  # Drop-off needs both: the charity takes drop-offs at all, and allows it for this need
+  def drop_off_available?
+    allows_drop_off? && charity.accepts_drop_off?
+  end
+
+  # How donors can get items to this need, e.g. ["shipping", "drop_off"]
+  def delivery_methods
+    methods = []
+    methods << "shipping" if charity&.accepts_shipping?
+    methods << "drop_off" if charity && drop_off_available?
+    methods
+  end
+
   def archive!
     transaction do
       update!(status: "archived")
@@ -135,6 +150,13 @@ class Request < ApplicationRecord
       # shouldn't block a system-driven status change or roll back the archive.
       offer.save!(validate: false)
     end
+  end
+
+  # A charity that doesn't ship must allow drop-off, or donors have no way to give
+  def reachable_by_donors
+    return if charity.blank? || delivery_methods.any?
+
+    errors.add(:allows_drop_off, :needed_without_shipping)
   end
 
   def categories_are_valid

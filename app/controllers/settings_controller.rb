@@ -6,6 +6,7 @@ class SettingsController < ApplicationController
     @donor = current_user.donor
     @charity = current_user.charity
     @has_shipped_offers = charity_has_shipped_offers?
+    @has_open_offers = charity_has_open_offers?
   end
 
   def update
@@ -15,6 +16,7 @@ class SettingsController < ApplicationController
       else
         @donor = current_user.donor
         @has_shipped_offers = charity_has_shipped_offers?
+        @has_open_offers = charity_has_open_offers?
         render :show, status: :unprocessable_entity
       end
     elsif current_user.charity?
@@ -23,6 +25,9 @@ class SettingsController < ApplicationController
       else
         @charity = current_user.charity
         @has_shipped_offers = charity_has_shipped_offers?
+        @has_open_offers = charity_has_open_offers?
+        # Reopen the section that failed so its errors are visible
+        @open_location_section = params[:section].presence
         render :show, status: :unprocessable_entity
       end
     else
@@ -76,6 +81,7 @@ class SettingsController < ApplicationController
     @donor = current_user.donor
     @charity = current_user.charity
     @has_shipped_offers = charity_has_shipped_offers?
+    @has_open_offers = charity_has_open_offers?
     @account_errors = current_user.errors
     @open_account_section = section
     current_user.restore_attributes([:email]) if section == :email
@@ -91,7 +97,9 @@ class SettingsController < ApplicationController
   end
 
   def charity_params
-    params.require(:charity).permit(:org_name, :description, address_attributes: Address::FORM_FIELDS)
+    params.require(:charity).permit(:org_name, :description, :accepts_shipping, :accepts_drop_off, :apply_drop_off_to_open_needs,
+                                    address_attributes: Address::FORM_FIELDS,
+                                    drop_off_windows_attributes: %i[id day_of_week opens_at closes_at _destroy])
   end
 
   def password_params
@@ -100,6 +108,15 @@ class SettingsController < ApplicationController
 
   def locale_params
     params.require(:user).permit(:locale)
+  end
+
+  # Offers still on their way through (not yet received or closed)
+  def charity_has_open_offers?
+    return false unless current_user.charity?
+
+    Offer.joins(:request)
+         .where(requests: { charity_id: current_charity.id }, status: Request::OPEN_OFFER_STATUSES)
+         .exists?
   end
 
   def charity_has_shipped_offers?

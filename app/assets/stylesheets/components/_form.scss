@@ -158,3 +158,12 @@
     display: none;
   }
 }
+
+// Drop-off hours rows in settings: fixed-width day so the time inputs line up
+.km--drop-off-day {
+  width: 4.5rem;
+}
+
+.km--time-input {
+  width: auto;
+}

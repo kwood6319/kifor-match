@@ -19,6 +19,12 @@ class OffersController < ApplicationController
   def create
     @request = Request.find(params[:request_id])
     @donor = current_user ? Donor.find_by(user_id: current_user.id) : nil
+    # A repeat submit (e.g. double click) just lands on the offer already made
+    if @donor && (existing = Offer.find_by(donor: @donor, request: @request))
+      authorize existing, :show?
+      return redirect_to request_path(@request)
+    end
+
     @offer = Offer.new(offer_params)
     @offer.request ||= @request
     @offer.donor ||= @donor
@@ -94,7 +100,7 @@ class OffersController < ApplicationController
       offer_params.merge(status: "shipped")
     )
       redirect_to request_path(@offer.request),
-                  notice: "Shipping info saved."
+                  notice: t("messages.delivery_details_saved")
     else
       redirect_to request_path(@offer.request), alert: @offer.errors.full_messages.to_sentence
     end
@@ -104,7 +110,7 @@ class OffersController < ApplicationController
 
   def offer_params
     params.require(:offer).permit(:quantity_offered, :condition, :message, :ship_by_day, :ship_by_month_year,
-                                  :estimated_arrival, :estimated_arrival_time, :arrival_day, :arrival_month_year, :tracking_number, :rejection_reason,
+                                  :estimated_arrival, :estimated_arrival_time, :drop_off_time, :delivery_method, :tracking_number, :rejection_reason,
                                   photos: [], remove_photo_ids: [])
   end
 
