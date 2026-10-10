@@ -1,51 +1,57 @@
 <div class="container mt-3 mb-4">
-  <div class="km--card km--form-card km--form-compact">
-    <h5 class="km--form-card-title"><i class="fa-solid fa-filter me-2"></i><%= t("navigation.filter_charities") %></h5>
-    <%= form_with url: charities_path, method: :get, class: "row g-3" do |f| %>
-      <%# Top row: Search, Region %>
-      <div class="row g-3 mt-0">
-        <div class="col-md-6 col-lg-7">
-          <%= f.label :query, t("navigation.search"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-          <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_charities_placeholder"), class: "km--form-control form-control" %>
-        </div>
-        <div class="col-md-6 col-lg-5">
-          <%= f.label :region, t("navigation.region"), class: "km--text-card-category km--text-soft d-block mb-2" %>
-          <%= f.select :region,
-            Request::REGIONS.map { |region| [t("regions.#{region}"), region] },
-            { include_blank: t("regions.all"), selected: params[:region] },
-            class: "km--form-control form-select" %>
-        </div>
-      </div>
-      <%# Row 2: Approval status, boxed like the request index categories %>
-      <div class="row g-3 mt-0">
-        <div class="col-12 mt-0">
-          <span class="km--text-card-category km--text-soft d-block mb-2"><%= t("offers.status") %></span>
-          <div class="border rounded p-3 bg-white">
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
-              <div class="col">
-                <div class="form-check">
-                  <%= f.check_box :approved_only, { checked: params[:approved_only] == "1", class: "form-check-input" }, "1", "0" %>
-                  <%= f.label :approved_only, t("navigation.approved_only"), class: "form-check-label fw-bold" %>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-check">
-                  <%= f.check_box :unapproved_only, { checked: params[:unapproved_only] == "1", class: "form-check-input" }, "1", "0" %>
-                  <%= f.label :unapproved_only, t("navigation.unapproved_only"), class: "form-check-label fw-bold" %>
-                </div>
-              </div>
-              <%# TO DO: Add "Flagged only" filter once flagging exists %>
-              <%# TO DO: Add "Deleted only" filter. Rename "deleted" to "blocked"? %>
+  <div class="km--card km--form-card km--form-compact km--filter-card">
+    <%# Collapsed by default, like the requests index: only the active-filter summary shows until expanded %>
+    <%= render "shared/filter_header", target: "charities-filters", summary: admin_filter_summary("navigation.showing_all_charities"),
+               reset_path: charities_path, active: admin_filters_active? %>
+    <div class="collapse" id="charities-filters">
+      <div class="pt-3">
+        <%= form_with url: charities_path, method: :get, class: "row g-3" do |f| %>
+          <%# Top row: Search, Region %>
+          <div class="row g-3 mt-0">
+            <div class="col-md-6 col-lg-7">
+              <%= f.label :query, t("navigation.search"), class: "km--text-card-category km--text-soft d-block mb-2" %>
+              <%= f.text_field :query, value: params[:query], placeholder: t("navigation.search_charities_placeholder"), class: "km--form-control form-control" %>
+            </div>
+            <div class="col-md-6 col-lg-5">
+              <%= f.label :region, t("navigation.region"), class: "km--text-card-category km--text-soft d-block mb-2" %>
+              <%= f.select :region,
+                Request::REGIONS.map { |region| [t("regions.#{region}"), region] },
+                { include_blank: t("regions.all"), selected: params[:region] },
+                class: "km--form-control form-select" %>
             </div>
           </div>
-        </div>
+          <%# Row 2: Approval status, boxed like the request index categories %>
+          <div class="row g-3 mt-0">
+            <div class="col-12 mt-0">
+              <span class="km--text-card-category km--text-soft d-block mb-2"><%= t("offers.status") %></span>
+              <div class="border rounded p-3 km--field-box">
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
+                  <div class="col">
+                    <div class="form-check">
+                      <%= f.check_box :approved_only, { checked: params[:approved_only] == "1", class: "form-check-input" }, "1", "0" %>
+                      <%= f.label :approved_only, t("navigation.approved_only"), class: "form-check-label" %>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <%= f.check_box :unapproved_only, { checked: params[:unapproved_only] == "1", class: "form-check-input" }, "1", "0" %>
+                      <%= f.label :unapproved_only, t("navigation.unapproved_only"), class: "form-check-label" %>
+                    </div>
+                  </div>
+                  <%# TO DO: Add "Flagged only" filter once flagging exists %>
+                  <%# TO DO: Add "Deleted only" filter. Rename "deleted" to "blocked"? %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%# Row 3: Reset & Filter %>
+          <div class="col-md-12 d-flex justify-content-end mt-2">
+            <%= link_to t("navigation.reset"), charities_path, class: "km--btn km--btn-outline me-3" %>
+            <%= f.submit t("navigation.filter"), class: "km--btn km--btn-primary" %>
+          </div>
+        <% end %>
       </div>
-      <%# Row 3: Reset & Filter %>
-      <div class="col-md-12 d-flex justify-content-end mt-2">
-        <%= link_to t("navigation.reset"), charities_path, class: "km--btn km--btn-outline me-3" %>
-        <%= f.submit t("navigation.filter"), class: "km--btn km--btn-primary" %>
-      </div>
-    <% end %>
+    </div>
   </div>
 </div>
 <div class="container-fluid px-4 px-xl-5 mb-5">

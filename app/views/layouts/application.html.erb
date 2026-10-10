@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<%# lang tells the browser which glyph forms to use for kanji (Japanese, not Chinese) %>
+<html lang="<%= I18n.locale %>">
   <head>
     <title><%= content_for(:title) || "Kifor Match" %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,8 +12,8 @@
     <%= yield :head %>
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <%# Browser tab icon: the Kifor Match logo (served from app/assets/images with a cache-busting digest) %>
+    <%= favicon_link_tag "kifor match logo.png", type: "image/png" %>
     <link rel="apple-touch-icon" href="/icon.png">
     <%# Fonts %>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +25,11 @@
   </head>
   <body class="d-flex flex-column min-vh-100">
     <%= render "shared/navbar" %>
-    <%= render "shared/flashes" %>
+    <%# Bottom-right stack: a page's notifications (content_for :toasts), then flash messages %>
+    <div class="km--toast-stack">
+      <%= yield :toasts %>
+      <%= render "shared/flashes" %>
+    </div>
     <main class="flex-grow-1 <%= yield(:main_class) %>">
       <%= yield %>
     </main>

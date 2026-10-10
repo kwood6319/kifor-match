@@ -20,7 +20,7 @@
         <ul class="nav nav-tabs km--nav-tabs mb-2" id="charity-tracker-tabs" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link km--nav-link active" data-bs-toggle="pill" data-bs-target="#tracker-attention" type="button">
-              <i class="fa-solid fa-triangle-exclamation"></i><%= t("dashboard.needs_your_attention") %>
+              <i class="fa-solid fa-triangle-exclamation"></i><%= t("dashboard.needs_your_attention") %><%= tracker_tab_count(@actionable_offers) %>
             </button>
           </li>
           <li class="nav-item" role="presentation">

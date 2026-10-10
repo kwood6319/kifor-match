@@ -1,5 +1,4 @@
 en:
   notifications:
-    title: "Update"
     offer_completed: "Your donation for \"%{title}\" has been marked as completed."
     offer_rejected: "Your donation for \"%{title}\" has been marked as rejected."
