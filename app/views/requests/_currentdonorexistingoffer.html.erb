@@ -20,7 +20,8 @@
       <p class="km--text-card-content mb-0"><%= t("conditions.no_condition") %></p>
     <% end %>
   </div>
-  <% if (ship_date = offer_ship_date(offer)) %>
+  <%# Once shipped, the status section below shows the arrival date with the tracking number %>
+  <% if !offer.shipped_or_later? && (ship_date = offer_ship_date(offer)) %>
     <div class="mb-3">
       <p class="km--text-card-category km--text-soft mb-2"><%= ship_date[:label] %></p>
       <p class="km--text-card-content mb-0"><%= l(ship_date[:date], format: :short) %></p>
@@ -38,9 +39,7 @@
   <% elsif offer.status == "approved" %>
     <p class="km--text-card-content mb-1"><%= t("statuses.donor.approved_message") %></p>
     <p class="km--text-card-content"><%= t("statuses.donor.charity_shipping_info") %></p>
-    <div class="my-2 mx-5">
-      <%= render "shared/address", address: offer.request.charity.address %>
-    </div>
+    <%= render "shared/charity_shipping_address", charity: offer.request.charity %>
     <%= simple_form_for offer,
       url: mark_as_shipped_offer_path(offer),
       method: :patch do |f| %>
@@ -69,8 +68,10 @@
           </div>
         </div>
         <div class="col-md-6">
-          <%= f.input :tracking_number, label: t("statuses.donor.tracking_info"), placeholder: t("statuses.donor.tracking_prompt"),
-            input_html: { class: "km--form-control form-control" }, label_html: { class: "km--text-label" } %>
+          <%# Plain label/field (not f.input) so it lines up with the arrival selects beside it %>
+          <%= f.label :tracking_number, t("statuses.donor.tracking_info"), class: "km--text-label" %>
+          <%= f.text_field :tracking_number, placeholder: t("statuses.donor.tracking_prompt"),
+            class: "km--form-control form-control" %>
         </div>
       </div>
       <div class="d-flex justify-content-end gap-3 mt-3">
@@ -84,7 +85,7 @@
     <p class="km--text-card-content"><%= offer.rejection_reason %></p>
   <% elsif offer.status == "shipped" %>
     <p class="km--text-card-content"><%= t("statuses.donor.shipped_message") %>:</p>
-    <p class="km--text-card-content"><%= t("statuses.donor.arriving") %>: <%= offer.estimated_arrival ? offer.estimated_arrival : "?" %></p>
+    <p class="km--text-card-content"><%= t("statuses.donor.arriving") %>: <%= offer.estimated_arrival ? l(offer.estimated_arrival, format: :short) : "?" %></p>
     <p class="km--text-card-content"><%= t("statuses.donor.tracking_info") %>: <%= offer.tracking_number != "" ? offer.tracking_number : "?" %></p>
   <% elsif offer.status == "received" %>
     <p class="km--text-card-content"><%= t("statuses.donor.received_message") %></p>

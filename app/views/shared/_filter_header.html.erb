@@ -1,0 +1,19 @@
+<%# Collapsed filter header: the active-filter summary toggles the form open; Reset sits beside it
+    (a link can't go inside the toggle button) and only shows when something is filtered and the
+    filter is collapsed; expanded, the form's own Reset button is used.
+    Locals: target (collapse id), summary, reset_path, active. %>
+<div class="d-flex align-items-center gap-3">
+  <button type="button" class="km--filter-toggle collapsed" data-bs-toggle="collapse"
+          data-bs-target="#<%= target %>" aria-expanded="false" aria-controls="<%= target %>">
+    <span class="d-flex align-items-center gap-2">
+      <i class="fa-solid fa-filter"></i>
+      <span class="km--text-card-subtitle"><%= summary %></span>
+    </span>
+    <i class="fa-solid fa-chevron-down km--filter-chevron"></i>
+  </button>
+  <% if active %>
+    <%= link_to reset_path, class: "km--btn-link km--filter-reset text-nowrap flex-shrink-0" do %>
+      <i class="fa-solid fa-rotate-left me-1"></i><%= t("navigation.reset") %>
+    <% end %>
+  <% end %>
+</div>

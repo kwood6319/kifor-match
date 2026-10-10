@@ -141,6 +141,14 @@
   min-width: 70px;
 }
 
+// Charity shipping address shown to a donor once their offer is approved
+.km--address-box {
+  padding: 0.75rem 1rem;
+  background-color: $light-pink-gray; // the page's off-white
+  border-left: 3px solid $km--primary-pink;
+  border-radius: var(--bs-border-radius);
+}
+
 // Address rows laid out like a shipping slip: label above, value below, a little space between rows
 .km--label-fields {
   display: flex;

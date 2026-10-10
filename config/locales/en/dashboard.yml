@@ -6,7 +6,6 @@ en:
     offers_on_their_way: "Shipping"
     offers_needing_feedback: "Review"
     offers_received: "Received"
-    pending_actions: "%{count} need your attention"
     flagged: "Flagged"
     no_unapproved_charities: "No charities awaiting approval"
     no_unapproved_donors: "No donors awaiting approval"

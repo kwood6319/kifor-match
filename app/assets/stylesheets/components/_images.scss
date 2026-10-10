@@ -48,7 +48,8 @@
   cursor: pointer;
   color: var(--km-placeholder-text, #{$km--gray});
   font-size: 1.5rem;
-  background-color: $km--light;
+  // Same background as the form's other fields
+  background-color: var(--bs-body-bg);
   transition: border-color 0.15s ease, background-color 0.15s ease;
 
   &.is-dragover {
