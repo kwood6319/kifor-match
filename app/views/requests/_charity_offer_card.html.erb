@@ -29,6 +29,11 @@
           <i class="fa-solid fa-location-dot fa-fw me-1"></i><%= t("prefectures.#{offer.donor.prefecture}") %>
         </p>
       <% end %>
+      <% if offer.drop_off? %>
+        <p class="km--text-card-content mb-0" title="<%= t("shipping.delivery_method") %>">
+          <i class="fa-solid fa-people-carry-box fa-fw me-1"></i><%= t("shipping.drop_off") %>
+        </p>
+      <% end %>
       <p class="km--text-card-content mb-0" title="<%= t("navigation.condition") %>">
         <i class="fa-solid fa-box-open fa-fw me-1"></i><span class="badge text-bg-info"><%= t("conditions.#{offer.condition}") %></span>
       </p>
@@ -75,12 +80,16 @@
           <p class="km--text-card-content mb-1"><%= offer.charity_alert_message %></p>
         <% end %>
         <p class="km--text-card-content mb-0">
-          <strong><%= t("statuses.donor.arriving") %>:</strong> <%= offer.estimated_arrival ? arrival_text(offer) : "?" %>
+          <strong><%= offer.drop_off? ? t("drop_off.planned_date") : t("statuses.donor.arriving") %>:</strong>
+          <%= offer.estimated_arrival ? arrival_text(offer) : "?" %>
         </p>
-        <p class="km--text-card-content mb-0">
-          <strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= offer.tracking_number.presence || "?" %>
-        </p>
+        <% unless offer.drop_off? %>
+          <p class="km--text-card-content mb-0">
+            <strong><%= t("statuses.donor.tracking_info") %>:</strong> <%= offer.tracking_number.presence || "?" %>
+          </p>
+        <% end %>
         <% unless read_only %>
+          <%# KT TO DO: Let charities mark a delivery / drop-off as late (tardy) when it's past its estimated_arrival / planned drop-off date and hasn't arrived %>
           <div class="d-flex justify-content-end w-100 mt-2">
             <%= button_to t("statuses.donor.received"), mark_received_offer_path(offer), method: :patch, class: "km--btn km--btn-danger" %>
           </div>

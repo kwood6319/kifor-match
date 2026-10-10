@@ -54,7 +54,9 @@ module Donors
                                           .where.not(requests: { status: "archived" }))
                                 .references(:requests)
       @submitted_offers = offers.where(status: "submitted")
-      @shipped_offers = offers.where(status: "shipped")
+      # On their way, split by how they're getting there
+      @shipped_offers = offers.where(status: "shipped", delivery_method: "shipping")
+      @drop_off_offers = offers.where(status: "shipped", delivery_method: "drop_off")
       @received_offers = offers.where(status: %w[received flagged])
     end
   end
