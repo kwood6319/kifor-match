@@ -3,6 +3,7 @@ class Offer < ApplicationRecord
   belongs_to :donor
 
   has_many_attached :photos
+  has_one :feedback, dependent: :destroy
 
   before_update :resubmit_if_amended, if: :donor_amendment?
 

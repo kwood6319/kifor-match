@@ -1,0 +1,18 @@
+<%# Feedback with the offer it's about, for admin lists. `party` is whose name to show: :donor or :charity. %>
+<% offer = feedback.offer %>
+<div class="km--card mb-3">
+  <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+    <div>
+      <%= link_to title_with_quantity(offer.request.title, offer.quantity_offered), offer_path(offer),
+            class: "km--text-card-title km--text-dark text-decoration-none" %>
+      <p class="km--text-card-content mb-0">
+        <% if party == :donor %>
+          <%= donor_icon(offer.donor) %><%= offer.donor.display_name %>
+        <% else %>
+          <%= charity_icon %><%= offer.request.charity.org_name %>
+        <% end %>
+      </p>
+    </div>
+  </div>
+  <%= render "feedbacks/feedback", feedback: feedback %>
+</div>

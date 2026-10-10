@@ -42,9 +42,10 @@
           <i class="fa-solid fa-message fa-fw me-1"></i><%= offer.message %>
         </p>
       <% end %>
-      <p class="km--text-card-category km--text-soft mt-2 mb-1"><%= t("offers.status") %></p>
+      <%# The column's gap-1 spaces these, so no bottom margins (they doubled the gap) %>
+      <p class="km--text-card-category km--text-soft mt-2 mb-0"><%= t("offers.status") %></p>
       <% if read_only %>
-        <div class="mb-1"><%= offer_status_badge(offer) %></div>
+        <div><%= offer_status_badge(offer) %></div>
       <% end %>
       <% case offer.status
          when "submitted" %>
@@ -88,13 +89,24 @@
         <p class="km--text-card-content mb-0"><%= read_only ? t("statuses.charity.rejected_message") : offer.charity_alert_message %></p>
       <% when "received" %>
         <p class="km--text-card-content mb-0"><%= read_only ? t("statuses.charity.received_message") : offer.charity_alert_message %></p>
-        <%# TO DO: Once feedback is saved, show a "Feedback left" check and an Edit feedback link here (see FeedbacksController#create) %>
         <% unless read_only %>
-          <div class="d-flex justify-content-end w-100 mt-2">
-            <%= link_to t("buttons.give_feedback"),
-                  new_request_feedback_path(parent_request, offer_id: offer.id),
-                  class: "km--btn km--btn-primary" %>
+          <%# position-relative lifts the button above the card's stretched link %>
+          <div class="d-flex justify-content-end w-100 mt-2 position-relative z-2">
+            <%= link_to t("buttons.give_feedback"), new_offer_feedback_path(offer), class: "km--btn km--btn-primary" %>
           </div>
+        <% end %>
+      <% when "completed" %>
+        <% if read_only && offer.feedback %>
+          <%= render "feedbacks/feedback", feedback: offer.feedback %>
+        <% elsif offer.feedback %>
+          <p class="km--text-card-content mb-0">
+            <i class="fa-solid fa-circle-check text-success me-1"></i><%= t("feedback.left") %>
+          </p>
+          <div class="d-flex justify-content-end w-100 mt-2 position-relative z-2">
+            <%= link_to t("buttons.edit_feedback"), edit_offer_feedback_path(offer), class: "km--btn km--btn-outline" %>
+          </div>
+        <% else %>
+          <p class="km--text-card-content mb-0"><%= t("statuses.donor.completed") %></p>
         <% end %>
       <% else %>
         <p class="km--text-card-content mb-0 text-capitalize"><%= t("statuses.charity.#{offer.status}_message", default: offer.status) %></p>

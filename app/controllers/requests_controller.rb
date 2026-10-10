@@ -40,7 +40,7 @@ class RequestsController < ApplicationController
 
   def show
     authorize @request
-    @offers = @request.offers
+    @offers = @request.offers.includes(:feedback)
     set_donor
 
     @offer = Offer.new(request: @request, donor: @donor)

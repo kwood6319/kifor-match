@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_10_064931) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_10_083809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -86,6 +86,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_064931) do
     t.index ["user_id"], name: "index_donors_on_user_id"
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.boolean "escalated", default: false, null: false
+    t.bigint "offer_id", null: false
+    t.string "tags", default: [], null: false, array: true
+    t.datetime "updated_at", null: false
+    t.index ["offer_id"], name: "index_feedbacks_on_offer_id", unique: true
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "dismissed", default: false, null: false
@@ -154,6 +164,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_064931) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "charities", "users"
   add_foreign_key "donors", "users"
+  add_foreign_key "feedbacks", "offers"
   add_foreign_key "notifications", "offers"
   add_foreign_key "offers", "donors"
   add_foreign_key "offers", "requests"

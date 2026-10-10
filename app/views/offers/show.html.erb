@@ -88,16 +88,38 @@
           <p class="km--text-card-content mb-0"><%= current_user.charity? ? @offer.charity_alert_message : t("statuses.charity.rejected_message") %></p>
         <% elsif @offer.status == "received" %>
           <% if current_user.charity? %>
-            <p class="km--text-card-content mb-3"><%= @offer.charity_alert_message %></p>
-            <div class="d-flex justify-content-end">
-              <%# TO DO: Once feedback is saved, show a "Feedback left" check and an Edit feedback link here (see FeedbacksController#create) %>
-            <%= link_to t("buttons.give_feedback"),
-                    new_request_feedback_path(@request, offer_id: @offer.id),
-                    class: "km--btn km--btn-primary" %>
+            <%# The prompt and its button on one line %>
+            <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+              <p class="km--text-card-content mb-0"><%= @offer.charity_alert_message %></p>
+              <%# offer_id, not offer: passing the offer would set @offer.feedback to this unsaved draft %>
+              <% if policy(Feedback.new(offer_id: @offer.id)).new? %>
+                <%= link_to t("buttons.give_feedback"), new_offer_feedback_path(@offer), class: "km--btn km--btn-primary" %>
+              <% end %>
             </div>
           <% else %>
             <p class="km--text-card-content mb-0"><%= t("statuses.donor.received_message") %></p>
           <% end %>
+        <% elsif @offer.status == "completed" %>
+          <p class="km--text-card-content mb-0"><%= t("statuses.donor.completed") %></p>
+        <% end %>
+        <%# Internal feedback: admins and the receiving charity only, never the donor %>
+        <%# "Feedback given <date>" in the partial is the heading, so no separate title %>
+        <% if @offer.feedback&.persisted? && policy(@offer.feedback).show? %>
+          <div class="border-top mt-3 pt-3">
+            <%= render "feedbacks/feedback", feedback: @offer.feedback %>
+            <% if policy(@offer.feedback).edit? %>
+              <div class="d-flex justify-content-end mt-3">
+                <%= link_to t("buttons.edit_feedback"), edit_offer_feedback_path(@offer), class: "km--btn km--btn-outline" %>
+              </div>
+            <% end %>
+          </div>
+        <%# Admins only: the charity already sees "Give feedback" above %>
+        <% elsif current_user.admin? && @offer.status.in?(%w[received completed]) %>
+          <div class="border-top mt-3 pt-3">
+            <span class="km--text-card-category km--text-soft">
+              <i class="fa-solid fa-comment-dots me-1"></i><%= t("feedback.not_given") %>
+            </span>
+          </div>
         <% end %>
       </div>
     </div>

@@ -97,6 +97,7 @@ ja:
       submitted: "提出済み"
       shipped: "発送中"
       awaiting_feedback: "評価待ち"
+      completed: "完了"
   statuses:
     requests:
       active: "アクティブ"
@@ -141,6 +142,7 @@ ja:
     delete: "削除"
     archive: "アーカイブ"
     give_feedback: "フィードバックを送る"
+    edit_feedback: "フィードバックを編集"
     reset_categories: "カテゴリーをリセット"
   requests:
     new_request: "新しい募集"

@@ -21,3 +21,20 @@
   font-weight: 300;
   min-width: 70px;
 }
+
+// Feedback tags, coloured by how serious they are
+.km--feedback-tag-positive {
+  // Cards are tan, so positive tags are white to stand out
+  background-color: $km--light;
+  color: $km--dark;
+}
+
+.km--feedback-tag-negative {
+  background-color: $km--pill-low;
+  color: $km--dark;
+}
+
+.km--feedback-tag-critical {
+  background-color: $km--danger-pink;
+  color: $km--light;
+}

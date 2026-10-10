@@ -161,15 +161,14 @@
          aria-labelledby="donationRulesModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
+          <%# Styled like the app's other modals; it stays scrollable and outside clicks don't close it %>
           <div class="modal-header">
-            <h5 class="modal-title" id="donationRulesModalLabel"><%= t("offers.donation_rules_title") %></h5>
+            <h5 class="modal-title km--text-card-title" id="donationRulesModalLabel"><%= t("offers.donation_rules_title") %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("buttons.close") %>"></button>
           </div>
           <div class="modal-body">
-            <% if (rules_image = donation_rules_image(@request)) %>
-              <%= image_tag rules_image, alt: t("offers.donation_rules_title"), class: "img-fluid mb-3" %>
-            <% end %>
-            <p><%= t("offers.donation_rules_body") %></p>
-            <div class="form-check">
+            <%= render "offers/donation_rules", request: @request %>
+            <div class="form-check mb-0">
               <input type="checkbox" id="donation_rules_acknowledged" class="form-check-input"
                      data-donation-rules-target="checkbox" data-action="change->donation-rules#toggle">
               <label for="donation_rules_acknowledged" class="form-check-label km--text-label">
@@ -177,6 +176,7 @@
               </label>
             </div>
           </div>
+          <%# Only Confirm here: the X in the header returns to the form unsent %>
           <div class="modal-footer">
             <button type="button" class="km--btn km--btn-primary" disabled
                     data-donation-rules-target="confirmButton" data-action="click->donation-rules#confirm">

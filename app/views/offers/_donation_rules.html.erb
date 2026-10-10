@@ -1,0 +1,6 @@
+<%# The quality guidelines for a request's category: shown to the donor before sending an offer,
+    and to the charity when giving feedback (what the donor agreed to). Local: request. %>
+<% if (rules_image = donation_rules_image(request)) %>
+  <%= image_tag rules_image, alt: t("offers.donation_rules_title"), class: "img-fluid rounded mb-3" %>
+<% end %>
+<p class="km--text-card-content"><%= t("offers.donation_rules_body") %></p>

@@ -1,0 +1,80 @@
+<% label_class = "km--text-card-category km--text-soft d-block mb-2" %>
+<div class="container mt-4 mb-5">
+  <div class="km--card km--form-card km--form-card-wide km--form-compact p-4">
+    <h4 class="km--text-card-title mb-1"><%= t("feedback.title") %></h4>
+    <p class="km--text-card-subtitle mb-1"><%= title_with_quantity(@request.title, @offer.quantity_offered) %></p>
+    <p class="km--text-card-content mb-2">
+      <%= donor_icon(@offer.donor) %><%= @offer.donor.display_name %>
+    </p>
+    <p class="km--text-card-content mb-2">
+      <i class="fa-solid fa-lock me-1"></i><%= t("feedback.internal_note") %>
+    </p>
+    <p class="km--text-card-content mb-3">
+      <i class="fa-solid fa-list-check me-1"></i><%= t("feedback.select_all_note") %>
+    </p>
+    <%# The guidelines the donor agreed to when offering, to compare the item against %>
+    <p class="km--text-card-content mb-3">
+      <button type="button" class="km--btn-link" data-bs-toggle="modal" data-bs-target="#feedbackGuidelinesModal">
+        <i class="fa-solid fa-clipboard-check me-1"></i><%= t("feedback.view_guidelines") %>
+      </button>
+    </p>
+    <% if feedback.errors.any? %>
+      <div class="alert alert-danger">
+        <ul class="list-unstyled mb-0 d-flex flex-column gap-1">
+          <% feedback.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= form_with model: feedback, url: offer_feedback_path(@offer), method: feedback.persisted? ? :patch : :post do |f| %>
+      <%# Sent even with nothing ticked, so editing can clear every tag %>
+      <%= hidden_field_tag "feedback[tags][]", "", id: nil %>
+      <% FeedbackTags::GROUPS.each do |group| %>
+        <% tags = @grouped_tags[group] %>
+        <% next if tags.blank? %>
+        <div class="mb-3">
+          <span class="<%= label_class %>"><%= t("feedback.groups.#{group}") %></span>
+          <div class="rounded p-3 km--field-box">
+            <div class="row row-cols-1 row-cols-md-2 g-2">
+              <% tags.each do |tag| %>
+                <div class="col">
+                  <div class="form-check">
+                    <%= check_box_tag "feedback[tags][]", tag[:slug], feedback.tags.include?(tag[:slug].to_s),
+                          id: "feedback_tags_#{tag[:slug]}", class: "form-check-input" %>
+                    <%= label_tag "feedback_tags_#{tag[:slug]}", t("feedback.tags.#{tag[:slug]}", default: tag[:label]), class: "form-check-label" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="mb-3">
+        <%= f.label :comment, t("feedback.additional_feedback"), class: label_class %>
+        <%= f.text_area :comment, rows: 4, placeholder: t("feedback.comment_placeholder"),
+              class: "km--form-control form-control km--no-resize" %>
+      </div>
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+        <div class="form-check mb-0">
+          <%= f.check_box :escalated, class: "form-check-input" %>
+          <%= f.label :escalated, t("feedback.escalate"), class: "form-check-label" %>
+        </div>
+        <%= f.submit feedback.persisted? ? t("buttons.save") : t("feedback.submit"), class: "km--btn km--btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="modal fade" id="feedbackGuidelinesModal" tabindex="-1" aria-labelledby="feedbackGuidelinesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title km--text-card-title" id="feedbackGuidelinesModalLabel"><%= t("offers.donation_rules_title") %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("buttons.close") %>"></button>
+      </div>
+      <div class="modal-body">
+        <%= render "offers/donation_rules", request: @request %>
+      </div>
+    </div>
+  </div>
+</div>

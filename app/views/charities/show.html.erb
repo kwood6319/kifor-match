@@ -90,6 +90,11 @@
             <i class="fa-solid fa-clock-rotate-left"></i><%= t("navigation.history") %>
           </button>
         </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#charity-feedback" type="button">
+            <i class="fa-solid fa-comment-dots"></i><%= t("feedback.tab_given") %> (<%= @feedbacks.size %>)
+          </button>
+        </li>
       </ul>
       <div class="tab-content km--tabs-stable">
         <div class="tab-pane fade show active" id="charity-requests-current">
@@ -108,6 +113,15 @@
             <% end %>
           <% else %>
             <p class="km--text-soft mb-0"><%= t("navigation.no_archived_requests") %></p>
+          <% end %>
+        </div>
+        <div class="tab-pane fade" id="charity-feedback">
+          <% if @feedbacks.present? %>
+            <% @feedbacks.each do |feedback| %>
+              <%= render "feedbacks/feedback_list_item", feedback: feedback, party: :donor %>
+            <% end %>
+          <% else %>
+            <p class="km--text-soft mb-0"><%= t("feedback.none_given") %></p>
           <% end %>
         </div>
       </div>

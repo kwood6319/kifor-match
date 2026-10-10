@@ -3,8 +3,12 @@ en:
     messages:
       exceeds_remaining: "Cannot exceed the remaining quantity needed (%{max})"
       photos_missing: "Please add at least one photo of your item"
+      tags_or_comment_required: "Please select at least one item or add a comment"
   activerecord:
     attributes:
+      feedback:
+        tags: "Feedback items"
+        comment: "Additional feedback"
       charity:
         org_name: "Organization name"
         address: "Address"

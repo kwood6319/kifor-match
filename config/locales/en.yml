@@ -126,6 +126,7 @@ en:
       submitted: "Submitted"
       shipped: "Shipping"
       awaiting_feedback: "Review"
+      completed: "Completed"
   statuses:
     requests:
       active: "Active"
@@ -170,6 +171,7 @@ en:
     delete: "Delete"
     archive: "Archive"
     give_feedback: "Give feedback"
+    edit_feedback: "Edit feedback"
     reset_categories: "Reset categories"
   requests:
     new_request: "New need"

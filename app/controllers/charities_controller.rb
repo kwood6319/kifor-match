@@ -24,6 +24,8 @@ class CharitiesController < ApplicationController
     @archived_requests = @charity.requests.where(status: "archived").order(updated_at: :desc)
     @total_requests_count = @charity.requests.count
     @completed_requests_count = @charity.requests.where(status: "fulfilled").count
+    @feedbacks = Feedback.joins(offer: :request).where(requests: { charity_id: @charity.id })
+                         .includes(offer: %i[donor request]).order(created_at: :desc)
   end
 
   def destroy

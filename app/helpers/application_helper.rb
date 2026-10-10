@@ -83,15 +83,16 @@ module ApplicationHelper
     tag.i(class: "fa-solid #{icon} fa-fw me-1", title: t("donors.types.#{donor.donor_type.presence || 'individual'}"))
   end
 
-  # Plain status badges, used where admins need to see the raw state
+  # Plain status badges, used where admins need to see the raw state.
+  # align-self-start stops a flex column (like .km--card) stretching them full width.
   def offer_status_badge(offer)
     tag.span(t("statuses.donor.#{offer.status}", default: offer.status.humanize),
-             class: "badge rounded-pill text-bg-secondary km--text-pill text-nowrap")
+             class: "badge rounded-pill text-bg-secondary km--text-pill text-nowrap align-self-start")
   end
 
   def request_status_badge(request)
     tag.span(t("statuses.requests.#{request.status}", default: request.status.humanize),
-             class: "badge rounded-pill text-bg-secondary km--text-pill text-nowrap")
+             class: "badge rounded-pill text-bg-secondary km--text-pill text-nowrap align-self-start")
   end
 
   # Standard way to show an item with its quantity, e.g. "19x Rice"
