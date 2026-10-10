@@ -14,7 +14,7 @@
         </p>
         <% if (ship_date = offer_ship_date(offer)) %>
           <p class="km--text-card-content mb-0" title="<%= ship_date[:label] %>">
-            <i class="fa-solid fa-truck fa-fw me-1"></i><%= l(ship_date[:date], format: :short) %>
+            <i class="fa-solid fa-truck fa-fw me-1"></i><%= ship_date_text(ship_date) %>
           </p>
         <% end %>
         <p class="km--text-card-content mb-0" title="<%= t("dashboard.alerts") %>">

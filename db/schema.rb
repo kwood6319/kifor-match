@@ -117,6 +117,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_075810) do
     t.datetime "created_at", null: false
     t.bigint "donor_id", null: false
     t.date "estimated_arrival"
+    t.string "estimated_arrival_time"
     t.text "flag_reason"
     t.text "message"
     t.integer "quantity_offered", null: false
