@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_01_112535) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_10_064931) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,14 +42,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_112535) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "addresses", force: :cascade do |t|
+    t.bigint "addressable_id", null: false
+    t.string "addressable_type", null: false
+    t.string "building"
+    t.string "city", null: false
+    t.datetime "created_at", null: false
+    t.string "postal_code", null: false
+    t.string "prefecture", null: false
+    t.string "recipient_name"
+    t.string "region", null: false
+    t.string "street", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable", unique: true
+  end
+
   create_table "charities", force: :cascade do |t|
     t.boolean "approved", default: false
     t.datetime "created_at", null: false
     t.text "description"
     t.string "org_name", null: false
-    t.string "prefecture"
-    t.string "region", null: false
-    t.text "shipping_address"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_charities_on_user_id"

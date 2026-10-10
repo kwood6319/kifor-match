@@ -38,7 +38,9 @@
   <% elsif offer.status == "approved" %>
     <p class="km--text-card-content mb-1"><%= t("statuses.donor.approved_message") %></p>
     <p class="km--text-card-content"><%= t("statuses.donor.charity_shipping_info") %></p>
-    <p class="km--text-card-content my-2 mx-5"><%= offer.request.charity.shipping_address %></p>
+    <div class="my-2 mx-5">
+      <%= render "shared/address", address: offer.request.charity.address %>
+    </div>
     <%= simple_form_for offer,
       url: mark_as_shipped_offer_path(offer),
       method: :patch do |f| %>

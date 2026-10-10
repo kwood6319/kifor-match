@@ -200,6 +200,21 @@ ja:
       title: "募集を削除"
     archive_request:
       title: "募集をアーカイブ"
+  addresses:
+    label:
+      postal_code: "郵便番号"
+      address: "住所"
+      name: "氏名"
+    label_hint: "送り状の「お届け先」の各欄に、それぞれ書き写してください。"
+    visibility_notice: "団体名とこの住所は、寄付を承認した後にのみ、発送先としてドナーに表示されます。"
+    postal_code: "郵便番号"
+    city: "市区町村"
+    city_placeholder: "例：渋谷区"
+    street: "町名・番地"
+    street_placeholder: "例：神宮前1-2-3"
+    building: "建物名・部屋番号（任意）"
+    building_placeholder: "例：キフォービル101"
+    recipient_name: "宛名（任意）"
   activerecord:
     attributes:
       offer:
