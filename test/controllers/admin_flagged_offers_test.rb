@@ -7,8 +7,9 @@ class AdminFlaggedOffersTest < ActionDispatch::IntegrationTest
     @admin = User.create!(email: "flag-admin@example.com", password: "password", role: :admin)
     @donor_user = User.create!(email: "flag-donor@example.com", password: "password", role: :donor)
     charity_user = User.create!(email: "flag-charity@example.com", password: "password", role: :charity)
-    charity = Charity.create!(user: charity_user, org_name: "Test Charity", region: "Kanto",
-                              shipping_address: "1-2-3 Test, Tokyo", approved: true)
+    charity = Charity.create!(user: charity_user, org_name: "Test Charity",
+                              address_attributes: { postal_code: "1500001", region: "Kanto", prefecture: "Tokyo",
+                                                    city: "Shibuya", street: "1-2-3" }, approved: true)
     @donor = Donor.create!(user: @donor_user, display_name: "Test Donor")
     request_record = Request.create!(charity: charity, title: "Rice", description: "Need rice",
                                      condition: "new", urgency: "low", category: ["food"], quantity_needed: 5)

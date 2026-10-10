@@ -5,11 +5,12 @@ module Donors
     def show
       authorize :donor_dashboard, :show?
       # Start with your policy scope and include charity to avoid N+1 queries
-      @requests = policy_scope(Request).includes(:charity).where.not(status: "archived").where("quantity_remaining > 0")
+      @requests = policy_scope(Request).includes(charity: :address)
+                                       .where.not(status: "archived").where("quantity_remaining > 0")
 
       @top_categories = CategoryList.top_categories
 
-      assign_tracker_offers(current_donor.offers.includes(request: :charity).order(updated_at: :desc))
+      assign_tracker_offers(current_donor.offers.includes(request: { charity: :address }).order(updated_at: :desc))
       @notifications = current_donor.notifications.undismissed.includes(offer: :request).order(created_at: :desc)
 
       # # Setup dynamic variables for your dropdown menus

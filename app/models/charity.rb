@@ -1,11 +1,14 @@
 class Charity < ApplicationRecord
-  include RegionPrefecture
-
   belongs_to :user
   has_many :requests, dependent: :restrict_with_error
   has_many :notifications, as: :recipient
+  # Holds the charity's region/prefecture (its public location) and shipping address
+  has_one :address, as: :addressable, dependent: :destroy
+  accepts_nested_attributes_for :address, update_only: true
 
-  validates :org_name, :region, :shipping_address, presence: true
+  delegate :region, :prefecture, to: :address, allow_nil: true
+
+  validates :org_name, :address, presence: true
 
   # Approved by an admin and not deactivated: only these charities' needs are
   # shown to donors and can receive donations.

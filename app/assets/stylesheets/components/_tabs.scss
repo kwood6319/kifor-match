@@ -118,6 +118,13 @@
   form {
     max-width: 36rem;
   }
+
+  // Centre each tab's form in its card (not the modal's button_to form).
+  // The card is a flex column, so auto margins alone would shrink the form to its content.
+  .tab-content form {
+    width: 100%;
+    margin-inline: auto;
+  }
 }
 
 .km--settings-options {
