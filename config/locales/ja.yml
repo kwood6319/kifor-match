@@ -130,6 +130,7 @@ ja:
       approved_message: "寄付者にはすでに連絡を済ませており、発送情報の連絡を待っているところです。"
       rejected_message: "この寄付をお断りしました。"
       received_message: "この寄付を「受領済み」としてマークしました。"
+      completed_message: "フィードバック送信済み。この寄付は完了しました。"
   buttons:
     dismiss: "非表示にする"
     save: "保存"

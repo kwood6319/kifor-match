@@ -11,6 +11,7 @@
       <i class="fa-solid fa-list-check me-1"></i><%= t("feedback.select_all_note") %>
     </p>
     <%= form_with url: request_feedback_path(@request), method: :post do %>
+      <%= hidden_field_tag :offer_id, @offer.id %>
       <% FeedbackTags::GROUPS.each do |group| %>
         <% tags = @grouped_tags[group] %>
         <% next if tags.blank? %>
