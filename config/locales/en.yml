@@ -159,6 +159,7 @@ en:
       approved_message: "We have notified the donor and are awaiting the shipping information."
       rejected_message: "You have rejected this donation."
       received_message: "You have marked this donation as received."
+      completed_message: "Feedback submitted. This donation is complete."
   buttons:
     dismiss: "Dismiss"
     save: "Save"
