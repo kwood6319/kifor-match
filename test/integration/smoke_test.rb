@@ -70,7 +70,7 @@ class SmokeTest < ActionDispatch::IntegrationTest
       ["edit offer", @donor_user, "/en/offers/#{@offer.id}/edit"],
       ["offers search", @donor_user, "/en/offers/search"],
 
-      ["new feedback", @charity_user, "/en/requests/#{@req.id}/feedback/new"],
+      ["new feedback", @charity_user, "/en/requests/#{@req.id}/feedback/new?offer_id=#{@offer.id}"],
 
       ["sign in", nil, "/en/users/sign_in"],
       ["sign up", nil, "/en/users/sign_up"]
@@ -183,7 +183,7 @@ class SmokeTest < ActionDispatch::IntegrationTest
 
     # feedbacks#create
     sign_in @charity_user
-    post "/en/requests/#{@req.id}/feedback", params: { feedback: { comment: "great" } }
+    post "/en/requests/#{@req.id}/feedback", params: { offer_id: @offer.id, feedback: { comment: "great" } }
     assert_response :redirect, "feedbacks#create -> #{response.status}"
 
     # charities#approve / #destroy
