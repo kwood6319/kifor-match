@@ -98,6 +98,9 @@
           <% end %>
         <% elsif @offer.status == "completed" %>
           <p class="km--text-card-content mb-0"><%= t("statuses.donor.completed") %></p>
+        <% elsif @offer.status == "flagged" %>
+          <%# Donors aren't told about the flag %>
+          <p class="km--text-card-content mb-0"><%= current_user.donor? ? t("statuses.donor.received_message") : t("statuses.charity.flagged_message") %></p>
         <% end %>
         <%# Internal feedback: admins and the receiving charity only, never the donor %>
         <%# "Feedback given <date>" in the partial is the heading, so no separate title %>

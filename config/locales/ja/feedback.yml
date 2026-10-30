@@ -18,6 +18,7 @@ ja:
     escalated: "報告済み"
     none_received: "まだフィードバックはありません"
     none_given: "まだフィードバックはありません"
+    escalated_notice: "ありがとうございます。この寄付を管理者に報告しました。"
     groups:
       positive: "良い点"
       negative: "問題点"

@@ -18,6 +18,7 @@ en:
     escalated: "Escalated"
     none_received: "No feedback received yet"
     none_given: "No feedback given yet"
+    escalated_notice: "Thanks. This donation has been reported to an admin."
     groups:
       positive: "Positive"
       negative: "Negative"
