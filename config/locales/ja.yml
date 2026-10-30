@@ -39,6 +39,7 @@ ja:
     settings: "設定"
     view: "表示"
   messages:
+    flag_resolved: "報告を解決済みにしました。"
     offer_archived: "寄付を非表示にしました。"
     offer_updated: "寄付の内容を更新しました。"
     welcome_back: "おかえりなさい"
@@ -131,6 +132,7 @@ ja:
       rejected_message: "この寄付をお断りしました。"
       received_message: "この寄付を「受領済み」としてマークしました。"
       completed_message: "フィードバック送信済み。この寄付は完了しました。"
+      flagged_message: "管理者に報告済み。"
   buttons:
     dismiss: "非表示にする"
     save: "保存"
@@ -143,6 +145,9 @@ ja:
     archive: "アーカイブ"
     give_feedback: "フィードバックを送る"
     reset_categories: "カテゴリーをリセット"
+    resolve: "解決"
+    deactivate: "無効化"
+    deactivated: "無効化済み"
   requests:
     new_request: "新しい募集"
     create_request: "募集を作成"
@@ -168,6 +173,7 @@ ja:
     approved: "チャリティーを承認しました"
     approve_failed: "チャリティーを承認できませんでした：%{errors}"
   donors:
+    deactivated: "寄付者を無効化しました。"
     stats: "ドナー統計"
     current_offers: "現在の寄付"
     approved: "ドナーを承認しました"

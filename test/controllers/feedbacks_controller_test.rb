@@ -40,4 +40,18 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     assert_equal "received", @offer.reload.status
   end
+
+  test "escalate flags the offer and saves the reason" do
+    sign_in @charity_user
+    remaining_before = @request_record.reload.quantity_remaining
+
+    post request_feedback_path(request_id: @request_record.id),
+         params: { offer_id: @offer.id, feedback: { escalate: "1", comment: "Items were broken" } }
+
+    assert_redirected_to request_path(id: @request_record.id)
+    @offer.reload
+    assert_equal "flagged", @offer.status
+    assert_equal "Items were broken", @offer.flag_reason
+    assert_equal remaining_before, @request_record.reload.quantity_remaining
+  end
 end

@@ -50,7 +50,7 @@ class Request < ApplicationRecord
 
   OPEN_OFFER_STATUSES = %w[submitted approved shipped]
 
-  FULFILLING_STATUSES = %w[received completed].freeze
+  FULFILLING_STATUSES = %w[received flagged completed].freeze
 
   REGIONS_AND_PREFECTURES = {
     "Hokkaido" => %w[Hokkaido],

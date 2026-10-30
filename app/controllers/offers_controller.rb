@@ -1,5 +1,5 @@
 class OffersController < ApplicationController
-  before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped archive]
+  before_action :set_offer, only: %i[show destroy approve reject mark_received mark_as_shipped archive resolve]
   before_action :show_back_button, only: %i[show]
 
   def show
@@ -71,6 +71,12 @@ class OffersController < ApplicationController
     authorize @offer
     @offer.archive!
     redirect_to donors_dashboard_path, notice: t("messages.offer_archived"), status: :see_other
+  end
+
+  def resolve
+    authorize @offer
+    @offer.update!(status: "completed")
+    redirect_to admins_dashboard_path, notice: t("messages.flag_resolved"), status: :see_other
   end
 
   def update_received

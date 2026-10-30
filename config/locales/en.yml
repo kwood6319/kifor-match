@@ -68,6 +68,7 @@ en:
     settings: "Settings"
     view: "View"
   messages:
+    flag_resolved: "Flag resolved."
     offer_archived: "Donation dismissed."
     offer_updated: "Donation updated."
     welcome_back: "Welcome back"
@@ -160,6 +161,7 @@ en:
       rejected_message: "You have rejected this donation."
       received_message: "You have marked this donation as received."
       completed_message: "Feedback submitted. This donation is complete."
+      flagged_message: "Reported to admin."
   buttons:
     dismiss: "Dismiss"
     save: "Save"
@@ -171,6 +173,9 @@ en:
     delete: "Delete"
     archive: "Archive"
     give_feedback: "Give feedback"
+    resolve: "Resolve"
+    deactivate: "Deactivate"
+    deactivated: "Deactivated"
     reset_categories: "Reset categories"
   requests:
     new_request: "New need"
@@ -197,6 +202,7 @@ en:
     approved: "Charity approved!"
     approve_failed: "Charity could not be approved: %{errors}"
   donors:
+    deactivated: "Donor deactivated."
     stats: "Donor Stats"
     current_offers: "Current Donations"
     no_current_offers: "This donor has no current donations"
