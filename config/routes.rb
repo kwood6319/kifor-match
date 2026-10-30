@@ -58,6 +58,7 @@ Rails.application.routes.draw do
         patch :archive
         patch :accept
         patch :mark_sent
+        patch :resolve
 
         patch :activate
         patch :deactivate

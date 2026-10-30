@@ -1,5 +1,5 @@
 class DonorsController < ApplicationController
-  before_action :set_donor, only: %i[show approve destroy]
+  before_action :set_donor, only: %i[show approve deactivate destroy]
   before_action :show_back_button, only: %i[show]
 
   def index
@@ -39,6 +39,12 @@ class DonorsController < ApplicationController
       redirect_back fallback_location: donors_path, status: :see_other,
                     alert: t("donors.approve_failed", errors: @donor.errors.full_messages.to_sentence)
     end
+  end
+
+  def deactivate
+    authorize @donor
+    @donor.user.update!(active: false)
+    redirect_back fallback_location: admins_dashboard_path, status: :see_other, notice: t("donors.deactivated")
   end
 
   private
