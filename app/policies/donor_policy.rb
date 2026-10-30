@@ -17,6 +17,10 @@ class DonorPolicy < ApplicationPolicy
     admin?
   end
 
+  def deactivate?
+    admin?
+  end
+
   def destroy?
     admin?
   end

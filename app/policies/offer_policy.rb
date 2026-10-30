@@ -59,6 +59,10 @@ class OfferPolicy < ApplicationPolicy
     admin? || owning_charity?
   end
 
+  def resolve?
+    admin? && record.status == "flagged"
+  end
+
   def mark_as_shipped?
     admin? || owning_donor?
   end
