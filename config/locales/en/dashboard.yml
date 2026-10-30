@@ -10,4 +10,5 @@ en:
     flagged: "Flagged"
     no_unapproved_charities: "No charities awaiting approval"
     no_unapproved_donors: "No donors awaiting approval"
+    no_flagged_offers: "No flagged donations"
     feature_coming_soon: "Feature coming soon"

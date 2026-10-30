@@ -8,6 +8,7 @@ en:
     escalate: "Escalate to admin"
     submit: "Submit"
     thanks: "Thanks for your feedback!"
+    escalated: "Thanks. This donation has been reported to an admin."
     groups:
       positive: "Positive"
       negative: "Negative"

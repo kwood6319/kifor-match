@@ -95,8 +95,8 @@
           <% else %>
             <p class="km--text-card-content mb-0"><%= t("statuses.donor.received_message") %></p>
           <% end %>
-        <% elsif @offer.status == "completed" %>
-          <p class="km--text-card-content mb-0"><%= current_user.charity? ? t("statuses.charity.completed_message") : t("statuses.donor.received_message") %></p>
+        <% elsif %w[completed flagged].include?(@offer.status) %>
+          <p class="km--text-card-content mb-0"><%= current_user.charity? ? t("statuses.charity.#{@offer.status}_message") : t("statuses.donor.received_message") %></p>
         <% end %>
       </div>
     </div>
