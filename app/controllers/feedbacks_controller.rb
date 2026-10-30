@@ -7,13 +7,14 @@ class FeedbacksController < ApplicationController
     authorize @feedback
   end
 
-  # Giving feedback is the charity's last step, so it also completes the offer
+  # Giving feedback is the charity's last step, so it also completes the offer,
+  # or flags it for an admin when the charity escalates
   def create
     @feedback = Feedback.new(feedback_params.merge(offer: @offer))
     authorize @feedback
 
     if save_and_complete_offer
-      redirect_to request_path(@offer.request), notice: t("feedback.thanks")
+      redirect_to request_path(@offer.request), notice: t(@feedback.escalated? ? "feedback.escalated" : "feedback.thanks")
     else
       render :new, status: :unprocessable_entity
     end
@@ -50,7 +51,12 @@ class FeedbacksController < ApplicationController
       # System status change, like Request#archive!: skip validation so older
       # offer data (photos, dates) can't block it. Callbacks still run, so the
       # donor gets the "completed" notification.
-      @offer.status = "completed"
+      if @feedback.escalated?
+        @offer.status = "flagged"
+        @offer.flag_reason = @feedback.comment
+      else
+        @offer.status = "completed"
+      end
       @offer.save!(validate: false)
     end
   end
