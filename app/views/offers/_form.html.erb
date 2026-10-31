@@ -34,27 +34,11 @@
         </div>
       </div>
       <div class="row g-3 mt-0">
-        <%
-          ship_by = offer.can_ship_by || Date.current
-          month_year_options = (0..11).map do |offset|
-            date = Date.current.next_month(offset)
-            [l(date, format: :month_year), date.strftime("%Y-%m")]
-          end
-        %>
-        <div class="col-md-6" data-controller="ship-date">
-          <%= form.label :ship_by_day, t("offers.can_ship_by"), class: "km--text-card-category km--text-soft d-block mb-2 km--required" %>
-          <div class="d-flex gap-2">
-            <%= form.select :ship_by_day,
-              (1..31).to_a,
-              { selected: ship_by.day },
-              class: "km--form-control form-select",
-              data: { "ship-date-target": "day" } %>
-            <%= form.select :ship_by_month_year,
-              month_year_options,
-              { selected: ship_by.strftime("%Y-%m") },
-              class: "km--form-control form-select",
-              data: { "ship-date-target": "monthYear", action: "change->ship-date#monthYearChanged" } %>
-          </div>
+        <%# The browser's date picker (it was day + month dropdowns); can't go before today %>
+        <div class="col-md-6">
+          <%= form.label :can_ship_by, t("offers.can_ship_by"), class: "km--text-card-category km--text-soft d-block mb-2 km--required" %>
+          <%= form.date_field :can_ship_by, value: offer.can_ship_by || Date.current, min: Date.current,
+                required: true, class: "km--form-control form-control" %>
         </div>
         <%# TO DO: UI only for now. Persist these on Offer (e.g. will_ship / will_drop_off booleans) and permit them. %>
         <div class="col-md-6">

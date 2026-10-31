@@ -105,7 +105,7 @@ en:
     quantity_offered: "Quantity to donate"
     message: "Message"
     message_prompt: "Any details you'd like to share with the charity? E.g., broken pieces, history, etc."
-    can_ship_by: "Can ship by"
+    can_ship_by: "Ready from"
     photos_of_item: "Photos of item"
     photo_expl: "Uploading a photo helps charities verify the condition of the item."
     send_offer: "Send"
@@ -234,6 +234,7 @@ en:
       offer:
         rejection_reason: "Reason for rejection"
         quantity_offered: "Quantity to donate"
+        can_ship_by: "Ready-from date"
   dashboard:
     no_pending_offers: "No pending donations"
     condition: "Condition"

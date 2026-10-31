@@ -2,6 +2,7 @@ en:
   errors:
     messages:
       exceeds_remaining: "Cannot exceed the remaining quantity needed (%{max})"
+      in_past: "can't be in the past"
       photos_missing: "Please add at least one photo of your item"
   activerecord:
     attributes:
