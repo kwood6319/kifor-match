@@ -43,7 +43,7 @@
         <ul class="nav nav-tabs km--nav-tabs mb-2" id="donor-tracker-tabs" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link km--nav-link active" data-bs-toggle="pill" data-bs-target="#tracker-attention" type="button">
-              <i class="fa-solid fa-triangle-exclamation"></i><%= t("dashboard.needs_your_attention") %>
+              <i class="fa-solid fa-triangle-exclamation"></i><%= t("dashboard.needs_your_attention") %><%= tracker_tab_count(@attention_offers) %>
             </button>
           </li>
           <li class="nav-item" role="presentation">
@@ -82,21 +82,18 @@
     </div>
   </div>
 </div>
-<%# Toast notification %>
-<div class="toast-container position-fixed top-0 end-0 p-3 km--toast-stack">
+<%# Notifications sit in the layout's bottom-right stack, styled like flash messages. They fade
+    after 8 seconds; fading or the X marks them read on the server so they don't return. %>
+<% content_for :toasts do %>
   <% @notifications.each do |notification| %>
     <%= turbo_frame_tag "notification_#{notification.id}" do %>
-      <div class="toast show mb-2" role="alert" id="notification_<%= notification.id %>">
-        <div class="toast-header">
-          <strong class="me-auto"><%= t("notifications.title") %></strong>
-          <%= button_to "", dismiss_notification_path(notification), method: :patch, class: "btn-close",
-                "aria-label": t("buttons.close"),
-                form: { data: { turbo_frame: "notification_#{notification.id}" } } %>
-        </div>
-        <div class="toast-body">
-          <%= link_to notification.message, notification.link_path, class: "text-decoration-none", data: { turbo_frame: "_top" } %>
-        </div>
+      <div class="alert alert-info alert-dismissible fade show mb-0" role="alert"
+           data-controller="auto-dismiss" data-auto-dismiss-delay-value="8000">
+        <%= link_to notification.message, notification.link_path, class: "alert-link fw-normal text-decoration-none", data: { turbo_frame: "_top" } %>
+        <%= button_to "", dismiss_notification_path(notification), method: :patch, class: "btn-close",
+              "aria-label": t("buttons.close"),
+              form: { data: { turbo_frame: "notification_#{notification.id}", auto_dismiss_target: "form" } } %>
       </div>
     <% end %>
   <% end %>
-</div>
+<% end %>

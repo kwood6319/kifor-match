@@ -1,6 +1,9 @@
 :root {
-  --km-font-display: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
-  --km-font-body: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  // Inter/Poppins have no Japanese, so Japanese system fonts come next; without them the
+  // browser may fall back to a Chinese font and draw some kanji in Chinese forms
+  --km-font-japanese: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Yu Gothic', 'Meiryo', 'Noto Sans JP';
+  --km-font-display: 'Poppins', var(--km-font-japanese), -apple-system, 'Segoe UI', sans-serif;
+  --km-font-body: 'Inter', var(--km-font-japanese), -apple-system, 'Segoe UI', sans-serif;
 }
 
 .km--text-dark       { color: #{$km--dark}; }

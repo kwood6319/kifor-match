@@ -1,12 +1,15 @@
+<%# Flash messages fade out on their own (auto-dismiss); warnings stay a little longer. %>
 <% if notice %>
-  <div class="alert alert-info alert-dismissible fade show m-1 km--toast" role="alert">
+  <div class="alert alert-info alert-dismissible fade show mb-0" role="alert"
+       data-controller="auto-dismiss" data-auto-dismiss-delay-value="5000">
     <%= notice %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
     </button>
   </div>
 <% end %>
 <% if alert %>
-  <div class="alert alert-warning alert-dismissible fade show m-1 km--toast" role="alert">
+  <div class="alert alert-warning alert-dismissible fade show mb-0" role="alert"
+       data-controller="auto-dismiss" data-auto-dismiss-delay-value="8000">
     <%= alert %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
     </button>

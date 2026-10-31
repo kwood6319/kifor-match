@@ -5,6 +5,15 @@
   z-index: 1000;
 }
 
+// Flash messages and dashboard notifications, stacked in the bottom-right corner
 .km--toast-stack {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
   z-index: 1080;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  max-width: unquote("min(28rem, calc(100vw - 32px))"); // CSS min(), not Sass min()
 }

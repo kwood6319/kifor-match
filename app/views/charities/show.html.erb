@@ -35,10 +35,9 @@
           </div>
         <% end %>
         <% if @charity.address %>
-          <div class="mb-3">
-            <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.address") %></p>
-            <%= render "shared/address", address: @charity.address %>
-          </div>
+          <%# Section heading like the page's others, with the address rows in the highlighted box donors see %>
+          <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.address") %></p>
+          <%= render layout: "shared/address_box", locals: { address: @charity.address } do %><% end %>
         <% end %>
         <div class="d-flex justify-content-end gap-3">
           <%# TO DO: Add a Flag button once flagging exists %>
