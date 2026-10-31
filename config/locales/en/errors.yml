@@ -2,6 +2,7 @@ en:
   errors:
     messages:
       exceeds_remaining: "Cannot exceed the remaining quantity needed (%{max})"
+      in_past: "can't be in the past"
       photos_missing: "Please add at least one photo of your item"
       drop_off_time_missing: "Please choose a drop-off time"
       drop_off_time_interval: "Please choose a drop-off time on the hour or half hour"
