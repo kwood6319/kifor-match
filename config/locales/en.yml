@@ -229,6 +229,22 @@ en:
       title: "Delete Need"
     archive_request:
       title: "Archive Need"
+  addresses:
+    # Shipping slip (送り状) boxes; the Japanese terms are kept so donors can match them
+    label:
+      postal_code: "Postal code (郵便番号)"
+      address: "Address (住所)"
+      name: "Name (氏名)"
+    label_hint: "Write each line into the matching box under お届け先 (\"To\") on your shipping label."
+    visibility_notice: "Donors only see your organisation's name and this address after you accept their donation, so they know where to send it."
+    postal_code: "Postal code"
+    city: "City / ward"
+    city_placeholder: "e.g. Shibuya-ku"
+    street: "Street address"
+    street_placeholder: "e.g. Jingumae 1-2-3"
+    building: "Building / room (optional)"
+    building_placeholder: "e.g. Kifor Building 101"
+    recipient_name: "Recipient name (optional)"
   activerecord:
     attributes:
       offer:

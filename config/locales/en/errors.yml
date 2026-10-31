@@ -7,5 +7,16 @@ en:
     attributes:
       charity:
         org_name: "Organization name"
+        address: "Address"
+      address: &en_address_attributes
+        postal_code: "Postal code"
+        region: "Region"
+        prefecture: "Prefecture"
+        city: "City / ward"
+        street: "Street address"
+        building: "Building / room"
+        recipient_name: "Recipient name"
+      # Nested errors on a charity's address use this key
+      charity/address: *en_address_attributes
       donor:
         display_name: "Display name"

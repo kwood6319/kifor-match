@@ -34,10 +34,10 @@
             <p class="km--text-card-content mb-0"><%= @charity.description %></p>
           </div>
         <% end %>
-        <% if @charity.shipping_address.present? %>
+        <% if @charity.address %>
           <div class="mb-3">
             <p class="km--text-card-category km--text-soft mb-2"><%= t("shipping.address") %></p>
-            <p class="km--text-card-content mb-0"><%= @charity.shipping_address %></p>
+            <%= render "shared/address", address: @charity.address %>
           </div>
         <% end %>
         <div class="d-flex justify-content-end gap-3">

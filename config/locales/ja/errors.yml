@@ -27,9 +27,17 @@ ja:
       charity:
         org_name: "団体名"
         description: "説明"
+        address: "住所"
+      address: &ja_address_attributes
+        postal_code: "郵便番号"
         region: "地域"
         prefecture: "都道府県"
-        shipping_address: "配送先住所"
+        city: "市区町村"
+        street: "町名・番地"
+        building: "建物名・部屋番号"
+        recipient_name: "宛名"
+      # Nested errors on a charity's address use this key
+      charity/address: *ja_address_attributes
       donor:
         display_name: "表示名"
         donor_type: "寄付者の種類"
