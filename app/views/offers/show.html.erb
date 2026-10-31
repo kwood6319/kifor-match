@@ -28,7 +28,7 @@
         <% if (ship_date = offer_ship_date(@offer)) %>
           <div class="mb-3">
             <p class="km--text-card-category km--text-soft mb-2"><%= ship_date[:label] %></p>
-            <p class="km--text-card-content mb-0"><%= l(ship_date[:date], format: :short) %></p>
+            <p class="km--text-card-content mb-0"><%= ship_date_text(ship_date) %></p>
           </div>
         <% end %>
         <% if @offer.message.present? %>
@@ -40,7 +40,7 @@
         <% if @offer.estimated_arrival.present? %>
           <div class="mb-3">
             <p class="km--text-card-category km--text-soft mb-2"><%= t("statuses.donor.arriving") %></p>
-            <p class="km--text-card-content mb-0"><%= l(@offer.estimated_arrival, format: :short) %></p>
+            <p class="km--text-card-content mb-0"><%= arrival_text(@offer) %></p>
           </div>
         <% end %>
         <% if @offer.tracking_number.present? %>
