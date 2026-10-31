@@ -2,6 +2,7 @@ ja:
   errors:
     messages:
       exceeds_remaining: "残りの必要数量（%{max}）を超えることはできません"
+      in_past: "に過去の日付は指定できません"
       photos_missing: "商品の写真を1枚以上追加してください"
       blank: "を入力してください"
       inclusion: "は一覧にありません"
@@ -14,7 +15,8 @@ ja:
       offer:
         quantity_offered: "寄付する数量"
         condition: "状態"
-        can_ship_by: "発送可能日"
+        can_ship_by: "受け渡し可能日"
+        estimated_arrival: "到着予定日"
         message: "メッセージ"
       request:
         title: "タイトル"
