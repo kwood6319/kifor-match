@@ -7,6 +7,14 @@ class Charity < ApplicationRecord
 
   validates :org_name, :region, :shipping_address, presence: true
 
+  # Approved by an admin and not deactivated: only these charities' needs are
+  # shown to donors and can receive donations.
+  scope :visible, -> { where(approved: true, user: User.where(active: true)) }
+
+  def visible?
+    approved? && user.active?
+  end
+
   # TO DO: Replace with an accepts_drop_off boolean column on charities (and a
   # settings toggle). Hardcoded demo placeholder until then.
   NO_DROP_OFF_ORG_NAMES = [
