@@ -17,6 +17,14 @@ class CharityPolicy < ApplicationPolicy
     admin?
   end
 
+  def activate?
+    admin?
+  end
+
+  def deactivate?
+    admin?
+  end
+
   def destroy?
     admin?
   end

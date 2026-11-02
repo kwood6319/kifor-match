@@ -1,0 +1,8 @@
+<% if charity.user.active? %>
+  <%= button_to t("buttons.deactivate"), deactivate_charity_path(charity), method: :patch,
+        class: "km--btn km--btn-danger",
+        data: { turbo_confirm: t("messages.deactivate_charity_confirm") } %>
+<% else %>
+  <%= button_to t("buttons.activate"), activate_charity_path(charity), method: :patch,
+        class: "km--btn km--btn-outline" %>
+<% end %>
