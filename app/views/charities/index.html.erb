@@ -65,7 +65,9 @@
                 <i class="fa-solid fa-circle-check text-success ms-1"></i>
               <% end %>
             </span>
-            <% unless charity.approved? %>
+            <% if !charity.user.active? %>
+              <span class="badge text-bg-secondary km--text-pill text-nowrap"><%= t("buttons.deactivated") %></span>
+            <% elsif !charity.approved? %>
               <span class="badge rounded-pill pill-urgent km--text-pill km--text-light text-nowrap">
                 <%= t("statuses.charities.unapproved") %>
               </span>
@@ -87,6 +89,7 @@
             <%= button_to t("buttons.delete"), charity_path(charity), method: :delete,
                 class: "km--btn km--btn-danger",
                 data: { turbo_confirm: t("messages.delete_charity_confirm") } %>
+            <%= render "charities/activation_button", charity: charity %>
             <% unless charity.approved? %>
               <%= button_to t("buttons.approve"), approve_charity_path(charity), method: :patch,
                 class: "km--btn km--btn-primary",

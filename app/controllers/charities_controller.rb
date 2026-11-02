@@ -1,5 +1,5 @@
 class CharitiesController < ApplicationController
-  before_action :set_charity, only: %i[show approve destroy]
+  before_action :set_charity, only: %i[show approve activate deactivate destroy]
   before_action :show_back_button, only: %i[show]
 
   def index
@@ -42,6 +42,19 @@ class CharitiesController < ApplicationController
       redirect_back fallback_location: charities_path, status: :see_other,
                     alert: t("charities.approve_failed", errors: @charity.errors.full_messages.to_sentence)
     end
+  end
+
+  # Deactivating the user signs the charity out and hides its needs from donors.
+  def deactivate
+    authorize @charity
+    @charity.user.update!(active: false)
+    redirect_back fallback_location: charities_path, status: :see_other, notice: t("charities.deactivated")
+  end
+
+  def activate
+    authorize @charity
+    @charity.user.update!(active: true)
+    redirect_back fallback_location: charities_path, status: :see_other, notice: t("charities.activated")
   end
 
   private

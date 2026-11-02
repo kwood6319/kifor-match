@@ -21,7 +21,12 @@
                     <i class="fa-solid fa-envelope me-1"></i><%= charity.user.email %>
                   </p>
                 </div>
-                <%= button_to t("buttons.approve"), approve_charity_path(charity), method: :patch, class: "km--btn km--btn-primary" %>
+                <div class="d-flex flex-column gap-2 position-relative">
+                  <%= button_to t("buttons.approve"), approve_charity_path(charity), method: :patch, class: "km--btn km--btn-primary" %>
+                  <%= button_to t("buttons.deactivate"), deactivate_charity_path(charity), method: :patch,
+                        class: "km--btn km--btn-danger",
+                        data: { turbo_confirm: t("messages.deactivate_charity_confirm") } %>
+                </div>
               </div>
             <% end %>
           </div>
