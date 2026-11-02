@@ -10,9 +10,11 @@ class RequestPolicy < ApplicationPolicy
     def resolve
       if user.charity
         scope.where(charity: user.charity)
-      else
-        # If the user is a donor let them see all requests
+      elsif user.admin?
         scope.all
+      else
+        # Donors only see needs from approved, active charities
+        scope.where(charity: Charity.visible)
       end
     end
   end
@@ -22,11 +24,13 @@ class RequestPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    user.admin? || record.charity == user.charity || record.charity.visible?
   end
 
+  # Unapproved charities are already redirected by require_approval; this
+  # backs that up so a charity can never post a need before approval.
   def create?
-    user&.charity.present?
+    user&.charity.present? && user.charity.approved?
   end
 
   def update?

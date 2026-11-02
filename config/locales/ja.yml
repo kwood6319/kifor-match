@@ -49,6 +49,7 @@ ja:
     request_fulfilled_rejection: "この募集はすでに必要数に達したため、今回の寄付はお受けできません。ご厚意に心より感謝いたします。"
     delete_charity_confirm: "このチャリティーを削除しますか？"
     approve_charity_confirm: "このチャリティーを承認しますか？"
+    deactivate_charity_confirm: "このチャリティーを無効化しますか？サインアウトされ、募集はドナーに表示されなくなります。"
     delete_donor_confirm: "このドナーを削除しますか？"
     approve_donor_confirm: "このドナーを承認しますか？"
   urgencies:
@@ -147,6 +148,7 @@ ja:
     reset_categories: "カテゴリーをリセット"
     resolve: "解決"
     deactivate: "無効化"
+    activate: "再有効化"
     deactivated: "無効化済み"
   requests:
     new_request: "新しい募集"
@@ -172,6 +174,8 @@ ja:
     completed_requests: "達成した募集数"
     approved: "チャリティーを承認しました"
     approve_failed: "チャリティーを承認できませんでした：%{errors}"
+    deactivated: "チャリティーを無効化しました。"
+    activated: "チャリティーを再有効化しました。"
   donors:
     deactivated: "寄付者を無効化しました。"
     stats: "ドナー統計"

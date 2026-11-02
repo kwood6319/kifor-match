@@ -78,6 +78,7 @@ en:
     request_fulfilled_rejection: "This need has already been met, so we're unable to accept your donation. Thank you so much for your generosity!"
     delete_charity_confirm: "Delete this charity?"
     approve_charity_confirm: "Approve this charity?"
+    deactivate_charity_confirm: "Deactivate this charity? They will be signed out and their needs hidden from donors."
     delete_donor_confirm: "Delete this donor?"
     approve_donor_confirm: "Approve this donor?"
   urgencies:
@@ -175,6 +176,7 @@ en:
     give_feedback: "Give feedback"
     resolve: "Resolve"
     deactivate: "Deactivate"
+    activate: "Reactivate"
     deactivated: "Deactivated"
     reset_categories: "Reset categories"
   requests:
@@ -201,6 +203,8 @@ en:
     completed_requests: "Needs successfully met"
     approved: "Charity approved!"
     approve_failed: "Charity could not be approved: %{errors}"
+    deactivated: "Charity deactivated."
+    activated: "Charity reactivated."
   donors:
     deactivated: "Donor deactivated."
     stats: "Donor Stats"
