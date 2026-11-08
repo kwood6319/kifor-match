@@ -14,7 +14,8 @@ class FeedbacksController < ApplicationController
     authorize @feedback
 
     if save_and_complete_offer
-      redirect_to request_path(@offer.request), notice: t(@feedback.escalated? ? "feedback.escalated_notice" : "feedback.thanks")
+      notice = @feedback.escalated? ? t("feedback.escalated_notice") : t("feedback.thanks")
+      redirect_to request_path(@offer.request), notice: notice
     else
       render :new, status: :unprocessable_entity
     end
