@@ -27,7 +27,7 @@ class OfferPolicy < ApplicationPolicy
   end
 
   def create?
-    admin? || donor.present?
+    admin? || (donor.present? && record.request.charity.visible?)
   end
 
   # Donors can't edit or delete rejected offers, only archive (dismiss) them.
