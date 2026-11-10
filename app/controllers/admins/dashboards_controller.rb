@@ -9,6 +9,8 @@ module Admins
       # Unapproved items (priority)
       @unapproved_charities = Charity.includes(:user).where(approved: false).order(created_at: :desc)
       @unapproved_donors = Donor.includes(:user).where(approved: false).order(created_at: :desc)
+      @flagged_offers = Offer.where(status: "flagged")
+                             .includes(donor: :user, request: :charity).order(updated_at: :desc)
     end
   end
 end

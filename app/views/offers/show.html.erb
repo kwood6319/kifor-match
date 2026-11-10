@@ -98,16 +98,20 @@
           <% end %>
         <% elsif @offer.status == "completed" %>
           <p class="km--text-card-content mb-0"><%= t("statuses.donor.completed") %></p>
+        <% elsif @offer.status == "flagged" %>
+          <%# Donors aren't told about the flag %>
+          <p class="km--text-card-content mb-0"><%= current_user.donor? ? t("statuses.donor.received_message") : t("statuses.charity.flagged_message") %></p>
         <% end %>
         <%# Internal feedback: admins and the receiving charity only, never the donor %>
         <%# "Feedback given <date>" in the partial is the heading, so no separate title %>
         <% if @offer.feedback&.persisted? && policy(@offer.feedback).show? %>
           <div class="border-top mt-3 pt-3">
             <%= render "feedbacks/feedback", feedback: @offer.feedback %>
-            <% if policy(@offer.feedback).edit? %>
-              <div class="d-flex justify-content-end mt-3">
-                <%= link_to t("buttons.edit_feedback"), edit_offer_feedback_path(@offer), class: "km--btn km--btn-outline" %>
-              </div>
+            <%# Feedback is locked once submitted %>
+            <% if current_user.charity? %>
+              <p class="km--text-card-content km--text-soft mt-3 mb-0">
+                <%= t("feedback.contact_later_html", link: link_to(t("feedback.contact_later_link"), contact_path)) %>
+              </p>
             <% end %>
           </div>
         <%# Admins only: the charity already sees "Give feedback" above %>

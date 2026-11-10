@@ -1,5 +1,6 @@
 # Feedback is internal: only the receiving charity writes it, and only admins
-# and that charity can read it. Donors never see it.
+# and that charity can read it. Donors never see it. It can't be edited once
+# submitted, since escalating changes the offer's status.
 class FeedbackPolicy < ApplicationPolicy
   # Once the donation has arrived, and only once per offer
   def create?
@@ -9,14 +10,6 @@ class FeedbackPolicy < ApplicationPolicy
 
   def new?
     create?
-  end
-
-  def update?
-    owning_charity? && record.persisted?
-  end
-
-  def edit?
-    update?
   end
 
   def show?

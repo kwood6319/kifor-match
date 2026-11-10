@@ -27,7 +27,9 @@
         </ul>
       </div>
     <% end %>
-    <%= form_with model: feedback, url: offer_feedback_path(@offer), method: feedback.persisted? ? :patch : :post do |f| %>
+    <%# Escalating flags the donation for an admin, so it asks for confirmation first %>
+    <%= form_with model: feedback, url: offer_feedback_path(@offer), method: :post,
+          data: { controller: "escalate-confirm", action: "submit->escalate-confirm#submit" } do |f| %>
       <% FeedbackTags::GROUPS.each do |group| %>
         <% tags = @grouped_tags[group] %>
         <% next if tags.blank? %>
@@ -55,10 +57,28 @@
       </div>
       <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
         <div class="form-check mb-0">
-          <%= f.check_box :escalated, class: "form-check-input" %>
+          <%= f.check_box :escalated, class: "form-check-input", data: { escalate_confirm_target: "checkbox" } %>
           <%= f.label :escalated, t("feedback.escalate"), class: "form-check-label" %>
         </div>
-        <%= f.submit feedback.persisted? ? t("buttons.save") : t("feedback.submit"), class: "km--btn km--btn-primary" %>
+        <%= f.submit t("feedback.submit"), class: "km--btn km--btn-primary" %>
+      </div>
+      <div class="modal fade" tabindex="-1" aria-labelledby="escalateConfirmModalLabel" aria-hidden="true"
+           data-escalate-confirm-target="modal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title km--text-card-title" id="escalateConfirmModalLabel"><%= t("feedback.escalate_confirm_title") %></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("buttons.close") %>"></button>
+            </div>
+            <div class="modal-body">
+              <p class="km--text-card-content mb-0"><%= t("feedback.escalate_confirm_body") %></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="km--btn km--btn-outline" data-bs-dismiss="modal"><%= t("buttons.cancel") %></button>
+              <button type="button" class="km--btn km--btn-danger" data-action="escalate-confirm#confirm"><%= t("feedback.escalate_confirm_button") %></button>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
   </div>
