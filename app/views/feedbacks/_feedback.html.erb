@@ -1,0 +1,23 @@
+<%# A charity's feedback on one offer. Internal: only render for admins and the receiving charity (FeedbackPolicy#show?). %>
+<div class="km--feedback">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+    <span class="km--text-card-category km--text-soft">
+      <i class="fa-solid fa-comment-dots me-1"></i><%= t("feedback.given_on", date: l(feedback.created_at.to_date, format: :short)) %>
+    </span>
+    <% if feedback.escalated? %>
+      <span class="badge rounded-pill pill-urgent km--text-pill km--text-light">
+        <i class="fa-solid fa-flag me-1"></i><%= t("feedback.escalated") %>
+      </span>
+    <% end %>
+  </div>
+  <% feedback.grouped_tags.each do |group, tags| %>
+    <div class="d-flex flex-wrap gap-1 mb-2">
+      <% tags.each do |tag| %>
+        <span class="badge rounded-pill km--text-pill km--feedback-tag-<%= group %>"><%= t("feedback.tags.#{tag[:slug]}", default: tag[:label]) %></span>
+      <% end %>
+    </div>
+  <% end %>
+  <% if feedback.comment.present? %>
+    <p class="km--text-card-content mb-0"><%= feedback.comment %></p>
+  <% end %>
+</div>
