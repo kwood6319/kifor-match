@@ -57,4 +57,16 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     assert @offer.feedback.escalated?
     assert_equal remaining_before, @request_record.reload.quantity_remaining
   end
+
+  test "feedback is locked once submitted" do
+    sign_in @charity_user
+    post offer_feedback_path(offer_id: @offer.id), params: feedback_params
+
+    assert_no_difference "Feedback.count" do
+      post offer_feedback_path(offer_id: @offer.id), params: { feedback: { comment: "Changed my mind", escalated: "1" } }
+    end
+    assert_equal "Thanks", @offer.reload.feedback.comment
+    assert_equal "completed", @offer.status
+    assert_not Rails.application.routes.url_helpers.respond_to?(:edit_offer_feedback_path)
+  end
 end

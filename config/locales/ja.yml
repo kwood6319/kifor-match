@@ -144,7 +144,6 @@ ja:
     delete: "削除"
     archive: "アーカイブ"
     give_feedback: "フィードバックを送る"
-    edit_feedback: "フィードバックを編集"
     reset_categories: "カテゴリーをリセット"
     resolve: "解決"
     deactivate: "無効化"

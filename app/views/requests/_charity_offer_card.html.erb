@@ -102,9 +102,6 @@
           <p class="km--text-card-content mb-0">
             <i class="fa-solid fa-circle-check text-success me-1"></i><%= t("feedback.left") %>
           </p>
-          <div class="d-flex justify-content-end w-100 mt-2 position-relative z-2">
-            <%= link_to t("buttons.edit_feedback"), edit_offer_feedback_path(offer), class: "km--btn km--btn-outline" %>
-          </div>
         <% else %>
           <p class="km--text-card-content mb-0"><%= t("statuses.donor.completed") %></p>
         <% end %>

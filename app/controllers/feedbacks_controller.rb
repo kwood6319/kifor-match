@@ -1,6 +1,6 @@
 class FeedbacksController < ApplicationController
   before_action :set_offer
-  before_action :show_back_button, only: %i[new create edit update]
+  before_action :show_back_button, only: %i[new create]
 
   def new
     @feedback = Feedback.new(offer: @offer)
@@ -18,22 +18,6 @@ class FeedbacksController < ApplicationController
       redirect_to request_path(@offer.request), notice: notice
     else
       render :new, status: :unprocessable_entity
-    end
-  end
-
-  def edit
-    @feedback = @offer.feedback or raise ActiveRecord::RecordNotFound
-    authorize @feedback
-  end
-
-  def update
-    @feedback = @offer.feedback or raise ActiveRecord::RecordNotFound
-    authorize @feedback
-
-    if @feedback.update(feedback_params)
-      redirect_to offer_path(@offer), notice: t("feedback.updated")
-    else
-      render :edit, status: :unprocessable_entity
     end
   end
 

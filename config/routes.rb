@@ -49,8 +49,9 @@ Rails.application.routes.draw do
     end
 
     resources :offers, only: [ :show, :update, :destroy ] do
-      # One feedback per offer, given by the charity once the donation is received
-      resource :feedback, only: [ :new, :create, :edit, :update ]
+      # One feedback per offer, given by the charity once the donation is received.
+      # Locked once submitted; later problems go through the contact form.
+      resource :feedback, only: [ :new, :create ]
       member do
         patch :approve
         patch :reject
