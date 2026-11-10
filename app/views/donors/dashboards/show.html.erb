@@ -39,6 +39,10 @@
     <div class="col-md-4 position-relative km--fill-column">
       <%# Tabs sit above the card so they stay reachable while the list scrolls %>
       <%# TO DO (mobile support): tab names are cut off with "…" on narrow screens (~800px and below) %>
+      <%# TO DO: Rework the donor's tracker tabs. "Delivery" / "Drop-off" read as "things I still need to
+          send or bring", but they list offers already on their way (approved ones sit under Attention).
+          Consider tabs by what the donor has to do next (e.g. "To send" / "To drop off" for approved
+          offers, then "On the way"), and clearer names in both languages. %>
       <div class="km--fill-column-card d-flex flex-column">
         <ul class="nav nav-tabs km--nav-tabs mb-2" id="donor-tracker-tabs" role="tablist">
           <li class="nav-item" role="presentation">
@@ -53,7 +57,12 @@
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#tracker-shipped" type="button">
-              <i class="fa-solid fa-truck"></i><%= t("dashboard.offers_on_their_way") %>
+              <i class="fa-solid fa-truck"></i><%= t("dashboard.offers_delivery") %>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link km--nav-link" data-bs-toggle="pill" data-bs-target="#tracker-drop-off" type="button">
+              <i class="fa-solid fa-people-carry-box"></i><%= t("dashboard.offers_drop_off") %>
             </button>
           </li>
           <li class="nav-item" role="presentation">
@@ -72,6 +81,9 @@
           </div>
           <div class="tab-pane fade" id="tracker-shipped">
             <%= render "donors/dashboards/offer_tracker_list", offers: @shipped_offers %>
+          </div>
+          <div class="tab-pane fade" id="tracker-drop-off">
+            <%= render "donors/dashboards/offer_tracker_list", offers: @drop_off_offers %>
           </div>
           <div class="tab-pane fade" id="tracker-received">
             <%= render "donors/dashboards/offer_tracker_list", offers: @received_offers %>

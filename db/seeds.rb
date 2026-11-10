@@ -74,12 +74,25 @@ CHARITIES = [
                street: "新宿4-5-6" }, approved: false }
 ].freeze
 
+# Drop-off days/hours per charity, as Date#wday => [opens, closes]. Charities not listed don't take drop-offs.
+WEEKDAYS_9_TO_5 = (1..5).to_h { |day| [day, %w[09:00 17:00]] }.freeze
+DROP_OFF_HOURS = {
+  charity1: WEEKDAYS_9_TO_5.merge(6 => %w[10:00 13:00]),
+  charity3: { 2 => %w[13:00 18:00], 4 => %w[13:00 18:00], 6 => %w[10:00 16:00] },
+  charity4: WEEKDAYS_9_TO_5
+}.freeze
+
 charities = CHARITIES.each_with_object({}) do |attrs, hash|
+  hours = DROP_OFF_HOURS.fetch(attrs[:key], {})
   hash[attrs[:key]] = Charity.create!(
     user: users.fetch(attrs[:user]),
     org_name: attrs[:org_name],
     description: attrs[:description],
     address_attributes: attrs[:address],
+    accepts_drop_off: hours.any?,
+    drop_off_windows_attributes: hours.map do |day, (opens, closes)|
+      { day_of_week: day, opens_at: opens, closes_at: closes }
+    end,
     approved: attrs.fetch(:approved, true)
   )
   puts "Charity #{attrs[:org_name]} created."
@@ -93,7 +106,7 @@ puts "Creating donors..."
 
 DONORS = [
   { key: :donor1, user: :user4,  prefecture: "Tokyo", region: "Kanto",  display_name: "Sam Samson",     donor_type: "individual" },
-  { key: :donor2, user: :user5,  prefecture: "Osaka", region: "Kansai", display_name: "Hana Tanaka",     donor_type: "individual" },
+  { key: :donor2, user: :user5,  prefecture: "Osaka", region: "Kansai", display_name: "田中 花",         donor_type: "individual" },
   { key: :donor3, user: :user6,  prefecture: "Tokyo", region: "Kanto",  display_name: "ABC Corp",        donor_type: "company" },
   { key: :donor4, user: :user8,  prefecture: "Tokyo", region: "Kanto",  display_name: "Le Wagon Tokyo",  donor_type: "company" },
   { key: :donor5, user: :user11, prefecture: "Tokyo", region: "Kanto",  display_name: "Toy Donor",       donor_type: "individual" }
@@ -122,7 +135,7 @@ REQUESTS = [
     quantity_needed: 2, urgency: "high" },
   { key: :request2,  charity: :charity1, category: ["clothes"], subcategory: %w[mens womens],
     title: "Winter coats (adult)", condition: "used_good", description: "Clean, good condition",
-    quantity_needed: 10, urgency: "medium" },
+    quantity_needed: 10, urgency: "medium", allows_drop_off: false },
   { key: :request3,  charity: :charity2, category: %w[clothes kids], subcategory: %w[childrens shoes clothing],
     title: "Kids shoes (sizes 18-22cm)", condition: "used_good", description: "Good condition",
     quantity_needed: 15, urgency: "medium" },
@@ -196,8 +209,11 @@ REQUESTS = [
 ].freeze
 
 requests = REQUESTS.each_with_object({}) do |attrs, hash|
+  charity = charities.fetch(attrs[:charity])
   request = Request.create!(
-    charity: charities.fetch(attrs[:charity]),
+    charity: charity,
+    # Follows the charity's setting unless the seed says otherwise
+    allows_drop_off: attrs.fetch(:allows_drop_off, charity.accepts_drop_off),
     category: attrs[:category],
     subcategory: attrs[:subcategory],
     title: attrs[:title],

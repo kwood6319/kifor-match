@@ -7,10 +7,9 @@ class Offer < ApplicationRecord
 
   before_update :resubmit_if_amended, if: :donor_amendment?
 
-  attr_accessor :ship_by_day, :ship_by_month_year, :arrival_day, :arrival_month_year
+  attr_accessor :ship_by_day, :ship_by_month_year
 
   before_validation :assemble_can_ship_by
-  before_validation :assemble_estimated_arrival
 
   STATUSES = %w[
     submitted
@@ -37,7 +36,9 @@ class Offer < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :unarchived, -> { where(archived_at: nil) }
 
-  SHIPPING_FIELDS = %w[estimated_arrival estimated_arrival_time tracking_number].freeze
+  DELIVERY_METHODS = %w[shipping drop_off].freeze
+
+  SHIPPING_FIELDS = %w[estimated_arrival estimated_arrival_time drop_off_time tracking_number].freeze
 
   # Standard Japanese courier delivery windows (Yamato, Sagawa, Japan Post)
   ARRIVAL_TIME_SLOTS = %w[morning 14_16 16_18 18_20 19_21].freeze
@@ -48,20 +49,51 @@ class Offer < ApplicationRecord
   validates :condition, presence: true, inclusion: { in: Request::CONDITIONS, allow_blank: true }
   validates :can_ship_by, presence: true
   validates :status, inclusion: { in: STATUSES }
+  validates :delivery_method, inclusion: { in: DELIVERY_METHODS }
+  validate :delivery_method_available, if: -> { new_record? || will_save_change_to_delivery_method? }
   validates :estimated_arrival_time, inclusion: { in: ARRIVAL_TIME_SLOTS }, allow_blank: true
 
   validate :photos_attached
+  # The request page shows a donor one offer per need; also stops a double-submitted form
+  validate :one_offer_per_request, on: :create
 
   validate :quantity_offered_does_not_exceed_remaining
 
   validate :estimated_arrival_not_in_past
+  # Planned drop-offs: a time, on a day and within the hours the charity takes them
+  validate :drop_off_within_hours, if: lambda {
+    drop_off? && estimated_arrival.present? &&
+      (will_save_change_to_estimated_arrival? || will_save_change_to_drop_off_time?)
+  }
 
   before_save :set_active_from_status
+  # Approval is when the donor first sees where to send it, so fix the details then.
+  # A re-approval (after the donor amends the offer) takes a fresh copy.
+  before_save :snapshot_delivery_details, if: -> { will_save_change_to_status?(to: "approved") }
   after_save :resync_request_quantity, if: :saved_change_to_status?
   after_update :create_terminal_notification, if: :saved_change_to_status?
 
   def rejected?
     status == "rejected"
+  end
+
+  def drop_off?
+    delivery_method == "drop_off"
+  end
+
+  # Where to send/bring this offer, as it was when approved (unsaved Address).
+  # Offers approved before snapshots existed fall back to the charity's current address.
+  def delivery_address
+    snapshot = delivery_details&.dig("address")
+    snapshot ? Address.new(snapshot) : request.charity.address
+  end
+
+  # Drop-off days/hours as they were when approved (unsaved DropOffWindows), same fallback
+  def delivery_drop_off_windows
+    snapshot = delivery_details&.dig("drop_off_windows")
+    return request.charity.drop_off_windows.to_a unless snapshot
+
+    snapshot.map { |window| DropOffWindow.new(window) }
   end
 
   def archived?
@@ -100,8 +132,63 @@ class Offer < ApplicationRecord
     self.status = "submitted"
   end
 
+  # Checked only when the donor picks a method, so a later change to the charity's
+  # settings doesn't make existing offers invalid
+  def delivery_method_available
+    return if request.blank? || request.delivery_methods.include?(delivery_method)
+
+    errors.add(:delivery_method, :unavailable)
+  end
+
+  # Checked against the hours saved on the offer at approval (what the donor was shown)
+  def drop_off_within_hours
+    return errors.add(:base, :drop_off_time_missing) if drop_off_time.blank?
+
+    windows = delivery_drop_off_windows
+    return if windows.empty? # no hours on record: the donor is told to check with the charity
+
+    window = windows.find { |w| w.day_of_week == estimated_arrival.wday }
+    unless window
+      return errors.add(:base, :drop_off_closed_day, day: I18n.t("date.day_names")[estimated_arrival.wday])
+    end
+
+    opens, closes = [window.opens_at, window.closes_at].map { |time| time.strftime("%H:%M") }
+    planned = drop_off_time.strftime("%H:%M")
+    return errors.add(:base, :drop_off_time_interval) unless drop_off_time.min.in?([0, 30]) # form offers :00 / :30
+    return if planned >= opens && planned < closes # from opening, up to (not at) closing
+
+    # Shown like the hours elsewhere ("9:00–17:00")
+    errors.add(:base, :outside_drop_off_hours, hours: [opens, closes].map { |time| time.delete_prefix("0") }.join("–"))
+  end
+
+  def one_offer_per_request
+    return if donor.blank? || request.blank?
+    return unless Offer.exists?(donor: donor, request: request)
+
+    errors.add(:base, :already_offered)
+  end
+
   def photos_attached
     errors.add(:base, :photos_missing) unless photos.attached?
+  end
+
+  def snapshot_delivery_details
+    charity = request.charity
+    address = charity.address&.slice(*Address::FORM_FIELDS.map(&:to_s))
+    # Store the name that goes on the label, so a later org name change doesn't alter it either
+    address&.[]=("recipient_name", address["recipient_name"].presence || charity.org_name)
+    self.delivery_details = {
+      "address" => address,
+      "drop_off_windows" => (drop_off_window_details(charity) if drop_off?)
+    }.compact
+  end
+
+  def drop_off_window_details(charity)
+    charity.drop_off_windows.map do |window|
+      { "day_of_week" => window.day_of_week,
+        "opens_at" => window.opens_at.strftime("%H:%M"),
+        "closes_at" => window.closes_at.strftime("%H:%M") }
+    end
   end
 
   def set_active_from_status
@@ -125,15 +212,6 @@ class Offer < ApplicationRecord
     return if quantity_offered <= allowed
 
     errors.add(:quantity_offered, :exceeds_remaining, max: allowed)
-  end
-
-  def assemble_estimated_arrival
-    return if arrival_day.blank? || arrival_month_year.blank?
-
-    year, month = arrival_month_year.split("-").map(&:to_i)
-    self.estimated_arrival = Date.new(year, month, arrival_day.to_i)
-  rescue ArgumentError
-    errors.add(:estimated_arrival, :invalid)
   end
 
   def estimated_arrival_not_in_past

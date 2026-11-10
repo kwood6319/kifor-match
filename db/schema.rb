@@ -58,6 +58,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_075810) do
   end
 
   create_table "charities", force: :cascade do |t|
+    t.boolean "accepts_drop_off", default: false, null: false
+    t.boolean "accepts_shipping", default: true, null: false
     t.boolean "approved", default: false
     t.datetime "created_at", null: false
     t.text "description"
@@ -84,6 +86,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_075810) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_donors_on_user_id"
+  end
+
+  create_table "drop_off_windows", force: :cascade do |t|
+    t.bigint "charity_id", null: false
+    t.time "closes_at", null: false
+    t.datetime "created_at", null: false
+    t.integer "day_of_week", null: false
+    t.time "opens_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["charity_id", "day_of_week"], name: "index_drop_off_windows_on_charity_id_and_day_of_week", unique: true
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -115,7 +127,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_075810) do
     t.date "can_ship_by"
     t.string "condition", null: false
     t.datetime "created_at", null: false
+    t.jsonb "delivery_details"
+    t.string "delivery_method", default: "shipping", null: false
     t.bigint "donor_id", null: false
+    t.time "drop_off_time"
     t.date "estimated_arrival"
     t.string "estimated_arrival_time"
     t.text "flag_reason"
@@ -131,6 +146,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_075810) do
   end
 
   create_table "requests", force: :cascade do |t|
+    t.boolean "allows_drop_off", default: false, null: false
     t.string "category", default: [], array: true
     t.bigint "charity_id", null: false
     t.string "condition"
@@ -165,6 +181,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_075810) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "charities", "users"
   add_foreign_key "donors", "users"
+  add_foreign_key "drop_off_windows", "charities"
   add_foreign_key "feedbacks", "offers"
   add_foreign_key "notifications", "offers"
   add_foreign_key "offers", "donors"
