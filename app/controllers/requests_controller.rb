@@ -4,7 +4,7 @@ class RequestsController < ApplicationController
 
   def index
     # Start with your policy scope and include charity to avoid N+1 queries
-    @requests = policy_scope(Request).includes(:charity).where.not(status: %w[inactive archived])
+    @requests = policy_scope(Request).includes(charity: :address).where.not(status: %w[inactive archived])
     @requests = @requests.where("quantity_remaining > 0")
 
     # Setup dynamic variables for your dropdown menus
@@ -26,8 +26,8 @@ class RequestsController < ApplicationController
 
     # 3. Prefecture Filter
     if params[:prefecture].present?
-      # We join charities again to filter by the associated charity's prefecture
-      @requests = @requests.joins(:charity).where(charities: { prefecture: params[:prefecture] })
+      # The charity's prefecture lives on its address
+      @requests = @requests.joins(charity: :address).where(addresses: { prefecture: params[:prefecture] })
     end
 
     # 4. "No Offers Yet" Checkbox

@@ -4,7 +4,7 @@ class CharitiesController < ApplicationController
 
   def index
     authorize Charity
-    @charities = policy_scope(Charity).includes(:user)
+    @charities = policy_scope(Charity).includes(:user, :address)
 
     if params[:query].present?
       # We must join users so SQL knows what 'users.email' is
@@ -12,7 +12,7 @@ class CharitiesController < ApplicationController
       @charities = @charities.joins(:user).where(sql_query, query: "%#{params[:query]}%")
     end
 
-    @charities = @charities.where(region: params[:region]) if params[:region].present?
+    @charities = @charities.joins(:address).where(addresses: { region: params[:region] }) if params[:region].present?
     @charities = apply_approval_filter(@charities)
     # TO DO Handle active/archived charities
   end

@@ -46,14 +46,16 @@ class OnboardingsController < ApplicationController
   end
 
   def build_profile(role)
-    role == "donor" ? Donor.new(user: current_user) : Charity.new(user: current_user)
+    return Donor.new(user: current_user) if role == "donor"
+
+    Charity.new(user: current_user).tap(&:build_address)
   end
 
   def profile_params
     if @role == "donor"
       params.require(:donor).permit(:display_name, :donor_type, :region, :prefecture)
     else
-      params.require(:charity).permit(:org_name, :description, :region, :prefecture, :shipping_address)
+      params.require(:charity).permit(:org_name, :description, address_attributes: Address::FORM_FIELDS)
     end
   end
 end

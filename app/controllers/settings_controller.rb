@@ -91,7 +91,7 @@ class SettingsController < ApplicationController
   end
 
   def charity_params
-    params.require(:charity).permit(:org_name, :description, :region, :prefecture, :shipping_address)
+    params.require(:charity).permit(:org_name, :description, address_attributes: Address::FORM_FIELDS)
   end
 
   def password_params

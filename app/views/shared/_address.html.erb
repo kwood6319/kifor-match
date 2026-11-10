@@ -1,0 +1,10 @@
+<%# An address laid out like the お届け先 boxes on a Japanese shipping slip (送り状): one labelled
+    row per box, in slip order, always in Japanese. %>
+<dl class="km--label-fields mb-0">
+  <% shipping_label_fields(address).each do |label, value| %>
+    <div class="km--label-field">
+      <dt class="km--text-card-category km--text-soft"><%= label %></dt>
+      <dd class="km--text-card-content mb-0"><%= value %></dd>
+    </div>
+  <% end %>
+</dl>

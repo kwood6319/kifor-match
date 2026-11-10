@@ -140,3 +140,14 @@
 .km--qty-col {
   min-width: 70px;
 }
+
+// Address rows laid out like a shipping slip: label above, value below, a little space between rows
+.km--label-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  dt {
+    margin-bottom: 0.15rem;
+  }
+}
