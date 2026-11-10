@@ -3,9 +3,12 @@
   <div class="row pt-2">
     <div class="col-8">
       <h2 class="km--text-card-title"><%= request.title %></h2>
-      <p class="km--text-card-subtitle mb-1">
-        <%= charity_icon %><%= request.charity.org_name %>
-      </p>
+      <%# Donors never see which charity posted a request %>
+      <% if current_user.admin? || current_user.charity == request.charity %>
+        <p class="km--text-card-subtitle mb-1">
+          <%= charity_icon %><%= request.charity.org_name %>
+        </p>
+      <% end %>
       <p class="km--text-card-subtitle mb-0">
         <i class="fa-solid fa-location-dot me-1"></i><%= charity_location(request.charity) %>
       </p>

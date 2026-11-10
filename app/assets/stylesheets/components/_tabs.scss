@@ -54,6 +54,15 @@
       margin-right: 0.25rem;
     }
 
+    .km--tab-count {
+      margin-left: 0.25rem;
+      background-color: $km--pill-urgent;
+      color: $km--light;
+      font-size: 0.65rem;
+      font-weight: 600;
+      vertical-align: text-top;
+    }
+
     &:hover:not(.active) {
       color: $km--dark;
     }
