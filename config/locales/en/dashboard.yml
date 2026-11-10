@@ -3,7 +3,7 @@ en:
     my_requests: "Your needs"
     needs_your_attention: "Attention"
     offers_submitted: "Submitted"
-    offers_on_their_way: "Shipping"
+    offers_on_their_way: "On the way"
     offers_needing_feedback: "Review"
     offers_received: "Received"
     pending_actions: "%{count} need your attention"
