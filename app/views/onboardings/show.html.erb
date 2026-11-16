@@ -37,6 +37,19 @@
           <%= f.select :donor_type, %w[individual company].map { |type| [t("donors.types.#{type}"), type] },
                 {}, class: "km--form-control form-select" %>
         </div>
+        <div class="row" data-controller="prefecture-filter" data-prefecture-filter-prefectures-value="<%= prefecture_options.to_json %>">
+          <div class="col-md-6 mb-3">
+            <%= f.label :region, t("navigation.region"), class: label %>
+            <%= f.select :region, region_options, { include_blank: true },
+                  class: "km--form-control form-select",
+                  data: { prefecture_filter_target: "region", action: "prefecture-filter#filter" } %>
+          </div>
+          <div class="col-md-6 mb-3">
+            <%= f.label :prefecture, t("navigation.prefecture"), class: label %>
+            <%= f.select :prefecture, prefecture_options.fetch(@profile.region, []), { include_blank: true },
+                  class: "km--form-control form-select", data: { prefecture_filter_target: "prefecture" } %>
+          </div>
+        </div>
       <% else %>
         <div class="mb-3">
           <%= f.label :org_name, t("settings.org_name"), class: label %>
@@ -46,26 +59,9 @@
           <%= f.label :description, t("settings.description"), class: label %>
           <%= f.text_area :description, rows: 3, class: "km--form-control form-control km--no-resize" %>
         </div>
-      <% end %>
-      <div class="row" data-controller="prefecture-filter" data-prefecture-filter-prefectures-value="<%= prefecture_options.to_json %>">
-        <div class="col-md-6 mb-3">
-          <%= f.label :region, t("navigation.region"), class: label %>
-          <%= f.select :region, region_options, { include_blank: true },
-                required: @role == "charity", class: "km--form-control form-select",
-                data: { prefecture_filter_target: "region", action: "prefecture-filter#filter" } %>
-        </div>
-        <div class="col-md-6 mb-3">
-          <%= f.label :prefecture, t("navigation.prefecture"), class: label %>
-          <%= f.select :prefecture, prefecture_options.fetch(@profile.region, []), { include_blank: true },
-                class: "km--form-control form-select", data: { prefecture_filter_target: "prefecture" } %>
-        </div>
-      </div>
-      <% if @role == "charity" %>
-        <%# KT TO DO: Split shipping address into separate fields (postcode, prefecture, city, street, building) instead of one text box. Also in settings. %>
-        <div class="mb-3">
-          <%= f.label :shipping_address, t("settings.shipping_address"), class: label %>
-          <%= f.text_area :shipping_address, rows: 3, required: true, class: "km--form-control form-control km--no-resize" %>
-        </div>
+        <%= f.fields_for :address do |address_form| %>
+          <%= render "shared/address_fields", f: address_form %>
+        <% end %>
       <% end %>
       <div class="form-actions d-flex justify-content-between align-items-center">
         <%= link_to t("onboarding.back"), onboarding_path %>

@@ -1,0 +1,52 @@
+<%# Charity address fields, used by onboarding and settings. Pass the fields_for builder as `f`. %>
+<%# Laid out in Japanese form order: postal code, prefecture, city, street, building. %>
+<% label_class = "km--text-card-category km--text-soft d-block mb-2" %>
+<% prefecture_options = prefecture_options_by_region %>
+<div class="alert alert-info d-flex align-items-start gap-2">
+  <i class="fa-solid fa-eye mt-1"></i>
+  <div><%= t("addresses.visibility_notice") %></div>
+</div>
+<%# TO DO: Fill prefecture/city from the postal code (e.g. yubinbango.js or a postcode lookup API). Adds a dependency, so look into it first. %>
+<div class="row">
+  <div class="col-md-6 mb-3">
+    <%= f.label :postal_code, t("addresses.postal_code"), class: label_class %>
+    <%= f.text_field :postal_code, required: true, placeholder: "150-0001", inputmode: "numeric",
+          autocomplete: "postal-code", class: "km--form-control form-control" %>
+  </div>
+</div>
+<div class="row" data-controller="prefecture-filter" data-prefecture-filter-prefectures-value="<%= prefecture_options.to_json %>">
+  <div class="col-md-6 mb-3">
+    <%= f.label :region, t("navigation.region"), class: label_class %>
+    <%= f.select :region, Request::REGIONS.map { |r| [t("regions.#{r}"), r] },
+          { include_blank: true }, required: true, class: "km--form-control form-select",
+          data: { prefecture_filter_target: "region", action: "prefecture-filter#filter" } %>
+  </div>
+  <div class="col-md-6 mb-3">
+    <%= f.label :prefecture, t("navigation.prefecture"), class: label_class %>
+    <%= f.select :prefecture, prefecture_options.fetch(f.object.region, []),
+          { prompt: t("prefectures.select") }, required: true, autocomplete: "address-level1",
+          class: "km--form-control form-select", data: { prefecture_filter_target: "prefecture" } %>
+  </div>
+</div>
+<div class="mb-3">
+  <%= f.label :city, t("addresses.city"), class: label_class %>
+  <%= f.text_field :city, required: true, placeholder: t("addresses.city_placeholder"),
+        autocomplete: "address-level2", class: "km--form-control form-control" %>
+</div>
+<div class="mb-3">
+  <%= f.label :street, t("addresses.street"), class: label_class %>
+  <%= f.text_field :street, required: true, placeholder: t("addresses.street_placeholder"),
+        autocomplete: "address-line1", class: "km--form-control form-control" %>
+</div>
+<div class="mb-3">
+  <%= f.label :building, t("addresses.building"), class: label_class %>
+  <%= f.text_field :building, placeholder: t("addresses.building_placeholder"),
+        autocomplete: "address-line2", class: "km--form-control form-control" %>
+</div>
+<div class="mb-3">
+  <%= f.label :recipient_name, t("addresses.recipient_name"), class: label_class %>
+  <%# Starts as the organisation's current name so they only edit it if the label needs another name
+      (empty on onboarding, where the name isn't saved yet; an empty field still uses the org name) %>
+  <%= f.text_field :recipient_name, value: f.object.recipient_name.presence || f.object.addressable.try(:org_name),
+        class: "km--form-control form-control" %>
+</div>

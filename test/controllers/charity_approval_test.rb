@@ -6,8 +6,9 @@ class CharityApprovalTest < ActionDispatch::IntegrationTest
   setup do
     @admin = User.create!(email: "approval-admin@example.com", password: "password", role: :admin)
     @charity_user = User.create!(email: "approval-charity@example.com", password: "password", role: :charity)
-    @charity = Charity.create!(user: @charity_user, org_name: "Pending Charity", region: "Kanto",
-                               shipping_address: "1-2-3 Test, Tokyo")
+    @charity = Charity.create!(user: @charity_user, org_name: "Pending Charity",
+                               address_attributes: { postal_code: "1500001", region: "Kanto", prefecture: "Tokyo",
+                                                     city: "Shibuya", street: "1-2-3" })
     @donor_user = User.create!(email: "approval-donor@example.com", password: "password", role: :donor)
     @donor = Donor.create!(user: @donor_user, display_name: "Test Donor")
   end

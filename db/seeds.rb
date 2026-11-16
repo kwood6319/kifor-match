@@ -47,36 +47,39 @@ puts "----------------------------------------------"
 puts "Creating charities..."
 
 CHARITIES = [
-  { key: :charity1, user: :user1, prefecture: "Tokyo", region: "Kanto",
+  { key: :charity1, user: :user1,
     org_name: "Tokyo Single Mothers Shelter (DEMO)",
     description: "Emergency shelter support for Single Mothers escaping from abuse (demo)",
-    shipping_address: "1-2-3 Demo, Shibuya-ku, Tokyo" },
-  { key: :charity2, user: :user2, prefecture: "Osaka", region: "Kansai",
+    address: { postal_code: "1500001", region: "Kanto", prefecture: "Tokyo", city: "渋谷区",
+               street: "神宮前1-2-3", building: "デモビル201" } },
+  { key: :charity2, user: :user2,
     org_name: "Osaka Food Support (DEMO)",
     description: "Food support NPO for families that need support (demo)",
-    shipping_address: "4-5-6 Demo, Osaka-shi, Osaka" },
-  { key: :charity3, user: :user3, prefecture: "Ishikawa", region: "Chubu",
+    address: { postal_code: "5300001", region: "Kansai", prefecture: "Osaka", city: "大阪市北区",
+               street: "梅田4-5-6", recipient_name: "食料支援担当" } },
+  { key: :charity3, user: :user3,
     org_name: "Kanazawa Children's Community Space (DEMO)",
     description: "Community center for children who need community / food support (demo)",
-    shipping_address: "7-8-9 Demo, Kanazawa, Ishikawa" },
-  { key: :charity4, user: :user9, prefecture: "Tokyo", region: "Kanto",
+    address: { postal_code: "9200981", region: "Chubu", prefecture: "Ishikawa", city: "金沢市",
+               street: "片町7-8-9" } },
+  { key: :charity4, user: :user9,
     org_name: "YouMeWe",
     description: "Looking for laptops",
-    shipping_address: "123 Tokyo" },
-  { key: :charity5, user: :user10, prefecture: "Tokyo", region: "Kanto",
+    address: { postal_code: "1060032", region: "Kanto", prefecture: "Tokyo", city: "港区",
+               street: "六本木1-2-3" } },
+  { key: :charity5, user: :user10,
     org_name: "Refugee Children",
     description: "A charity supporting refugee children",
-    shipping_address: "456 Tokyo", approved: false }
+    address: { postal_code: "1600022", region: "Kanto", prefecture: "Tokyo", city: "新宿区",
+               street: "新宿4-5-6" }, approved: false }
 ].freeze
 
 charities = CHARITIES.each_with_object({}) do |attrs, hash|
   hash[attrs[:key]] = Charity.create!(
     user: users.fetch(attrs[:user]),
-    prefecture: attrs[:prefecture],
-    region: attrs[:region],
     org_name: attrs[:org_name],
     description: attrs[:description],
-    shipping_address: attrs[:shipping_address],
+    address_attributes: attrs[:address],
     approved: attrs.fetch(:approved, true)
   )
   puts "Charity #{attrs[:org_name]} created."

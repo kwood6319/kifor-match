@@ -6,8 +6,9 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
   setup do
     @charity_user = User.create!(email: "fb-charity@example.com", password: "password", role: :charity)
     @donor_user = User.create!(email: "fb-donor@example.com", password: "password", role: :donor)
-    charity = Charity.create!(user: @charity_user, org_name: "Test Charity", region: "Kanto",
-                              shipping_address: "1-2-3 Test, Tokyo", approved: true)
+    charity = Charity.create!(user: @charity_user, org_name: "Test Charity",
+                              address_attributes: { postal_code: "1500001", region: "Kanto", prefecture: "Tokyo",
+                                                    city: "Shibuya", street: "1-2-3" }, approved: true)
     @donor = Donor.create!(user: @donor_user, display_name: "Test Donor")
     @request_record = Request.create!(charity: charity, title: "Rice", description: "Need rice",
                                       condition: "new", urgency: "low", category: ["food"], quantity_needed: 5)

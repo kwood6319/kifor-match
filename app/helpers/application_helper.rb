@@ -32,6 +32,18 @@ module ApplicationHelper
     location_label(charity)
   end
 
+  # An address as the boxes of a Japanese shipping slip (送り状), in slip order and always in
+  # Japanese, since that's how the label is written: [[label, value], ...].
+  # The name falls back to the charity's name, since that's who the parcel is for.
+  def shipping_label_fields(address)
+    name = address.recipient_name.presence || address.addressable.try(:org_name)
+    [
+      [t("addresses.label.postal_code"), "〒#{address.formatted_postal_code}"],
+      [t("addresses.label.address"), address.label_address],
+      [t("addresses.label.name"), name]
+    ].select { |_label, value| value.present? }
+  end
+
   def prefecture_options_by_region
     Request::REGIONS_AND_PREFECTURES.transform_values do |prefectures|
       prefectures.map { |p| [t("prefectures.#{p}"), p] }

@@ -24,7 +24,6 @@ en:
     display_name: "Display name"
     org_name: "Organization name"
     description: "Description"
-    shipping_address: "Shipping address"
     shipping_address_warning: "You have a donation currently marked as shipped. Changing your shipping address now may cause confusion for donors who already have your previous address for an in-transit package."
     email: "Email"
     new_password: "New password"
