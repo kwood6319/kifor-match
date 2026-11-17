@@ -2,7 +2,7 @@
   <div class="row align-items-stretch g-4">
     <%# Left column: request background + similar requests %>
     <div class="col-lg-5 d-flex flex-column gap-4">
-      <%= render "requests/request_summary", request: @request, show_actions: true %>
+      <%= render "requests/request_summary", request: @request, show_actions: true, donor_offer: @my_offer %>
       <%# Similar requests — donor-only, a charity or admin has nothing to donate %>
       <% unless current_user.charity? || current_user.admin? %>
         <h4 class="km--text-card-title mb-0"><%= t("navigation.similar_requests") %>:</h4>

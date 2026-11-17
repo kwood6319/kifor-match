@@ -1,3 +1,5 @@
+<%# Collapsible sections should start closed; a cached Turbo snapshot would keep them as left %>
+<% content_for :head, tag.meta(name: "turbo-cache-control", content: "no-cache") %>
 <% content_for :title, t("navigation.settings") %>
 <% active_tab = @open_account_section.present? ? "account" : (params[:tab].presence_in(%w[location]) || "profile") %>
 <% profile_record = @donor || @charity %>
@@ -32,13 +34,29 @@
     </div>
     <%# Content %>
     <div class="col-lg-9">
+      <%# A failed save shows its errors in a modal (long messages were unreadable as a bottom-right
+          alert); the failed section is reopened underneath (@open_location_section) %>
       <% if profile_record&.errors&.any? %>
-        <div class="alert alert-danger km--toast">
-          <ul class="mb-0">
-            <% profile_record.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
+        <div class="modal fade" id="settingsErrorsModal" tabindex="-1" aria-labelledby="settingsErrorsModalLabel"
+             aria-hidden="true" data-controller="auto-open-modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title km--text-card-title" id="settingsErrorsModalLabel"><%= t("settings.errors_title") %></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("buttons.close") %>"></button>
+              </div>
+              <div class="modal-body">
+                <ul class="list-unstyled mb-0 d-flex flex-column gap-2 km--text-card-content">
+                  <% profile_record.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="km--btn km--btn-primary" data-bs-dismiss="modal"><%= t("settings.errors_ok") %></button>
+              </div>
+            </div>
+          </div>
         </div>
       <% end %>
       <div class="tab-content">
@@ -98,19 +116,58 @@
             <div class="km--card">
               <h5 class="km--text-card-title mb-1"><%= t("settings.tabs.location") %></h5>
               <p class="km--text-card-content km--text-soft mb-4"><%= t("settings.location_description") %></p>
-              <%= form_with model: profile_record, url: settings_path, method: :patch, scope: profile_scope, html: { novalidate: true } do |f| %>
-                <%= hidden_field_tag :tab, "location" %>
-                <% if @charity %>
-                  <% if @has_shipped_offers %>
-                    <div class="alert alert-warning d-flex align-items-start gap-2">
-                      <i class="fa-solid fa-triangle-exclamation mt-1"></i>
-                      <div><%= t("settings.shipping_address_warning") %></div>
-                    </div>
-                  <% end %>
-                  <%= f.fields_for :address, (profile_record.address || profile_record.build_address) do |address_form| %>
-                    <%= render "shared/address_fields", f: address_form %>
-                  <% end %>
-                <% else %>
+              <% if @charity %>
+                <%# Address and donation preferences save separately, like the Email & Password tab.
+                    Both start collapsed; only a failed save (re-rendered with errors) reopens its section. %>
+                <% open_section = @open_location_section %>
+                <div class="km--settings-section">
+                  <button class="km--settings-section-toggle<%= ' collapsed' unless open_section == "address" %>" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#settings-address"
+                    aria-expanded="<%= open_section == "address" %>" aria-controls="settings-address">
+                    <span><i class="fa-solid fa-location-dot me-2"></i><%= t("settings.address_section") %></span>
+                    <i class="fa-solid fa-chevron-down km--settings-section-chevron"></i>
+                  </button>
+                  <div class="collapse<%= ' show' if open_section == "address" %>" id="settings-address">
+                    <%= form_with model: @charity, url: settings_path, method: :patch, scope: :charity, class: "pt-3", id: "settings-address-form", html: { novalidate: true } do |f| %>
+                      <%= hidden_field_tag :tab, "location", id: nil %>
+                      <%= hidden_field_tag :section, "address", id: nil %>
+                      <%= f.fields_for :address, (@charity.address || @charity.build_address) do |address_form| %>
+                        <%= render "shared/address_fields", f: address_form %>
+                      <% end %>
+                      <div class="d-flex justify-content-end">
+                        <%# With a parcel already on its way, confirm first (#confirmAddressModal submits this form) %>
+                        <% if @has_shipped_offers %>
+                          <button type="button" class="km--btn km--btn-primary" data-bs-toggle="modal" data-bs-target="#confirmAddressModal">
+                            <%= t("buttons.save") %>
+                          </button>
+                        <% else %>
+                          <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="km--settings-section">
+                  <button class="km--settings-section-toggle<%= ' collapsed' unless open_section == "donation_preferences" %>" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#settings-donation-preferences"
+                    aria-expanded="<%= open_section == "donation_preferences" %>" aria-controls="settings-donation-preferences">
+                    <span><i class="fa-solid fa-box me-2"></i><%= t("settings.donation_preferences") %></span>
+                    <i class="fa-solid fa-chevron-down km--settings-section-chevron"></i>
+                  </button>
+                  <div class="collapse<%= ' show' if open_section == "donation_preferences" %>" id="settings-donation-preferences">
+                    <%= form_with model: @charity, url: settings_path, method: :patch, scope: :charity, class: "pt-3", html: { novalidate: true } do |f| %>
+                      <%= hidden_field_tag :tab, "location", id: nil %>
+                      <%= hidden_field_tag :section, "donation_preferences", id: nil %>
+                      <%= render "charities/donation_preferences_fields", f: f %>
+                      <div class="d-flex justify-content-end">
+                        <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% else %>
+                <%= form_with model: profile_record, url: settings_path, method: :patch, scope: profile_scope, html: { novalidate: true } do |f| %>
+                  <%= hidden_field_tag :tab, "location", id: nil %>
                   <% prefecture_options = prefecture_options_by_region %>
                   <div class="row" data-controller="prefecture-filter" data-prefecture-filter-prefectures-value="<%= prefecture_options.to_json %>">
                     <div class="col-md-6 mb-3">
@@ -127,17 +184,10 @@
                         data: { prefecture_filter_target: "prefecture" } %>
                     </div>
                   </div>
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
+                  </div>
                 <% end %>
-                <div class="d-flex justify-content-end">
-                  <button type="submit" class="km--btn km--btn-primary"><%= t("buttons.save") %></button>
-                </div>
-              <% end %>
-              <% if @charity %>
-                <div class="km--settings-section mt-4">
-                  <p class="km--text-card-content km--text-soft mb-0">
-                    <i class="fa-solid fa-hourglass-half me-1"></i><%= t("settings.delivery_preferences_coming_soon") %>
-                  </p>
-                </div>
               <% end %>
             </div>
           </div>
@@ -149,7 +199,7 @@
             <p class="km--text-card-content km--text-soft mb-4"><%= t("settings.account_description") %></p>
             <% if @account_errors&.any? %>
               <div class="alert alert-danger km--toast">
-                <ul class="mb-0">
+                <ul class="list-unstyled mb-0 d-flex flex-column gap-1">
                   <% @account_errors.full_messages.each { |msg| %>
                   <li><%= msg %></li>
                   <% } %>
@@ -259,6 +309,26 @@
   </div>
 </div>
 <%# Deactivate confirmation modal %>
+<% if @charity && @has_shipped_offers %>
+  <%# Shown instead of saving straight away when a donor may already have the old address %>
+  <div class="modal fade" id="confirmAddressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title km--text-card-title"><%= t("settings.confirm_address_title") %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("buttons.close") %>"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0"><%= t("settings.shipping_address_warning") %></p>
+        </div>
+        <%# Only the save button: the X in the header backs out without saving %>
+        <div class="modal-footer">
+          <button type="submit" form="settings-address-form" class="km--btn km--btn-primary"><%= t("settings.confirm_address_save") %></button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 <div class="modal fade" id="deactivateModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

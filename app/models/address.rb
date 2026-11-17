@@ -18,8 +18,10 @@ class Address < ApplicationRecord
   validates :postal_code, :region, :prefecture, :city, :street, presence: true
   validates :postal_code, format: { with: /\A\d{7}\z/ }, allow_blank: true
 
-  # "150-0001"
+  # "150-0001"; anything that isn't 7 digits (e.g. a typo being corrected) as typed
   def formatted_postal_code
+    return postal_code unless postal_code.to_s.match?(/\A\d{7}\z/)
+
     "#{postal_code[0, 3]}-#{postal_code[3..]}"
   end
 

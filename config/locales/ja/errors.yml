@@ -3,6 +3,18 @@ ja:
     messages:
       exceeds_remaining: "残りの必要数量（%{max}）を超えることはできません"
       photos_missing: "商品の写真を1枚以上追加してください"
+      drop_off_time_missing: "持ち込み時間を選んでください"
+      drop_off_time_interval: "持ち込み時間は00分または30分で選んでください"
+      drop_off_closed_day: "%{day}は持ち込みを受け付けていません"
+      outside_drop_off_hours: "%{hours}の間で持ち込み時間を選んでください"
+      already_offered: "この募集にはすでに寄付を申し出ています"
+      after_opening: "は開始時刻より後にしてください"
+      no_open_days: "を受け付けるには、1つ以上の曜日を選択してください"
+      unavailable: "はこの募集では選べません"
+      and_more: "%{list}ほか%{count}件"
+      needs_without_delivery: "この変更では、%{titles}で新しい寄付を受け付けられなくなります（手配済みの寄付には影響しません）。先にそれらの募集で持ち込みを許可するか、配送をオンのままにしてください"
+      no_delivery_method: "配送または持ち込みのどちらかを受け付けてください"
+      needed_without_shipping: "は、配送を受け付けていないためオンにする必要があります"
       tags_or_comment_required: "項目を1つ以上選択するか、コメントを入力してください"
       blank: "を入力してください"
       inclusion: "は一覧にありません"
@@ -12,15 +24,21 @@ ja:
     format: "%{attribute}%{message}"
   activerecord:
     attributes:
+      charity/drop_off_windows:
+        opens_at: "持ち込み開始時刻"
+        closes_at: "持ち込み終了時刻"
+        day_of_week: "持ち込み曜日"
       feedback:
         tags: "フィードバック項目"
         comment: "その他のフィードバック"
       offer:
+        delivery_method: "受け渡し方法"
         quantity_offered: "寄付する数量"
         condition: "状態"
         can_ship_by: "発送可能日"
         message: "メッセージ"
       request:
+        allows_drop_off: "持ち込み"
         title: "タイトル"
         description: "詳細"
         condition: "最低限の条件"
@@ -30,6 +48,7 @@ ja:
         subcategory: "サブカテゴリー"
       charity:
         org_name: "団体名"
+        drop_off_windows: "持ち込み"
         description: "説明"
         address: "住所"
       address: &ja_address_attributes

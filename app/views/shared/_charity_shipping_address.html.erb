@@ -1,7 +1,24 @@
-<%# Where the donor sends an approved offer. Only render once the charity has approved it. %>
-<div class="km--address-box my-3">
-  <p class="km--text-card-category km--text-soft mb-2">
-    <i class="fa-solid fa-location-dot me-1"></i><%= t("shipping.address") %>
-  </p>
-  <%= render "shared/address", address: charity.address %>
-</div>
+<%# Where the donor sends (or brings) an approved offer, as it was when the charity approved it
+    (Offer#delivery_details), so later changes to the charity's settings don't move it.
+    The label hint only helps before sending (hint: false once it's on its way). %>
+<% show_hint = !offer.drop_off? && local_assigns.fetch(:hint, true) %>
+<%= render layout: "shared/address_box",
+           locals: { address: offer.delivery_address,
+                     title: offer.drop_off? ? t("drop_off.address") : t("shipping.address"),
+                     hint: (t("addresses.label_hint") if show_hint) } do %>
+  <% if offer.drop_off? %>
+    <% hours = drop_off_hours_lines(offer.delivery_drop_off_windows) %>
+    <p class="km--text-card-category km--text-soft mt-3 mb-2">
+      <i class="fa-solid fa-clock me-1"></i><%= t("drop_off.hours") %>
+    </p>
+    <p class="km--text-card-content mb-0">
+      <% if hours.any? %>
+        <% hours.each do |line| %>
+          <%= line %><br>
+        <% end %>
+      <% else %>
+        <%= t("drop_off.hours_not_set") %>
+      <% end %>
+    </p>
+  <% end %>
+<% end %>

@@ -26,7 +26,10 @@ module Charities
 
     def assign_tracker_offers(all_offers)
       @submitted_offers = all_offers.where(status: "submitted").order(updated_at: :desc)
-      @shipped_offers = all_offers.where(status: "shipped").order(updated_at: :desc)
+      # Soonest expected first (drop-offs then by planned time); offers without a date go last
+      @shipped_offers = all_offers.where(status: "shipped")
+                                  .order(Arel.sql("offers.estimated_arrival ASC NULLS LAST, " \
+                                                  "offers.drop_off_time ASC NULLS LAST, offers.updated_at DESC"))
       @received_offers = all_offers.where(status: "received").order(updated_at: :desc)
     end
   end

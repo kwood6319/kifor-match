@@ -1,0 +1,79 @@
+<%# Arrival / planned drop-off details, posted to mark_as_shipped. Used when the offer is approved,
+    and again once it's on its way so the donor can change them (the status stays "shipped").
+    - Shipping: arrival date (the browser's date picker), courier time window, tracking number.
+    - Drop-off: the browser's date picker, then a 30-minute time slot within that day's hours. The
+      drop-off-picker controller rebuilds the slots when the date changes and warns (holding Save)
+      on a closed day; the model refuses closed days and out-of-hours times too.
+    Locals: offer, edit_link (show Edit offer), cancel_target (collapse id to close). %>
+<% windows = offer.drop_off? ? offer.delivery_drop_off_windows : [] %>
+<% picker = offer.drop_off? %>
+<%= simple_form_for offer,
+  url: mark_as_shipped_offer_path(offer),
+  method: :patch,
+  html: { data: picker ? {
+    controller: "drop-off-picker",
+    drop_off_picker_windows_value: windows.map { |w| { day: w.day_of_week, opens: w.opens_at.strftime("%H:%M"), closes: w.closes_at.strftime("%H:%M") } }.to_json,
+    drop_off_picker_default_hours_value: DropOffHelper::DEFAULT_DROP_OFF_HOURS.to_json,
+    drop_off_picker_prompt_value: t("drop_off.choose_time"),
+    drop_off_picker_full_day_names_value: t("date.day_names").to_json,
+    drop_off_picker_closed_message_value: t("errors.messages.drop_off_closed_day")
+  } : {} } do |f| %>
+  <% if offer.drop_off? %>
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <%= f.label :estimated_arrival, t("drop_off.planned_date"), class: "km--text-label" %>
+        <%# Defaults to the next day the charity is open; a saved date is kept %>
+        <% planned_date = offer.estimated_arrival || next_drop_off_date(windows) %>
+        <%= f.date_field :estimated_arrival, value: planned_date, min: Date.current, required: true,
+              class: "km--form-control form-control",
+              data: { drop_off_picker_target: "date", action: "change->drop-off-picker#dateChanged" } %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :drop_off_time, t("drop_off.planned_time"), class: "km--text-label" %>
+        <%# Filled for the saved date here; the controller rebuilds it whenever the date changes %>
+        <% time_options = drop_off_time_options(windows, planned_date) %>
+        <%= f.select :drop_off_time, time_options,
+              { prompt: t("drop_off.choose_time"), selected: offer.drop_off_time&.strftime("%H:%M") },
+              required: true, disabled: time_options.empty?, class: "km--form-control form-select",
+              data: { drop_off_picker_target: "time" } %>
+      </div>
+    </div>
+    <div class="alert alert-warning py-2 mt-2 mb-0" role="alert" hidden data-drop-off-picker-target="warning"></div>
+  <% else %>
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <%# The browser's date picker, like the drop-off form (it was day + month dropdowns) %>
+        <%= f.label :estimated_arrival, t("statuses.donor.arriving"), class: "km--text-label" %>
+        <%= f.date_field :estimated_arrival, value: offer.estimated_arrival || Date.current, min: Date.current,
+              required: true, class: "km--form-control form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :estimated_arrival_time, t("statuses.donor.arrival_time"), class: "km--text-label" %>
+        <%= f.select :estimated_arrival_time,
+              Offer::ARRIVAL_TIME_SLOTS.map { |slot| [t("arrival_time_slots.#{slot}"), slot] },
+              { include_blank: t("arrival_time_slots.not_specified") },
+              class: "km--form-control form-select" %>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <%# Plain label/field (not f.input) so spacing matches the selects above %>
+      <div class="col-12">
+        <%= f.label :tracking_number, t("statuses.donor.tracking_info"), class: "km--text-label" %>
+        <%= f.text_field :tracking_number, placeholder: t("statuses.donor.tracking_prompt"),
+              class: "km--form-control form-control" %>
+      </div>
+    </div>
+  <% end %>
+  <div class="d-flex justify-content-end gap-3 mt-3">
+    <% if local_assigns[:cancel_target] %>
+      <%# Re-collapses the form on an offer that's already on its way %>
+      <button type="button" class="km--btn km--btn-outline" data-bs-toggle="collapse" data-bs-target="#<%= cancel_target %>">
+        <%= t("buttons.cancel") %>
+      </button>
+    <% end %>
+    <%= f.submit t("buttons.save"), class: "km--btn km--btn-primary", data: { drop_off_picker_target: "submit" } %>
+    <% if local_assigns[:edit_link] %>
+      <%= link_to t("buttons.edit"), request_path(offer.request, edit_offer: offer.id), class: "km--btn km--btn-primary" %>
+    <% end %>
+  </div>
+<% end %>
