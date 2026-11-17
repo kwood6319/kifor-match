@@ -1,14 +1,8 @@
 <div class="container mt-3 mb-4">
   <div class="km--card km--form-card km--form-compact km--filter-card">
     <%# Collapsed by default: only the active-filter summary shows until expanded %>
-    <button type="button" class="km--filter-toggle collapsed" data-bs-toggle="collapse"
-            data-bs-target="#request-filters" aria-expanded="false" aria-controls="request-filters">
-      <span class="d-flex align-items-center gap-2">
-        <i class="fa-solid fa-filter"></i>
-        <span class="km--text-card-subtitle"><%= request_filter_summary %></span>
-      </span>
-      <i class="fa-solid fa-chevron-down km--filter-chevron"></i>
-    </button>
+    <%= render "shared/filter_header", target: "request-filters", summary: request_filter_summary,
+               reset_path: requests_path, active: request_filters_active? %>
     <div class="collapse" id="request-filters">
       <div class="pt-3">
         <%= form_with url: requests_path, method: :get, data: { controller: "form-submission", turbo_frame: "requests_list" }, class: "row g-3" do |f| %>
@@ -41,10 +35,11 @@
           </div>
           <%# TO DO: Add "Accepts shipping" / "Accepts drop-off" filters once these are real columns on charities %>
           <%# Row 2: Categories %>
+          <%# TO DO: Consider adding subcategories to the filters (requests already store them; see CategoryList) %>
           <div class="row g-3 mt-0">
             <div class="col-12 mt-0">
               <label class="km--text-card-category km--text-soft d-block mb-2"><%= t("navigation.category") %></label>
-              <div class="border rounded p-3 bg-white" data-form-submission-target="categoryGroup">
+              <div class="border rounded p-3 km--field-box" data-form-submission-target="categoryGroup">
                 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
                   <div class="col">
                     <div class="form-check">

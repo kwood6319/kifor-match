@@ -10,12 +10,10 @@ class RequestsController < ApplicationController
     # Setup dynamic variables for your dropdown menus
     @categories = CategoryList::CATEGORIES.keys
 
-    # 1. Text Search (Title or Charity Name)
+    # 1. Text Search (Title only: matching charity names would reveal who posted a request)
     if params[:query].present?
       # ILIKE is PostgreSQL's case-insensitive search
-      sql_query = "requests.title ILIKE :query OR charities.org_name ILIKE :query"
-      # We must join the charities table so SQL knows what 'charities.org_name' is
-      @requests = @requests.joins(:charity).where(sql_query, query: "%#{params[:query]}%")
+      @requests = @requests.where("requests.title ILIKE :query", query: "%#{params[:query]}%")
     end
 
     # 2. Category Filter

@@ -16,4 +16,12 @@ module DashboardHelper
       t("dashboard.seven_plus_days_ago")
     end
   end
+
+  # Small counter on a tracker tab so waiting offers are noticed from any tab
+  def tracker_tab_count(offers)
+    count = offers.size
+    return if count.zero?
+
+    tag.span(count, class: "badge rounded-pill km--tab-count")
+  end
 end
