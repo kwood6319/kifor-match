@@ -1,4 +1,12 @@
 <% label_class = "km--text-card-category km--text-soft d-block mb-2" %>
+<%# A live offer locks everything but urgency and raising quantity (see Request::LOCKED_FIELDS) %>
+<% locked = request.persisted? && request.locked? %>
+<% if locked %>
+  <div class="alert alert-info d-flex align-items-start gap-2" role="status">
+    <i class="fa-solid fa-lock mt-1"></i>
+    <span><%= t("requests.locked_notice") %></span>
+  </div>
+<% end %>
 <% if request.errors.any? %>
   <div class="alert alert-danger alert-dismissible fade show km--toast" role="alert">
     <strong><%= t("offers.errors_heading") %></strong>
@@ -14,11 +22,11 @@
   <div class="row g-3">
     <div class="col-md-4">
       <%= f.label :quantity_needed, t("requests.quantity_needed"), class: "#{label_class} km--required" %>
-      <%= f.number_field :quantity_needed, min: 1, placeholder: "1, 2, 3...", required: true, class: "km--form-control form-control" %>
+      <%= f.number_field :quantity_needed, min: (locked ? request.quantity_needed_was : 1), placeholder: "1, 2, 3...", required: true, class: "km--form-control form-control" %>
     </div>
     <div class="col-md-8">
       <%= f.label :title, t("requests.title"), class: "#{label_class} km--required" %>
-      <%= f.text_field :title, placeholder: t("requests.title_placeholder"), required: true, class: "km--form-control form-control" %>
+      <%= f.text_field :title, placeholder: t("requests.title_placeholder"), required: true, disabled: locked, class: "km--form-control form-control" %>
     </div>
     <div class="col-md-6">
       <%= f.label :urgency, t("requests.urgency"), class: "#{label_class} km--required" %>
@@ -32,7 +40,7 @@
       <%= f.select :condition,
         Request::CONDITIONS.map { |c| [t("conditions.#{c}"), c] },
         { prompt: t("conditions.select") },
-        required: true, class: "km--form-control form-select" %>
+        required: true, disabled: locked, class: "km--form-control form-select" %>
       <p class="km--text-card-content km--text-soft mt-1 mb-0"><%= t("requests.condition_message") %></p>
     </div>
     <div class="col-12">
@@ -42,7 +50,7 @@
           <%= f.collection_check_boxes :category, CategoryList::CATEGORIES.keys.map { |c| [c, t("categories.#{c}")] }, :first, :last do |b| %>
             <div class="col">
               <div class="form-check">
-                <%= b.check_box class: "form-check-input",
+                <%= b.check_box class: "form-check-input", disabled: locked,
                   data: {
                     action: "change->category-subcategory#toggle",
                     "category-subcategory-target": "categoryCheckbox",
@@ -66,7 +74,7 @@
                     <%= check_box_tag "request[subcategory][]", sub,
                       f.object.subcategory.include?(sub),
                       id: "subcategory_#{sub}",
-                      class: "form-check-input",
+                      class: "form-check-input", disabled: locked,
                       data: { "category-subcategory-target": "subcategoryCheckbox" } %>
                     <%= label_tag "subcategory_#{sub}", CategoryList.subcategory_label_for(key, sub), class: "form-check-label" %>
                   </div>
@@ -76,7 +84,7 @@
           </div>
         <% end %>
         <div class="d-flex justify-content-end mt-3">
-          <button type="button" class="km--btn km--btn-outline" data-action="click->category-subcategory#reset">
+          <button type="button" class="km--btn km--btn-outline" data-action="click->category-subcategory#reset" <%= "disabled" if locked %>>
             <%= t("buttons.reset_categories") %>
           </button>
         </div>
@@ -84,7 +92,7 @@
     </div>
     <div class="col-12">
       <%= f.label :description, t("requests.description"), class: "#{label_class} km--required" %>
-      <%= f.text_area :description, rows: 4, placeholder: t("requests.description_message"), required: true,
+      <%= f.text_area :description, rows: 4, placeholder: t("requests.description_message"), required: true, disabled: locked,
             class: "km--form-control form-control km--no-resize" %>
     </div>
     <%# Drop-off is opt-in per need, but only once the charity takes drop-offs at all %>
@@ -92,7 +100,7 @@
       <span class="<%= label_class %>"><%= t("drop_off.title") %></span>
       <% if current_charity.accepts_drop_off? %>
         <div class="form-check form-switch">
-          <%= f.check_box :allows_drop_off, class: "form-check-input", role: "switch" %>
+          <%= f.check_box :allows_drop_off, class: "form-check-input", role: "switch", disabled: locked %>
           <%= f.label :allows_drop_off, t("drop_off.allow_for_request"), class: "form-check-label" %>
         </div>
         <% unless current_charity.accepts_shipping? %>

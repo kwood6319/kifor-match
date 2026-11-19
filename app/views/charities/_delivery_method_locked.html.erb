@@ -1,0 +1,10 @@
+<%# Why a delivery switch is disabled: donors have donations on their way by that method.
+    requests: needs with those donations; message_key: the locale key for the explanation. %>
+<p class="km--text-card-content km--text-soft mb-2">
+  <i class="fa-solid fa-lock me-1"></i><%= t(message_key) %>
+</p>
+<ul class="km--text-card-content mb-2">
+  <% requests.each do |request| %>
+    <li><%= link_to request.title, request_path(id: request.id) %></li>
+  <% end %>
+</ul>

@@ -32,14 +32,58 @@ class RequestTest < ActiveSupport::TestCase
     assert_equal "prior reason", already_rejected_offer.reload.rejection_reason
   end
 
+  test "locked? is true only while a non-rejected offer exists" do
+    request = create_request(quantity_needed: 5)
+    assert_not request.locked?
+
+    offer = create_offer(request, status: "submitted")
+    assert request.locked?
+
+    offer.update_columns(status: "rejected")
+    assert_not request.locked?
+  end
+
+  test "a locked request rejects changes to locked fields" do
+    request = create_request(quantity_needed: 5)
+    create_offer(request)
+
+    assert_not request.update(title: "Something else")
+    assert request.errors.of_kind?(:title, :locked)
+
+    request.reload
+    assert_not request.update(category: ["hygiene"])
+    assert request.errors.of_kind?(:category, :locked)
+  end
+
+  test "a locked request allows urgency changes and quantity increases only" do
+    request = create_request(quantity_needed: 5)
+    create_offer(request)
+
+    assert request.update(urgency: "urgent")
+    assert request.update(quantity_needed: 8)
+
+    assert_not request.update(quantity_needed: 6)
+    assert request.errors.of_kind?(:quantity_needed, :cannot_decrease_while_locked)
+  end
+
+  test "an unlocked request can be freely edited" do
+    request = create_request(quantity_needed: 5)
+    create_offer(request, status: "rejected", rejection_reason: "not needed")
+
+    assert request.update(title: "Something else", quantity_needed: 2)
+  end
+
   private
 
   def create_request(attrs = {})
     user = User.create!(email: "charity#{SecureRandom.hex(4)}@example.com", password: "password123", role: :charity)
-    charity = Charity.create!(user: user, org_name: "Test Charity", region: "Kanto")
+    charity = Charity.create!(user: user, org_name: "Test Charity",
+                              address_attributes: { postal_code: "1500001", region: "Kanto", prefecture: "Tokyo",
+                                                    city: "Shibuya", street: "1-2-3" })
     Request.create!({
       charity: charity,
       title: "Canned food",
+      category: ["food"],
       description: "Needed for shelter",
       condition: "new",
       urgency: "medium",

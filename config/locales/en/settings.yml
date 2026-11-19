@@ -29,6 +29,8 @@ en:
     confirm_address_title: "Change your address?"
     confirm_address_save: "Save anyway"
     open_offers_warning: "You have donations in progress. Changes here only apply to new offers: donations already arranged keep the delivery method the donor chose."
+    shipping_locked: "Shipping can't be turned off while donors have donations on the way by shipping for these needs. You can change it once they've arrived or been rejected:"
+    drop_off_locked: "Drop-off can't be turned off while donors are planning to drop off donations for these needs. You can change it once they've arrived or been rejected:"
     address_section: "Address"
     donation_preferences: "Donation preferences"
     email: "Email"

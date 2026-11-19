@@ -18,6 +18,10 @@ en:
       no_delivery_method: "Please accept at least one of shipping or drop-off"
       needed_without_shipping: "must be on, as you don't accept shipping"
       tags_or_comment_required: "Please select at least one item or add a comment"
+      locked: "can't be changed once a donor has made an offer"
+      shipping_in_use: "Shipping can't be turned off while donations are on the way by shipping for %{titles}"
+      drop_off_in_use: "Drop-off can't be turned off while donors are planning to drop off donations for %{titles}"
+      cannot_decrease_while_locked: "can't be lowered once a donor has made an offer"
   activerecord:
     attributes:
       charity/drop_off_windows:

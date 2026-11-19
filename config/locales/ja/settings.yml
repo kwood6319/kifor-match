@@ -29,6 +29,8 @@ ja:
     confirm_address_title: "住所を変更しますか？"
     confirm_address_save: "変更を保存する"
     open_offers_warning: "進行中の寄付があります。ここでの変更は新しい寄付にのみ適用され、すでに手配済みの寄付はドナーが選んだ受け渡し方法のままです。"
+    shipping_locked: "以下の募集には配送で手配中の寄付があるため、配送をオフにできません。寄付が届くか却下された後に変更できます："
+    drop_off_locked: "以下の募集には持ち込み予定の寄付があるため、持ち込みをオフにできません。寄付が届くか却下された後に変更できます："
     address_section: "住所"
     donation_preferences: "寄付の受け取り設定"
     email: "メールアドレス"

@@ -52,6 +52,11 @@ class Request < ApplicationRecord
 
   FULFILLING_STATUSES = %w[received flagged completed].freeze
 
+  # Once a donor has a live offer, these can't change: the donor offered against them.
+  # Urgency and raising quantity_needed stay editable since they can't invalidate an offer.
+  LOCKED_FIELDS = %w[title description condition category subcategory allows_drop_off].freeze
+  LOCKED_EDITABLE_PARAMS = %i[urgency quantity_needed].freeze
+
   REGIONS_AND_PREFECTURES = {
     "Hokkaido" => %w[Hokkaido],
     "Tohoku" => %w[Aomori Iwate Miyagi Akita Yamagata Fukushima],
@@ -85,6 +90,7 @@ class Request < ApplicationRecord
   # Only when it's set: archiving an old need mustn't fail because settings changed since
   validate :reachable_by_donors, if: -> { new_record? || will_save_change_to_allows_drop_off? }
   validate :subcategories_are_valid
+  validate :locked_fields_unchanged, on: :update
 
   def set_default_status
     self.status ||= "active"
@@ -118,6 +124,12 @@ class Request < ApplicationRecord
 
   def archived?
     status == "archived"
+  end
+
+  # Locked while any offer is still live (anything but rejected). Rejecting or
+  # deleting the last live offer unlocks it again.
+  def locked?
+    offers.where.not(status: "rejected").exists?
   end
 
   # Drop-off needs both: the charity takes drop-offs at all, and allows it for this need
@@ -157,6 +169,16 @@ class Request < ApplicationRecord
     return if charity.blank? || delivery_methods.any?
 
     errors.add(:allows_drop_off, :needed_without_shipping)
+  end
+
+  def locked_fields_unchanged
+    return unless locked?
+
+    (changed & LOCKED_FIELDS).each { |field| errors.add(field, :locked) }
+
+    return unless quantity_needed_changed? && quantity_needed_was && quantity_needed.to_i < quantity_needed_was
+
+    errors.add(:quantity_needed, :cannot_decrease_while_locked)
   end
 
   def categories_are_valid

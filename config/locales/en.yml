@@ -75,6 +75,7 @@ en:
     top_categories: "Here's what's most needed in Japan this month"
     request_archived: "Need archived."
     request_deleted: "Need deleted."
+    request_removed: "Need removed. Donors you declined can still see why."
     request_fulfilled_rejection: "This need has already been met, so we're unable to accept your donation. Thank you so much for your generosity!"
     delete_charity_confirm: "Delete this charity?"
     approve_charity_confirm: "Approve this charity?"
@@ -182,6 +183,8 @@ en:
     deactivated: "Deactivated"
     reset_categories: "Reset categories"
   requests:
+    locked_notice: "A donor has made an offer on this need, so only the urgency can be changed and the quantity can only be increased."
+    delete_locked: "Reject the open donations on this need before deleting it. The donors will be notified."
     new_request: "New need"
     create_request: "Post"
     tell_us: "Tell us a little more about what you need"
