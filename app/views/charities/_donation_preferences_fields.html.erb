@@ -1,6 +1,9 @@
 <%# How a charity accepts donations: shipping and/or drop-off, with drop-off days and hours.
     Inside the settings "Donation preferences" form; `f` is the charity form builder. %>
 <% label_class = "km--text-card-category km--text-soft d-block mb-2" %>
+<%# A method with donations still on their way can't be switched off (see Charity#arranged_delivery_methods_kept) %>
+<% shipping_in_use = f.object.persisted? && f.object.accepts_shipping_was ? f.object.requests_with_arranged("shipping").to_a : [] %>
+<% drop_off_in_use = f.object.persisted? && f.object.accepts_drop_off_was ? f.object.requests_with_arranged("drop_off").to_a : [] %>
 <% if @has_open_offers %>
   <div class="alert alert-warning d-flex align-items-start gap-2">
     <i class="fa-solid fa-triangle-exclamation mt-1"></i>
@@ -10,18 +13,24 @@
 <div class="mb-3">
   <h6 class="km--text-card-title mb-2"><%= t("shipping.shipping") %></h6>
   <div class="form-check form-switch mb-2">
-    <%= f.check_box :accepts_shipping, class: "form-check-input", role: "switch" %>
+    <%= f.check_box :accepts_shipping, class: "form-check-input", role: "switch", disabled: shipping_in_use.any? %>
     <%= f.label :accepts_shipping, t("shipping.accept_label"), class: "form-check-label" %>
   </div>
+  <% if shipping_in_use.any? %>
+    <%= render "charities/delivery_method_locked", requests: shipping_in_use, message_key: "settings.shipping_locked" %>
+  <% end %>
   <p class="km--text-card-content km--text-soft mb-0"><%= t("shipping.accept_hint") %></p>
 </div>
 <div class="mb-3 border-top pt-3" data-controller="reveal">
   <h6 class="km--text-card-title mb-2"><%= t("drop_off.title") %></h6>
   <div class="form-check form-switch mb-2">
     <%= f.check_box :accepts_drop_off, class: "form-check-input", role: "switch",
-          data: { reveal_target: "toggle", action: "reveal#update" } %>
+          disabled: drop_off_in_use.any?, data: { reveal_target: "toggle", action: "reveal#update" } %>
     <%= f.label :accepts_drop_off, t("drop_off.accept_label"), class: "form-check-label" %>
   </div>
+  <% if drop_off_in_use.any? %>
+    <%= render "charities/delivery_method_locked", requests: drop_off_in_use, message_key: "settings.drop_off_locked" %>
+  <% end %>
   <%# Only relevant once drop-off is on; still submitted while hidden so saved hours are kept %>
   <div data-reveal-target="content">
     <p class="km--text-card-content km--text-soft mb-3"><%= t("drop_off.accept_hint") %></p>

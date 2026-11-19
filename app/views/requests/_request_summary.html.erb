@@ -94,6 +94,8 @@
     <% can_archive = policy(request).archive? %>
     <% can_delete = policy(request).destroy? %>
     <% can_edit = policy(request).edit? %>
+    <%# Owner could delete but a live offer blocks it: show why instead of hiding the button %>
+    <% delete_locked = request.charity == current_user.charity && !request.archived? && request.locked? %>
     <% if can_archive || can_delete || can_edit %>
       <div class="d-flex justify-content-end flex-wrap gap-3">
         <% if can_archive %>
@@ -118,11 +120,18 @@
             data-action-title="<%= t("modals.delete_request.title") %>" >
             <%= t("buttons.delete") %>
           </button>
+        <% elsif delete_locked %>
+          <button type="button" class="km--btn km--btn-danger" disabled><%= t("buttons.delete") %></button>
         <% end %>
         <% if can_edit %>
           <%= link_to t("buttons.edit"), edit_request_path(request), class: "km--btn km--btn-primary" %>
         <% end %>
       </div>
+      <% if delete_locked %>
+        <p class="km--text-card-content km--text-soft text-end mt-2 mb-0">
+          <i class="fa-solid fa-lock me-1"></i><%= t("requests.delete_locked") %>
+        </p>
+      <% end %>
     <% end %>
   <% end %>
 </div>
