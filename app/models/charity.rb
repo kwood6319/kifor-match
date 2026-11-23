@@ -22,6 +22,8 @@ class Charity < ApplicationRecord
   validate :accepts_some_delivery
   # Turning shipping or drop-off off mustn't leave an open need with no way to receive donations
   validate :open_needs_stay_reachable, if: -> { will_save_change_to_accepts_shipping? || will_save_change_to_accepts_drop_off? }
+  # A donor mid-donation is relying on the method they chose, so it can't be switched off under them
+  validate :arranged_delivery_methods_kept, if: :delivery_methods_changing?
 
   # Approved by an admin and not deactivated: only these charities' needs are
   # shown to donors and can receive donations.
@@ -36,7 +38,30 @@ class Charity < ApplicationRecord
     requests.where.not(status: "archived").where("quantity_remaining > 0")
   end
 
+  # Needs with donations still on their way (submitted, approved or shipped) by this delivery method.
+  # While any exist, the charity can't turn that method off.
+  def requests_with_arranged(delivery_method)
+    requests.joins(:offers)
+            .where(offers: { status: Request::OPEN_OFFER_STATUSES, delivery_method: delivery_method })
+            .distinct
+  end
+
   private
+
+  def delivery_methods_changing?
+    will_save_change_to_accepts_shipping? || will_save_change_to_accepts_drop_off?
+  end
+
+  def arranged_delivery_methods_kept
+    { "shipping" => accepts_shipping?, "drop_off" => accepts_drop_off? }.each do |method, on|
+      next if on
+
+      arranged = requests_with_arranged(method).to_a
+      next if arranged.empty?
+
+      errors.add(:base, :"#{method}_in_use", titles: quoted_titles(arranged))
+    end
+  end
 
   def allow_drop_off_on_open_needs
     open_requests.where(allows_drop_off: false).update_all(allows_drop_off: true, updated_at: Time.current)

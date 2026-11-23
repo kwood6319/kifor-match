@@ -91,7 +91,7 @@ class RequestsController < ApplicationController
     old_needed = @request.quantity_needed
     old_remaining = @request.quantity_remaining
 
-    if @request.update(request_params)
+    if @request.update(permitted_update_params)
       difference = @request.quantity_needed - old_needed
       new_remaining = [old_remaining + difference, 0].max
       @request.update_column(:quantity_remaining, new_remaining)
@@ -116,8 +116,16 @@ class RequestsController < ApplicationController
 
   def destroy
     authorize @request
-    @request.destroy
-    redirect_to charities_dashboard_path, notice: t("messages.request_deleted")
+    # Rejected offers stay behind so the donor's rejection notification (and its
+    # reason) still has a need to link to. Archive instead of deleting them.
+    if @request.offers.exists?
+      @request.archive!
+      notice = t("messages.request_removed")
+    else
+      @request.destroy
+      notice = t("messages.request_deleted")
+    end
+    redirect_to charities_dashboard_path, notice: notice
   end
 
   private
@@ -128,6 +136,12 @@ class RequestsController < ApplicationController
 
   def set_donor
     @donor = current_user&.donor
+  end
+
+  # A locked request (live offer) only accepts urgency and quantity changes. Slicing here
+  # also drops the hidden "" category checkbox field, which would otherwise clear categories.
+  def permitted_update_params
+    @request.locked? ? request_params.slice(*Request::LOCKED_EDITABLE_PARAMS) : request_params
   end
 
   def request_params

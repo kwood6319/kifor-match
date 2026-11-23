@@ -46,6 +46,7 @@ ja:
     top_categories: "今月、日本で最も必要とされているものは以下の通りです"
     request_archived: "募集をアーカイブしました。"
     request_deleted: "募集を削除しました。"
+    request_removed: "募集を削除しました。却下した寄付者は引き続き理由を確認できます。"
     request_fulfilled_rejection: "この募集はすでに必要数に達したため、今回の寄付はお受けできません。ご厚意に心より感謝いたします。"
     delete_charity_confirm: "このチャリティーを削除しますか？"
     approve_charity_confirm: "このチャリティーを承認しますか？"
@@ -153,6 +154,8 @@ ja:
     activate: "再有効化"
     deactivated: "無効化済み"
   requests:
+    locked_notice: "この募集には寄付の申し出があるため、変更できるのは緊急度と必要数量の増加のみです。"
+    delete_locked: "この募集を削除するには、先に未対応の寄付を却下してください。寄付者に通知されます。"
     new_request: "新しい募集"
     create_request: "投稿"
     tell_us: "ご要望について、もう少し詳しく教えてください"

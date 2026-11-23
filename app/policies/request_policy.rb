@@ -23,8 +23,12 @@ class RequestPolicy < ApplicationPolicy
     true
   end
 
+  # Archived needs are hidden from the public. Donors who offered can still open
+  # them, so a rejection notification links somewhere they can read the reason.
   def show?
-    user.admin? || record.charity == user.charity || record.charity.visible?
+    return true if user.admin? || record.charity == user.charity || offered_on?
+
+    record.charity.visible? && !record.archived?
   end
 
   # Unapproved charities are already redirected by require_approval; this
@@ -39,8 +43,9 @@ class RequestPolicy < ApplicationPolicy
     # user: the `current_user` signed in with Devise
   end
 
+  # A live offer blocks deletion: the charity must reject it first so the donor is notified.
   def destroy?
-    record.charity == user.charity && !record.archived?
+    record.charity == user.charity && !record.archived? && !record.locked?
   end
 
   def deactivate?
@@ -49,5 +54,11 @@ class RequestPolicy < ApplicationPolicy
 
   def archive?
     record.charity == user.charity && record.fully_fulfilled? && !record.archived?
+  end
+
+  private
+
+  def offered_on?
+    user.donor.present? && record.offers.exists?(donor: user.donor)
   end
 end

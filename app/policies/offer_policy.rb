@@ -27,7 +27,7 @@ class OfferPolicy < ApplicationPolicy
   end
 
   def create?
-    admin? || (donor.present? && record.request.charity.visible?)
+    admin? || (donor.present? && record.request.charity.visible? && !record.request.archived?)
   end
 
   # Donors can't edit or delete rejected offers, only archive (dismiss) them.
@@ -51,8 +51,11 @@ class OfferPolicy < ApplicationPolicy
     admin? || owning_charity?
   end
 
+  # Charities can only reject before accepting: once approved, the donor may already be
+  # preparing or shipping it. A donor amendment resubmits it, reopening rejection.
+  # Admins can reject at any stage.
   def reject?
-    admin? || owning_charity?
+    admin? || (owning_charity? && record.status == "submitted")
   end
 
   def mark_received?
