@@ -7,10 +7,6 @@ class Offer < ApplicationRecord
 
   before_update :resubmit_if_amended, if: :donor_amendment?
 
-  attr_accessor :ship_by_day, :ship_by_month_year
-
-  before_validation :assemble_can_ship_by
-
   STATUSES = %w[
     submitted
     approved
@@ -60,6 +56,8 @@ class Offer < ApplicationRecord
   validate :quantity_offered_does_not_exceed_remaining
 
   validate :estimated_arrival_not_in_past
+  validate :can_ship_by_not_in_past
+
   # Planned drop-offs: a time, on a day and within the hours the charity takes them
   validate :drop_off_within_hours, if: lambda {
     drop_off? && estimated_arrival.present? &&
@@ -219,29 +217,15 @@ class Offer < ApplicationRecord
     return unless estimated_arrival_changed?
     return if estimated_arrival >= Date.current
 
-    errors.add(:estimated_arrival, :greater_than_or_equal_to, count: Date.current)
+    errors.add(:estimated_arrival, :in_past)
   end
 
-  def assemble_can_ship_by
-    return if ship_by_day.blank? || ship_by_month_year.blank?
+  # The date comes straight from the form's date picker; only a newly chosen date is checked,
+  # so editing an older offer doesn't fail on a ready-from date that has since passed
+  def can_ship_by_not_in_past
+    return if can_ship_by.blank? || !can_ship_by_changed? || can_ship_by >= Date.current
 
-    year, month = ship_by_month_year.split("-").map(&:to_i)
-
-    begin
-      date = Date.new(year, month, ship_by_day.to_i)
-    rescue ArgumentError
-      # Date::Error is a subclass of ArgumentError, so rescuing
-      # ArgumentError alone covers both without shadowing.
-      errors.add(:can_ship_by, :invalid_date, message: I18n.t("offers.errors.invalid_ship_date"))
-      return
-    end
-
-    if date < Date.current
-      errors.add(:can_ship_by, :in_the_past, message: I18n.t("offers.errors.ship_date_in_past"))
-      return
-    end
-
-    self.can_ship_by = date
+    errors.add(:can_ship_by, :in_past)
   end
 
   def resync_request_quantity
